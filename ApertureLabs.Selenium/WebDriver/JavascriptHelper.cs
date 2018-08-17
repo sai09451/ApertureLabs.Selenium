@@ -6,13 +6,13 @@ namespace ApertureLabs.Selenium.WebDriver
     {
         #region Fields
 
-        private readonly WebDriverWrapper driver;
+        private readonly WebDriverV2 driver;
 
         #endregion
 
         #region Constructor
 
-        public JavascriptHelper(WebDriverWrapper driver)
+        public JavascriptHelper(WebDriverV2 driver)
         {
             this.driver = driver;
         }

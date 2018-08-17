@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.Selenium", "ApertureLabs.Selenium\ApertureLabs.Selenium.csproj", "{DBEBF7D3-E6FB-4068-B246-7E6B659D256C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Selenium", "ApertureLabs.Selenium\ApertureLabs.Selenium.csproj", "{DBEBF7D3-E6FB-4068-B246-7E6B659D256C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿using ApertureLabs.Selenium;
+﻿using ApertureLabs.Selenium.WebElement;
 using ApertureLabs.Selenium.WebDriver;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
@@ -12,17 +12,17 @@ namespace ApertureLabs.Selenium.WebElement
     /// Any class that inherits from this class MUST have a constructor that
     /// has a sole argument which takes an IWebElement.
     /// </summary>
-    public class WebElementWrapper : ICssQueryContext
+    public class WebElementV2 : ICssQueryContext, IWebElementV2
     {
         #region Fields
 
-        protected readonly WebDriverWrapper driver;
+        protected readonly WebDriverV2 driver;
 
         #endregion
 
         #region Constructor
 
-        public WebElementWrapper(IWebElement element, WebDriverWrapper driver)
+        public WebElementV2(IWebElement element, WebDriverV2 driver)
         {
             this.driver = driver;
             this.WebElement = element;
@@ -78,7 +78,7 @@ namespace ApertureLabs.Selenium.WebElement
         /// <param name="wait"></param>
         public void SendKeys(string selector, string keys, TimeSpan? wait = null)
         {
-            Utils.AssertWaitTime(ref wait, driver.DefaultWait, driver.WebDriver);
+            Utils.AssertWaitTime(ref wait, driver.DefaultTimeout, driver.WebDriver);
 
             driver.WebDriver.WaitUntilReady(selector, wait).SendKeys(keys);
         }
@@ -110,14 +110,14 @@ namespace ApertureLabs.Selenium.WebElement
                 .ExecuteJs<IList<IWebElement>>(jsScript, element);
         }
 
-        public IList<WebElementWrapper> Select(string cssSelector, TimeSpan> wait = null)
-        {
-            
-        }
-
-        public T As<T>() where T:WebElementWrapper,new()
+        public T As<T>() where T:WebElementV2,new()
         {
             return Activator.CreateInstance(typeof(T), WebElement) as T;
+        }
+
+        IList<IWebElementV2> ICssQueryContext.Select(string cssSelector, TimeSpan? wait)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

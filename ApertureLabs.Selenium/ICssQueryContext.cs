@@ -1,4 +1,4 @@
-﻿using ApertureLabs.Selenium.WebDriver;
+﻿using ApertureLabs.Selenium.WebElement;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +12,6 @@ namespace ApertureLabs.Selenium
         /// <param name="cssSelector"></param>
         /// <param name="wait"></param>
         /// <returns></returns>
-        IList<WebDriverWrapper> Select(string cssSelector,
-            TimeSpan? wait = null);
+        IList<IWebElementV2> Select(string cssSelector, TimeSpan? wait = null);
     }
 }

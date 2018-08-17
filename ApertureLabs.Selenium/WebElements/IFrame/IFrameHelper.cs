@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.WebElement;
+﻿using ApertureLabs.Selenium.WebDriver;
+using ApertureLabs.Selenium.WebElement;
 using OpenQA.Selenium;
 using System;
 
@@ -14,7 +15,8 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
 
         #region Constructor
 
-        public IFrameHelper(IWebElement element): base(element)
+        public IFrameHelper(IWebElement element, WebDriverV2 driver)
+            : base(element, driver)
         {
             if (string.Compare(WebElement.TagName, "iframe", true) != 0)
             {

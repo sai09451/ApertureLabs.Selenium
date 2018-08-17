@@ -6,13 +6,13 @@ namespace ApertureLabs.Selenium.WebElement
     {
         #region Fields
 
-        private readonly WebElementWrapper element;
+        private readonly WebElementV2 element;
 
         #endregion
 
         #region Constructor
 
-        public TextHelper(WebElementWrapper element)
+        public TextHelper(WebElementV2 element)
         {
             this.element = element;
         }
