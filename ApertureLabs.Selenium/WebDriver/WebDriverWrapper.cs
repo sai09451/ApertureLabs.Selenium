@@ -3,15 +3,18 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace ApertureLabs.Selenium.WebDriver
 {
-    public class WebDriverWrapper
+    public class WebDriverWrapper : ICssQueryContext
     {
         #region Fields
         private readonly WebDriverWait wait;
+        private TimeSpan _defaultWait;
         #endregion
 
         #region Constructor
@@ -42,7 +45,17 @@ namespace ApertureLabs.Selenium.WebDriver
 
         public TabHelper Tabs { get; private set; }
 
-        public TimeSpan DefaultWait { get; set; }
+        public TimeSpan DefaultWait
+        {
+            get
+            {
+                return _defaultWait;
+            }
+            set
+            {
+
+            }
+        }
 
         #endregion
 
@@ -131,19 +144,18 @@ namespace ApertureLabs.Selenium.WebDriver
         /// of the TimeSpan which defaults to 30 seconds if left null.
         /// </summary>
         /// <param name="driver"></param>
-        /// <param name="selector"></param>
+        /// <param name="cssSelector"></param>
         /// <param name="wait"></param>
         /// <returns></returns>
-        public WebElementWrapper QuickSelect(string selector,
-            TimeSpan? wait = null)
+        public IList<WebDriverWrapper> Select(string cssSelector, TimeSpan? wait = null)
         {
             AssertWaitTime(ref wait);
 
             var w = new WebDriverWait(WebDriver, wait.GetValueOrDefault());
-            IWebElement element = w.Until(ExpectedConditions
-                .ElementExists(By.CssSelector(selector)));
-
-            return new WebElementWrapper(element, this);
+            w.Until(ExpectedConditions.ElementExists(By.CssSelector(cssSelector)));
+            return WebDriver.FindElements(By.CssSelector(cssSelector))
+                .Select(element => new WebElementWrapper(element, this))
+                .ToList() as IList<WebDriverWrapper>;
         }
         #endregion
     }

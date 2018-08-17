@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.WebDriver;
+﻿using ApertureLabs.Selenium;
+using ApertureLabs.Selenium.WebDriver;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using System;
@@ -11,7 +12,7 @@ namespace ApertureLabs.Selenium.WebElement
     /// Any class that inherits from this class MUST have a constructor that
     /// has a sole argument which takes an IWebElement.
     /// </summary>
-    public class WebElementWrapper
+    public class WebElementWrapper : ICssQueryContext
     {
         #region Fields
 
@@ -77,9 +78,9 @@ namespace ApertureLabs.Selenium.WebElement
         /// <param name="wait"></param>
         public void SendKeys(string selector, string keys, TimeSpan? wait = null)
         {
-            CheckWaitTime(ref wait, driver);
+            Utils.AssertWaitTime(ref wait, driver.DefaultWait, driver.WebDriver);
 
-            driver.WaitUntilReady(selector, wait).SendKeys(keys);
+            driver.WebDriver.WaitUntilReady(selector, wait).SendKeys(keys);
         }
 
         /// <summary>
@@ -107,6 +108,11 @@ namespace ApertureLabs.Selenium.WebElement
             string jsScript = "return arguments[0].children;";
             return driver.Javascript
                 .ExecuteJs<IList<IWebElement>>(jsScript, element);
+        }
+
+        public IList<WebElementWrapper> Select(string cssSelector, TimeSpan> wait = null)
+        {
+            
         }
 
         public T As<T>() where T:WebElementWrapper,new()

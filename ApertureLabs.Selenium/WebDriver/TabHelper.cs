@@ -62,7 +62,7 @@ namespace ApertureLabs.Selenium.WebDriver
             var action = driver.CreateAction();
             var currentNumberOfHandles = GetNumberOfTabs();
             action
-                .SendKeys(driver.QuickSelect("body"), Keys.LeftControl + "t")
+                .SendKeys(driver.Select("body"), Keys.LeftControl + "t")
                 .Build()
                 .Perform();
 
