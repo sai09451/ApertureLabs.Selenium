@@ -16,5 +16,11 @@ namespace ApertureLabs.Selenium
 
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
         }
+
+        internal static bool TimeLeft(DateTime expiration, out TimeSpan remaining)
+        {
+            remaining = expiration.Subtract(DateTime.Now);
+            return DateTime.Now < expiration;
+        }
     }
 }

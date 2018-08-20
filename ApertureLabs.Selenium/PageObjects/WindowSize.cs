@@ -112,7 +112,7 @@ namespace ApertureLabs.Selenium.PageObjects
 
         #endregion
 
-        #region Functions
+        #region Methods
 
         public Size GetRandomSize()
         {

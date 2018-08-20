@@ -18,9 +18,9 @@ namespace ApertureLabs.Selenium.WebDriver
         void Dispose();
         IWebDriver GetNativeWebDriver();
         void RefreshPage();
-        IList<IWebElementV2> Select(string cssSelector, TimeSpan? wait);
+        IList<IWebElementV2> Select(string cssSelector, TimeSpan? wait = null);
         void SetWindowSize(int width, int? height = null);
         void SetWindowSize(Size size);
-        TResult WaitUntil<TResult>(Func<IWebDriverV2, TResult> condition);
+        TResult WaitUntil<TResult>(Func<IWebDriverV2, TResult> condition, TimeSpan? wait = null);
     }
 }

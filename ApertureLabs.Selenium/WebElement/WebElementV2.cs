@@ -1,10 +1,12 @@
-﻿using ApertureLabs.Selenium.WebElement;
+﻿using ApertureLabs.Selenium;
+using ApertureLabs.Selenium.WebElement;
 using ApertureLabs.Selenium.WebDriver;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.WebElement
 {
@@ -12,7 +14,7 @@ namespace ApertureLabs.Selenium.WebElement
     /// Any class that inherits from this class MUST have a constructor that
     /// has a sole argument which takes an IWebElement.
     /// </summary>
-    public class WebElementV2 : ICssQueryContext, IWebElementV2
+    public class WebElementV2 : IWebElementV2
     {
         #region Fields
 
@@ -50,6 +52,62 @@ namespace ApertureLabs.Selenium.WebElement
         #endregion
 
         #region Methods
+
+        public bool TryScrollElementToCenterView()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Waits until elements found by the sector exists, are visible, and
+        /// are clickable then returns said elements.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="cssSelector"></param>
+        /// <param name="wait"></param>
+        /// <returns></returns>
+        public IWebElementV2 WaitUntilReady(string cssSelector,
+            TimeSpan? wait = null)
+        {
+            Utils.AssertWaitTime(ref wait,
+                driver.DefaultTimeout,
+                driver.GetNativeWebDriver());
+
+            IList<IWebElementV2> elements = null;
+            var previousTimeout = driver.DefaultTimeout;
+            var expiration = DateTime.Now + wait.GetValueOrDefault();
+
+            do
+            {
+                if (!Utils.TimeLeft(expiration, out TimeSpan remaining))
+                {
+                    break;
+                }
+
+                driver.DefaultTimeout = remaining;
+                driver.WaitUntil(ExpectedConditions.ElementsExist(cssSelector));
+
+                if (!Utils.TimeLeft(expiration, out remaining))
+                {
+                    break;
+                }
+
+                driver.DefaultTimeout = remaining;
+                driver.WaitUntil(ExpectedConditions.ElementsAreVisible(cssSelector));
+
+                if (!Utils.TimeLeft(expiration, out remaining))
+                {
+                    break;
+                }
+
+                driver.DefaultTimeout = remaining;
+                elements = driver.Select(cssSelector, remaining);
+                w.Timeout = remaining;
+                elements = w.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(cssSelector)));
+            } while (false);
+
+            return elements;
+        }
 
         /// <summary>
         /// Moves the mouse to an element and hovers over it for the provided

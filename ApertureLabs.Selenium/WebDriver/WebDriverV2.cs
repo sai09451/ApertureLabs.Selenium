@@ -89,12 +89,27 @@ namespace ApertureLabs.Selenium.WebDriver
             return webDriver;
         }
 
-        public TResult WaitUntil<TResult>(Func<IWebDriverV2, TResult> condition)
+        public TResult WaitUntil<TResult>(
+            Func<IWebDriverV2, TResult> condition,
+            TimeSpan? wait = null)
         {
-            return wait.Until((WebDriver) =>
+            var previousWait = DefaultTimeout;
+            if (wait.HasValue)
+            {
+                DefaultTimeout = wait.Value;
+            }
+
+            var result = WaitUntil((WebDriver) =>
             {
                 return condition(this);
             });
+
+            if (wait.HasValue)
+            {
+                DefaultTimeout = previousWait;
+            }
+
+            return result;
         }
 
         /// <summary>
