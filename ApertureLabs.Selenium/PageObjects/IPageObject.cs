@@ -4,7 +4,7 @@ using System;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
-    public interface IPageObject : IWrapsDriver, ILoadableComponent
+    public interface IPageObject : IWrapsDriver, ILoadableComponent, IDisposable
     {
         /// <summary>
         /// The url of the webpage.

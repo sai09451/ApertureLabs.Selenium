@@ -134,18 +134,19 @@ namespace ApertureLabs.Selenium.WebElement
         /// before sending keys to it.
         /// </summary>
         /// <param name="driver"></param>
-        /// <param name="selector"></param>
+        /// <param name="cssSelector"></param>
         /// <param name="keys"></param>
         /// <param name="wait"></param>
-        public void SendKeys(string selector, string keys, TimeSpan? wait = null)
+        public void SendKeys(string cssSelector, string keys, TimeSpan? wait = null)
         {
             Utils.AssertWaitTime(ref wait,
                 driver.DefaultTimeout,
                 driver.GetNativeWebDriver());
 
-            var elements = driver.WaitUntil(
-                ExpectedConditions.WaitUntilReady(selector),
-                wait);
+            //var elements = driver.WaitUntil(
+            //    ExpectedConditions.WaitUntilReady(selector),
+            //    wait);
+            var elements = driver.Select(cssSelector, wait);
             elements.First().WebElement.SendKeys(keys);
         }
 

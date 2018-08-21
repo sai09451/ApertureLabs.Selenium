@@ -20,7 +20,11 @@ namespace ApertureLabs.Selenium.PageObjects
 
         #region Constructor
 
-        public PageObject(EventFiringWebDriver driver)
+        /// <summary>
+        /// If passing in an EventFiringWebDriver event listeners will be added.
+        /// </summary>
+        /// <param name="driver"></param>
+        public PageObject(IWebDriver driver)
         {
             WrappedDriver = driver;
         }
@@ -38,11 +42,15 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Methods
 
         /// <summary>
-        /// 
+        /// Call this when
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref=""></exception>
+        /// <exception cref="ObjectDisposedException">
+        /// Occurs when trying to use after this instance has been disposed.
+        /// </exception>
+        /// <exception cref="LoadableComponentException">
+        /// Thrown when calling <code>Load()</code> and not on the correct url.
+        /// </exception>
         public ILoadableComponent Load()
         {
             if (!disposedValue)
@@ -50,17 +58,17 @@ namespace ApertureLabs.Selenium.PageObjects
                 throw new ObjectDisposedException(nameof(PageObject));
             }
 
-
-
             if (WrappedDriver is EventFiringWebDriver eventFiringWebDriver)
             {
                 eventFiringWebDriver.Navigated += OnNavigation;
             }
 
+            // TODO: Fill out rest of page.
+
             return this;
         }
 
-        public bool IsStateValid()
+        public virtual bool IsStateValid()
         {
             throw new NotImplementedException();
         }

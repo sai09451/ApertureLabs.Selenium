@@ -173,7 +173,7 @@ namespace ApertureLabs.Selenium.WebDriver
         {
             Utils.AssertWaitTime(ref wait, DefaultTimeout, webDriver);
 
-            WaitUntil(ExpectedConditions.ElementsExist(cssSelector));
+            //WaitUntil(ExpectedConditions.ElementsExist(By.CssSelector(cssSelector)));
             return webDriver.FindElements(By.CssSelector(cssSelector))
                 .Select(element => new WebElementV2(element, this))
                 .ToList() as IList<IWebElementV2>;

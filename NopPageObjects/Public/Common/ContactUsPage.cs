@@ -1,11 +1,10 @@
-using Aperture.NopPageObjects;
+using ApertureLabs.Selenium.PageObjects;
+using Nop.Web.Models.Common;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
-using System;
 
 namespace Aperture.Nop400.PageObjects.Public.Common
 {
-    public class ContactUsPage : BasePage<string>
+    public class ContactUsPage : BasePage, IViewModel<ContactUsModel>
     {
         #region Fields
 
@@ -20,47 +19,70 @@ namespace Aperture.Nop400.PageObjects.Public.Common
 
         #region Properties
 
-        private IWebElement emailInputElement => Driver.FindElement(By.CssSelector(".email"));
+        private IWebElement EmailInputElement => WrappedDriver.FindElement(
+            By.CssSelector(".email"));
 
-        private IWebElement enquiryInputElement => Driver.FindElement(By.CssSelector(".enquiry"));
+        private IWebElement EnquiryInputElement => WrappedDriver.FindElement(
+            By.CssSelector(".enquiry"));
 
-        private IWebElement submitButton => Driver.FindElement(By.CssSelector("[name='send-email']"));
+        private IWebElement SubmitButton => WrappedDriver.FindElement(
+            By.CssSelector("[name='send-email']"));
 
-        private IWebElement nameInputElement => Driver.FindElement(By.CssSelector(".fullname"));
+        private IWebElement NameInputElement => WrappedDriver.FindElement(
+            By.CssSelector(".fullname"));
 
         public string Name {
             get
             {
-                return nameInputElement.GetAttribute("value");
+                return NameInputElement.GetAttribute("value");
             }
             set
             {
-                nameInputElement.Clear();
-                nameInputElement.SendKeys(value);
+                NameInputElement.Clear();
+                NameInputElement.SendKeys(value);
             }
         }
 
         public string Email {
             get
             {
-                return emailInputElement.GetAttribute("value");
+                return EmailInputElement.GetAttribute("value");
             }
             set
             {
-                emailInputElement.Clear();
-                emailInputElement.SendKeys(value);
+                EmailInputElement.Clear();
+                EmailInputElement.SendKeys(value);
             }
         }
 
         public string Enquiry {
             get
             {
-                return enquiryInputElement.GetAttribute("value");
+                return EnquiryInputElement.GetAttribute("value");
             }
             set
             {
-                enquiryInputElement.Clear();
-                enquiryInputElement.SendKeys(value);
+                EnquiryInputElement.Clear();
+                EnquiryInputElement.SendKeys(value);
+            }
+        }
+
+        public ContactUsModel ViewModel
+        {
+            get
+            {
+                var model = new ContactUsModel
+                {
+
+                    // TODO: Get selector for when this is visible.
+                    DisplayCaptcha = false,
+
+                    Email = Email,
+                    Enquiry = Enquiry,
+                    FullName = Name
+                };
+
+                return model;
             }
         }
 
@@ -68,10 +90,10 @@ namespace Aperture.Nop400.PageObjects.Public.Common
 
         #region Methods
 
-        public ContactUsPage Submit()
+        public ContactUsSubmittedPage Submit()
         {
-            submitButton.Click();
-            return new ContactUsPageSubmitted(Driver);
+            SubmitButton.Click();
+            return new ContactUsSubmittedPage(WrappedDriver);
         }
 
         #endregion

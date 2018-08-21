@@ -1,7 +1,7 @@
 ﻿namespace ApertureLabs.Selenium.PageObjects
 {
-    interface IViewModel<T>
+    public interface IViewModel<T>
     {
-        T Model { get; }
+        T ViewModel { get; }
     }
 }

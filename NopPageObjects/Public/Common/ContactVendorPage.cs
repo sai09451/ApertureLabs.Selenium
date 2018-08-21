@@ -1,14 +1,14 @@
-﻿using ApertureLabs.Selenium.PageObjects;
-using Nop.Web.Models.Common;
+﻿using Aperture.Nop400.PageObjects.Public.Models;
+using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 
 namespace Aperture.Nop400.PageObjects.Public.Common
 {
-    public class ContactUsSubmittedPage : BasePage, IViewModel<ContaSitemapModelctUsModel>
+    public class ContactVendorPage : BasePage, IViewModel<ContactVendorModel>
     {
         #region Constructor
 
-        public ContactUsSubmittedPage(IWebDriver driver) : base(driver)
+        public ContactVendorPage(IWebDriver driver) : base(driver)
         { }
 
         #endregion
@@ -18,11 +18,11 @@ namespace Aperture.Nop400.PageObjects.Public.Common
         /// <summary>
         /// TODO: Implement populating model from page.
         /// </summary>
-        public ContactUsModel ViewModel
+        public ContactVendorModel ViewModel
         {
             get
             {
-                return default(ContactUsModel);
+                return default(ContactVendorModel);
             }
         }
 

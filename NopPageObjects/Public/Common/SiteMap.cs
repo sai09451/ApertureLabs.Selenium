@@ -4,11 +4,11 @@ using OpenQA.Selenium;
 
 namespace Aperture.Nop400.PageObjects.Public.Common
 {
-    public class ContactUsSubmittedPage : BasePage, IViewModel<ContaSitemapModelctUsModel>
+    public class SiteMap : BasePage, IViewModel<SitemapModel>
     {
         #region Constructor
 
-        public ContactUsSubmittedPage(IWebDriver driver) : base(driver)
+        public SiteMap(IWebDriver driver) : base(driver)
         { }
 
         #endregion
@@ -18,11 +18,11 @@ namespace Aperture.Nop400.PageObjects.Public.Common
         /// <summary>
         /// TODO: Implement populating model from page.
         /// </summary>
-        public ContactUsModel ViewModel
+        public SitemapModel ViewModel
         {
             get
             {
-                return default(ContactUsModel);
+                return default(SitemapModel);
             }
         }
 

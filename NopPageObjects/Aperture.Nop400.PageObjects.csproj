@@ -13,4 +13,10 @@
     <ProjectReference Include="..\ApertureLabs.Selenium\ApertureLabs.Selenium.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Nop.Web">
+      <HintPath>..\..\..\..\Downloads\nopCommerce_4.00_Source\Presentation\Nop.Web\bin\Debug\net461\Nop.Web.exe</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
