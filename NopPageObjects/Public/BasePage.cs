@@ -1,5 +1,6 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
+﻿using ApertureLabs.Selenium.PageObjects;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 
 namespace Aperture.NopPageObjects
@@ -8,32 +9,35 @@ namespace Aperture.NopPageObjects
     /// For all classes that inherit from this class remember to call
     /// base.InitElements() in the constructor.
     /// </summary>
-    public class BasePage<T>
+    public class BasePage : IPageObject
     {
         #region Constructor
 
         public BasePage(IWebDriver driver)
         {
-            Driver = driver;
+            WrappedDriver = driver;
         }
 
         #endregion
 
         #region Properties
 
-        public IWebDriver Driver { get; set; }
+        public IWebDriver WrappedDriver { get; private set; }
 
-        public Uri Uri { get; set; }
-
-        public T Model { get; set; }
+        public Uri Uri { get; private set; }
 
         #endregion
 
         #region Methods
 
-        protected void InitElements()
+        public ILoadableComponent Load()
         {
-            //PageFactory.InitElements(Driver, this);
+            throw new NotImplementedException();
+        }
+
+        public bool IsStateValid()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

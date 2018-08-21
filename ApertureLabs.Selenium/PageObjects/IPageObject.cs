@@ -1,31 +1,27 @@
-﻿using System;
+﻿using OpenQA.Selenium.Internal;
+using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
-    public interface IPageObject
+    public interface IPageObject : IWrapsDriver, ILoadableComponent
     {
         /// <summary>
         /// The url of the webpage.
         /// </summary>
-        Uri PageUrl { get; set; }
+        Uri Uri { get; }
 
         /// <summary>
-        /// Navigate to a url.
+        /// Use to determine if a PageObject is still 'valid'.
         /// </summary>
-        /// <param name="url"></param>
+        /// <example>
+        /// If there are two page object instances; one for a login page and
+        /// one for the home page, if the driver is on the home page the login
+        /// page should when its <code>loginPage.IsStateValid();</code> should
+        /// return false while the <code>homePage.IsStateValid();</code> will
+        /// return true.
+        /// </example>
         /// <returns></returns>
-        bool GoToUrl(string url);
-
-        /// <summary>
-        /// Navigates to the url.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        bool GoToUrl(Uri url);
-
-        /// <summary>
-        /// Reloads the page.
-        /// </summary>
-        void ReloadPage(bool clearCache = false);
+        bool IsStateValid();
     }
 }

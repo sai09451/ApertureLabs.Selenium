@@ -3,35 +3,30 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 
-namespace NopPageObjects.Common
+namespace Aperture.Nop400.PageObjects.Public.Common
 {
     public class ContactUsPage : BasePage<string>
     {
         #region Fields
-
-        private const string enquiryInputSelector = "";
-
-        [FindsBy(How = How.CssSelector, Using = ".fullname")]
-        private IWebElement nameInputElement;
-
-        [FindsBy(How = How.CssSelector, Using = ".email")]
-        private IWebElement emailInputElement;
-
-        [FindsBy(How = How.CssSelector, Using = ".enquiry")]
-        private IWebElement enquiryInputElement;
 
         #endregion
 
         #region Constructor
 
         public ContactUsPage(IWebDriver driver) : base(driver)
-        {
-            base.InitElements();
-        }
+        { }
 
         #endregion
 
         #region Properties
+
+        private IWebElement emailInputElement => Driver.FindElement(By.CssSelector(".email"));
+
+        private IWebElement enquiryInputElement => Driver.FindElement(By.CssSelector(".enquiry"));
+
+        private IWebElement submitButton => Driver.FindElement(By.CssSelector("[name='send-email']"));
+
+        private IWebElement nameInputElement => Driver.FindElement(By.CssSelector(".fullname"));
 
         public string Name {
             get
@@ -40,13 +35,34 @@ namespace NopPageObjects.Common
             }
             set
             {
-
+                nameInputElement.Clear();
+                nameInputElement.SendKeys(value);
             }
         }
 
-        public string Email { get; set; }
+        public string Email {
+            get
+            {
+                return emailInputElement.GetAttribute("value");
+            }
+            set
+            {
+                emailInputElement.Clear();
+                emailInputElement.SendKeys(value);
+            }
+        }
 
-        public string Enquiry { get; set; }
+        public string Enquiry {
+            get
+            {
+                return enquiryInputElement.GetAttribute("value");
+            }
+            set
+            {
+                enquiryInputElement.Clear();
+                enquiryInputElement.SendKeys(value);
+            }
+        }
 
         #endregion
 
@@ -54,11 +70,8 @@ namespace NopPageObjects.Common
 
         public ContactUsPage Submit()
         {
-            const string submitBttnSelector = "[name='send-email']";
-
-            Driver.FindElement(By.CssSelector(submitBttnSelector));
-
-            return this;
+            submitButton.Click();
+            return new ContactUsPageSubmitted(Driver);
         }
 
         #endregion
