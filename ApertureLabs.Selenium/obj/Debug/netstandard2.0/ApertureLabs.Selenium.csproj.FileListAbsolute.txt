@@ -4,3 +4,11 @@ C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.S
 C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\obj\Debug\netstandard2.0\ApertureLabs.Selenium.csproj.CoreCompileInputs.cache
 C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\obj\Debug\netstandard2.0\ApertureLabs.Selenium.AssemblyInfoInputs.cache
 C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\obj\Debug\netstandard2.0\ApertureLabs.Selenium.AssemblyInfo.cs
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\obj\Debug\netstandard2.0\ApertureLabs.Selenium.csproj.CoreCompileInputs.cache
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\obj\Debug\netstandard2.0\ApertureLabs.Selenium.AssemblyInfoInputs.cache
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\obj\Debug\netstandard2.0\ApertureLabs.Selenium.AssemblyInfo.cs
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\bin\Debug\netstandard2.0\ApertureLabs.Selenium.deps.json
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\bin\Debug\netstandard2.0\ApertureLabs.Selenium.dll
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\bin\Debug\netstandard2.0\ApertureLabs.Selenium.pdb
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\obj\Debug\netstandard2.0\ApertureLabs.Selenium.dll
+C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\obj\Debug\netstandard2.0\ApertureLabs.Selenium.pdb

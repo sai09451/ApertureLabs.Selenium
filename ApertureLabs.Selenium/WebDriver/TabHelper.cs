@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +38,8 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <returns></returns>
         public int GetIndexOfCurrentTab()
         {
-            return driver.WebDriver.WindowHandles
-                .IndexOf(driver.WebDriver.CurrentWindowHandle);
+            return driver.GetNativeWebDriver().WindowHandles
+                .IndexOf(driver.GetNativeWebDriver().CurrentWindowHandle);
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <returns></returns>
         public IList<string> GetNumberOfTabs()
         {
-            return driver.WebDriver.WindowHandles.ToList();
+            return driver.GetNativeWebDriver().WindowHandles.ToList();
         }
 
         /// <summary>
@@ -59,23 +60,28 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <returns></returns>
         public string CreateNewTab(bool switchToTab = false)
         {
+            var nativeDriver = driver.GetNativeWebDriver();
             var action = driver.CreateAction();
-            var currentNumberOfHandles = GetNumberOfTabs();
+            var currentNumberOfHandles = GetNumberOfTabs().Count;
             action
-                .SendKeys(driver.Select("body"), Keys.LeftControl + "t")
+                .SendKeys(driver.Select("body").First().WebElement, Keys.LeftControl + "t")
                 .Build()
                 .Perform();
 
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            var wait = new WebDriverWait(nativeDriver, TimeSpan.FromSeconds(30));
             wait.Until((d) =>
             {
                 return d.WindowHandles.Count == (currentNumberOfHandles + 1);
             });
 
             if (switchToTab)
-                driver.SwitchTo().Window(driver.WindowHandles[driver.WindowHandles.Count - 1]);
+            {
+                nativeDriver.SwitchTo().Window(nativeDriver
+                    .WindowHandles[nativeDriver.WindowHandles.Count - 1]);
+            }
 
-            return driver.WindowHandles[driver.WindowHandles.Count - 1];
+            return nativeDriver
+                .WindowHandles[nativeDriver.WindowHandles.Count - 1];
         }
 
         #endregion

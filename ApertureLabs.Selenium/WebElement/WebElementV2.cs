@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using OpenQA.Selenium.Support.UI;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.WebElement
 {
@@ -18,13 +19,13 @@ namespace ApertureLabs.Selenium.WebElement
     {
         #region Fields
 
-        protected readonly WebDriverV2 driver;
+        protected readonly IWebDriverV2 driver;
 
         #endregion
 
         #region Constructor
 
-        public WebElementV2(IWebElement element, WebDriverV2 driver)
+        public WebElementV2(IWebElement element, IWebDriverV2 driver)
         {
             this.driver = driver;
             this.WebElement = element;
@@ -69,44 +70,46 @@ namespace ApertureLabs.Selenium.WebElement
         public IWebElementV2 WaitUntilReady(string cssSelector,
             TimeSpan? wait = null)
         {
-            Utils.AssertWaitTime(ref wait,
-                driver.DefaultTimeout,
-                driver.GetNativeWebDriver());
+            throw new NotImplementedException();
 
-            IList<IWebElementV2> elements = null;
-            var previousTimeout = driver.DefaultTimeout;
-            var expiration = DateTime.Now + wait.GetValueOrDefault();
+            //Utils.AssertWaitTime(ref wait,
+            //    driver.DefaultTimeout,
+            //    driver.GetNativeWebDriver());
 
-            do
-            {
-                if (!Utils.TimeLeft(expiration, out TimeSpan remaining))
-                {
-                    break;
-                }
+            //IList<IWebElementV2> elements = null;
+            //var previousTimeout = driver.DefaultTimeout;
+            //var expiration = DateTime.Now + wait.GetValueOrDefault();
 
-                driver.DefaultTimeout = remaining;
-                driver.WaitUntil(ExpectedConditions.ElementsExist(cssSelector));
+            //do
+            //{
+            //    if (!Utils.TimeLeft(expiration, out TimeSpan remaining))
+            //    {
+            //        break;
+            //    }
 
-                if (!Utils.TimeLeft(expiration, out remaining))
-                {
-                    break;
-                }
+            //    driver.DefaultTimeout = remaining;
+            //    driver.WaitUntil(ExpectedConditions.ElementsExist(cssSelector));
 
-                driver.DefaultTimeout = remaining;
-                driver.WaitUntil(ExpectedConditions.ElementsAreVisible(cssSelector));
+            //    if (!Utils.TimeLeft(expiration, out remaining))
+            //    {
+            //        break;
+            //    }
 
-                if (!Utils.TimeLeft(expiration, out remaining))
-                {
-                    break;
-                }
+            //    driver.DefaultTimeout = remaining;
+            //    driver.WaitUntil(ExpectedConditions.ElementsAreVisible(cssSelector));
 
-                driver.DefaultTimeout = remaining;
-                elements = driver.Select(cssSelector, remaining);
-                w.Timeout = remaining;
-                elements = w.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(cssSelector)));
-            } while (false);
+            //    if (!Utils.TimeLeft(expiration, out remaining))
+            //    {
+            //        break;
+            //    }
 
-            return elements;
+            //    driver.DefaultTimeout = remaining;
+            //    elements = driver.Select(cssSelector, remaining);
+            //    w.Timeout = remaining;
+            //    elements = w.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(cssSelector)));
+            //} while (false);
+
+            //return elements;
         }
 
         /// <summary>
@@ -136,9 +139,14 @@ namespace ApertureLabs.Selenium.WebElement
         /// <param name="wait"></param>
         public void SendKeys(string selector, string keys, TimeSpan? wait = null)
         {
-            Utils.AssertWaitTime(ref wait, driver.DefaultTimeout, driver.WebDriver);
+            Utils.AssertWaitTime(ref wait,
+                driver.DefaultTimeout,
+                driver.GetNativeWebDriver());
 
-            driver.WebDriver.WaitUntilReady(selector, wait).SendKeys(keys);
+            var elements = driver.WaitUntil(
+                ExpectedConditions.WaitUntilReady(selector),
+                wait);
+            elements.First().WebElement.SendKeys(keys);
         }
 
         /// <summary>

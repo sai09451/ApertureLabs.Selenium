@@ -5,7 +5,7 @@ using System;
 
 namespace ApertureLabs.Selenium.WebElements.IFrame
 {
-    public class IFrameHelper : WebElementWrapper
+    public class IFrameHelper : WebElementV2
     {
         #region Fields
 
@@ -37,7 +37,7 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
         {
             if (!enteredIFrame)
             {
-                driver.WebDriver.SwitchTo().ParentFrame();
+                driver.GetNativeWebDriver().SwitchTo().ParentFrame();
                 enteredIFrame = true;
             }
         }
@@ -46,7 +46,7 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
         {
             if (enteredIFrame)
             {
-                driver.WebDriver.SwitchTo().ParentFrame();
+                driver.GetNativeWebDriver().SwitchTo().ParentFrame();
                 enteredIFrame = false;
             }
         }

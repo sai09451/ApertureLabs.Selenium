@@ -1,6 +1,4 @@
-﻿using ApertureLabs.Selenium.WebDriver;
-using ApertureLabs.Selenium.WebElement;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,80 +7,36 @@ namespace ApertureLabs.Selenium
 {
     public static class ExpectedConditions
     {
-        public static Func<IWebDriverV2, IList<IWebElementV2>> ElementsExist(string cssQuery)
+        public static Func<IWebDriver, IReadOnlyList<IWebElement>> ElementsExist(By by)
         {
             return (driver) =>
             {
-                return driver.Select(cssQuery, TimeSpan.FromSeconds(0));
+                return driver.FindElements(by);
             };
         }
 
-        public static Func<IWebDriverV2, IList<IWebElementV2>> ElementsAreVisible(string cssQuery)
+        public static Func<IWebDriver, IReadOnlyList<IWebElement>> ElementsAreVisible(By by)
         {
-            return (driver) =>
+            return driver =>
             {
-                var elements = driver.Select(cssQuery, TimeSpan.FromSeconds(0));
-                var result = elements.All(element => element);
-                return result ? elements : null;
+                var elements = driver.FindElements(by);
+                var allVisible = elements.All(element => element.Displayed);
+
+                return allVisible ? elements : null;
             };
         }
 
-        public static Func<IWebDriverV2, IList<IWebElementV2>> ElementsAreClickable(
-            string cssQuery)
+        public static Func<IWebDriver, IReadOnlyList<IWebElement>> ElementsAreClickable(By by)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Waits until elements found by the sector exists, are visible, and
-        /// are clickable then returns said elements.
-        /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="cssSelector"></param>
-        /// <param name="wait"></param>
-        /// <returns></returns>
-        public static Func<IWebDriverV2, IList<IWebElementV2>> WaitUntilReady(
-            string cssSelector,
-            TimeSpan? wait = null)
-        {
-            Utils.AssertWaitTime(ref wait,
-                driver.DefaultTimeout,
-                driver.GetNativeWebDriver());
-
-            IList<IWebElementV2> elements = null;
-            var previousTimeout = driver.DefaultTimeout;
-            var expiration = DateTime.Now + wait.GetValueOrDefault();
-
-            do
+            return driver =>
             {
-                if (!Utils.TimeLeft(expiration, out TimeSpan remaining))
-                {
-                    break;
-                }
+                var elements = driver.FindElements(by);
+                var viewPageDimensions = driver.Manage().Window;
+                var allClickable = elements.All(element => element.Displayed
+                    && element.Location);
 
-                driver.DefaultTimeout = remaining;
-                driver.WaitUntil(ExpectedConditions.ElementsExist(cssSelector));
-
-                if (!Utils.TimeLeft(expiration, out remaining))
-                {
-                    break;
-                }
-
-                driver.DefaultTimeout = remaining;
-                driver.WaitUntil(ExpectedConditions.ElementsAreVisible(cssSelector));
-
-                if (!Utils.TimeLeft(expiration, out remaining))
-                {
-                    break;
-                }
-
-                driver.DefaultTimeout = remaining;
-                elements = driver.Select(cssSelector, remaining);
-                w.Timeout = remaining;
-                elements = w.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(cssSelector)));
-            } while (false);
-
-            return elements;
+                return allClickable ? elements : null;
+            };
         }
     }
 }

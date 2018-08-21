@@ -168,7 +168,8 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <param name="cssSelector"></param>
         /// <param name="wait"></param>
         /// <returns></returns>
-        public IList<IWebElementV2> Select(string cssSelector, TimeSpan? wait)
+        public IList<IWebElementV2> Select(string cssSelector,
+            TimeSpan? wait = null)
         {
             Utils.AssertWaitTime(ref wait, DefaultTimeout, webDriver);
 

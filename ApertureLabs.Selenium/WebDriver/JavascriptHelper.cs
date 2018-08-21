@@ -44,7 +44,7 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <param name="script"></param>
         public T ExecuteJs<T>(string script, IWebElement element = null)
         {
-            return (T)(((IJavaScriptExecutor)driver.WebDriver)
+            return (T)(((IJavaScriptExecutor)driver.GetNativeWebDriver())
                 .ExecuteScript(script, element));
         }
 
@@ -55,7 +55,7 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <param name="script"></param>
         public void ExecuteJs(string script, IWebElement element = null)
         {
-            ((IJavaScriptExecutor)driver.WebDriver)
+            ((IJavaScriptExecutor)driver.GetNativeWebDriver())
                 .ExecuteScript(script, element);
         }
 

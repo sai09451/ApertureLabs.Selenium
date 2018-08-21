@@ -41,17 +41,18 @@ namespace ApertureLabs.Selenium
         {
             get
             {
-                AssertOnCorrectWindowHandle();
+                return true;
+                //AssertOnCorrectWindowHandle();
 
-                var c_uri = new Uri(WebDriver..Url);
-                var d_uri = new Uri(desiredUrl);
+                //var c_uri = new Uri(WebDriver..Url);
+                //var d_uri = new Uri(desiredUrl);
 
-                return (Uri.Compare(
-                    c_uri,
-                    d_uri,
-                    UriComponents.Path,
-                    UriFormat.SafeUnescaped,
-                    StringComparison.CurrentCultureIgnoreCase) == 0);
+                //return (Uri.Compare(
+                //    c_uri,
+                //    d_uri,
+                //    UriComponents.Path,
+                //    UriFormat.SafeUnescaped,
+                //    StringComparison.CurrentCultureIgnoreCase) == 0);
             }
         }
 
@@ -69,7 +70,7 @@ namespace ApertureLabs.Selenium
         {
             Utils.AssertWaitTime(ref timeout,
                 driver.DefaultTimeout,
-                driver.WebDriver);
+                driver.GetNativeWebDriver());
 
             var curl = driver.Url;
 
