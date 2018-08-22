@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.Extensions
 {
+    public delegate ref TResult TempSetRefDelegate<TSource, TResult>(TSource source);
+
     public static class DisposableExtensions
     {
         /// <summary>
@@ -35,5 +39,49 @@ namespace ApertureLabs.Selenium.Extensions
                 action(disposable);
             };
         }
+
+        public static void TemporarilySet<TSource, U>(
+            this TSource @object,
+            Func<TSource, U> getter,
+            Action<TSource, U> setter,
+            U newVal,
+            Action<TSource> then)
+        {
+            // Store old val and update object with newVal.
+            var oldVal = getter(@object);
+            setter(@object, newVal);
+
+            // Call 'then' after property contains the new values.
+            then(@object);
+
+            // Unset.
+            setter(@object, oldVal);
+        }
+
+        public static void Test()
+        {
+            var person = new Person
+            {
+                Name = "item a",
+                Age = 19
+            };
+
+            var list = new List<string>()
+            {
+                "item a",
+                "item b"
+            };
+
+            person.TemporarilySet(p => p.Name,
+                (p, val) => p.Name = val,
+                "item c",
+                obj => Console.WriteLine(obj.Name));
+        }
+    }
+
+    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
     }
 }

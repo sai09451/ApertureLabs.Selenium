@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace ApertureLabs.Selenium.Extensions
@@ -60,12 +61,17 @@ namespace ApertureLabs.Selenium.Extensions
             }
         }
 
-        public static object GetCurrentViewportDimensions(this IWebDriver driver)
+        /// <summary>
+        /// Retrieves the size of the current viewport.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <returns></returns>
+        public static Size GetCurrentViewportDimensions(this IWebDriver driver)
         {
             var innerWidth = driver.ExecuteJavaScript<int>("window.innerWidth");
             var innerHeight = driver.ExecuteJavaScript<int>("window.innerHeight");
 
-            return new
+            return new Size
             {
                 Width = innerWidth,
                 Height = innerHeight
