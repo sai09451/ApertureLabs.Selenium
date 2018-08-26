@@ -5,27 +5,31 @@ using System;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
-    public class PageObject : IPageObject, IDisposable
+    /// <summary>
+    /// Default implementation of IPageObject
+    /// </summary>
+    public abstract class PageObject : IPageObject, IDisposable
     {
         #region Fields
 
-        /// <summary>
-        /// To detect redundant calls.
-        /// </summary>
-        private bool disposedValue = false;
-
-        private bool isValid = false;
+        private bool assignedEventListeners;
+        private bool isStale;
+        private bool disposedValue;
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// If passing in an EventFiringWebDriver event listeners will be added.
+        ///     If passing in an EventFiringWebDriver event listeners will be
+        ///     added.
         /// </summary>
         /// <param name="driver"></param>
         public PageObject(IWebDriver driver)
         {
+            assignedEventListeners = false;
+            disposedValue = false;
+            isStale = false;
             WrappedDriver = driver;
         }
 
@@ -33,8 +37,14 @@ namespace ApertureLabs.Selenium.PageObjects
 
         #region Properties
 
+        /// <summary>
+        ///     Gets the OpenQA.Selenium.IWebDriver used to find this element.
+        /// </summary>
         public IWebDriver WrappedDriver { get; private set; }
 
+        /// <summary>
+        ///     The url this page uses.
+        /// </summary>
         public Uri Uri { get; protected set; }
 
         #endregion
@@ -42,16 +52,41 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Methods
 
         /// <summary>
-        /// Call this when
+        ///     By default will check the url to see if it starts with Uri.
         /// </summary>
         /// <returns></returns>
+        public virtual bool IsStale()
+        {
+            if (!WrappedDriver.Url.StartsWith(Uri.ToString()))
+            {
+                isStale = true;
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     If overridding this don't forget to call base.Load().
+        /// 
+        ///     NOTE: Will navigate to the pages url if the current drivers url
+        ///     is empty.
+        /// </summary>
+        /// <remarks>
+        ///     If the driver is an EventFiringWebDriver an event listener will
+        ///     be added to the 'Navigated' event and uses the url to determine
+        ///     if the page is 'stale'.
+        /// </remarks>
+        /// <returns></returns>
         /// <exception cref="ObjectDisposedException">
-        /// Occurs when trying to use after this instance has been disposed.
+        ///     Occurs when trying to use after this instance has been
+        ///     disposed.
         /// </exception>
         /// <exception cref="LoadableComponentException">
-        /// Thrown when calling <code>Load()</code> and not on the correct url.
+        ///     Thrown when calling <code>Load()</code> and not on the correct
+        ///     url.
         /// </exception>
-        public ILoadableComponent Load()
+        public virtual ILoadableComponent Load()
         {
             if (!disposedValue)
             {
@@ -60,36 +95,24 @@ namespace ApertureLabs.Selenium.PageObjects
 
             if (WrappedDriver is EventFiringWebDriver eventFiringWebDriver)
             {
+                assignedEventListeners = true;
                 eventFiringWebDriver.Navigated += OnNavigation;
             }
 
-            // TODO: Fill out rest of page.
+            if (String.IsNullOrWhiteSpace(WrappedDriver.Url))
+            {
+                WrappedDriver.Navigate().GoToUrl(Uri);
+            }
 
             return this;
         }
 
-        public virtual bool IsStateValid()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Check if the state is still valid after navigation.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
         private void OnNavigation(object sender, WebDriverNavigationEventArgs eventArgs)
         {
-            // Set isValid to false, if this method reaches the end set to true.
-            isValid = false;
-
-            if (!WrappedDriver.Url.StartsWith(Uri.ToString()))
+            if (IsStale())
             {
-                return;
+                Dispose();
             }
-
-            // Passed all assertions, isValid is still true.
-            isValid = true;
         }
 
         #region IDisposable Support
@@ -109,19 +132,11 @@ namespace ApertureLabs.Selenium.PageObjects
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~PageObject() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
         // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
         }
         #endregion
 

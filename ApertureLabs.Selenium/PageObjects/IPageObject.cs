@@ -22,6 +22,6 @@ namespace ApertureLabs.Selenium.PageObjects
         /// return true.
         /// </example>
         /// <returns></returns>
-        bool IsStateValid();
+        bool IsStale();
     }
 }
