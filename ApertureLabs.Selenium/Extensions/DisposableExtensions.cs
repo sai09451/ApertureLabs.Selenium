@@ -57,31 +57,5 @@ namespace ApertureLabs.Selenium.Extensions
             // Unset.
             setter(@object, oldVal);
         }
-
-        public static void Test()
-        {
-            var person = new Person
-            {
-                Name = "item a",
-                Age = 19
-            };
-
-            var list = new List<string>()
-            {
-                "item a",
-                "item b"
-            };
-
-            person.TemporarilySet(p => p.Name,
-                (p, val) => p.Name = val,
-                "item c",
-                obj => Console.WriteLine(obj.Name));
-        }
-    }
-
-    public class Person
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
     }
 }
