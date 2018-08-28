@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>alex.hayes@aperturelabs.biz</Authors>
+    <Company>Aperture Labs</Company>
+    <Description>Selenium extensions &amp; helpers.</Description>
+    <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageTags>ApertureLabs, Selenium</PackageTags>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

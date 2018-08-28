@@ -11,8 +11,9 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("ApertureLabs.Selenium")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Aperture Labs")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("Selenium extensions & helpers.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApertureLabs.Selenium")]
