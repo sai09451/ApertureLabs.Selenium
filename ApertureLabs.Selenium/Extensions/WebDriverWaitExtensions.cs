@@ -66,5 +66,32 @@ namespace ApertureLabs.Selenium.Extensions
                 return false;
             }
         }
+
+        /// <summary>
+        /// Returns true if the element exists.
+        /// </summary>
+        /// <param name="wait"></param>
+        /// <param name="by"></param>
+        /// <returns></returns>
+        public static bool Exists(
+            this WebDriverWait wait,
+            By by)
+        {
+            try
+            {
+                return wait.Until(driver =>
+                {
+                    return driver.FindElements(by).Any();
+                });
+            }
+            catch (WebDriverTimeoutException)
+            {
+                return false;
+            }
+            catch (Exception exc)
+            {
+                return false;
+            }
+        }
     }
 }
