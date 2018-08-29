@@ -1,30 +1,27 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.Extensions;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace ApertureLabs.Selenium.WebDriver
+namespace ApertureLabs.Selenium
 {
-    public class TabHelper
+    public class TabHelper : IWrapsDriver
     {
-        #region Fields
-
-        private readonly WebDriverV2 driver;
-
-        #endregion
-
         #region Constructor
 
-        public TabHelper(WebDriverV2 driver)
+        public TabHelper(IWebDriver driver)
         {
-            this.driver = driver;
+            WrappedDriver = driver;
         }
 
         #endregion
 
         #region Properties
+
+        public IWebDriver WrappedDriver { get; protected set; }
 
         #endregion
 
@@ -38,8 +35,7 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <returns></returns>
         public int GetIndexOfCurrentTab()
         {
-            return driver.GetNativeWebDriver().WindowHandles
-                .IndexOf(driver.GetNativeWebDriver().CurrentWindowHandle);
+            return WrappedDriver.WindowHandles.IndexOf(WrappedDriver.CurrentWindowHandle);
         }
 
         /// <summary>
@@ -47,9 +43,9 @@ namespace ApertureLabs.Selenium.WebDriver
         /// </summary>
         /// <param name="driver"></param>
         /// <returns></returns>
-        public IList<string> GetNumberOfTabs()
+        public IReadOnlyCollection<string> GetNumberOfTabs()
         {
-            return driver.GetNativeWebDriver().WindowHandles.ToList();
+            return WrappedDriver.WindowHandles.ToList();
         }
 
         /// <summary>
@@ -60,15 +56,13 @@ namespace ApertureLabs.Selenium.WebDriver
         /// <returns></returns>
         public string CreateNewTab(bool switchToTab = false)
         {
-            var nativeDriver = driver.GetNativeWebDriver();
-            var action = driver.CreateAction();
             var currentNumberOfHandles = GetNumberOfTabs().Count;
-            action
-                .SendKeys(driver.Select("body").First().WebElement, Keys.LeftControl + "t")
+            WrappedDriver.CreateActions()
+                .SendKeys(WrappedDriver.Select("body").First(), Keys.LeftControl + "t")
                 .Build()
                 .Perform();
 
-            var wait = new WebDriverWait(nativeDriver, TimeSpan.FromSeconds(30));
+            var wait = new WebDriverWait(WrappedDriver, TimeSpan.FromSeconds(30));
             wait.Until((d) =>
             {
                 return d.WindowHandles.Count == (currentNumberOfHandles + 1);
@@ -76,12 +70,11 @@ namespace ApertureLabs.Selenium.WebDriver
 
             if (switchToTab)
             {
-                nativeDriver.SwitchTo().Window(nativeDriver
-                    .WindowHandles[nativeDriver.WindowHandles.Count - 1]);
+                WrappedDriver.SwitchTo().Window(WrappedDriver
+                    .WindowHandles[WrappedDriver.WindowHandles.Count - 1]);
             }
 
-            return nativeDriver
-                .WindowHandles[nativeDriver.WindowHandles.Count - 1];
+            return WrappedDriver.WindowHandles[WrappedDriver.WindowHandles.Count - 1];
         }
 
         #endregion

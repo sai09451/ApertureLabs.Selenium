@@ -6,14 +6,13 @@ using System;
 namespace ApertureLabs.Selenium.PageObjects
 {
     /// <summary>
-    /// Default implementation of IPageObject
+    ///     Default implementation of IPageObject
     /// </summary>
     public abstract class PageObject : IPageObject, IDisposable
     {
         #region Fields
 
         private bool assignedEventListeners;
-        private bool isStale;
         private bool disposedValue;
 
         #endregion
@@ -29,7 +28,6 @@ namespace ApertureLabs.Selenium.PageObjects
         {
             assignedEventListeners = false;
             disposedValue = false;
-            isStale = false;
             WrappedDriver = driver;
         }
 
@@ -59,11 +57,10 @@ namespace ApertureLabs.Selenium.PageObjects
         {
             if (!WrappedDriver.Url.StartsWith(Uri.ToString()))
             {
-                isStale = true;
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -122,7 +119,8 @@ namespace ApertureLabs.Selenium.PageObjects
             {
                 if (disposing)
                 {
-                    if (WrappedDriver is EventFiringWebDriver eventFiringWebDriver)
+                    if (assignedEventListeners
+                        && WrappedDriver is EventFiringWebDriver eventFiringWebDriver)
                     {
                         eventFiringWebDriver.Navigated -= OnNavigation;
                     }

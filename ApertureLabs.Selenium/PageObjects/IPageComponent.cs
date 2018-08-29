@@ -8,7 +8,15 @@ namespace ApertureLabs.Selenium.PageObjects
         IWrapsDriver,
         IWrapsElement
     {
+        /// <summary>
+        /// The selector for the parent node for this component.
+        /// </summary>
         By By { get; }
+
+        /// <summary>
+        /// Determines if the page is in a usable state.
+        /// </summary>
+        /// <returns></returns>
         bool IsStale();
     }
 }

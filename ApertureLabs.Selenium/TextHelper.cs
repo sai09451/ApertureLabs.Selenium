@@ -1,11 +1,10 @@
 ﻿using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
-using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Text.RegularExpressions;
 
-namespace ApertureLabs.Selenium.WebElement
+namespace ApertureLabs.Selenium
 {
     public class TextHelper : IWrapsDriver, IWrapsElement
     {
@@ -17,7 +16,7 @@ namespace ApertureLabs.Selenium.WebElement
 
         public TextHelper(IWebElement element)
         {
-            this.WrappedElement = element;
+            WrappedElement = element;
         }
 
         #endregion
@@ -60,7 +59,7 @@ namespace ApertureLabs.Selenium.WebElement
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
             var matches = r.Match(InnerText);
 
-            var number = int.Parse(matches.Groups[2].ToString());
+            var number = Int32.Parse(matches.Groups[2].ToString());
 
             return number;
         }
@@ -77,7 +76,7 @@ namespace ApertureLabs.Selenium.WebElement
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
             var matches = r.Match(InnerText);
 
-            var number = double.Parse(matches.Groups[1].ToString());
+            var number = Double.Parse(matches.Groups[1].ToString());
 
             return number;
         }
@@ -102,11 +101,11 @@ namespace ApertureLabs.Selenium.WebElement
                 var month = matches.Groups[2].Value;
                 var year = matches.Groups[3].Value;
 
-                string time = matches.Groups?[4]?.Value;
+                var time = matches.Groups?[4]?.Value;
                 //var temp = string.Format("{0}/{1}/{2} {3}", day, month, year, time);
                 try
                 {
-                    return DateTime.Parse(string.Format("{1}/{0}/{2} {3}",
+                    return DateTime.Parse(String.Format("{1}/{0}/{2} {3}",
                         day,
                         month,
                         year,
@@ -114,7 +113,7 @@ namespace ApertureLabs.Selenium.WebElement
                 }
                 catch (FormatException)
                 {
-                    return DateTime.Parse(string.Format("{0}/{1}/{2} {3}",
+                    return DateTime.Parse(String.Format("{0}/{1}/{2} {3}",
                         day,
                         month,
                         year,
@@ -122,9 +121,11 @@ namespace ApertureLabs.Selenium.WebElement
                 }
             }
             else
+            {
                 throw new InvalidCastException("Couldn't find a date in the text '"
                     + WrappedElement.Text
                     + "'");
+            }
         }
 
         /// <summary>
@@ -139,9 +140,11 @@ namespace ApertureLabs.Selenium.WebElement
             var matches = regex.Match(WrappedElement.Text);
 
             if (matches.Groups.Count == 0)
+            {
                 throw new NotFoundException("Failed to find the last four digits of a credit card (xXXXX) in the text");
+            }
 
-            return int.Parse(matches.Groups[1].ToString());
+            return Int32.Parse(matches.Groups[1].ToString());
         }
 
         #endregion

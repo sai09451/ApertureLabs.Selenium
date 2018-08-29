@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -94,6 +95,26 @@ namespace ApertureLabs.Selenium.Extensions
                 Width = innerWidth,
                 Height = innerHeight
             };
+        }
+
+        /// <summary>
+        ///     Shorthand for <code>new Actions(driver);</code>. Only exists
+        ///     to help make the Actions class more apparent.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <returns></returns>
+        public static Actions CreateActions(this IWebDriver driver)
+        {
+            return new Actions(driver);
+        }
+
+        /// <summary>
+        /// Detects if jQuery is defined on a page.
+        /// </summary>
+        public static bool PageHasJQuery(this IWebDriver driver)
+        {
+            var script = "(function() { return jQuery == null })()";
+            return driver.ExecuteJavaScript<bool>(script);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace ApertureLabs.Selenium
                 var viewPageDimensions = driver.Manage().Window;
                 //var allClickable = elements.All(element => element.Displayed
                 //    && element.Location);
-                var allClickable = true;
+                var allClickable = elements.All(element => element.Displayed);
 
                 return allClickable ? elements : null;
             };

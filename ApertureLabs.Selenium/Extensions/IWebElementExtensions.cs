@@ -1,5 +1,4 @@
-﻿using ApertureLabs.Selenium.WebElement;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.Extensions;
 using System;
@@ -101,6 +100,16 @@ namespace ApertureLabs.Selenium.Extensions
 
             index = new Random().Next(0, elements.Count);
             return elements[index];
+        }
+
+        /// <summary>
+        /// Shorthand for <code>new TextHelper(element);</code>.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static TextHelper GetTextHelper(this IWebElement element)
+        {
+            return new TextHelper(element);
         }
     }
 }

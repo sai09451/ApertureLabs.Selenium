@@ -1,24 +1,25 @@
-﻿using ApertureLabs.Selenium.WebDriver;
-using ApertureLabs.Selenium.WebElement;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using System;
+using System.Collections.ObjectModel;
+using System.Drawing;
 
 namespace ApertureLabs.Selenium.WebElements.IFrame
 {
-    public class IFrameHelper : WebElementV2
+    public class IFrameHelper : IWebElement
     {
         #region Fields
 
         private bool enteredIFrame = false;
+        private IWebElement webElement;
+        private readonly IWebDriver driver;
 
         #endregion
 
         #region Constructor
 
-        public IFrameHelper(IWebElement element, WebDriverV2 driver)
-            : base(element, driver)
+        public IFrameHelper(IWebElement element, IWebDriver driver)
         {
-            if (string.Compare(WebElement.TagName, "iframe", true) != 0)
+            if (String.Compare(element.TagName, "iframe", true) != 0)
             {
                 throw new InvalidCastException("The elements tag name wasn't" +
                     " iframe.");
@@ -29,6 +30,20 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
 
         #region Properties
 
+        public string TagName => webElement.TagName;
+
+        public string Text => webElement.Text;
+
+        public bool Enabled => webElement.Enabled;
+
+        public bool Selected => webElement.Selected;
+
+        public Point Location => webElement.Location;
+
+        public Size Size => webElement.Size;
+
+        public bool Displayed => webElement.Displayed;
+
         #endregion
 
         #region Methods
@@ -37,7 +52,7 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
         {
             if (!enteredIFrame)
             {
-                driver.GetNativeWebDriver().SwitchTo().ParentFrame();
+                driver.SwitchTo().ParentFrame();
                 enteredIFrame = true;
             }
         }
@@ -46,10 +61,20 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
         {
             if (enteredIFrame)
             {
-                driver.GetNativeWebDriver().SwitchTo().ParentFrame();
+                driver.SwitchTo().ParentFrame();
                 enteredIFrame = false;
             }
         }
+
+        public void Clear() => webElement.Clear();
+        public void SendKeys(string text) => webElement.SendKeys(text);
+        public void Submit() => webElement.Submit();
+        public void Click() => webElement.Click();
+        public string GetAttribute(string attributeName) => webElement.GetAttribute(attributeName);
+        public string GetProperty(string propertyName) => webElement.GetProperty(propertyName);
+        public string GetCssValue(string propertyName) => webElement.GetCssValue(propertyName);
+        public IWebElement FindElement(By by) => webElement.FindElement(by);
+        public ReadOnlyCollection<IWebElement> FindElements(By by) => webElement.FindElements(by);
 
         #endregion
     }

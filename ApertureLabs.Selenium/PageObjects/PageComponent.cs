@@ -4,7 +4,7 @@ using OpenQA.Selenium.Support.UI;
 namespace ApertureLabs.Selenium.PageObjects
 {
     /// <summary>
-    /// Default implementation of IPageComponent.
+    ///     Default implementation of IPageComponent.
     /// </summary>
     public abstract class PageComponent : IPageComponent
     {
@@ -33,7 +33,7 @@ namespace ApertureLabs.Selenium.PageObjects
         public abstract bool IsStale();
 
         /// <summary>
-        /// If overloaded don't forget to call base.Load().
+        ///     If overloaded don't forget to call base.Load().
         /// </summary>
         /// <returns></returns>
         public virtual ILoadableComponent Load()
