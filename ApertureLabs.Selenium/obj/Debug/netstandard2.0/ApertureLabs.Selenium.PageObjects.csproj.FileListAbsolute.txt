@@ -1,6 +1,0 @@
-C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\bin\Debug\netstandard2.0\ApertureLabs.Selenium.PageObjects.deps.json
-C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\bin\Debug\netstandard2.0\ApertureLabs.Selenium.PageObjects.dll
-C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\obj\Debug\netstandard2.0\ApertureLabs.Selenium.PageObjects.csprojAssemblyReference.cache
-C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\obj\Debug\netstandard2.0\ApertureLabs.Selenium.PageObjects.csproj.CoreCompileInputs.cache
-C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\obj\Debug\netstandard2.0\ApertureLabs.Selenium.PageObjects.AssemblyInfoInputs.cache
-C:\Users\Alexander\source\repos\ApertureLabs.Selenium.PageObjects\ApertureLabs.Selenium.PageObjects\obj\Debug\netstandard2.0\ApertureLabs.Selenium.PageObjects.AssemblyInfo.cs
