@@ -6,18 +6,18 @@ namespace ApertureLabs.Selenium.UnitTests
     [TestClass]
     public class WebDriverFactoryTests
     {
-        private WebDriverFactory webDriverFactory;
+        private static WebDriverFactory WebDriverFactory;
 
         [ClassInitialize]
-        public void Setup()
+        public static void Setup(TestContext testContext)
         {
-            webDriverFactory = new WebDriverFactory();
+            WebDriverFactory = new WebDriverFactory();
         }
 
         [ClassCleanup]
-        public void TearDown()
+        public static void TearDown()
         {
-            webDriverFactory.Dispose();
+            WebDriverFactory.Dispose();
         }
 
         [TestMethod]
@@ -26,7 +26,8 @@ namespace ApertureLabs.Selenium.UnitTests
         [DataRow(MajorWebDriver.Edge)]
         public void GetWebDriver(MajorWebDriver majorWebDriver)
         {
-            IWebDriver chrome = webDriverFactory.CreateDriver(majorWebDriver);
+            IWebDriver chrome = WebDriverFactory.CreateDriver(majorWebDriver,
+                new PageObjects.WindowSize(1000, 1001));
 
             using (chrome)
             {

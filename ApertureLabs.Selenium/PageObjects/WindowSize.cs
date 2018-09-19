@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
@@ -14,7 +15,10 @@ namespace ApertureLabs.Selenium.PageObjects
     {
         #region Constructors
 
-        public WindowSize(int minWidth, int? maxWidth = null, int? minHeight = null, int? maxHeight = null)
+        public WindowSize(int minWidth,
+            int? maxWidth = null,
+            int? minHeight = null,
+            int? maxHeight = null)
         {
             MinHeight = minHeight ?? -1;
             MaxHeight = maxHeight ?? -1;
@@ -76,7 +80,7 @@ namespace ApertureLabs.Selenium.PageObjects
 
         #region Fields
 
-        public static WindowSize DefaultDesktopSize = new WindowSize(1001);
+        public static WindowSize DefaultDesktopSize = new WindowSize(1001, 999);
         public static WindowSize DefaultTabletSize = new WindowSize(768, 999);
         public static WindowSize DefaultMobileSize = new WindowSize(null, 767);
 
@@ -202,7 +206,8 @@ namespace ApertureLabs.Selenium.PageObjects
             }
         }
 
-        public static WindowSize[] OrderWindowSizesByWidth(WindowSize[] windowsizes)
+        public static IEnumerable<WindowSize> OrderWindowSizesByWidth(
+            IEnumerable<WindowSize> windowsizes)
         {
             var ordered = new List<WindowSize>();
 
@@ -227,7 +232,8 @@ namespace ApertureLabs.Selenium.PageObjects
                 {
                     for (int i = 0; i < ordered.Count; i++)
                     {
-                        var compareResult = windowsize.CompareTo(windowsizes[i]);
+                        var compareResult = windowsize.CompareTo(windowsizes
+                            .ElementAt(i));
 
                         if (compareResult == -1 || compareResult == 0)
                         {

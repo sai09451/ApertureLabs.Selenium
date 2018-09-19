@@ -85,20 +85,15 @@ namespace ApertureLabs.Selenium.PageObjects
         /// </exception>
         public virtual ILoadableComponent Load()
         {
-            if (!disposedValue)
+            if (disposedValue)
             {
                 throw new ObjectDisposedException(nameof(PageObject));
             }
 
             if (WrappedDriver is EventFiringWebDriver eventFiringWebDriver)
             {
-                assignedEventListeners = true;
                 eventFiringWebDriver.Navigated += OnNavigation;
-            }
-
-            if (String.IsNullOrWhiteSpace(WrappedDriver.Url))
-            {
-                WrappedDriver.Navigate().GoToUrl(Uri);
+                assignedEventListeners = true;
             }
 
             return this;

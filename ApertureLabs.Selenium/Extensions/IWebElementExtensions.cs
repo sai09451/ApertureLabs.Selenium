@@ -3,13 +3,38 @@ using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.Extensions
 {
     public static class IWebElementExtensions
     {
         /// <summary>
-        /// Retrieves the IWebDriver from an IWebElement.
+        ///     Selects only direct child elements of this element.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static IList<IWebElement> Children(this IWebElement element)
+        {
+            string jsScript = "return arguments[0].children;";
+            return element.GetDriver().ExecuteJavaScript<IList<IWebElement>>(
+                jsScript,
+                element);
+        }
+
+        /// <summary>
+        ///     Retrieves all classes listed on an element.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> Classes(this IWebElement element)
+        {
+            return element.GetAttribute("class")?.Split(' ')
+                ?? Enumerable.Empty<string>();
+        }
+
+        /// <summary>
+        ///     Retrieves the IWebDriver from an IWebElement.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
@@ -19,8 +44,8 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Will try scroll to the page until the center of the element is
-        /// aligned with the center of the viewport.
+        ///     Will try scroll to the page until the center of the element is
+        ///     aligned with the center of the viewport.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
@@ -50,7 +75,7 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Returns and creates a new TextHelper for a given element.
+        ///     Returns and creates a new TextHelper for a given element.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
@@ -60,7 +85,7 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Returns the parent element of the element.
+        ///     Returns the parent element of the element.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
@@ -72,7 +97,7 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Returns a random element and returns it.
+        ///     Returns a random element and returns it.
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
@@ -83,7 +108,7 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Returns a random element and returns it.
+        ///     Returns a random element and returns it.
         /// </summary>
         /// <param name="elements"></param>
         /// <param name="index"></param>
@@ -103,7 +128,7 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Shorthand for <code>new TextHelper(element);</code>.
+        ///     Shorthand for <code>new TextHelper(element);</code>.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>

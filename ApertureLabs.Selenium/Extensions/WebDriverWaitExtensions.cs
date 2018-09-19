@@ -61,7 +61,7 @@ namespace ApertureLabs.Selenium.Extensions
             {
                 return false;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return false;
             }

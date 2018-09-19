@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.PageObjects;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
@@ -56,6 +57,7 @@ namespace ApertureLabs.Selenium
         /// </param>
         /// <returns></returns>
         public IWebDriver CreateDriver(MajorWebDriver majorWebDriver,
+            WindowSize windowSize,
             bool track = true)
         {
             IWebDriver driver = null;
@@ -81,6 +83,7 @@ namespace ApertureLabs.Selenium
                 trackedDrivers.Add(driver);
             }
 
+            driver.Manage().Window.Size = windowSize.GetRandomSize();
             return driver;
         }
 
