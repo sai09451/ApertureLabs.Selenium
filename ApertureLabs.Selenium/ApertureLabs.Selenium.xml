@@ -1,0 +1,934 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApertureLabs.Selenium</name>
+    </assembly>
+    <members>
+        <member name="T:ApertureLabs.Selenium.Components.Nop.ViewMode">
+            <summary>
+            How items are displayed in a pager. Corresponds to
+            Nop.Web/Views/Catalog/_CatalogSelectors.cshtml
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Nop.ViewMode.GridMode">
+            <summary>
+            Displays items in a grid.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Nop.ViewMode.ListMode">
+            <summary>
+            Displays items in a list.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent">
+            <summary>
+            CatalogPagingFilterComponent
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Uses the '.product-selectors' as the selector to get the element.
+            </summary>
+            <param name="driver"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Gets the element the selector.
+            </summary>
+            <param name="driver"></param>
+            <param name="selector"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortOptions">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortedBy">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.PageSizeOptions">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.PageSize">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.UseGridMode">
+            <summary>
+            Clicks grid mode.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.UseListMode">
+            <summary>
+            Clicks list mode.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByIndex(System.Int32)">
+            <summary>
+            Selects the option by index.
+            </summary>
+            <param name="optionIndex"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByText(System.String)">
+            <summary>
+            Selects the option by its text.
+            </summary>
+            <param name="optionText"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByValue(System.String)">
+            <summary>
+            Selects the option by value.
+            </summary>
+            <param name="optionValue"></param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Nop.PagerComponent">
+            <summary>
+            PagerComponent. Corresponds to Nop.Web.Framework.UI.Paging.Pager.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Uses the '.pager' selector to locate the component.
+            </summary>
+            <param name="driver"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Can pass in a custom selector in case there are multiple pagers
+            displayed.
+            </summary>
+            <param name="driver"></param>
+            <param name="selector"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.CurrentPage">
+            <summary>
+            The current page.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.HasPrevious">
+            <summary>
+            Checks if there are previous results.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.HasNext">
+            <summary>
+            Checks if there are next results.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.IndividualPages">
+            <summary>
+            Gets a list of displayed page numbers.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.IsStale">
+            <summary>
+            IsStale.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.First">
+            <summary>
+            Goes to the first result.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Previous">
+            <summary>
+            Goes to the previous result.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.GoToPage(System.Int32)">
+            <summary>
+            Clicks on the page by the number it's displaying.
+            </summary>
+            <param name="pageNumber"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Next">
+            <summary>
+            Goes to the next result.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Last">
+            <summary>
+            Goes to the last result.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.ExpectedConditions">
+            <summary>
+            Commonly used conditions.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ExpectedConditions.ElementsExist(OpenQA.Selenium.By)">
+            <summary>
+            Waits for at least one element identified by the selector to exist.
+            </summary>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ExpectedConditions.ElementsAreVisible(OpenQA.Selenium.By)">
+            <summary>
+            Waits until all elements identified by the selector are visible.
+            </summary>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ExpectedConditions.ElementsAreClickable(OpenQA.Selenium.By)">
+            <summary>
+            Waits until all elements identified by the selector are clickable.
+            </summary>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.IWebDriverExtensions">
+            <summary>
+            Contains extensions for IWebDriver.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.Wait(OpenQA.Selenium.IWebDriver,System.TimeSpan)">
+            <summary>
+            Shorthand for creating a new WebDriverWait object.
+            </summary>
+            <param name="driver"></param>
+            <param name="timeSpan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.Wait(OpenQA.Selenium.IWebDriver,System.TimeSpan,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Shorthand for creating a new WebDriverWait object which ignores all
+            exceptions passed in to it.
+            </summary>
+            <param name="driver"></param>
+            <param name="timeSpan"></param>
+            <param name="ignore"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.Select(OpenQA.Selenium.IWebDriver,System.String,System.TimeSpan)">
+            <summary>
+            Shorthand selector for FindElements(By.CssSelector(...));
+            </summary>
+            <param name="driver"></param>
+            <param name="cssSelector"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.Select(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Shorthand selector for FindElements(by);
+            </summary>
+            <param name="driver"></param>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.GetCurrentViewportDimensions(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Retrieves the size of the current viewport.
+            </summary>
+            <param name="driver"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.CreateActions(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Shorthand for <code>new Actions(driver);</code>. Only exists
+            to help make the Actions class more apparent.
+            </summary>
+            <param name="driver"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.PageHasJQuery(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Detects if jQuery is defined on a page.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
+            <summary>
+            Extensions for IWebElement.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.Children(OpenQA.Selenium.IWebElement)">
+            <summary>
+                Selects only direct child elements of this element.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.Classes(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Retrieves all classes listed on an element.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetDriver(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Retrieves the IWebDriver from an IWebElement.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.TryScrollToCenter(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Will try scroll to the page until the center of the element is
+            aligned with the center of the viewport.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.TextHelper(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Returns and creates a new TextHelper for a given element.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetParentElement(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Returns the parent element of the element.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.SelectRandom(System.Collections.Generic.IReadOnlyList{OpenQA.Selenium.IWebElement})">
+            <summary>
+            Returns a random element and returns it.
+            </summary>
+            <param name="elements"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.SelectRandom(System.Collections.Generic.IReadOnlyList{OpenQA.Selenium.IWebElement},System.Int32@)">
+            <summary>
+            Returns a random element and returns it.
+            </summary>
+            <param name="elements"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetTextHelper(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Shorthand for <code>new TextHelper(element);</code>.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
+            <summary>
+            Extensions for WebDriverWait.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.Select(OpenQA.Selenium.Support.UI.WebDriverWait,System.String)">
+            <summary>
+            Shorthand selector for wait.Until(ExpectedConditions.ElementsExist(
+            By.CssSelector('cssSelector')));
+            </summary>
+            <param name="wait"></param>
+            <param name="cssSelector"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.Select(OpenQA.Selenium.Support.UI.WebDriverWait,OpenQA.Selenium.By)">
+            <summary>
+            Shorthand selector for wait.Until(ExpectedConditions.ElementsExist(
+            by));
+            </summary>
+            <param name="wait"></param>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.Exists(OpenQA.Selenium.Support.UI.WebDriverWait,System.String)">
+            <summary>
+            Returns true if the element exists.
+            </summary>
+            <param name="wait"></param>
+            <param name="cssSelector"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.Exists(OpenQA.Selenium.Support.UI.WebDriverWait,OpenQA.Selenium.By)">
+            <summary>
+            Returns true if the element exists.
+            </summary>
+            <param name="wait"></param>
+            <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.IPageComponent">
+            <summary>
+            Represents a partial view or view component.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.IPageComponent.By">
+            <summary>
+            The selector for the parent node for this component.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IPageComponent.IsStale">
+            <summary>
+            Determines if the page is in a usable state.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.IPageObject">
+            <summary>
+            Represents a webpage.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.IPageObject.Uri">
+            <summary>
+            The url of the webpage.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IPageObject.IsStale">
+            <summary>
+            Use to determine if a PageObject is still 'valid'.
+            </summary>
+            <example>
+            If there are two page object instances; one for a login page and
+            one for the home page, if the driver is on the home page the login
+            page should when its <code>loginPage.IsStateValid();</code> should
+            return false while the <code>homePage.IsStateValid();</code> will
+            return true.
+            </example>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.IViewModel`1">
+            <summary>
+            Used for PageObjects which use a model.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.IViewModel`1.ViewModel">
+            <summary>
+            Retrieves the viewmodel.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.PageComponent">
+            <summary>
+            Default implementation of IPageComponent.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="driver"></param>
+            <param name="by"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageComponent.WrappedDriver">
+            <summary>
+            The IWebDriver of a component.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageComponent.WrappedElement">
+            <summary>
+            The element representing the component.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageComponent.By">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageComponent.IsStale">
+            <summary>
+            Used to check if the component is still valid for use.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageComponent.Load">
+            <summary>
+            If overloaded don't forget to call base.Load().
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.PageObject">
+            <summary>
+                Default implementation of IPageObject
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+                If passing in an EventFiringWebDriver event listeners will be
+                added.
+            </summary>
+            <param name="driver"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WrappedDriver">
+            <summary>
+                Gets the OpenQA.Selenium.IWebDriver used to find this element.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.Uri">
+            <summary>
+                The url this page uses.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.IsStale">
+            <summary>
+                By default will check the url to see if it starts with Uri.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Load">
+            <summary>
+                If overridding this don't forget to call base.Load().
+            
+                NOTE: Will navigate to the pages url if the current drivers url
+                is empty.
+            </summary>
+            <remarks>
+                If the driver is an EventFiringWebDriver an event listener will
+                be added to the 'Navigated' event and uses the url to determine
+                if the page is 'stale'.
+            </remarks>
+            <returns></returns>
+            <exception cref="T:System.ObjectDisposedException">
+                Occurs when trying to use after this instance has been
+                disposed.
+            </exception>
+            <exception cref="T:OpenQA.Selenium.Support.UI.LoadableComponentException">
+                Thrown when calling <code>Load()</code> and not on the correct
+                url.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.WindowSize">
+            <summary>
+            Contains sizes for windows.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultDesktop">
+            <summary>
+            Default size for desktop (1001, 999).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultTablet">
+            <summary>
+             Default size for tablet (768, 999).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultMobile">
+            <summary>
+            Default size for mobile (120, 999).
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.WindowSize.RandomSize(System.Int32,System.Int32)">
+            <summary>
+            Generates a random size in the given range. The height is always
+            999.
+            </summary>
+            <param name="minWidth"></param>
+            <param name="maxWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.TabHelper">
+            <summary>
+            Used for switching between tabs.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="driver"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.TabHelper.WrappedDriver">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.GetIndexOfCurrentTab">
+            <summary>
+            Returns the index of the current tab in relation of the other
+            tabs on the window.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.GetNumberOfTabs">
+            <summary>
+            Returns the number of tabs on the current window.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.CreateNewTab(System.Boolean)">
+            <summary>
+            Opens a new tab in the window.
+            </summary>
+            <param name="switchToTab"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.TextHelper">
+            <summary>
+            Used for parsing information from the text of an element.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.TextHelper.InnerText">
+            <summary>
+            Retrieves the inner text of the element.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.TextHelper.InnerHtml">
+            <summary>
+            Returns the inner html of the element.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.TextHelper.OuterHtml">
+            <summary>
+            Returns the outer html of the element.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.TextHelper.WrappedDriver">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.TextHelper.WrappedElement">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.ExtractInteger(System.Boolean)">
+            <summary>
+            Extracts a number from the Text of the element. If the text
+            of the element is "Some text...-34.32...more text" it will
+            return -34. It completely ignores the decimal unless the 
+            optional parameter roundUp is true.
+            </summary>
+            <param name="roundUp"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.ExtractFloatingPointNumber">
+            <summary>
+            Extracts a number from the Text of the element. If the text
+            of the element is "Some text...-34.32...more text" it will
+            return -34.32.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.ExtractDateTime">
+            <summary>
+            Extracts a Date from the text. Currently this only supports 
+            the text format "Some text...MM/DD/YYYY...other text". It will
+            optionally also return the time up to the second if provided after
+            the date.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.ExtractLastFourCCDigits">
+            <summary>
+            Fetches the last four digits from a partial credit card number 
+            in a string. Ex: (blah x4444 blah blah) text will return 4444.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.MajorWebDriver">
+            <summary>
+            Enum of common web drivers.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Chrome">
+            <summary>
+            Chrome.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Edge">
+            <summary>
+            Edge.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Firefox">
+            <summary>
+            Firefox.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebDriverFactory">
+            <summary>
+            Responsible for creation and disposing of the various webdrivers.
+            Searches the current directory for the location of the drivers.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.Finalize">
+            <summary>
+            Dtor
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.CreateDriver(ApertureLabs.Selenium.MajorWebDriver,System.Drawing.Size,System.Boolean)">
+            <summary>
+            Creates a new WebDriver instance for one of the major web
+            browsers.
+            </summary>
+            <param name="majorWebDriver"></param>
+            <param name="windowSize"></param>
+            <param name="track">
+            If false, will not dispose the driver when the factory is
+            disposed.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.Dispose(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement">
+            <summary>
+            Wrapper around the IWebElement for IFrames.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.#ctor(OpenQA.Selenium.IWebElement,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="element"></param>
+            <param name="driver"></param>
+            <exception cref="T:System.InvalidCastException">
+            Thrown if the element isn't an iframe.
+            </exception>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.TagName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Text">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Enabled">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Selected">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Location">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Displayed">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.EnterIframe">
+            <summary>
+            Enters the iframe only if not already entered.
+            Equal to IWebDriver.SwitchTo().Frame(iframeElement).
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.ExitIframe">
+            <summary>
+            Exits the iframe only if previously entered.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.SendKeys(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Submit">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Click">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.GetAttribute(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.GetProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.GetCssValue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.FindElement(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.FindElements(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Inputs.CheckboxElement">
+            <summary>
+            Wrapper around the InputElement providing extra functionality for
+            checkboxes.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.CheckboxElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="element"></param>
+            <exception cref="T:OpenQA.Selenium.InvalidElementStateException">
+            Thrown when the element doens't have the type of checkbox.
+            </exception>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Inputs.InputElement">
+            <summary>
+            Wrapper around an IWebElement to provide extra functionality for input
+            elements.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Checks that the element has the correct tagname.
+            </summary>
+            <param name="element"></param>
+            <exception cref="T:System.InvalidCastException">
+            Thrown when the elements tagname isn't input.
+            </exception>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.TagName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Text">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Enabled">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Selected">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Location">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Displayed">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Click">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.FindElement(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.FindElements(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetAttribute(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetCssValue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.SendKeys(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Submit">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetValue``1">
+            <summary>
+            Retrieves the value and tries to cast it to the type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.SetValue``1(``0)">
+            <summary>
+            Sets the 'value' of the input element.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Inputs.RadioCheckboxBase">
+            <summary>
+            Base class for CheckboxElement and RadioElement. Internal use only.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioCheckboxBase.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.RadioCheckboxBase.IsChecked">
+            <summary>
+            Returns true if the element is checked and false if not.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioCheckboxBase.Check(System.Boolean)">
+            <summary>
+            Will assert that the element is checked or unchecked depending on
+            the argument. NOTE: This will 'click' the element to toggle the
+            state so if it's not clickable this will throw an exception.
+            </summary>
+            <param name="checked"></param>
+            <exception cref="T:OpenQA.Selenium.StaleElementReferenceException"></exception>
+            <exception cref="T:OpenQA.Selenium.InvalidElementStateException"></exception>
+            <exception cref="T:OpenQA.Selenium.ElementNotInteractableException"></exception>
+            <exception cref="T:OpenQA.Selenium.ElementNotVisibleException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioCheckboxBase.SetValue``1(``0)">
+            <summary>
+            Sets the value of the property checked.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioCheckboxBase.GetValue``1">
+            <summary>
+            Returns the value or the property 'checked'.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Inputs.RadioElement">
+            <summary>
+            RadioElement
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioElement.GetGroup">
+            <summary>
+            Returns the radio group name.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Inputs.RadioElementSet">
+            <summary>
+            RadioElementSet
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioElementSet.#ctor(System.Collections.Generic.IEnumerable{OpenQA.Selenium.IWebElement})">
+            <summary>
+            Checks that each element is a radio button and shares the same name.
+            </summary>
+            <param name="radioButtons"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.RadioElementSet.Options">
+            <summary>
+            Options.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.RadioElementSet.SelectedOption">
+            <summary>
+            Gets the selected item or returns null if nothing is selected.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioElementSet.SelectByValue(System.String)">
+            <summary>
+            Selects an option by its value.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.RadioElementSet.SelectByIndex(System.Int32)">
+            <summary>
+            Selects an option by index, the order in which they appear in the
+            html.
+            </summary>
+            <param name="index"></param>
+        </member>
+    </members>
+</doc>

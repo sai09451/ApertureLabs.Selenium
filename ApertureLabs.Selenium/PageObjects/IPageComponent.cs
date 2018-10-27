@@ -4,6 +4,9 @@ using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
+    /// <summary>
+    /// Represents a partial view or view component.
+    /// </summary>
     public interface IPageComponent : ILoadableComponent,
         IWrapsDriver,
         IWrapsElement

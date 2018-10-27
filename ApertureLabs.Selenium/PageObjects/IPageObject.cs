@@ -4,6 +4,9 @@ using System;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
+    /// <summary>
+    /// Represents a webpage.
+    /// </summary>
     public interface IPageObject : IWrapsDriver, ILoadableComponent, IDisposable
     {
         /// <summary>

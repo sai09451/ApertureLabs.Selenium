@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace ApertureLabs.Selenium.Extensions
 {
+    /// <summary>
+    /// Extensions for WebDriverWait.
+    /// </summary>
     public static class WebDriverWaitExtensions
     {
         /// <summary>
@@ -30,7 +33,7 @@ namespace ApertureLabs.Selenium.Extensions
         /// by));
         /// </summary>
         /// <param name="wait"></param>
-        /// <param name="cssSelector"></param>
+        /// <param name="by"></param>
         /// <returns></returns>
         public static IReadOnlyList<IWebElement> Select(
             this WebDriverWait wait,
@@ -90,6 +93,7 @@ namespace ApertureLabs.Selenium.Extensions
             }
             catch (Exception exc)
             {
+                Console.WriteLine(exc.ToString());
                 return false;
             }
         }

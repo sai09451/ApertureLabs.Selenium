@@ -6,14 +6,17 @@ using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium
 {
+    /// <summary>
+    /// Used for parsing information from the text of an element.
+    /// </summary>
     public class TextHelper : IWrapsDriver, IWrapsElement
     {
-        #region Fields
-
-        #endregion
-
         #region Constructor
 
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="element"></param>
         public TextHelper(IWebElement element)
         {
             WrappedElement = element;
@@ -38,8 +41,10 @@ namespace ApertureLabs.Selenium
         /// </summary>
         public string OuterHtml => throw new NotImplementedException();
 
+        /// <inheritdoc/>
         public IWebDriver WrappedDriver => WrappedElement.GetDriver();
 
+        /// <inheritdoc/>
         public IWebElement WrappedElement { get; protected set; }
 
         #endregion
@@ -52,7 +57,7 @@ namespace ApertureLabs.Selenium
         /// return -34. It completely ignores the decimal unless the 
         /// optional parameter roundUp is true.
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="roundUp"></param>
         /// <returns></returns>
         public int ExtractInteger(bool roundUp = false)
         {
@@ -69,7 +74,6 @@ namespace ApertureLabs.Selenium
         /// of the element is "Some text...-34.32...more text" it will
         /// return -34.32.
         /// </summary>
-        /// <param name="element"></param>
         /// <returns></returns>
         public double ExtractFloatingPointNumber()
         {
@@ -87,7 +91,6 @@ namespace ApertureLabs.Selenium
         /// optionally also return the time up to the second if provided after
         /// the date.
         /// </summary>
-        /// <param name="element"></param>
         /// <returns></returns>
         public DateTime ExtractDateTime()
         {
@@ -132,7 +135,6 @@ namespace ApertureLabs.Selenium
         /// Fetches the last four digits from a partial credit card number 
         /// in a string. Ex: (blah x4444 blah blah) text will return 4444.
         /// </summary>
-        /// <param name="element"></param>
         /// <returns></returns>
         public int ExtractLastFourCCDigits()
         {

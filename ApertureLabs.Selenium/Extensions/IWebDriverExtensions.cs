@@ -9,6 +9,9 @@ using System.Linq;
 
 namespace ApertureLabs.Selenium.Extensions
 {
+    /// <summary>
+    /// Contains extensions for IWebDriver.
+    /// </summary>
     public static class IWebDriverExtensions
     {
         /// <summary>
@@ -45,13 +48,14 @@ namespace ApertureLabs.Selenium.Extensions
         /// Shorthand selector for FindElements(By.CssSelector(...));
         /// </summary>
         /// <param name="driver"></param>
-        /// <param name=""></param>
+        /// <param name="cssSelector"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
         public static IReadOnlyList<IWebElement> Select(this IWebDriver driver,
             string cssSelector,
-            TimeSpan timeout = default(TimeSpan))
+            TimeSpan timeout = default)
         {
-            if (timeout == default(TimeSpan))
+            if (timeout == default)
             {
                 return driver.FindElements(By.CssSelector(cssSelector));
             }
@@ -98,8 +102,8 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        ///     Shorthand for <code>new Actions(driver);</code>. Only exists
-        ///     to help make the Actions class more apparent.
+        /// Shorthand for <code>new Actions(driver);</code>. Only exists
+        /// to help make the Actions class more apparent.
         /// </summary>
         /// <param name="driver"></param>
         /// <returns></returns>

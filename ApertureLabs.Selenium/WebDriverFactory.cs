@@ -5,19 +5,35 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace ApertureLabs.Selenium
 {
+    /// <summary>
+    /// Enum of common web drivers.
+    /// </summary>
     public enum MajorWebDriver
     {
+        /// <summary>
+        /// Chrome.
+        /// </summary>
         Chrome,
+
+        /// <summary>
+        /// Edge.
+        /// </summary>
         Edge,
+
+        /// <summary>
+        /// Firefox.
+        /// </summary>
         Firefox
     }
 
     /// <summary>
-    ///     Responsible for creation and disposing of the various webdrivers.
+    /// Responsible for creation and disposing of the various webdrivers.
+    /// Searches the current directory for the location of the drivers.
     /// </summary>
     public class WebDriverFactory : IDisposable
     {
@@ -31,12 +47,18 @@ namespace ApertureLabs.Selenium
 
         #region Constructor/Finalizer
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public WebDriverFactory()
         {
             disposedValue = false;
             trackedDrivers = new List<IWebDriver>();
         }
 
+        /// <summary>
+        /// Dtor
+        /// </summary>
         ~WebDriverFactory()
         {
             Dispose(false);
@@ -47,17 +69,18 @@ namespace ApertureLabs.Selenium
         #region Methods
 
         /// <summary>
-        ///     Creates a new WebDriver instance for one of the major web
-        ///     browsers.
+        /// Creates a new WebDriver instance for one of the major web
+        /// browsers.
         /// </summary>
         /// <param name="majorWebDriver"></param>
+        /// <param name="windowSize"></param>
         /// <param name="track">
-        ///     If false, will not dispose the driver when the factory is
-        ///     disposed.
+        /// If false, will not dispose the driver when the factory is
+        /// disposed.
         /// </param>
         /// <returns></returns>
         public IWebDriver CreateDriver(MajorWebDriver majorWebDriver,
-            WindowSize windowSize,
+            Size windowSize,
             bool track = true)
         {
             IWebDriver driver = null;
@@ -78,17 +101,17 @@ namespace ApertureLabs.Selenium
                     throw new NotImplementedException(dir);
             }
 
-            if (track)
-            {
-                trackedDrivers.Add(driver);
-            }
+            // Set the window size.
+            driver.Manage().Window.Size = windowSize;
 
-            driver.Manage().Window.Size = windowSize.GetRandomSize();
+            if (track)
+                trackedDrivers.Add(driver);
+
             return driver;
         }
 
         #region IDisposable Support
-
+        /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -106,6 +129,7 @@ namespace ApertureLabs.Selenium
         }
 
         // This code added to correctly implement the disposable pattern.
+        /// <inheritdoc/>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool

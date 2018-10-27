@@ -8,10 +8,17 @@ using System.Linq;
 
 namespace ApertureLabs.Selenium
 {
+    /// <summary>
+    /// Used for switching between tabs.
+    /// </summary>
     public class TabHelper : IWrapsDriver
     {
         #region Constructor
 
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="driver"></param>
         public TabHelper(IWebDriver driver)
         {
             WrappedDriver = driver;
@@ -21,6 +28,7 @@ namespace ApertureLabs.Selenium
 
         #region Properties
 
+        /// <inheritdoc/>
         public IWebDriver WrappedDriver { get; protected set; }
 
         #endregion
@@ -31,7 +39,6 @@ namespace ApertureLabs.Selenium
         /// Returns the index of the current tab in relation of the other
         /// tabs on the window.
         /// </summary>
-        /// <param name="driver"></param>
         /// <returns></returns>
         public int GetIndexOfCurrentTab()
         {
@@ -41,7 +48,6 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Returns the number of tabs on the current window.
         /// </summary>
-        /// <param name="driver"></param>
         /// <returns></returns>
         public IReadOnlyCollection<string> GetNumberOfTabs()
         {
@@ -51,7 +57,6 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Opens a new tab in the window.
         /// </summary>
-        /// <param name="driver"></param>
         /// <param name="switchToTab"></param>
         /// <returns></returns>
         public string CreateNewTab(bool switchToTab = false)

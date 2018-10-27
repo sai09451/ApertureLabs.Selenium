@@ -108,6 +108,7 @@ namespace ApertureLabs.Selenium.PageObjects
         }
 
         #region IDisposable Support
+        /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -126,6 +127,7 @@ namespace ApertureLabs.Selenium.PageObjects
         }
 
         // This code added to correctly implement the disposable pattern.
+        /// <inheritdoc/>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

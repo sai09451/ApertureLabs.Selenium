@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Drawing;
 
 namespace ApertureLabs.Selenium.UnitTests
 {
@@ -27,7 +28,7 @@ namespace ApertureLabs.Selenium.UnitTests
         public void GetWebDriver(MajorWebDriver majorWebDriver)
         {
             IWebDriver chrome = WebDriverFactory.CreateDriver(majorWebDriver,
-                new PageObjects.WindowSize(1000, 1001));
+                new Size(1000, 1001));
 
             using (chrome)
             {
