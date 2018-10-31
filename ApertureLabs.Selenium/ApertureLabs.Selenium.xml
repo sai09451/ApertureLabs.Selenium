@@ -149,6 +149,61 @@
             Goes to the last result.
             </summary>
         </member>
+        <member name="T:ApertureLabs.Selenium.Data">
+            <summary>
+            Used for generating date-of-births, names, etc...
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Data.#ctor(System.String)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="apiKey">
+            The google maps api key.
+            </param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Data.RandomCity(System.String,System.String)">
+            <summary>
+            Selects a random city in a country and state/province.
+            </summary>
+            <param name="country">
+            Can be US or CN for United States and Canada respectively.
+            </param>
+            <param name="stateOrProvince">
+            Should be the two digit state/province code.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Data.RandomCountry">
+            <summary>
+            Selects a random country. Currently only returns 'Canada',
+            'United Kingdom', and the 'United States'.
+            </summary>
+            <returns>Full legal name of the country.</returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Data.RandomStateOrProvince(System.String)">
+            <summary>
+            Returns a random state/province of a country.
+            </summary>
+            <param name="country"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Data.RandomDateOfBirth(System.Boolean)">
+            <summary>
+            The returned date is guaranteed to be at least 18 years in the past if
+            the argument adult is true, if false the returned date will NOT be 18
+            years in the past
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Data.RandomString(System.Int32)">
+            <summary>
+            Generates a string of random letters (uses both upper case and
+            lower case).
+            </summary>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.ExpectedConditions">
             <summary>
             Commonly used conditions.
@@ -173,6 +228,19 @@
             Waits until all elements identified by the selector are clickable.
             </summary>
             <param name="by"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.IEnumerableExtensions">
+            <summary>
+            Contains extensions for ICollection.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IEnumerableExtensions.SelectRandom``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Selects a random element from a list.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="collection"></param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebDriverExtensions">
@@ -343,6 +411,139 @@
             <param name="wait"></param>
             <param name="by"></param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.UntilPageReloads(OpenQA.Selenium.Support.UI.WebDriverWait,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Waits until the page reloads. This is accomplished by first
+            locating the root html element, polling it until it becomes stale,
+            and then waiting until the document.readyState is valid.
+            </summary>
+            <param name="wait"></param>
+            <param name="readyStates">
+            Defaults to "complete". These values are case sensitive.
+            </param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.UntilStale(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},OpenQA.Selenium.IWebElement)">
+            <summary>
+            Waits until the element is stale.
+            </summary>
+            <param name="wait"></param>
+            <param name="element"></param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.IPageObjectFactory">
+            <summary>
+            PageObjectFactory.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.IPageObjectFactory.PrepareComponent``1(``0)">
+            <summary>
+            Essentially just calls 'Load()' on the page component and returns
+            it. This is useful for initializing a component in one line.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageComponent"></param>
+            <returns></returns>
+            <example>
+            Before:
+            // Uninitialized
+            var component = new YourComponent(arg1, arg2);
+            // Initialized
+            component.Load();
+            
+            After:
+            // Instantiate and initialize in one (ableit long) line.
+            var initializedcomponent = yourPageObjectFactory
+                .PrepareComponent(new YourComponent(arg1, arg2));
+            </example>
+        </member>
+        <member name="M:ApertureLabs.Selenium.IPageObjectFactory.PreparePage``1(``0)">
+            <summary>
+            Essentially just calls 'Load()' on the page object and returns it.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageObject"></param>
+            <returns></returns>
+            <example>
+            Before:
+            // Instantiated but unintialized.
+            var page = new YourPage(arg1, arg2);
+            // Initialized.
+            page.Load();
+            
+            After:
+            // Instantiate and initialize in one (albeit long) line.
+            var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
+            </example>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Models.IAddress">
+            <summary>
+            IAddress.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.IAddress.Location">
+            <summary>
+            The lat/lng of the address.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Models.ILocation">
+            <summary>
+            Represents longitude/latitude.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.ILocation.Longitude">
+            <summary>
+            Longitude
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.ILocation.Latitude">
+            <summary>
+            Latitude
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjectFactory">
+            <summary>
+            PageObjectFactory.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjectFactory.PreparePage``1(``0)">
+            <summary>
+            Essentially just calls 'Load()' on the page object and returns it.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageObject"></param>
+            <returns></returns>
+            <example>
+            Before:
+            // Instantiated but unintialized.
+            var page = new YourPage(arg1, arg2);
+            // Initialized.
+            page.Load();
+            
+            After:
+            // Instantiate and initialize in one (albeit long) line.
+            var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
+            </example>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjectFactory.PrepareComponent``1(``0)">
+            <summary>
+            Essentially just calls 'Load()' on the page component and returns
+            it. This is useful for initializing a component in one line.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageComponent"></param>
+            <returns></returns>
+            <example>
+            Before:
+            // Uninitialized
+            var component = new YourComponent(arg1, arg2);
+            // Initialized
+            component.Load();
+            
+            After:
+            // Instantiate and initialize in one (ableit long) line.
+            var initializedcomponent = yourPageObjectFactory
+                .PrepareComponent(new YourComponent(arg1, arg2));
+            </example>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.IPageComponent">
             <summary>
@@ -592,7 +793,13 @@
             <param name="roundUp"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.TextHelper.ExtractFloatingPointNumber">
+        <member name="M:ApertureLabs.Selenium.TextHelper.ExtractPrice">
+            <summary>
+            Tries to extract number from the text of the element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.ExtractDouble">
             <summary>
             Extracts a number from the Text of the element. If the text
             of the element is "Some text...-34.32...more text" it will
@@ -670,6 +877,77 @@
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.Dispose">
             <inheritdoc/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement">
+            <summary>
+            CanvasElement.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.TagName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Text">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Enabled">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Selected">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Location">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Displayed">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Click">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.FindElement(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.FindElements(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.GetAttribute(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.GetCssValue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.GetProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.SendKeys(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Submit">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Draw(System.Drawing.Point,System.Drawing.Point)">
+            <summary>
+            Draws a line from a to b.
+            </summary>
+            <param name="a">
+            Origin is the top left corner of the element.
+            </param>
+            <param name="b">
+            Origin is the top left corner of the element.
+            </param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement">
             <summary>
@@ -760,6 +1038,76 @@
             Thrown when the element doens't have the type of checkbox.
             </exception>
         </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Inputs.FileElement">
+            <summary>
+            Input element with the type set to file.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.FileElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.FileElement.UploadFile(System.String)">
+            <summary>
+            Convience method for uploading a file.
+            </summary>
+            <param name="filepath"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.FileElement.UploadFile(System.IO.FileInfo)">
+            <summary>
+            Convience method for uploading a file.
+            </summary>
+            <param name="file"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.FileElement.UploadFile(System.Uri)">
+            <summary>
+            Convience method for uploading a file.
+            </summary>
+            <param name="filePath"></param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Inputs.InputDataListElement">
+            <summary>
+            Represents an INPUT element with a type of text that has the list.
+            TODO: Possibly rename this class to 'DataListElement'.
+            attribute set.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputDataListElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="element"></param>
+            <exception cref="T:OpenQA.Selenium.InvalidElementStateException">
+            Throws if the element doens't have a list attribute on it.
+            </exception>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputDataListElement.Options">
+            <summary>
+            Retrieves all possible options in the datalist element.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputDataListElement.SelectOptionByIndex(System.Int32)">
+            <summary>
+            Sets the value by the index of the option. If the option has no
+            value then its text is used.
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputDataListElement.SelectOptionByText(System.String,System.Boolean)">
+            <summary>
+            Finds the option matching the text and sets the input value to it.
+            </summary>
+            <param name="text"></param>
+            <param name="partialMatch"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputDataListElement.SelectOptionByElement(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Sets the value based on the value of the option element.
+            </summary>
+            <param name="optionElement">Must be an option element.</param>
+        </member>
         <member name="T:ApertureLabs.Selenium.WebElements.Inputs.InputElement">
             <summary>
             Wrapper around an IWebElement to provide extra functionality for input
@@ -795,6 +1143,11 @@
         </member>
         <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Displayed">
             <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Type">
+            <summary>
+            Returns the type of the input element.
+            </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Clear">
             <inheritdoc/>
@@ -929,6 +1282,140 @@
             html.
             </summary>
             <param name="index"></param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Meta.MetaElement">
+            <summary>
+            MetaElement.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.TagName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Text">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Enabled">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Selected">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Location">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Displayed">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Content">
+            <summary>
+            Retrieves the value of the 'content' attribute.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Name">
+            <summary>
+            Returns the value of the 'name' attribute.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Click">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.FindElement(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.FindElements(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.GetAttribute(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.GetCssValue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.GetProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.SendKeys(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Meta.MetaElement.Submit">
+            <inheritdoc/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Option.OptionElement">
+            <summary>
+            OptionElement.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Option.OptionElement.TagName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Option.OptionElement.Text">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Option.OptionElement.Enabled">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Option.OptionElement.Selected">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Option.OptionElement.Location">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Option.OptionElement.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.Option.OptionElement.Displayed">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.Click">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.FindElement(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.FindElements(OpenQA.Selenium.By)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.GetAttribute(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.GetCssValue(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.GetProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.SendKeys(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.Submit">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Option.OptionElement.GetValue">
+            <summary>
+            Returns the value via attribute or if not present returns the text.
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

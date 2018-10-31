@@ -70,12 +70,26 @@ namespace ApertureLabs.Selenium
         }
 
         /// <summary>
+        /// Tries to extract number from the text of the element.
+        /// </summary>
+        /// <returns></returns>
+        public decimal ExtractPrice()
+        {
+            var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
+            var matches = r.Match(InnerText);
+
+            var number = Decimal.Parse(matches.Groups[1].ToString());
+
+            return number;
+        }
+
+        /// <summary>
         /// Extracts a number from the Text of the element. If the text
         /// of the element is "Some text...-34.32...more text" it will
         /// return -34.32.
         /// </summary>
         /// <returns></returns>
-        public double ExtractFloatingPointNumber()
+        public double ExtractDouble()
         {
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
             var matches = r.Match(InnerText);

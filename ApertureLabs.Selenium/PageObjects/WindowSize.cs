@@ -13,7 +13,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <summary>
         /// Default size for desktop (1001, 999).
         /// </summary>
-        public static readonly Size DefaultDesktop = new Size(1001, 999);
+        public static readonly Size DefaultDesktop = new Size(1201, 999);
 
         /// <summary>
         ///  Default size for tablet (768, 999).

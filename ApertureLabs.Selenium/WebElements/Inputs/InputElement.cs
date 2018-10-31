@@ -61,6 +61,22 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         /// <inheritdoc/>
         public bool Displayed => Element.Displayed;
 
+        /// <summary>
+        /// Returns the type of the input element.
+        /// </summary>
+        public string Type
+        {
+            get
+            {
+                var type = GetAttribute("type");
+
+                if (String.IsNullOrEmpty(type))
+                    type = "text";
+
+                return type;
+            }
+        }
+
         #endregion
 
         #region Methods
