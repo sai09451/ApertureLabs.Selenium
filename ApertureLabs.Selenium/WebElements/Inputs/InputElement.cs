@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.WebElements.Inputs
 {
@@ -28,9 +29,11 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         /// </exception>
         public InputElement(IWebElement element)
         {
-            if (!String.Equals(element.TagName, "input", StringComparison.InvariantCultureIgnoreCase))
+            if (!String.Equals(element.TagName,
+                "input",
+                StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new InvalidCastException("The element wasn't an input element.");
+                throw new UnexpectedTagNameException("The element wasn't an input element.");
             }
 
             Element = element;
@@ -163,7 +166,9 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         {
             var asString = (string)Convert.ChangeType(value, typeof(string));
             Element.Clear();
-            Element.SendKeys(asString);
+
+            if (!String.IsNullOrEmpty(asString))
+                Element.SendKeys(asString);
         }
 
         #endregion

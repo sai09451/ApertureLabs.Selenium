@@ -412,18 +412,7 @@
             <param name="by"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.UntilPageReloads(OpenQA.Selenium.Support.UI.WebDriverWait,System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Waits until the page reloads. This is accomplished by first
-            locating the root html element, polling it until it becomes stale,
-            and then waiting until the document.readyState is valid.
-            </summary>
-            <param name="wait"></param>
-            <param name="readyStates">
-            Defaults to "complete". These values are case sensitive.
-            </param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.UntilStale(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},OpenQA.Selenium.IWebElement)">
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.UntilStale(OpenQA.Selenium.Support.UI.WebDriverWait,OpenQA.Selenium.IWebElement)">
             <summary>
             Waits until the element is stale.
             </summary>
@@ -475,30 +464,145 @@
             var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
             </example>
         </member>
-        <member name="T:ApertureLabs.Selenium.Models.IAddress">
+        <member name="T:ApertureLabs.Selenium.Models.NopModels.INopAddress">
             <summary>
-            IAddress.
+            Respsents an address according to NopCommerce.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Models.IAddress.Location">
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.FirstName">
             <summary>
-            The lat/lng of the address.
+            FirstName.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Models.ILocation">
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.LastName">
             <summary>
-            Represents longitude/latitude.
+            LastName.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Models.ILocation.Longitude">
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.Email">
             <summary>
-            Longitude
+            Email.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Models.ILocation.Latitude">
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.Company">
             <summary>
-            Latitude
+            Company.
             </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.Country">
+            <summary>
+            Country.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.StateProvince">
+            <summary>
+            StateProvice.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.City">
+            <summary>
+            City.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.Address1">
+            <summary>
+            Address1.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.Address2">
+            <summary>
+            Address2.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.PostalCode">
+            <summary>
+            PostalCode.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.PhoneNumber">
+            <summary>
+            PhoneNumber
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.INopAddress.FaxNumber">
+            <summary>
+            FaxNumber.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Models.NopModels.NopAddress">
+            <summary>
+            Default implementation of INopAddress.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.#ctor(System.String)">
+            <summary>
+            Parses a string into a NopAddress.
+            </summary>
+            <param name="address"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.FirstName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.LastName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.Email">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.Company">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.Country">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.StateProvince">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.City">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.Address1">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.Address2">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.PostalCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.PhoneNumber">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Models.NopModels.NopAddress.FaxNumber">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.Equals(ApertureLabs.Selenium.Models.NopModels.INopAddress)">
+            <summary>
+            Checks if the addresses are the same.
+            </summary>
+            <param name="address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.ToString">
+            <summary>
+            Returns an address string that is usually formatted identical to
+            ones displayed by Nop.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.IsValidAddress">
+            <summary>
+            Checks if this is a valid address.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjectFactory">
             <summary>
@@ -1031,7 +1135,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.WebElements.Inputs.CheckboxElement.#ctor(OpenQA.Selenium.IWebElement)">
             <summary>
-            Ctor
+            Ctor.
             </summary>
             <param name="element"></param>
             <exception cref="T:OpenQA.Selenium.InvalidElementStateException">

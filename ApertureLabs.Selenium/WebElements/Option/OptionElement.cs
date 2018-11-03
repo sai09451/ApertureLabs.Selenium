@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
 using System.Drawing;
 
@@ -24,7 +25,7 @@ namespace ApertureLabs.Selenium.WebElements.Option
         public OptionElement(IWebElement element)
         {
             if (element.TagName != "option")
-                throw new InvalidElementStateException("Expected tagname to be 'option'.");
+                throw new UnexpectedTagNameException("Expected tagname to be 'option'.");
 
             this.element = element;
         }

@@ -11,7 +11,7 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         #region Constructor
 
         /// <summary>
-        /// Ctor
+        /// Ctor.
         /// </summary>
         /// <param name="element"></param>
         /// <exception cref="InvalidElementStateException">

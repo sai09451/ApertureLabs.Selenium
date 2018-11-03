@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -31,7 +32,7 @@ namespace ApertureLabs.Selenium.WebElements.Meta
 
             if (element.TagName != "meta")
             {
-                throw new InvalidElementStateException("Expected 'meta' as the tagname.");
+                throw new UnexpectedTagNameException("Expected 'meta' as the tagname.");
             }
 
             this.element = element;

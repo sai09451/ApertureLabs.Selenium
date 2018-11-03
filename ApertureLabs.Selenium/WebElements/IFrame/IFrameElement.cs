@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -33,8 +34,7 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
         {
             if (!String.Equals(element.TagName, "iframe", StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidCastException("The elements tag name wasn't" +
-                    " iframe.");
+                throw new UnexpectedTagNameException("Expected the tagname to be iframe.");
             }
 
             this.element = element;

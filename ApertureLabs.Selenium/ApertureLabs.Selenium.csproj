@@ -8,12 +8,12 @@
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageTags>ApertureLabs, Selenium</PackageTags>
-    <Version>1.0.22</Version>
-    <AssemblyVersion>1.0.22.0</AssemblyVersion>
+    <Version>1.0.25</Version>
+    <AssemblyVersion>1.0.25.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>7.1</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>1.0.22.0</FileVersion>
+    <FileVersion>1.0.25.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

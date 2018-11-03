@@ -1,5 +1,6 @@
 ﻿using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -31,7 +32,7 @@ namespace ApertureLabs.Selenium.WebElements.Canvas
                 "canvas",
                 StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidElementStateException("Expected tagname to be 'canvas'.");
+                throw new UnexpectedTagNameException("Expected tagname to be 'canvas'.");
             }
         }
 
