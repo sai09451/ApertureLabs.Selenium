@@ -109,6 +109,27 @@ namespace ApertureLabs.Selenium.Models.NopModels
 
         #region Methods
 
+        /// <inheritdoc/>
+        /// <seealso cref="https://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode/263416#263416"/>
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap.
+            {
+                int hash = 17;
+                hash = hash * 23 + FirstName?.GetHashCode() ?? 0;
+                hash = hash * 23 + LastName?.GetHashCode() ?? 0;
+                hash = hash * 23 + Email?.GetHashCode() ?? 0;
+                hash = hash * 23 + Country?.GetHashCode() ?? 0;
+                hash = hash * 23 + StateProvince?.GetHashCode() ?? 0;
+                hash = hash * 23 + City?.GetHashCode() ?? 0;
+                hash = hash * 23 + Address1?.GetHashCode() ?? 0;
+                hash = hash * 23 + Address2?.GetHashCode() ?? 0;
+                hash = hash * 23 + PostalCode?.GetHashCode() ?? 0;
+                hash = hash * 23 + PhoneNumber?.GetHashCode() ?? 0;
+                return hash;
+            }
+        }
+
         /// <summary>
         /// Checks if the addresses are the same.
         /// </summary>

@@ -310,7 +310,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.Children(OpenQA.Selenium.IWebElement)">
             <summary>
-                Selects only direct child elements of this element.
+            Selects only direct child elements of this element.
             </summary>
             <param name="element"></param>
             <returns></returns>
@@ -369,6 +369,13 @@
         <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetTextHelper(OpenQA.Selenium.IWebElement)">
             <summary>
             Shorthand for <code>new TextHelper(element);</code>.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.IsStale(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Checks if an element is stale.
             </summary>
             <param name="element"></param>
             <returns></returns>
@@ -583,6 +590,10 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.Equals(System.Object)">
             <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.GetHashCode">
+            <inheritdoc/>
+            <seealso cref="!:https://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode/263416#263416"/>
         </member>
         <member name="M:ApertureLabs.Selenium.Models.NopModels.NopAddress.Equals(ApertureLabs.Selenium.Models.NopModels.INopAddress)">
             <summary>
@@ -1064,7 +1075,7 @@
             </summary>
             <param name="element"></param>
             <param name="driver"></param>
-            <exception cref="T:System.InvalidCastException">
+            <exception cref="T:OpenQA.Selenium.Support.UI.UnexpectedTagNameException">
             Thrown if the element isn't an iframe.
             </exception>
         </member>
@@ -1088,6 +1099,20 @@
         </member>
         <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Displayed">
             <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.InFrameAction(System.Action)">
+            <summary>
+            Executes an action in the context of the IFrame.
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.InFrameFunction``1(System.Func{``0})">
+            <summary>
+            Executes a function in the context of the IFrame.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="function"></param>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.EnterIframe">
             <summary>

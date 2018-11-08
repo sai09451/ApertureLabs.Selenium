@@ -8,12 +8,14 @@
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageTags>ApertureLabs, Selenium</PackageTags>
-    <Version>1.0.25</Version>
-    <AssemblyVersion>1.0.25.0</AssemblyVersion>
+    <Version>1.0.30</Version>
+    <AssemblyVersion>1.0.30.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>7.1</LangVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>1.0.25.0</FileVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <FileVersion>1.0.30.0</FileVersion>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <NeutralLanguage />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -21,8 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="3.14.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="3.14.0" />
+    <PackageReference Include="Selenium.Support" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,5 +32,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetDir)..\*.nupkg&quot; &quot;%USERPROFILE%\Local Nuget Repo\&quot; /y" />
+  </Target>
 
 </Project>

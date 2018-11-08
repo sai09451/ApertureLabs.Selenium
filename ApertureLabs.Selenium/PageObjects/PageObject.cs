@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.Events;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -94,6 +95,16 @@ namespace ApertureLabs.Selenium.PageObjects
             {
                 eventFiringWebDriver.Navigated += OnNavigation;
                 assignedEventListeners = true;
+            }
+
+            // Navigate to this pages Uri if the current url is blank.
+            if (WrappedDriver is ChromeDriver)
+            {
+                if (String.IsNullOrEmpty(WrappedDriver.Url)
+                    || WrappedDriver.Url == "data:,")
+                {
+                    WrappedDriver.Navigate().GoToUrl(Uri.ToString());
+                }
             }
 
             return this;

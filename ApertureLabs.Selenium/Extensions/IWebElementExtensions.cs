@@ -13,7 +13,7 @@ namespace ApertureLabs.Selenium.Extensions
     public static class IWebElementExtensions
     {
         /// <summary>
-        ///     Selects only direct child elements of this element.
+        /// Selects only direct child elements of this element.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
@@ -138,6 +138,24 @@ namespace ApertureLabs.Selenium.Extensions
         public static TextHelper GetTextHelper(this IWebElement element)
         {
             return new TextHelper(element);
+        }
+
+        /// <summary>
+        /// Checks if an element is stale.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static bool IsStale(this IWebElement element)
+        {
+            try
+            {
+                element.GetAttribute("any");
+                return false;
+            }
+            catch (StaleElementReferenceException)
+            {
+                return true;
+            }
         }
     }
 }
