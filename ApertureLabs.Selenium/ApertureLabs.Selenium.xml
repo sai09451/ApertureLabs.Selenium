@@ -938,6 +938,20 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.FromRgbString(System.String)">
+            <summary>
+            Returns the color associated with a rgb string.
+            </summary>
+            <param name="rgbStr">Can be RGB or ARGB.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.FromHexString(System.String)">
+            <summary>
+            Creates a color from a hex string.
+            </summary>
+            <param name="hexStr"></param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.MajorWebDriver">
             <summary>
             Enum of common web drivers.

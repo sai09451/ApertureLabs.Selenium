@@ -2,6 +2,8 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using System;
+using System.Drawing;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium
@@ -161,6 +163,94 @@ namespace ApertureLabs.Selenium
             }
 
             return Int32.Parse(matches.Groups[1].ToString());
+        }
+
+        /// <summary>
+        /// Returns the color associated with a rgb string.
+        /// </summary>
+        /// <param name="rgbStr">Can be RGB or ARGB.</param>
+        /// <returns></returns>
+        public static Color FromRgbString(string rgbStr)
+        {
+            var color = default(Color);
+            var regex = new Regex(@"rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)");
+            var matches = regex.Matches(rgbStr);
+
+            foreach (Match match in matches)
+            {
+                GroupCollection groups = match.Groups;
+
+                var r = int.Parse(groups[1].Value);
+                var g = int.Parse(groups[2].Value);
+                var b = int.Parse(groups[3].Value);
+                var a = 255;
+
+                if (groups.Count == 5)
+                {
+                    a *= (int)(((double)a) * double.Parse(groups[4].Value));
+                }
+
+                color = Color.FromArgb(a, r, g, b);
+            }
+
+            return color;
+        }
+
+        /// <summary>
+        /// Creates a color from a hex string.
+        /// </summary>
+        /// <param name="hexStr"></param>
+        /// <returns></returns>
+        public static Color FromHexString(string hexStr)
+        {
+            var sixDigitRegex = new Regex(@"#([\w]{2})([\w]{2})([\w]{2})");
+            var threeDigitRegex = new Regex(@"#([\w]{1})([\w]{1})([\w]{1})");
+
+            int r = 0;
+            int g = 0;
+            int b = 0;
+
+            // Check if the hex str is abbreviated.
+            if (sixDigitRegex.IsMatch(hexStr))
+            {
+                // Is six digit.
+                var matches = sixDigitRegex.Matches(hexStr);
+
+                foreach (Match match in matches)
+                {
+                    GroupCollection groups = match.Groups;
+
+                    r = int.Parse(groups[1].Value, NumberStyles.HexNumber);
+                    g = int.Parse(groups[2].Value, NumberStyles.HexNumber);
+                    b = int.Parse(groups[3].Value, NumberStyles.HexNumber);
+                }
+            }
+            else
+            {
+                // Is three digits.
+                var matches = threeDigitRegex.Matches(hexStr);
+
+                foreach (Match match in matches)
+                {
+                    GroupCollection groups = match.Groups;
+
+                    int fromStr (string str)
+                    {
+                        return int.Parse(str + str, NumberStyles.HexNumber);
+                    }
+
+                    r = fromStr(groups[0].Value);
+                    g = fromStr(groups[1].Value);
+                    b = fromStr(groups[2].Value);
+                }
+            }
+
+            return Color.FromArgb(r, g, b);
+        }
+
+        public static Color FromCssString(string cssColor)
+        {
+
         }
 
         #endregion
