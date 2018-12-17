@@ -4,6 +4,8 @@ using OpenQA.Selenium.Internal;
 using System;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium
@@ -248,9 +250,241 @@ namespace ApertureLabs.Selenium
             return Color.FromArgb(r, g, b);
         }
 
+        /// <summary>
+        /// Creates a color from html color name.
+        /// </summary>
+        /// <param name="htmlColor"></param>
+        /// <returns></returns>
+        public static Color FromHtmlColorString(string htmlColor)
+        {
+            return Color.FromName(htmlColor);
+        }
+
+        /// <summary>
+        /// Creates a color from rgba color string.
+        /// </summary>
+        /// <param name="rgbaString"></param>
+        /// <returns></returns>
+        public static Color FromRgbaString(string rgbaString)
+        {
+            var color = default(Color);
+            var regex = new Regex(@"rgba\((\d{1,3}), (\d{1,3}), (\d{1,3}), (\d{1,3})\)");
+            var matches = regex.Matches(rgbaString);
+
+            foreach (Match match in matches)
+            {
+                GroupCollection groups = match.Groups;
+
+                var r = int.Parse(groups[1].Value);
+                var g = int.Parse(groups[2].Value);
+                var b = int.Parse(groups[3].Value);
+                var a = int.Parse(groups[4].Value); ;
+
+                if (groups.Count == 5)
+                {
+                    a *= (int)(((double)a) * double.Parse(groups[4].Value));
+                }
+
+                color = Color.FromArgb(a, r, g, b);
+            }
+
+            return color;
+        }
+
+        /// <summary>
+        /// Creates a Color from hsl.
+        /// </summary>
+        /// <param name="hslString"></param>
+        /// <returns></returns>
+        /// <seealso cref="https://www.w3.org/TR/css-color-3/#hsl-color"/>
+        public static Color ColorFromHslString(string hslString)
+        {
+            var color = default(Color);
+            var regex = new Regex(@"^hsl\((\d*).?\s*,?\s*(\d*).?\s*,?\s*(.\d*).?\)$");
+            var matches = regex.Matches(hslString);
+
+            foreach (Match match in matches)
+            {
+                GroupCollection groups = match.Groups;
+
+                //HOW TO RETURN hsl.to.rgb(h, s, l): 
+                //   SELECT:
+                //      IF l <= 0.5: PUT l*(s + 1) IN m2
+                //      ELSE: PUT l+s - l * s IN m2
+                //   PUT l*2 - m2 IN m1
+                //   PUT hue.to.rgb(m1, m2, h + 1 / 3) IN r
+                //   PUT hue.to.rgb(m1, m2, h) IN g
+                //   PUT hue.to.rgb(m1, m2, h - 1 / 3) IN b
+                //   RETURN(r, g, b)
+
+                //HOW TO RETURN hue.to.rgb(m1, m2, h):
+                //   IF h<0: PUT h+1 IN h
+                //   IF h> 1: PUT h-1 IN h
+                //   IF h*6 < 1: RETURN m1+(m2 - m1) * h * 6
+                //   IF h*2 < 1: RETURN m2
+                //   IF h*3 < 2: RETURN m1+(m2 - m1) * (2 / 3 - h) * 6
+                //   RETURN m1
+
+                var h = int.Parse(groups[1].Value);
+                var s = int.Parse(groups[2].Value);
+                var l = int.Parse(groups[3].Value);
+
+                var m1 = 0;
+                var m2 = 0;
+
+                int r = 0,
+                    g = 0,
+                    b = 0;
+
+                // Local function equivilent to the hue.to.rgb function.
+                int hueToRgb(int _h)
+                {
+                    if (_h < 0)
+                        _h = _h + 1;
+
+                    if (_h > 1)
+                        _h = _h - 1;
+
+                    if (_h * 6 < 1)
+                        return m1 + (m2 - m1) * _h * 6;
+                    else if (_h * 2 < 1)
+                        return m2;
+                    else if (_h * 3 < 2)
+                        return m1 + (m2 - m1) * (2 / 3 - _h) * 6;
+                    else
+                        return m1;
+                }
+
+                if (l <= 0.5)
+                    m2 = l * (s + 1);
+                else
+                    m2 = l + s - 1 * s;
+
+                m1 = l * 2 - m2;
+                r = hueToRgb(h + 1 / 3);
+                g = hueToRgb(h);
+                b = hueToRgb(h - 1 / 3);
+
+                color = Color.FromArgb(255, r, g, b);
+
+                //double r = 0, g = 0, b = 0;
+                //double temp1, temp2;
+
+                //if (l == 0)
+                //{
+                //    r = g = b = 0;
+                //}
+                //else
+                //{
+                //    if (s == 0)
+                //    {
+                //        r = g = b = l;
+                //    }
+                //    else
+                //    {
+                //        temp2 = ((l <= 0.5) ? l * (1.0 + s) : l + s - (l * s));
+                //        temp1 = 2.0 * l - temp2;
+
+                //        double[] t3 = new double[] { h + 1.0 / 3.0, h, h - 1.0 / 3.0 };
+                //        double[] clr = new double[] { 0, 0, 0 };
+                //        for (int i = 0; i < 3; i++)
+                //        {
+                //            if (t3[i] < 0)
+                //                t3[i] += 1.0;
+
+                //            if (t3[i] > 1)
+                //                t3[i] -= 1.0;
+
+                //            if (6.0 * t3[i] < 1.0)
+                //                clr[i] = temp1 + (temp2 - temp1) * t3[i] * 6.0;
+                //            else if (2.0 * t3[i] < 1.0)
+                //                clr[i] = temp2;
+                //            else if (3.0 * t3[i] < 2.0)
+                //                clr[i] = (temp1 + (temp2 - temp1) * ((2.0 / 3.0) - t3[i]) * 6.0);
+                //            else
+                //                clr[i] = temp1;
+                //        }
+
+                //        r = clr[0];
+                //        g = clr[1];
+                //        b = clr[2];
+                //    }
+                //}
+
+                //color = Color.FromArgb(255,
+                //    (int)(255 * r),
+                //    (int)(255 * g),
+                //    (int)(255 * b));
+            }
+
+            return color;
+        }
+
+        /// <summary>
+        /// Convets a css color string to a Color. Recognizes hex, rgb, rgba,
+        /// and html color codes.
+        /// </summary>
+        /// <param name="cssColor"></param>
+        /// <returns></returns>
         public static Color FromCssString(string cssColor)
         {
+            if (IsHexString(cssColor))
+                return FromHexString(cssColor);
+            else if (IsRgbString(cssColor))
+                return FromRgbString(cssColor);
+            else if (IsRgbaString(cssColor))
+                return FromRgbaString(cssColor);
+            else if (IsHtmlString(cssColor))
+                return FromHtmlColorString(cssColor);
+            else if (IsHslString(cssColor))
+                throw new NotImplementedException();
+            else if (IsHslaString(cssColor))
+                throw new NotImplementedException();
+            else
+                throw new ArgumentException($"Failed to determine the format " +
+                    $"of the css color string: '{cssColor}'.");
+        }
 
+        private static bool IsRgbaString(string cssColorStr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool IsRgbString(string cssColorStr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool IsHexString(string cssColorStr)
+        {
+            throw new NotImplementedException();
+
+            // var isHexStr = cssColorStr.StartsWith("#")
+            //     && (cssColorStr.Length == 4 || cssColorStr.Length == 7);
+        }
+
+        private static bool IsHtmlString(string cssColorStr)
+        {
+            var validColorNames = typeof(Color)
+                .GetProperties(BindingFlags.Static)
+                .Select(p => p.Name)
+                .ToList();
+
+            return validColorNames.Any(n => String.Equals(n,
+                cssColorStr,
+                StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool IsHslString(string cssColorStr)
+        {
+            var c = Color.FromArgb(255, 255, 225, 255);
+
+            throw new NotImplementedException();
+        }
+
+        private static bool IsHslaString(string cssColorStr)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

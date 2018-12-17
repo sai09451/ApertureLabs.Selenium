@@ -952,6 +952,36 @@
             <param name="hexStr"></param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.FromHtmlColorString(System.String)">
+            <summary>
+            Creates a color from html color name.
+            </summary>
+            <param name="htmlColor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.FromRgbaString(System.String)">
+            <summary>
+            Creates a color from rgba color string.
+            </summary>
+            <param name="rgbaString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.ColorFromHslString(System.String)">
+            <summary>
+            Creates a Color from hsl.
+            </summary>
+            <param name="hslString"></param>
+            <returns></returns>
+            <seealso cref="!:https://www.w3.org/TR/css-color-3/#hsl-color"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TextHelper.FromCssString(System.String)">
+            <summary>
+            Convets a css color string to a Color. Recognizes hex, rgb, rgba,
+            and html color codes.
+            </summary>
+            <param name="cssColor"></param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.MajorWebDriver">
             <summary>
             Enum of common web drivers.

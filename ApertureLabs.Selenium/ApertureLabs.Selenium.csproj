@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\ApertureLabs.Selenium.xml</DocumentationFile>
+    <DocumentationFile>Docs/ApertureLabs.Selenium.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

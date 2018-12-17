@@ -61,5 +61,14 @@ namespace ApertureLabs.Selenium.UnitTests
 
             #endregion
         }
+
+        [DataTestMethod]
+        [DataRow("hsl(0, 100%, 50%)")] // Red
+        public void HslTest(string hslString)
+        {
+            var color = TextHelper.ColorFromHslString(hslString);
+
+            Assert.IsTrue(color.R == 255);
+        }
     }
 }
