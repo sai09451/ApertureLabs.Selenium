@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ApertureLabs.Selenium.Css
 {
@@ -21,7 +19,12 @@ namespace ApertureLabs.Selenium.Css
         /// <param name="value"></param>
         public CssValue(string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException(nameof(value));
+
             Value = value;
+            IsAuto = String.Equals(value, "auto", StringComparison.Ordinal);
+            IsInherit = String.Equals(value, "inherit", StringComparison.Ordinal);
         }
 
         #endregion
@@ -32,6 +35,48 @@ namespace ApertureLabs.Selenium.Css
         /// Original css string.
         /// </summary>
         public string Value { get; private set; }
+
+        /// <summary>
+        /// True if the value is 'auto'.
+        /// </summary>
+        public bool IsAuto { get; private set; }
+
+        /// <summary>
+        /// True if the value is 'unset'.
+        /// </summary>
+        public bool IsUnset { get; private set; }
+
+        /// <summary>
+        /// True if the value is 'inherit'.
+        /// </summary>
+        public bool IsInherit { get; private set; }
+
+        /// <summary>
+        /// True if the the value is auto or inherit or unset.
+        /// </summary>
+        public bool IsCssWideKeyword => IsAuto || IsUnset || IsInherit;
+
+        /// <summary>
+        /// Returns the original css string.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Value;
+        }
+
+        #endregion
+
+        #region Implicit Conversions
+
+        /// <summary>
+        /// Implicitly converts a CssValue to a string.
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator string(CssValue value)
+        {
+            return value.ToString();
+        }
 
         #endregion
     }

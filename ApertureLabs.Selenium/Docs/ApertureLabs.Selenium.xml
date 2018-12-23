@@ -149,6 +149,39 @@
             Goes to the last result.
             </summary>
         </member>
+        <member name="T:ApertureLabs.Selenium.Css.CssParsingUtils">
+            <summary>
+            Contains utility methods for parsing css strings.
+            </summary>
+            <see cref="!:https://github.com/chromium/chromium/blob/b189a621380cdf6dfa9c23e20eb5809db5224a33/third_party/blink/renderer/core/css/properties/css_parsing_utils.cc"/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Css.CssValue">
+            <summary>
+            Representing and converting css values (length, color, angle, etc...).
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssValue.#ctor(System.String)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssValue.Value">
+            <summary>
+            Original css string.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Css.ICssGrammar">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Css.ICssGrammarParser">
+            <summary>
+            Used to parse css strings.
+            </summary>
+            <seealso cref="!:https://drafts.csswg.org/css-syntax-3/#parse-comma-separated-list-of-component-values"/>
+        </member>
         <member name="T:ApertureLabs.Selenium.Data">
             <summary>
             Used for generating date-of-births, names, etc...
