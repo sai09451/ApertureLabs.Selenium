@@ -149,11 +149,312 @@
             Goes to the last result.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Css.CssParsingUtils">
+        <member name="T:ApertureLabs.Selenium.Css.CssColor">
             <summary>
-            Contains utility methods for parsing css strings.
+            Represents a css color.
             </summary>
-            <see cref="!:https://github.com/chromium/chromium/blob/b189a621380cdf6dfa9c23e20eb5809db5224a33/third_party/blink/renderer/core/css/properties/css_parsing_utils.cc"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssColor.#ctor(System.String)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssColor.Color">
+            <summary>
+            The color parsed from the value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssColor.ColorFromHsl">
+            <summary>
+            Assigns Color from value interperted as an hsl function.
+            </summary>
+            <returns></returns>
+            <seealso cref="!:https://www.w3.org/TR/css-color-3/#hsl-color"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssColor.ColorFromRgb">
+            <summary>
+            Creates a color from rgba color string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssColor.ColorFromHex">
+            <summary>
+            Creates a color from a hex string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssColor.Normalize(System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Maps a value in a range to another range.
+            </summary>
+            <param name="value">The number being mapped.</param>
+            <param name="actualMin">Ignored if infinity.</param>
+            <param name="actualMax">Ignored if infinity.</param>
+            <param name="desiredMin">Defaults to zero.</param>
+            <param name="desiredMax">Defaults to one.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Css.CssColorFormat">
+            <summary>
+            The supported color formats.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.Unknown">
+            <summary>
+            Unable to determine the color format.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.CurrentColor">
+            <summary>
+            The value of the color property. Similar to one of the css-wide
+            keywords like auto or inherit.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.BasicColorKeyword">
+            <summary>
+            The value is of the list of html color keywords.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.Transparent">
+            <summary>
+            The value is transparent.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.Hexadecimal">
+            <summary>
+            Value is in the hex format. Can be #fff or #ffffff.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.RGB">
+            <summary>
+            Value is in the rgb(...) format.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.RGBA">
+            <summary>
+            Value is in the rgba(...) format.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.HSL">
+            <summary>
+            Value is in the hsl(...) format.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssColorFormat.HSLA">
+            <summary>
+            Value is in the hsla(...) format.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Css.CssDimension">
+            <summary>
+            Represents a 'number' value for css.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssDimension.#ctor(System.String)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssDimension.Number">
+            <summary>
+            The value as a number.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssDimension.UnitOfMeasurement">
+            <summary>
+            The unit of measurement.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Css.CssFunction">
+            <summary>
+            Represents a css function.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Css.CssUnit">
+            <summary>
+            Represents a css unit of measurement.
+            </summary>
+            <seealso cref="!:https://drafts.csswg.org/css-values-4"/>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.None">
+            <summary>
+            There is no unit associated with the number.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Centimeters">
+            <summary>
+            ('cm')
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Millimeters">
+            <summary>
+            ('mm')
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.QuarterMillimeters">
+            <summary>
+            ('Q')
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Inches">
+            <summary>
+            ('in')
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Picas">
+            <summary>
+            ('pc')
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Points">
+            <summary>
+            ('pt')
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Pixels">
+            <summary>
+            ('px')
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Degrees">
+            <summary>
+            ('deg') Degrees. There are 360 degrees in a full circle.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Gradians">
+            <summary>
+            ('grad') Gradians, also known as "gons" or "grades". There are 400
+            gradians in a full circle.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Radians">
+            <summary>
+            ('rad') Radians. There are 2π radians in a full circle.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Turn">
+            <summary>
+            ('turn') Turns. There is 1 turn in a full circle.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Seconds">
+            <summary>
+            ('s') Seconds.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Milliseconds">
+            <summary>
+            ('ms') Milliseconds. There are 1000 milliseconds in a second.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Hertz">
+            <summary>
+            ('Hz') Hertz. It represents the number of occurrences per second.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.KiloHertz">
+            <summary>
+            ('kHz') KiloHertz. A kiloHertz is 1000 Hertz.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.Percent">
+            <summary>
+            ('%') Varies based on which style property it's being used with.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.EM">
+            <summary>
+            ('em') Relative to the font size of the element.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.EX">
+            <summary>
+            ('ex') X-height of the element’s font.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.CAP">
+            <summary>
+            ('cap') Relative to the cap height (the nominal height of capital
+            letters) of the element’s font.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.CH">
+            <summary>
+            ('ch') Relative to the average character advance of a narrow glyph
+            in the element’s font, as represented by the “0” (ZERO, U+0030)
+            glyph.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.IC">
+            <summary>
+            ('ic') Relative to the average character advance of a fullwidth
+            glyph in the element’s font, as represented by the “水” (CJK water
+            ideograph, U+6C34) glyph.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.REM">
+            <summary>
+            ('rem') Relative to the font size of the root element.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.LineHeight">
+            <summary>
+            ('lh') Relative to the line height of the element.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.RootLineHeight">
+            <summary>
+            ('rlh') Relative to the line height of the root element.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.ViewWidth">
+            <summary>
+            ('vw') Equal to 1% of the width of the initial containing block.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.ViewHeight">
+            <summary>
+            ('vh') Equal to 1% of the height of the initial containing block.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.ViewInline">
+            <summary>
+            ('vi') Equal to 1% of the size of the initial containing block in
+            the direction of the root element’s inline axis.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.ViewBlock">
+            <summary>
+            ('vb') Equal to 1% of the size of the initial containing block in
+            the direction of the root element’s block axis.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.ViewMinimum">
+            <summary>
+            ('vmin') Equal to the smaller 'vw' or 'vh'.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.ViewMaximum">
+            <summary>
+            ('vmax') Equal to the larger 'vw' or 'vh'.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.DotsPerInch">
+            <summary>
+            ('dpi') Dots per inch.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.DotsPerCentimeter">
+            <summary>
+            ('dpcm') Dots per centimeter.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Css.CssUnit.DotsPerPixelUnit">
+            <summary>
+            ('dppx' | 'x') Dots per 'px' unit.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.Css.CssValue">
             <summary>
@@ -171,16 +472,37 @@
             Original css string.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Css.ICssGrammar">
+        <member name="P:ApertureLabs.Selenium.Css.CssValue.IsAuto">
             <summary>
-            
+            True if the value is 'auto'.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Css.ICssGrammarParser">
+        <member name="P:ApertureLabs.Selenium.Css.CssValue.IsUnset">
             <summary>
-            Used to parse css strings.
+            True if the value is 'unset'.
             </summary>
-            <seealso cref="!:https://drafts.csswg.org/css-syntax-3/#parse-comma-separated-list-of-component-values"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssValue.IsInherit">
+            <summary>
+            True if the value is 'inherit'.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssValue.IsCssWideKeyword">
+            <summary>
+            True if the the value is auto or inherit or unset.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssValue.ToString">
+            <summary>
+            Returns the original css string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssValue.op_Implicit(ApertureLabs.Selenium.Css.CssValue)~System.String">
+            <summary>
+            Implicitly converts a CssValue to a string.
+            </summary>
+            <param name="value"></param>
         </member>
         <member name="T:ApertureLabs.Selenium.Data">
             <summary>
@@ -969,50 +1291,6 @@
             Fetches the last four digits from a partial credit card number 
             in a string. Ex: (blah x4444 blah blah) text will return 4444.
             </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.TextHelper.FromRgbString(System.String)">
-            <summary>
-            Returns the color associated with a rgb string.
-            </summary>
-            <param name="rgbStr">Can be RGB or ARGB.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.TextHelper.FromHexString(System.String)">
-            <summary>
-            Creates a color from a hex string.
-            </summary>
-            <param name="hexStr"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.TextHelper.FromHtmlColorString(System.String)">
-            <summary>
-            Creates a color from html color name.
-            </summary>
-            <param name="htmlColor"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.TextHelper.FromRgbaString(System.String)">
-            <summary>
-            Creates a color from rgba color string.
-            </summary>
-            <param name="rgbaString"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.TextHelper.ColorFromHslString(System.String)">
-            <summary>
-            Creates a Color from hsl.
-            </summary>
-            <param name="hslString"></param>
-            <returns></returns>
-            <seealso cref="!:https://www.w3.org/TR/css-color-3/#hsl-color"/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.TextHelper.FromCssString(System.String)">
-            <summary>
-            Convets a css color string to a Color. Recognizes hex, rgb, rgba,
-            and html color codes.
-            </summary>
-            <param name="cssColor"></param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.MajorWebDriver">

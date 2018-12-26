@@ -7,7 +7,7 @@ using System;
 namespace ApertureLabs.Selenium.PageObjects
 {
     /// <summary>
-    ///     Default implementation of IPageObject
+    /// Default implementation of IPageObject
     /// </summary>
     public abstract class PageObject : IPageObject, IDisposable
     {
@@ -51,7 +51,7 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Methods
 
         /// <summary>
-        ///     By default will check the url to see if it starts with Uri.
+        /// By default will check the url to see if it starts with Uri.
         /// </summary>
         /// <returns></returns>
         public virtual bool IsStale()
@@ -65,24 +65,24 @@ namespace ApertureLabs.Selenium.PageObjects
         }
 
         /// <summary>
-        ///     If overridding this don't forget to call base.Load().
+        /// If overridding this don't forget to call base.Load().
         /// 
-        ///     NOTE: Will navigate to the pages url if the current drivers url
-        ///     is empty.
+        /// NOTE: Will navigate to the pages url if the current drivers url
+        /// is empty.
         /// </summary>
         /// <remarks>
-        ///     If the driver is an EventFiringWebDriver an event listener will
-        ///     be added to the 'Navigated' event and uses the url to determine
-        ///     if the page is 'stale'.
+        /// If the driver is an EventFiringWebDriver an event listener will
+        /// be added to the 'Navigated' event and uses the url to determine
+        /// if the page is 'stale'.
         /// </remarks>
         /// <returns></returns>
         /// <exception cref="ObjectDisposedException">
-        ///     Occurs when trying to use after this instance has been
-        ///     disposed.
+        /// Occurs when trying to use after this instance has been
+        /// disposed.
         /// </exception>
         /// <exception cref="LoadableComponentException">
-        ///     Thrown when calling <code>Load()</code> and not on the correct
-        ///     url.
+        /// Thrown when calling <code>Load()</code> and not on the correct
+        /// url.
         /// </exception>
         public virtual ILoadableComponent Load()
         {

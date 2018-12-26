@@ -181,7 +181,12 @@ namespace ApertureLabs.Selenium.Css
                         actualMax: 1);
                     break;
                 case CssUnit.Gradians:
-                    throw new NotImplementedException();
+                    var asRads = (hCss.Number * (180 / 200)) / .9;
+                    h = Normalize(
+                        value: hCss.Number,
+                        actualMin: 0,
+                        actualMax: Math.PI * 2);
+                    break;
                 default:
                     throw new NotImplementedException(Enum.GetName(
                         typeof(CssUnit),
@@ -273,7 +278,6 @@ namespace ApertureLabs.Selenium.Css
         /// <summary>
         /// Creates a color from rgba color string.
         /// </summary>
-        /// <param name="rgbaString"></param>
         /// <returns></returns>
         private void ColorFromRgb()
         {
@@ -294,7 +298,6 @@ namespace ApertureLabs.Selenium.Css
         /// <summary>
         /// Creates a color from a hex string.
         /// </summary>
-        /// <param name="hexStr"></param>
         /// <returns></returns>
         private void ColorFromHex()
         {

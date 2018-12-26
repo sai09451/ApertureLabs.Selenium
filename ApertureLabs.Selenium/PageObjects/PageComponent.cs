@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.Extensions;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.PageObjects
@@ -46,7 +47,10 @@ namespace ApertureLabs.Selenium.PageObjects
         /// Used to check if the component is still valid for use.
         /// </summary>
         /// <returns></returns>
-        public abstract bool IsStale();
+        public virtual bool IsStale()
+        {
+            return WrappedElement?.IsStale() ?? true;
+        }
 
         /// <summary>
         /// If overloaded don't forget to call base.Load().
