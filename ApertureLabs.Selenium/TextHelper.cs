@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium
@@ -70,6 +71,30 @@ namespace ApertureLabs.Selenium
         }
 
         /// <summary>
+        /// Returns all numbers in the elements inner text as integers.
+        /// </summary>
+        /// <param name="roundUp"></param>
+        /// <returns></returns>
+        public IEnumerable<int> ExtractIntegers(bool roundUp = false)
+        {
+            var r = new Regex(@"(-?\d+\.?\d*)");
+            var match = r.Match(InnerText);
+
+            while ((match?.Success ?? false) && match.Groups.Count >= 2)
+            {
+                var number = Double.Parse(match.Groups[1].Value);
+
+                if (roundUp)
+                    number = Math.Round(number);
+
+                // Yield the number.
+                yield return (int)number;
+
+                match = match.NextMatch();
+            }
+        }
+
+        /// <summary>
         /// Tries to extract number from the text of the element.
         /// </summary>
         /// <returns></returns>
@@ -97,6 +122,26 @@ namespace ApertureLabs.Selenium
             var number = Double.Parse(matches.Groups[1].ToString());
 
             return number;
+        }
+
+        /// <summary>
+        /// Returns all numbers in the inner text as doubles.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<double> ExtractDoubles()
+        {
+            var r = new Regex(@"(-?\d+\.?\d*)");
+            var match = r.Match(InnerText);
+
+            while ((match?.Success ?? false) && match.Groups.Count >= 2)
+            {
+                var number = Double.Parse(match.Groups[1].Value);
+
+                // Yield the number.
+                yield return number;
+
+                match = match.NextMatch();
+            }
         }
 
         /// <summary>

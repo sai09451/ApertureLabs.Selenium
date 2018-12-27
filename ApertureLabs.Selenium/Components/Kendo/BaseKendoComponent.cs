@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.PageObjects;
+﻿using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,23 @@ namespace ApertureLabs.Selenium.Components.Kendo
         protected virtual bool IsBusy()
         {
             return BusyElement.Displayed;
+        }
+
+        /// <summary>
+        /// Waits for the busy indicator to appear (if not already visible)
+        /// then dissapear.
+        /// </summary>
+        /// <param name="wait">Defaults to one minute</param>
+        protected virtual void WaitForAjaxOperation(TimeSpan? wait = null)
+        {
+            wait = wait ?? TimeSpan.FromMinutes(1);
+            var noWaitErrors = WrappedDriver.Wait(wait.Value)
+                .TrySequentialWait(out var exception,
+                    d => IsBusy(),
+                    d => !IsBusy());
+
+            if (!noWaitErrors)
+                throw exception;
         }
 
         #endregion

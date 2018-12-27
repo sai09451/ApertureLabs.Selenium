@@ -48,6 +48,11 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
             throw new NotImplementedException();
         }
 
+        public string GetSelectedItem()
+        {
+            throw new NotImplementedException();
+        }
+
         public SelectElement GetSelectElement()
         {
             throw new NotImplementedException();

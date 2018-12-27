@@ -120,5 +120,38 @@ namespace ApertureLabs.Selenium.Extensions
                 }
             });
         }
+
+        /// <summary>
+        /// Identical to wait, but returns the IWait object instead of the
+        /// wait result.
+        /// </summary>
+        /// <param name="wait"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public static bool TrySequentialWait(this IWait<IWebDriver> wait,
+            out Exception exception,
+            params Func<IWebDriver, bool>[] conditions)
+        {
+            if (wait == null)
+                throw new ArgumentNullException(nameof(wait));
+
+            exception = null;
+
+            foreach (var condition in conditions)
+            {
+                try
+                {
+                    wait.Until(condition);
+                }
+                catch (Exception e)
+                {
+                    // Assign exception.
+                    exception = e;
+                    break;
+                }
+            }
+
+            return exception == null;
+        }
     }
 }
