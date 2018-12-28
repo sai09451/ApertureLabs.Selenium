@@ -1,0 +1,38 @@
+﻿@page
+@model IndexModel
+@{
+}
+<h2>Frameworks</h2>
+@foreach (var framework in Model.Frameworks)
+{
+    <div class="panel panel-primary framework">
+        <div class="panel-heading">
+            <h3 class="panel-title framework-name">@framework.Name</h3>
+        </div>
+        <div class="panel-body">
+            <div id="framework-@framework.Name" class="panel-group framework" role="tablist" aria-multiselectable="false">
+                @foreach (var version in framework.GetVersions())
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="heading-for-@version">
+                            <a role="button" class="framework-version" data-toggle="collapse" data-parent="framework-@framework.Name" href="#version-@version">
+                                @version
+                            </a>
+                        </div>
+                    </div>
+                    <div id="version-@version" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-for-@version">
+                        <ul class="list-group">
+                            @foreach (var href in framework.VersionPathMap[version])
+                            {
+                                var pathName = System.IO.Path.GetFileNameWithoutExtension(href);
+                                <li class="list-group-item framework-version-path">
+                                    <a href="@href" class="btn btn-link">@pathName</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

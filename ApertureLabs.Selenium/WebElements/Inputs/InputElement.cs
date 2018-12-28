@@ -158,6 +158,30 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         }
 
         /// <summary>
+        /// Returns and converts the value by passing in the conversion
+        /// function.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="converter"></param>
+        /// <returns></returns>
+        public virtual T GetValue<T>(Func<string, T> converter)
+        {
+            if (converter == null)
+                throw new ArgumentNullException(nameof(converter));
+
+            var value = Element.GetProperty("value");
+
+            try
+            {
+                return converter(value);
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        /// <summary>
         /// Sets the 'value' of the input element.
         /// </summary>
         /// <typeparam name="T"></typeparam>

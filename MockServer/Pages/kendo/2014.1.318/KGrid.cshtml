@@ -1,0 +1,37 @@
+﻿@page
+@model MockServer.Pages.kendo._2014._1._318.KGridModel
+@{
+    Layout = "~/Pages/kendo/2014.1.318/Shared/_Layout.cshtml";
+}
+<div id="grid"></div>
+<script>
+    $(function () {
+        var dataSource = new kendo.data.DataSource({
+            data: [
+                { id: 1, name: "Jane Doe", age: 30 },
+                { id: 2, name: "John Doe", age: 33 },
+                { id: 3, name: "Tom", age: 30 },
+                { id: 4, name: "Bob", age: 33 },
+                { id: 5, name: "Sarah", age: 30 },
+                { id: 6, name: "Alex", age: 33 },
+                { id: 7, name: "Tim", age: 30 },
+                { id: 8, name: "Cook", age: 33 },
+            ],
+            pageSize: 2
+        });
+
+        $("#grid").kendoGrid({
+            columns: [
+                { field: "name" },
+                { field: "age" }
+            ],
+            dataSource: dataSource,
+            editable: true,
+            pageable: {
+                pageSize: 2,
+                pageSizes: true,
+                refresh: true
+            }
+        });
+    });
+</script>

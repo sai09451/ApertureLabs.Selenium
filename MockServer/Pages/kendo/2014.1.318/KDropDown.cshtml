@@ -1,0 +1,26 @@
+﻿@page
+@model KDropDownModel
+@using MockServer.Pages.kendo._2014._1._318
+@{
+    Layout = "~/Pages/kendo/2014.1.318/Shared/_Layout.cshtml";
+}
+<div id="dropdown"></div>
+<script>
+    $(function () {
+        var dataSource = new kendo.data.DataSource({
+            data: [
+                2,
+                5,
+                10,
+                15,
+                20
+            ]
+        });
+
+        $("#dropdown").kendoDropDownList({
+            dataSource: dataSource
+        });
+
+        dataSource.read();
+    });
+</script>

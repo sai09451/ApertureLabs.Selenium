@@ -1,7 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.Extensions;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 {
@@ -38,22 +40,41 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 
         #region Methods
 
-        public bool IsExpanded()
+        public override ILoadableComponent Load()
+        {
+            base.Load();
+
+            // Validate the dropdown element contains the correct class.
+            if (!WrappedElement.Classes().Contains("k-dropdown"))
+            {
+                throw new InvalidElementStateException("Missing the " +
+                    "k-dropdown class on the element.");
+            }
+
+            return this;
+        }
+
+        public virtual bool IsExpanded()
         {
             throw new NotImplementedException();
         }
 
-        public IList<string> GetItems()
+        public virtual IList<string> GetItems()
         {
             throw new NotImplementedException();
         }
 
-        public string GetSelectedItem()
+        public virtual string GetSelectedItem()
         {
             throw new NotImplementedException();
         }
 
-        public SelectElement GetSelectElement()
+        public virtual void SetSelectedItems(params string[] values)
+        {
+
+        }
+
+        public virtual SelectElement GetSelectElement()
         {
             throw new NotImplementedException();
         }

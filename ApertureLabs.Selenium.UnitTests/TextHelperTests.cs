@@ -1,4 +1,5 @@
 ﻿using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Linq;

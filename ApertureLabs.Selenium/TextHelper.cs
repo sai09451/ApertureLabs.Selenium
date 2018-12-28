@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium
@@ -28,9 +29,9 @@ namespace ApertureLabs.Selenium
         #region Properties
 
         /// <summary>
-        /// Retrieves the inner text of the element.
+        /// Retrieves and trims the inner text of the element.
         /// </summary>
-        public string InnerText => WrappedElement.Text;
+        public string InnerText => WrappedElement.Text.Trim();
 
         /// <summary>
         /// Returns the inner html of the element.
@@ -145,13 +146,16 @@ namespace ApertureLabs.Selenium
         }
 
         /// <summary>
-        /// Extracts a Date from the text. Currently this only supports 
+        /// Extracts a Date from the text. Currently this only supports
         /// the text format "Some text...MM/DD/YYYY...other text". It will
         /// optionally also return the time up to the second if provided after
         /// the date.
         /// </summary>
+        /// <param name="format">
+        /// Optional format the date is in (IE: "MMMM").
+        /// </param>
         /// <returns></returns>
-        public DateTime ExtractDateTime()
+        public DateTime ExtractDateTime(string format = default)
         {
             string filter = @"([\d]{1,2})\s?[(\/|\-)]\s?([(\d|\-)]{1,2})\s?[(\/|\-)]\s?([\d]{2,4}).?(\d{1,2}\:\d{1,2}\:?(\d{1,2})?\s?(AM|PM|A|P|am|pm|a|p))?";
             var r = new Regex(filter, RegexOptions.ECMAScript | RegexOptions.IgnoreCase);
@@ -167,11 +171,21 @@ namespace ApertureLabs.Selenium
                 //var temp = string.Format("{0}/{1}/{2} {3}", day, month, year, time);
                 try
                 {
-                    return DateTime.Parse(String.Format("{1}/{0}/{2} {3}",
-                        day,
-                        month,
-                        year,
-                        time));
+                    if (!String.IsNullOrEmpty(format))
+                    {
+                        var provider = CultureInfo.CurrentCulture;
+                        return DateTime.ParseExact(matches.Value,
+                            format,
+                            provider);
+                    }
+                    else
+                    {
+                        return DateTime.Parse(String.Format("{1}/{0}/{2} {3}",
+                            day,
+                            month,
+                            year,
+                            time));
+                    }
                 }
                 catch (FormatException)
                 {

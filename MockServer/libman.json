@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jqueryui@1.12.1",
+      "files": [
+        "jquery-ui.js",
+        "jquery-ui.css",
+        "jquery-ui.theme.min.css"
+      ],
+      "destination": "wwwroot/lib/jqueryui"
+    }
+  ]
+}
