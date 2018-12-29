@@ -4,6 +4,7 @@ using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ApertureLabs.Selenium.Extensions
 {
@@ -156,6 +157,78 @@ namespace ApertureLabs.Selenium.Extensions
             {
                 return true;
             }
+        }
+
+        /// <summary>
+        /// Waits for an event to occur on the element.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="eventName"></param>
+        public static void WaitForEvent(this IWebElement element, string eventName)
+        {
+            var js =
+                "var el = arguments[0];" +
+                "var callback = arguments[arguments.length - 1];" +
+                "var eventListener = el.addEventListener('" + eventName + "'," +
+                    "function(e) {" +
+                        "el.removeEventListener('" + eventName + "', eventListener);" +
+                        "callback();" +
+                    "});";
+
+            var d = element.GetDriver();
+            d.ExecuteAsyncScript(js, element);
+        }
+
+        /// <summary>
+        /// Waits for the first event on the element.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="eventNames"></param>
+        /// <param name="timeout"></param>
+        public static void WaitForAnyEvent(this IWebElement element,
+            IEnumerable<string> eventNames,
+            TimeSpan? timeout = null)
+        {
+            if (!eventNames?.Any() ?? true)
+                throw new ArgumentException(nameof(eventNames));
+
+            var tasks = eventNames.Select(e =>
+            {
+                var evtName = e;
+                return new Task(() => element.WaitForEvent(evtName));
+            });
+
+            var result = Task.WhenAny(tasks)
+                .Wait(timeout ?? TimeSpan.FromSeconds(30));
+
+            if (!result)
+                throw new TimeoutException();
+        }
+
+        /// <summary>
+        /// Waits for all events to be emitted on the element.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="eventNames"></param>
+        /// <param name="timeout"></param>
+        public static void WaitForAllEvents(this IWebElement element,
+            IEnumerable<string> eventNames,
+            TimeSpan? timeout = null)
+        {
+            if (!eventNames?.Any() ?? true)
+                throw new ArgumentException(nameof(eventNames));
+
+            var tasks = eventNames.Select(e =>
+            {
+                var evtName = e;
+                return new Task(() => element.WaitForEvent(evtName));
+            });
+
+            var result = Task.WhenAll(tasks)
+                .Wait(timeout ?? TimeSpan.FromSeconds(30));
+
+            if (!result)
+                throw new TimeoutException();
         }
     }
 }

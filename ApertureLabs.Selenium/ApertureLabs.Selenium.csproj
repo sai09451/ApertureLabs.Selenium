@@ -23,6 +23,10 @@
     <DocumentationFile>Docs/ApertureLabs.Selenium.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\Alexander\Documents\GitHub\ApertureLabs.Selenium\ApertureLabs.Selenium\ApertureLabs.Selenium.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />

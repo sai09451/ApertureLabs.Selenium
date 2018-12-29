@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ApertureLabs.Selenium.Extensions
 {
@@ -119,6 +120,119 @@ namespace ApertureLabs.Selenium.Extensions
         {
             var script = "(function() { return jQuery == null })()";
             return driver.ExecuteJavaScript<bool>(script);
+        }
+
+        /// <summary>
+        /// Executes an asynchronous script synchronously. The scripts last
+        /// argument will be an injected callback that must be called to
+        /// signify the script is done running. When calling the callback pass
+        /// in whatever the script needed to return.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="driver"></param>
+        /// <param name="script"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static T ExecuteAsyncScript<T>(this IWebDriver driver,
+            string script,
+            params object[] args)
+        {
+            if (String.IsNullOrEmpty(script))
+                throw new ArgumentException(nameof(script));
+
+            var jsExecutor = (IJavaScriptExecutor)driver;
+            return (T)jsExecutor.ExecuteAsyncScript(script, args);
+        }
+
+        /// <summary>
+        /// Executes an asynchronous script synchronously. The scripts last
+        /// argument will be an injected callback that must be called to
+        /// signify the script is done running.
+        /// done running.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="script"></param>
+        /// <param name="args"></param>
+        public static void ExecuteAsyncScript(this IWebDriver driver,
+            string script,
+            params object[] args)
+        {
+            if (String.IsNullOrEmpty(script))
+                throw new ArgumentException(nameof(script));
+
+            var jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteAsyncScript(script, args);
+        }
+
+        /// <summary>
+        /// Waits for a document level event matching the eventName to occur.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="eventName"></param>
+        public static void WaitForEvent(this IWebDriver driver,
+            string eventName)
+        {
+            var script =
+                "var callback = arguments[arguments.length - 1];" +
+                "var evtList = document.addEventListener('" + eventName + "'," +
+                    "function (e) {" +
+                        "document.removeEventListener('" + eventName + "', evtList);" +
+                        "callback();" +
+                    "})";
+
+            driver.ExecuteAsyncScript(script);
+        }
+
+        /// <summary>
+        /// Waits for the first event to be emitted by the document.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="eventNames"></param>
+        /// <param name="timeout">Defaults to 30 seconds.</param>
+        public static void WaitForAnyEvent(this IWebDriver driver,
+            IEnumerable<string> eventNames,
+            TimeSpan? timeout = null)
+        {
+            if (!eventNames?.Any() ?? true)
+                throw new ArgumentException(nameof(eventNames));
+
+            var tasks = eventNames.Select(e =>
+            {
+                var evtName = e;
+                return new Task(() => driver.WaitForEvent(evtName));
+            });
+
+            var result = Task.WhenAny(tasks)
+                .Wait(timeout ?? TimeSpan.FromSeconds(30));
+
+            if (!result)
+                throw new TimeoutException();
+        }
+
+        /// <summary>
+        /// Waits for all events to be emitted by the document.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="eventNames"></param>
+        /// <param name="timeout">Defaults to 30 seconds.</param>
+        public static void WaitForAllEvents(this IWebDriver driver,
+            IEnumerable<string> eventNames,
+            TimeSpan? timeout = null)
+        {
+            if (!eventNames?.Any() ?? true)
+                throw new ArgumentException(nameof(eventNames));
+
+            var tasks = eventNames.Select(e =>
+            {
+                var evtName = e;
+                return new Task(() => driver.WaitForEvent(evtName));
+            });
+
+            var result = Task.WhenAll(tasks)
+                .Wait(timeout ?? TimeSpan.FromSeconds(30));
+
+            if (!result)
+                throw new TimeoutException();
         }
     }
 }
