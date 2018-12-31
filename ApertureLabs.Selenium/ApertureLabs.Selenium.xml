@@ -9,12 +9,36 @@
             Represents a bootstrap collapsable.
             </summary>
         </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventShowCollapse">
+            <summary>
+            This event fires immediately when the show instance method is
+            called.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventShownCollapse">
+            <summary>
+            This event is fired when a collapse element has been made visible
+            to the user (will wait for CSS transitions to complete).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventHideCollapse">
+            <summary>
+            This event is fired immediately when the hide method has been
+            called.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventHiddenCollapse">
+            <summary>
+            This event is fired when a collapse element has been hidden from
+            the user (will wait for CSS transitions to complete).
+            </summary>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.#ctor(OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
-            <param name="options"></param>
+            <param name="animationData"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.GetAllOpenElements(System.Boolean)">
             <summary>
@@ -33,7 +57,7 @@
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.Open(OpenQA.Selenium.IWebElement)">
             <summary>
             Will click an element that will open the collapsable if not
-            already open.
+            already open and wait for the animation to finish.
             </summary>
             <param name="element">
             Optional. If null will use the first element identified by
@@ -45,44 +69,46 @@
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.Close(OpenQA.Selenium.IWebElement)">
             <summary>
             Will click an element that will close the collapsable if not
-            already closed.
+            already closed and wait for the animation to finish.
             </summary>
             <param name="element"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsOpen">
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsExpanded">
             <summary>
             Checks if the element is open.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsClosed">
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsCollapsed">
             <summary>
             Checks if the element is closed.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsAnimating(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
-            <summary>
-            Determines if the component is being animated.
-            </summary>
-            <param name="options"></param>
-            <returns></returns>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
+            <inheritdoc/>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions">
             <summary>
             Contains classes and selectors for the Bootstrap CollapsableComponent.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CollapsableOpenSelectors">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.OpenSelectors">
             <summary>
             Selectors for elements that ONLY expand the component.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CollapsableCloseSelectors">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CloseSelectors">
             <summary>
             Selectors for elements that ONLY collapse the component.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CollapsableToggleSelectors">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.ToggleSelectors">
             <summary>
             Selectors for elements that both expand and collapse the component.
             </summary>
@@ -130,48 +156,85 @@
             Base class
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.BusySelector">
+        <member name="F:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.dataSourceOptions">
             <summary>
-            Selector for the ajaxBusy element.
+            Configuration on how to handle the datasource.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.BusyElement">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.PageLoadingIndicator">
             <summary>
-            The 'busy' or loading element displayed during an ajax call.
+            The 'busy' or loading element displayed on the page.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.ContainerLoadingIndicator">
+            <summary>
+            The 'busy' or loading element displayed on the container.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.IsBusy">
             <summary>
-            Determines if the page is displaying the loading indicator or the
-            component is loading/busy.
+            Checks if the page is displaying the loading indicator (page
+            or container).
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.WaitForAjaxOperation(System.Nullable{System.TimeSpan})">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.WaitForLoadingOperation(System.Nullable{System.TimeSpan})">
             <summary>
-            Waits for the busy indicator to appear (if not already visible)
-            then dissapear.
+            If DataSourceOptions.RemoteDataSource is true then waits for the
+            busy indicator to appear (if not already visible) then dissapear.
             </summary>
             <param name="wait">Defaults to one minute</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions">
+            <summary>
+            Used to configure datasource kendo components.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.RemoteDataSource">
+            <summary>
+            Determines if data-changing operations display a loading
+            indicator.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.PageLoadingSelector">
+            <summary>
+            Kendo page loading indicator. Selector is relative to the document.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.ContainerLoadingSelector">
+            <summary>
+            Kendo container loading indicator. Selector is relative to the
+            document.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.DefaultKendoOptions">
+            <summary>
+            Initializes a new DataSourceOptions object with RemoteDataSource
+            set to false and the page/container loading selectors set to
+            ".k-loading-mask");
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent">
             <summary>
             Kendo dropdown widget.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KendoGrid.KendoGridComponent">
             <summary>
@@ -190,12 +253,13 @@
             PagerComponent.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
             <param name="pageObjectFactory"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.IsOnFirstPage">
@@ -261,6 +325,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetActivePage">
+            <summary>
+            Returns the active page number.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetTotalItems">
             <summary>
             Returns the total items.
@@ -290,149 +360,77 @@
             Refreshes the context the pager is attached to.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.ViewMode">
+        <member name="T:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions">
             <summary>
-            How items are displayed in a pager. Corresponds to
-            Nop.Web/Views/Catalog/_CatalogSelectors.cshtml
+            The default options for kendo datasources used in NopCommerce.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.Components.Nop.ViewMode.GridMode">
+        <member name="M:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions.#ctor">
             <summary>
-            Displays items in a grid.
+            Sets the <c>PageLoadingIndicator</c> to '#ajaxBusy'.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.Components.Nop.ViewMode.ListMode">
+        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableComponent">
             <summary>
-            Displays items in a list.
+            Default implementation of 
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent">
+        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions)">
             <summary>
-            CatalogPagingFilterComponent
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.#ctor(OpenQA.Selenium.IWebDriver)">
-            <summary>
-            Uses the '.product-selectors' as the selector to get the element.
-            </summary>
-            <param name="driver"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
-            <summary>
-            Gets the element the selector.
+            Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="defaultOptions"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortOptions">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortedBy">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.PageSizeOptions">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.PageSize">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.UseGridMode">
+        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions">
             <summary>
-            Clicks grid mode.
+            Options for class based animations.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.UseListMode">
+        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions.AnimatingClasses">
             <summary>
-            Clicks list mode.
+            A list of classes that are added when animating the component.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByIndex(System.Int32)">
+        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions.AnimationDuration">
             <summary>
-            Selects the option by index.
-            </summary>
-            <param name="optionIndex"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByText(System.String)">
-            <summary>
-            Selects the option by its text.
-            </summary>
-            <param name="optionText"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByValue(System.String)">
-            <summary>
-            Selects the option by value.
-            </summary>
-            <param name="optionValue"></param>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.PagerComponent">
-            <summary>
-            PagerComponent. Corresponds to Nop.Web.Framework.UI.Paging.Pager.
+            The default time the animation should take to complete.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver)">
+        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1">
             <summary>
-            Uses the '.pager' selector to locate the component.
-            </summary>
-            <param name="driver"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
-            <summary>
-            Can pass in a custom selector in case there are multiple pagers
-            displayed.
-            </summary>
-            <param name="driver"></param>
-            <param name="selector"></param>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.CurrentPage">
-            <summary>
-            The current page.
+            Represents a component that can have an animation (css or js
+            animation/transition).
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.HasPrevious">
+        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationStart(`0)">
             <summary>
-            Checks if there are previous results.
+            Waits for an animation to start.
             </summary>
+            <param name="animationData"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.HasNext">
+        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationEnd(`0)">
             <summary>
-            Checks if there are next results.
+            Waits for an animation to end.
             </summary>
+            <param name="animationData"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.IndividualPages">
+        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.IsCurrentlyAnimating(`0)">
             <summary>
-            Gets a list of displayed page numbers.
+            Checks if an animation is currently running.
             </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.IsStale">
-            <summary>
-            IsStale.
-            </summary>
+            <param name="animationData"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.First">
+        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions">
             <summary>
-            Goes to the first result.
+            Base interface for IAnimatableComponent generic argument.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Previous">
+        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationDuration">
             <summary>
-            Goes to the previous result.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.GoToPage(System.Int32)">
-            <summary>
-            Clicks on the page by the number it's displaying.
-            </summary>
-            <param name="pageNumber"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Next">
-            <summary>
-            Goes to the next result.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Last">
-            <summary>
-            Goes to the last result.
+            The duration of the animation.
             </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableComponent`1">
@@ -1178,7 +1176,8 @@
             wait result.
             </summary>
             <param name="wait"></param>
-            <param name="condition"></param>
+            <param name="exception"></param>
+            <param name="conditions"></param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.IPageObjectFactory">

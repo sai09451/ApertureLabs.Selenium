@@ -127,7 +127,8 @@ namespace ApertureLabs.Selenium.Extensions
         /// wait result.
         /// </summary>
         /// <param name="wait"></param>
-        /// <param name="condition"></param>
+        /// <param name="exception"></param>
+        /// <param name="conditions"></param>
         /// <returns></returns>
         public static bool TrySequentialWait(this IWait<IWebDriver> wait,
             out Exception exception,
@@ -137,11 +138,20 @@ namespace ApertureLabs.Selenium.Extensions
                 throw new ArgumentNullException(nameof(wait));
 
             exception = null;
+            var initialTimeout = wait.Timeout;
+            var startedAt = DateTime.Now;
 
             foreach (var condition in conditions)
             {
                 try
                 {
+                    // Verify there is time remaining.
+                    var remainingTime = DateTime.Now - startedAt;
+
+                    if (remainingTime > initialTimeout)
+                        throw new TimeoutException();
+
+                    wait.Timeout = remainingTime;
                     wait.Until(condition);
                 }
                 catch (Exception e)
@@ -152,6 +162,8 @@ namespace ApertureLabs.Selenium.Extensions
                 }
             }
 
+            // Reset the waits timeout.
+            wait.Timeout = initialTimeout;
             return exception == null;
         }
     }

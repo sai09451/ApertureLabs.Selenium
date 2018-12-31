@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Bootstrap\3.7\Shared\" />
+    <Folder Include="Pages\Bootstrap\4.1\Shared\" />
     <Folder Include="wwwroot\js\kendo\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>

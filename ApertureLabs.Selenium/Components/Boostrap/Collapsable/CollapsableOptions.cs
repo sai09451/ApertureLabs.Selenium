@@ -13,17 +13,17 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// <summary>
         /// Selectors for elements that ONLY expand the component.
         /// </summary>
-        public IEnumerable<By> CollapsableOpenSelectors { get; set; }
+        public IEnumerable<By> OpenSelectors { get; set; }
 
         /// <summary>
         /// Selectors for elements that ONLY collapse the component.
         /// </summary>
-        public IEnumerable<By> CollapsableCloseSelectors { get; set; }
+        public IEnumerable<By> CloseSelectors { get; set; }
 
         /// <summary>
         /// Selectors for elements that both expand and collapse the component.
         /// </summary>
-        public IEnumerable<By> CollapsableToggleSelectors { get; set; }
+        public IEnumerable<By> ToggleSelectors { get; set; }
 
         /// <summary>
         /// The selector for the element being expanded/collapsed.

@@ -40,11 +40,13 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// </summary>
         /// <param name="driver"></param>
         /// <param name="selector"></param>
+        /// <param name="dataSourceOptions"></param>
         /// <param name="pageObjectFactory"></param>
         public PagerComponent(IWebDriver driver,
             By selector,
+            DataSourceOptions dataSourceOptions,
             IPageObjectFactory pageObjectFactory = default)
-            : base(driver, selector)
+            : base(driver, selector, dataSourceOptions)
         {
             this.pageObjectFactory = pageObjectFactory
                 ?? new PageObjectFactory();
@@ -64,14 +66,14 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// <summary>
         /// Returns false if the previous page button is disabled.
         /// </summary>
-        public bool HasPreviousPage => PrevPageElement
+        public bool HasPreviousPage => !PrevPageElement
             .Classes()
             .Contains("k-state-disabled");
 
         /// <summary>
         /// Returns false if the next page button is disabled.
         /// </summary>
-        public bool HasNextPage => NextPageElement
+        public bool HasNextPage => !NextPageElement
             .Classes()
             .Contains("k-state-disabled");
 
@@ -99,10 +101,14 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         private IWebElement LastPageElement => WrappedElement.FindElement(LastPageSelector);
         private IWebElement RefreshElement => WrappedElement.FindElement(RefreshSelector);
         private IWebElement PageInfoElement => WrappedElement.FindElement(PagerInfoSelector);
+        private IWebElement SelectedPageElement => WrappedElement.FindElement(SelectedPageSelector);
 
         private KDropDownComponent ItemsPerPageComponent =>
             pageObjectFactory.PrepareComponent(
-                new KDropDownComponent(WrappedDriver, ItemsPerPageSelector));
+                new KDropDownComponent(
+                    WrappedDriver,
+                    ItemsPerPageSelector,
+                    dataSourceOptions));
 
         #endregion
 
@@ -131,7 +137,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
             desiredPageEl.Click();
 
             // Wait until the loading finishes.
-            WaitForAjaxOperation();
+            WaitForLoadingOperation();
 
             return this;
         }
@@ -156,7 +162,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
             if (!IsOnLastPage)
             {
                 LastPageElement.Click();
-                WaitForAjaxOperation();
+                WaitForLoadingOperation();
             }
 
             return this;
@@ -171,7 +177,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
             if (!IsOnFirstPage)
             {
                 FirstPageElement.Click();
-                WaitForAjaxOperation();
+                WaitForLoadingOperation();
             }
 
             return this;
@@ -187,7 +193,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
             if (HasPreviousPage)
             {
                 PrevPageElement.Click();
-                WaitForAjaxOperation();
+                WaitForLoadingOperation();
             }
 
             return this;
@@ -202,10 +208,19 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
             if (HasNextPage)
             {
                 NextPageElement.Click();
-                WaitForAjaxOperation();
+                WaitForLoadingOperation();
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Returns the active page number.
+        /// </summary>
+        /// <returns></returns>
+        public virtual int GetActivePage()
+        {
+            return SelectedPageElement.GetTextHelper().ExtractInteger();
         }
 
         /// <summary>
@@ -260,7 +275,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         public virtual void Refresh()
         {
             RefreshElement.Click();
-            WaitForAjaxOperation();
+            WaitForLoadingOperation();
         }
 
         #endregion

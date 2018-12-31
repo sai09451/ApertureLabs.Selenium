@@ -70,8 +70,9 @@ namespace MockServer.Factories
                     }
 
                     framework.VersionPathMap[versionName] = paths;
-                    frameworks.Add(framework);
                 }
+
+                frameworks.Add(framework);
             }
 
             return frameworks;

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Selenium.UnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockServer", "MockServer\MockServer.csproj", "{CE97A1EE-C487-4FBE-83BD-86C7BFD005B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockServer.PageObjects", "MockServer.PageObjects\MockServer.PageObjects.csproj", "{2D9F0A54-AE77-4680-8EFA-F27D1640EB22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockServer.PageObjects", "MockServer.PageObjects\MockServer.PageObjects.csproj", "{2D9F0A54-AE77-4680-8EFA-F27D1640EB22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

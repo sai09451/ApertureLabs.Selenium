@@ -1,6 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ApertureLabs.Selenium;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace MockServer.PageObjects.HomePage
 {
@@ -8,9 +11,14 @@ namespace MockServer.PageObjects.HomePage
     {
         #region Fields
 
+        private readonly IPageObjectFactory pageObjectFactory;
+
         #region Selectors
 
         private readonly By FrameWorkSelector = By.CssSelector(".framework");
+        private readonly By FrameworkNameSelector = By.CssSelector(".framework-name");
+        private readonly By VersionsSelector = By.CssSelector(".framework-version");
+        private readonly By WidgetsSelector = By.CssSelector(".framework-version-path a");
 
         #endregion
 
@@ -18,8 +26,13 @@ namespace MockServer.PageObjects.HomePage
 
         #region Constructor
 
-        public HomePage(IWebDriver driver, string url) : base(driver, url)
-        { }
+        public HomePage(IWebDriver driver,
+            string url,
+            IPageObjectFactory pageObjectFactory)
+            : base(driver, url, pageObjectFactory)
+        {
+            this.pageObjectFactory = pageObjectFactory;
+        }
 
         #endregion
 
@@ -27,17 +40,68 @@ namespace MockServer.PageObjects.HomePage
 
         #region Elements
 
-        private IReadOnlyList<FrameworkElement> FrameworkComponents => WrappedDriver
-            .FindElements(FrameWorkSelector)
-            .Select(e => new FrameworkElement(e))
-            .ToList()
-            .AsReadOnly();
+        private IReadOnlyList<IWebElement> FrameworkElements => WrappedDriver.FindElements(FrameWorkSelector);
 
         #endregion
 
         #endregion
 
         #region Methods
+
+        public WidgetPage.WidgetPage GoToWidget(string frameworkName,
+            string version,
+            string widget)
+        {
+            // Find framework.
+            var frameworkEl = FrameworkElements.FirstOrDefault(
+                fc => String.Equals(
+                    fc.FindElement(FrameworkNameSelector).Text,
+                    frameworkName,
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (frameworkEl == null)
+                throw new Exception("Failed to find framework.");
+
+            // Find version.
+            var versionEl = frameworkEl.FindElements(VersionsSelector)
+                .FirstOrDefault(ve => String.Equals(
+                    ve.Text,
+                    version,
+                    StringComparison.Ordinal));
+
+            if (versionEl == null)
+                throw new Exception("Failed to find version.");
+
+            // Find widget.
+            var widgetContainerSelector = versionEl.GetAttribute("href");
+            var widgetContainerEl = frameworkEl.FindElement(By.CssSelector(widgetContainerSelector));
+            var widgetEl = widgetContainerEl.FindElements(WidgetsSelector)
+                .FirstOrDefault(we => String.Equals(
+                    we.Text,
+                    widget,
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (widgetEl == null)
+                throw new Exception("Failed to find the widget.");
+
+            widgetEl.Click();
+
+            var widgetPage = new WidgetPage.WidgetPage(
+                WrappedDriver,
+                WrappedDriver.Url);
+
+            pageObjectFactory.PreparePage(widgetPage);
+
+            return widgetPage;
+        }
+
+        public override ILoadableComponent Load()
+        {
+            if (!WrappedDriver.Url.StartsWith("http"))
+                WrappedDriver.Navigate().GoToUrl(Uri.ToString());
+
+            return base.Load();
+        }
 
         #endregion
     }

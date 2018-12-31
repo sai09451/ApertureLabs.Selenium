@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.PageObjects;
+﻿using ApertureLabs.Selenium;
+using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 using System;
 
@@ -11,6 +12,7 @@ namespace MockServer.PageObjects
         #region Selectors
 
         private readonly By NavbarHomeSelector = By.CssSelector("*[href='/']");
+        private readonly IPageObjectFactory pageObjectFactory;
 
         #endregion
 
@@ -18,9 +20,12 @@ namespace MockServer.PageObjects
 
         #region Constructor
 
-        public BasePage(IWebDriver driver, string url) : base(driver)
+        public BasePage(IWebDriver driver,
+            string url,
+            IPageObjectFactory pageObjectFactory = null) : base(driver)
         {
-            Uri = new Uri(url);
+            this.pageObjectFactory = pageObjectFactory ?? new PageObjectFactory();
+            this.Uri = new Uri(url);
         }
 
         #endregion
@@ -36,6 +41,14 @@ namespace MockServer.PageObjects
         #endregion
 
         #region Methods
+
+        public HomePage.HomePage GoToHomePage()
+        {
+            var homePage = new HomePage.HomePage(WrappedDriver,
+                Uri.ToString(),
+                pageObjectFactory);
+            return pageObjectFactory.PreparePage(homePage);
+        }
 
         #endregion
     }

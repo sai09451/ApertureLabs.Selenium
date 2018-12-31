@@ -12,11 +12,35 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
     /// Represents a bootstrap collapsable.
     /// </summary>
     public class CollapsableComponent : PageComponent,
-        IClassBasedAnimatableComponent<CollapsableOptions>
+        IAnimatableComponent<CollapsableOptions>
     {
         #region Fields
 
-        private readonly CollapsableOptions options;
+        private readonly CollapsableOptions animationData;
+
+        /// <summary>
+        /// This event fires immediately when the show instance method is
+        /// called.
+        /// </summary>
+        private static readonly string EventShowCollapse = "show.bs.collapse";
+
+        /// <summary>
+        /// This event is fired when a collapse element has been made visible
+        /// to the user (will wait for CSS transitions to complete).
+        /// </summary>
+        private static readonly string EventShownCollapse = "shown.bs.collapse";
+
+        /// <summary>
+        /// This event is fired immediately when the hide method has been
+        /// called.
+        /// </summary>
+        private static readonly string EventHideCollapse = "hide.bs.collapse";
+
+        /// <summary>
+        /// This event is fired when a collapse element has been hidden from
+        /// the user (will wait for CSS transitions to complete).
+        /// </summary>
+        private static readonly string EventHiddenCollapse = "hidden.bs.collapse";
 
         #region Selectors
 
@@ -30,20 +54,21 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// Ctor.
         /// </summary>
         /// <param name="driver"></param>
-        /// <param name="options"></param>
-        public CollapsableComponent(IWebDriver driver, CollapsableOptions options)
-            : base(driver, options.CollapsableContainerSelector)
+        /// <param name="animationData"></param>
+        public CollapsableComponent(IWebDriver driver,
+            CollapsableOptions animationData)
+            : base(driver, animationData.CollapsableContainerSelector)
         {
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
-            else if (options == null)
-                throw new ArgumentNullException(nameof(options));
-            else if (!options.AnimationClasses.Any())
-                throw new ArgumentNullException(nameof(options.AnimationClasses));
-            else if (String.IsNullOrEmpty(options.ClosedClass))
-                throw new ArgumentNullException(nameof(options.ClosedClass));
-            else if (String.IsNullOrEmpty(options.OpenClass))
-                throw new ArgumentNullException(nameof(options.OpenClass));
+            else if (animationData == null)
+                throw new ArgumentNullException(nameof(animationData));
+            else if (!animationData.AnimationClasses.Any())
+                throw new ArgumentNullException(nameof(animationData.AnimationClasses));
+            else if (String.IsNullOrEmpty(animationData.ClosedClass))
+                throw new ArgumentNullException(nameof(animationData.ClosedClass));
+            else if (String.IsNullOrEmpty(animationData.OpenClass))
+                throw new ArgumentNullException(nameof(animationData.OpenClass));
         }
 
         #endregion
@@ -52,15 +77,15 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
 
         #region Elements
 
-        private IReadOnlyList<IWebElement> OpenElements => options.CollapsableOpenSelectors
+        private IReadOnlyList<IWebElement> OpenElements => animationData.OpenSelectors
             .SelectMany(s => WrappedDriver.FindElements(s))
             .ToList();
 
-        private IReadOnlyList<IWebElement> CloseElements => options.CollapsableCloseSelectors
+        private IReadOnlyList<IWebElement> CloseElements => animationData.CloseSelectors
             .SelectMany(s => WrappedDriver.FindElements(s))
             .ToList();
 
-        private IReadOnlyList<IWebElement> ToggleElements => options.CollapsableToggleSelectors
+        private IReadOnlyList<IWebElement> ToggleElements => animationData.ToggleSelectors
             .SelectMany(s => WrappedDriver.FindElements(s))
             .ToList();
 
@@ -75,7 +100,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// </summary>
         /// <param name="excludeToggleElements"></param>
         /// <returns></returns>
-        public IReadOnlyList<IWebElement> GetAllOpenElements(
+        public virtual IReadOnlyList<IWebElement> GetAllOpenElements(
             bool excludeToggleElements = false)
         {
             var els = new List<IWebElement>(OpenElements);
@@ -91,7 +116,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// </summary>
         /// <param name="excludeToggleElements"></param>
         /// <returns></returns>
-        public IReadOnlyList<IWebElement> GetAllCloseElements(
+        public virtual IReadOnlyList<IWebElement> GetAllCloseElements(
             bool excludeToggleElements = false)
         {
             var els = new List<IWebElement>(CloseElements);
@@ -104,7 +129,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
 
         /// <summary>
         /// Will click an element that will open the collapsable if not
-        /// already open.
+        /// already open and wait for the animation to finish.
         /// </summary>
         /// <param name="element">
         /// Optional. If null will use the first element identified by
@@ -112,9 +137,9 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// Options.ToggleSelector.
         /// </param>
         /// <returns></returns>
-        public CollapsableComponent Open(IWebElement element = null)
+        public virtual CollapsableComponent Open(IWebElement element = null)
         {
-            if (!IsOpen())
+            if (!IsExpanded())
             {
                 if (element == null)
                 {
@@ -138,8 +163,8 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
                 }
 
                 WrappedDriver
-                    .Wait(options.AnimationDuration + TimeSpan.FromSeconds(2))
-                    .Until(d => !IsAnimating());
+                    .Wait(animationData.AnimationDuration + TimeSpan.FromSeconds(2))
+                    .Until(d => !IsCurrentlyAnimating());
             }
 
             return this;
@@ -147,13 +172,13 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
 
         /// <summary>
         /// Will click an element that will close the collapsable if not
-        /// already closed.
+        /// already closed and wait for the animation to finish.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public CollapsableComponent Close(IWebElement element = null)
+        public virtual CollapsableComponent Close(IWebElement element = null)
         {
-            if (!IsOpen())
+            if (!IsExpanded())
             {
                 if (element == null)
                 {
@@ -177,8 +202,8 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
                 }
 
                 WrappedDriver
-                    .Wait(options.AnimationDuration + TimeSpan.FromSeconds(2))
-                    .Until(d => !IsAnimating());
+                    .Wait(animationData.AnimationDuration + TimeSpan.FromSeconds(2))
+                    .Until(d => !IsCurrentlyAnimating());
             }
 
             return this;
@@ -187,36 +212,44 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// <summary>
         /// Checks if the element is open.
         /// </summary>
-        public bool IsOpen()
+        public virtual bool IsExpanded()
         {
             var classes = WrappedElement.Classes();
 
-            return classes.Contains(options.OpenClass)
-                && !IsClosed()
-                && !IsAnimating();
+            return classes.Contains(animationData.OpenClass)
+                && !IsCollapsed()
+                && !IsCurrentlyAnimating();
         }
 
         /// <summary>
         /// Checks if the element is closed.
         /// </summary>
-        public bool IsClosed()
+        public virtual bool IsCollapsed()
         {
-            return WrappedElement.Classes().Contains(options.ClosedClass)
-                    && !IsOpen()
-                    && !IsAnimating();
+            return WrappedElement.Classes().Contains(animationData.ClosedClass)
+                && !IsExpanded()
+                && !IsCurrentlyAnimating();
         }
 
-        /// <summary>
-        /// Determines if the component is being animated.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public bool IsAnimating(CollapsableOptions options = null)
+        /// <inheritdoc/>
+        public virtual void WaitForAnimationStart(CollapsableOptions animationData = null)
         {
-            var opts = options ?? this.options;
+            WrappedElement.WaitForEvent(EventShowCollapse);
+        }
+
+        /// <inheritdoc/>
+        public virtual void WaitForAnimationEnd(CollapsableOptions animationData = null)
+        {
+            WrappedElement.WaitForEvent(EventHiddenCollapse);
+        }
+
+        /// <inheritdoc/>
+        public virtual bool IsCurrentlyAnimating(CollapsableOptions animationData = null)
+        {
+            var opts = animationData ?? this.animationData;
 
             return WrappedElement.Classes()
-                .Any(c => opts.AnimationClasses.Contains(c));
+                .Any(c => opts.AnimationClasses.Contains(c, StringComparer.Ordinal));
         }
 
         #endregion

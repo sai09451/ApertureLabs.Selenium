@@ -132,16 +132,6 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Shorthand for <code>new TextHelper(element);</code>.
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
-        public static TextHelper GetTextHelper(this IWebElement element)
-        {
-            return new TextHelper(element);
-        }
-
-        /// <summary>
         /// Checks if an element is stale.
         /// </summary>
         /// <param name="element"></param>

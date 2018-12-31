@@ -4,22 +4,22 @@
 @foreach (var framework in Model.Frameworks)
 {
     <div class="card framework">
-        <div class="card-header">
+        <div class="card-header text-white bg-dark">
             <h3 class="card-title framework-name">@framework.Name</h3>
         </div>
         <div class="card-body">
-            <div id="framework-@framework.Name" class="panel-group framework" role="tablist" aria-multiselectable="false">
+            <div id="framework-@framework.Name" class="accoridan" role="tablist" aria-multiselectable="false">
                 @foreach (var version in framework.GetVersions())
                 {
                     var versionStr = version.Replace('.', '_');
-                    <div class="card">
-                        <div class="card-heading" role="tab" id="heading-for-@versionStr">
-                            <a role="button" class="framework-version" data-toggle="collapse" data-parent="framework-@framework.Name" href="#version-@versionStr">
-                                @versionStr
-                            </a>
+                    <div class="card framework-version-header">
+                        <div class="card-header bg-light" role="tab" id="heading-for-@versionStr">
+                            <button type="button" class="framework-version btn btn-link" data-toggle="collapse" data-parent="framework-@framework.Name" href="#version-@versionStr">
+                                @version
+                            </button>
                         </div>
                     </div>
-                    <div id="version-@versionStr" class="card-collapse collapse" role="tabpanel" aria-labelledby="heading-for-@versionStr">
+                    <div id="version-@versionStr" class="collapse show framework-version-body" role="tabpanel" aria-labelledby="heading-for-@versionStr">
                         <ul class="list-group">
                             @foreach (var href in framework.VersionPathMap[version])
                             {

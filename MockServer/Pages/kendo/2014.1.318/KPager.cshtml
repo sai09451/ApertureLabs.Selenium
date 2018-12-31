@@ -18,7 +18,8 @@
 
         $("#pager").kendoPager({
             dataSource: dataSource,
-            pageSizes: true
+            refresh: true,
+            pageSizes: [ 2, 4 ]
         });
 
         dataSource.read();
