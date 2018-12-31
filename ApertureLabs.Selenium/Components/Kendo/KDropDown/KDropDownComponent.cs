@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 {
+    /// <summary>
+    /// Kendo dropdown widget.
+    /// </summary>
     public class KDropDownComponent : BaseKendoComponent
     {
         #region Fields

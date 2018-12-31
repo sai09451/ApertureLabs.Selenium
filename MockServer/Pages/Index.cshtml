@@ -1,26 +1,25 @@
 ﻿@page
 @model IndexModel
-@{
-}
 <h2>Frameworks</h2>
 @foreach (var framework in Model.Frameworks)
 {
-    <div class="panel panel-primary framework">
-        <div class="panel-heading">
-            <h3 class="panel-title framework-name">@framework.Name</h3>
+    <div class="card framework">
+        <div class="card-header">
+            <h3 class="card-title framework-name">@framework.Name</h3>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div id="framework-@framework.Name" class="panel-group framework" role="tablist" aria-multiselectable="false">
                 @foreach (var version in framework.GetVersions())
                 {
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading-for-@version">
-                            <a role="button" class="framework-version" data-toggle="collapse" data-parent="framework-@framework.Name" href="#version-@version">
-                                @version
+                    var versionStr = version.Replace('.', '_');
+                    <div class="card">
+                        <div class="card-heading" role="tab" id="heading-for-@versionStr">
+                            <a role="button" class="framework-version" data-toggle="collapse" data-parent="framework-@framework.Name" href="#version-@versionStr">
+                                @versionStr
                             </a>
                         </div>
                     </div>
-                    <div id="version-@version" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-for-@version">
+                    <div id="version-@versionStr" class="card-collapse collapse" role="tabpanel" aria-labelledby="heading-for-@versionStr">
                         <ul class="list-group">
                             @foreach (var href in framework.VersionPathMap[version])
                             {

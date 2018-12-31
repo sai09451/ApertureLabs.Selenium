@@ -1,4 +1,6 @@
-﻿using ApertureLabs.Selenium.PageObjects;
+﻿using System;
+using ApertureLabs.Selenium.PageObjects;
+using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -17,9 +19,16 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
 
         #region Setup/Teardown
 
-        public static void Setup(TestContext testContext)
+        [ClassInitialize]
+        public static void ClassSetup(TestContext testContext)
         {
             WebDriverFactory = new WebDriverFactory();
+        }
+
+        [ClassCleanup]
+        public static void ClassTeardown()
+        {
+            WebDriverFactory.Dispose();
         }
 
         #endregion
@@ -36,6 +45,13 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
             var driver = WebDriverFactory.CreateDriver(
                 driverType,
                 WindowSize.DefaultDesktop);
+
+            using (driver)
+            {
+                driver.Navigate().GoToUrl(Startup.ServerUrl);
+
+                Console.WriteLine("Test");
+            }
         }
 
         #endregion
