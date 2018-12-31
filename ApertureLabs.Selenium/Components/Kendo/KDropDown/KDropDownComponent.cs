@@ -148,14 +148,24 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         public void WaitForAnimationStart(
             KDropDownAnimationOptions animationData = null)
         {
-            WaitForKendoEvent("open", TimeSpan.FromSeconds(30));
+            WaitForKendoEvent(
+                IsExpanded() ? "open" : "close",
+                TimeSpan.FromSeconds(30));
         }
 
         /// <inheritdoc/>
         public void WaitForAnimationEnd(
             KDropDownAnimationOptions animationData = null)
         {
-            WaitForKendoEvent("close", TimeSpan.FromSeconds(30));
+            var data = animationData ?? this.animationData;
+
+            // Wait the animation duration plus two seconds.
+            var timeSpanWithTolerance = data.AnimationDuration
+                + TimeSpan.FromSeconds(2);
+
+            WaitForKendoEvent(
+                IsExpanded() ? "close" : "open",
+                timeSpanWithTolerance);
         }
 
         /// <inheritdoc/>

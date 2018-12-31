@@ -108,7 +108,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
                 new KDropDownComponent(
                     WrappedDriver,
                     ItemsPerPageSelector,
-                    dataSourceOptions));
+                    dataSourceOptions,
+                    KDropDownAnimationOptions.Default));
 
         #endregion
 
@@ -125,7 +126,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         {
             var desiredPageEl = AvailablePagesElements
                 .FirstOrDefault(
-                    e => e.GetTextHelper().ExtractInteger() == listedPage);
+                    e => e.TextHelper().ExtractInteger() == listedPage);
 
             if (desiredPageEl == null)
             {
@@ -149,7 +150,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         public virtual IList<int> GetListedPages()
         {
             return AvailablePagesElements
-                .Select(e => e.GetTextHelper().ExtractInteger())
+                .Select(e => e.TextHelper().ExtractInteger())
                 .ToList();
         }
 
@@ -220,7 +221,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// <returns></returns>
         public virtual int GetActivePage()
         {
-            return SelectedPageElement.GetTextHelper().ExtractInteger();
+            return SelectedPageElement.TextHelper().ExtractInteger();
         }
 
         /// <summary>
@@ -229,7 +230,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// <returns></returns>
         public virtual int GetTotalItems()
         {
-            return PageInfoElement.GetTextHelper().ExtractIntegers().Last();
+            return PageInfoElement.TextHelper().ExtractIntegers().Last();
         }
 
         /// <summary>
@@ -240,7 +241,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         {
             var itemsPerPage = ItemsPerPageComponent.GetSelectElement()
                 .Options
-                .Select(e => e.GetTextHelper().ExtractInteger())
+                .Select(e => e.TextHelper().ExtractInteger())
                 .ToList();
 
             return itemsPerPage;
@@ -254,7 +255,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         {
             var selectedOpt = ItemsPerPageComponent.GetSelectElement()
                 .SelectedOption
-                .GetTextHelper()
+                .TextHelper()
                 .ExtractInteger();
 
             return selectedOpt;

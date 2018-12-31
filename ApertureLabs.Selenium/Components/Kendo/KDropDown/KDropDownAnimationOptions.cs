@@ -11,5 +11,19 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
     {
         /// <inheritdoc/>
         public TimeSpan AnimationDuration { get; set; }
+
+        /// <inheritdoc/>
+        public bool AnimationsEnabled { get; set; }
+
+        /// <summary>
+        /// Returns a default KDropDownAnimations object with AnimationsEnabled
+        /// and AnimationDuration set to 200ms.
+        /// </summary>
+        public static KDropDownAnimationOptions Default =>
+            new KDropDownAnimationOptions
+            {
+                AnimationDuration = TimeSpan.FromMilliseconds(200),
+                AnimationsEnabled = true
+            };
     }
 }

@@ -11,5 +11,10 @@ namespace ApertureLabs.Selenium.Components.Shared.Animatable
         /// The duration of the animation.
         /// </summary>
         TimeSpan AnimationDuration { get; }
+
+        /// <summary>
+        /// Used to check if animations are enabled for the element.
+        /// </summary>
+        bool AnimationsEnabled { get; }
     }
 }
