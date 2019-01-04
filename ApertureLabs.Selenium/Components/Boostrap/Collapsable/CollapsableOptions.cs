@@ -8,7 +8,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
     /// <summary>
     /// Contains classes and selectors for the Bootstrap CollapsableComponent.
     /// </summary>
-    public class CollapsableOptions : IClassBasedAnimatableOptions
+    public class CollapsableOptions : IAnimatableOptions
     {
         /// <summary>
         /// Selectors for elements that ONLY expand the component.
@@ -31,11 +31,6 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         public By CollapsableContainerSelector { get; set; }
 
         /// <summary>
-        /// The class used when the CollapsableContainer is closed.
-        /// </summary>
-        public string ClosedClass { get; set; }
-
-        /// <summary>
         /// The class used when the CollapsableContainer is open.
         /// </summary>
         public string OpenClass { get; set; }
@@ -50,5 +45,8 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// Classes used to represent when the component is being animated.
         /// </summary>
         public IEnumerable<string> AnimationClasses { get; set; }
+
+        /// <inheritdoc/>
+        public bool AnimationsEnabled { get; set; }
     }
 }

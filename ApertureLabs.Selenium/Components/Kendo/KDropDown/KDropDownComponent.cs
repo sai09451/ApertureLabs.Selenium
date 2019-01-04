@@ -138,8 +138,14 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// <returns></returns>
         public virtual SelectElement GetSelectElement()
         {
-            var el = WrappedElement.FindElement(WrappedDropdownSelector);
-            var selectElement = new SelectElement(el);
+            var wrappedElementTagName = WrappedElement.TagName;
+            var selectElement = new SelectElement(WrappedElement);
+            var opts = selectElement.WrappedElement
+                .FindElements(By.CssSelector("option"))
+                .Select(e => e.Text)
+                .ToList();
+
+            var val = WrappedElement.GetProperty("value");
 
             return selectElement;
         }
@@ -174,7 +180,18 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         {
             var opts = animationData ?? this.animationData;
 
-            throw new NotImplementedException();
+            if (!opts.AnimationsEnabled)
+                return false;
+
+            try
+            {
+                WaitForAnimationEnd(opts);
+                return true;
+            }
+            catch (TimeoutException)
+            {
+                return false;
+            }
         }
 
         private void Expand()

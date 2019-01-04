@@ -64,8 +64,7 @@ namespace ApertureLabs.Selenium
         public int ExtractInteger(bool roundUp = false)
         {
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
-            var matches = r.Match(InnerText);
-
+            var matches = r.Match(WrappedElement.Text);
             var number = Int32.Parse(matches.Groups[2].ToString());
 
             return number;
@@ -103,7 +102,6 @@ namespace ApertureLabs.Selenium
         {
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
             var matches = r.Match(InnerText);
-
             var number = Decimal.Parse(matches.Groups[1].ToString());
 
             return number;

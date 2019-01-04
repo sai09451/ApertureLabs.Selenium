@@ -118,11 +118,6 @@
             The selector for the element being expanded/collapsed.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.ClosedClass">
-            <summary>
-            The class used when the CollapsableContainer is closed.
-            </summary>
-        </member>
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.OpenClass">
             <summary>
             The class used when the CollapsableContainer is open.
@@ -138,6 +133,9 @@
             <summary>
             Classes used to represent when the component is being animated.
             </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.AnimationsEnabled">
+            <inheritdoc/>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,OpenQA.Selenium.By)">
             <summary>
@@ -193,6 +191,14 @@
             </summary>
             <param name="wait">Defaults to one minute</param>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.WaitForKendoEvent(System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            Since kendo events aren't compatible with native js events use this
+            method to listen for kendo events.
+            </summary>
+            <param name="eventName">Name of the event to listen for.</param>
+            <param name="wait"></param>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions">
             <summary>
             Used to configure datasource kendo components.
@@ -223,18 +229,81 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions">
+            <summary>
+            Options that configures which classes to observer when determining if
+            the dropdown is animating.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.AnimationDuration">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.AnimationsEnabled">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.Default">
+            <summary>
+            Returns a default KDropDownAnimations object with AnimationsEnabled
+            and AnimationDuration set to 200ms.
+            </summary>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent">
             <summary>
             Kendo dropdown widget.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
             <summary>
-            Ctor.
+            The selector should target the original element that's been wrapped
+            by kendo.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
             <param name="dataSourceOptions"></param>
+            <param name="animationData"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.IsExpanded">
+            <summary>
+            Returns true if the component is expanded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.GetItems">
+            <summary>
+            Returns the list of items in the dropdown.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.GetSelectedItem">
+            <summary>
+            Returns the currently selected item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.SetSelectedItems(System.String[])">
+            <summary>
+            Sets the selected item.
+            </summary>
+            <param name="values"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.GetSelectElement">
+            <summary>
+            Returns the wrapped select element that KDropDownList
+            uses internally.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
+            <inheritdoc/>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KendoGrid.KendoGridComponent">
             <summary>
@@ -286,6 +355,9 @@
             <summary>
             Used to determine if the current page range total items are displayed.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.Load">
+            <inheritdoc/>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.SetPage(System.Int32)">
             <summary>
@@ -370,34 +442,6 @@
             Sets the <c>PageLoadingIndicator</c> to '#ajaxBusy'.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableComponent">
-            <summary>
-            Default implementation of 
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions)">
-            <summary>
-            Ctor.
-            </summary>
-            <param name="driver"></param>
-            <param name="selector"></param>
-            <param name="defaultOptions"></param>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions">
-            <summary>
-            Options for class based animations.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions.AnimatingClasses">
-            <summary>
-            A list of classes that are added when animating the component.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.ClassBasedAnimatableOptions.AnimationDuration">
-            <summary>
-            The default time the animation should take to complete.
-            </summary>
-        </member>
         <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1">
             <summary>
             Represents a component that can have an animation (css or js
@@ -433,40 +477,10 @@
             The duration of the animation.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableComponent`1">
+        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationsEnabled">
             <summary>
-            Represents a component
+            Used to check if animations are enabled for the element.
             </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableComponent`1.IsAnimating(`0)">
-            <summary>
-            True if the element contains any of the 'animated' designated
-            classes.
-            </summary>
-            <param name="options">Optional 'options' object.</param>
-            <returns></returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableOptions">
-            <summary>
-            Contains classes that indicate if the element is being animated.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableOptions.AnimationClasses">
-            <summary>
-            A list of classes that may represent a 'stage' of the animation.
-            </summary>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IEventBasedAnimatableComponent">
-            <summary>
-            An animatable component that uses events to determine when it
-            enters/exits an animated state.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IEventBasedAnimatableComponent.IsAnimating">
-            <summary>
-            Determines if the element is in an animated state.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Css.CssColor">
             <summary>
@@ -904,6 +918,31 @@
             <param name="by"></param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.IDisposableExtensions">
+            <summary>
+            Contains extensions for classes implementing IDisposable.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IDisposableExtensions.Using``2(System.Collections.Generic.IEnumerable{``0},System.Func{System.Collections.Generic.IEnumerable{``0},``1})">
+            <summary>
+            Calls <code>IDisposable.Dispose</code> on each disposable after
+            executing the function.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="disposables"></param>
+            <param name="function"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IDisposableExtensions.Using``1(System.Collections.Generic.IEnumerable{``0},System.Action{System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Calls <code>IDisposable.Dispose</code> on each disposable after
+            executing the function.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="disposables"></param>
+            <param name="action"></param>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IEnumerableExtensions">
             <summary>
             Contains extensions for ICollection.
@@ -1085,13 +1124,6 @@
             </summary>
             <param name="elements"></param>
             <param name="index"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetTextHelper(OpenQA.Selenium.IWebElement)">
-            <summary>
-            Shorthand for <code>new TextHelper(element);</code>.
-            </summary>
-            <param name="element"></param>
             <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.IsStale(OpenQA.Selenium.IWebElement)">
@@ -1584,6 +1616,66 @@
             </summary>
             <param name="minWidth"></param>
             <param name="maxWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.ScopedBy">
+            <summary>
+            Similar to the normal <code>OpenQA.Selenium.By</code> class but will
+            always search from the passed in searchContext.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. To create an instance of this class use the
+            <code>ApertureLabs.Selenium.ByExtensions</code> namespace.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <see cref="!:ApertureLabs.Selenium.Extensions.ByExtensions.FromScope"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. Instead fo passing in an instance of ISearchContext, pass in a
+            selector that will fetch the ISearchContext and then the subSelector
+            will search for the child elements.
+            </summary>
+            <param name="contextSelector"></param>
+            <param name="subSelectors"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElement(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElements(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will always use the passed in
+            search context instead of what the current context is for the
+            driver.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,OpenQA.Selenium.By[])">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">

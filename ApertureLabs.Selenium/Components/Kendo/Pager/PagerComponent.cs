@@ -1,6 +1,7 @@
 ﻿using ApertureLabs.Selenium.Components.Kendo.KDropDown;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         private readonly By LastPageSelector = By.CssSelector(".k-pager-last");
         private readonly By RefreshSelector = By.CssSelector(".k-pager-refresh");
         private readonly By PagerInfoSelector = By.CssSelector(".k-pager-info");
-        private readonly By ItemsPerPageSelector = By.CssSelector(".k-pager-sizes .k-dropdown");
+        private readonly By ItemsPerPageSelector;
 
         #endregion
 
@@ -50,6 +51,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         {
             this.pageObjectFactory = pageObjectFactory
                 ?? new PageObjectFactory();
+
+            ItemsPerPageSelector = ScopedBy.FromScope(
+                selector,
+                By.CssSelector(".k-pager-sizes .k-dropdown select"));
         }
 
         #endregion
@@ -116,6 +121,14 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         #endregion
 
         #region Methods
+
+        /// <inheritdoc/>
+        public override ILoadableComponent Load()
+        {
+            base.Load();
+
+            return this;
+        }
 
         /// <summary>
         /// Sets the page the listed page with the matching number.

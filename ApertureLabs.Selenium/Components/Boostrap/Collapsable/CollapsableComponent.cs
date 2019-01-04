@@ -65,8 +65,6 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
                 throw new ArgumentNullException(nameof(animationData));
             else if (!animationData.AnimationClasses.Any())
                 throw new ArgumentNullException(nameof(animationData.AnimationClasses));
-            else if (String.IsNullOrEmpty(animationData.ClosedClass))
-                throw new ArgumentNullException(nameof(animationData.ClosedClass));
             else if (String.IsNullOrEmpty(animationData.OpenClass))
                 throw new ArgumentNullException(nameof(animationData.OpenClass));
         }
@@ -226,9 +224,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// </summary>
         public virtual bool IsCollapsed()
         {
-            return WrappedElement.Classes().Contains(animationData.ClosedClass)
-                && !IsExpanded()
-                && !IsCurrentlyAnimating();
+            return !IsExpanded() && !IsCurrentlyAnimating();
         }
 
         /// <inheritdoc/>

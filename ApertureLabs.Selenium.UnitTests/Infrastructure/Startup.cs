@@ -60,7 +60,11 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
                 {
                     if (e.Data?.StartsWith("Now listening on: ") ?? false)
                     {
-                        ServerUrl = e.Data.Substring(18);
+                        var url = e.Data.Substring(18);
+
+                        if (!url.StartsWith("https"))
+                            ServerUrl = url;
+
                         Signal.Set();
                     }
 
@@ -81,7 +85,10 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
                     $"'{ServerProcess.ProcessName}' with an id of " +
                     $"${ServerProcess.Id}.");
 
-                Signal.WaitOne();
+                Signal.WaitOne(TimeSpan.FromSeconds(10));
+
+                if (String.IsNullOrEmpty(ServerUrl))
+                    throw new InvalidProgramException("Failed to start the MockServer.");
             }
         }
 
