@@ -1,4 +1,5 @@
 ﻿using System;
+using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
@@ -53,6 +54,27 @@ namespace ApertureLabs.Selenium.UnitTests
                 var el = driver.FindElement(By.CssSelector("#navbarSupportedContent > ul > li > a"));
                 var text = el.Text;
                 var prop = el.GetProperty("host");
+
+                Assert.IsFalse(String.IsNullOrEmpty(prop));
+            }
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void GetPropertyPolyfillTest()
+        {
+            var driver = webDriverFactory.CreateDriver(MajorWebDriver.Chrome,
+                WindowSize.DefaultDesktop);
+
+            using (driver)
+            {
+                var homePage = pageObjectFactory.PreparePage(new HomePage(driver,
+                    Startup.ServerUrl,
+                    pageObjectFactory));
+
+                var el = driver.FindElement(By.CssSelector("#navbarSupportedContent > ul > li > a"));
+                var text = el.Text;
+                var prop = el.GetElementProperty("host");
 
                 Assert.IsFalse(String.IsNullOrEmpty(prop));
             }

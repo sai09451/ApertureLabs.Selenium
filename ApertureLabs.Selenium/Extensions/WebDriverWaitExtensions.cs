@@ -166,5 +166,41 @@ namespace ApertureLabs.Selenium.Extensions
             wait.Timeout = initialTimeout;
             return exception == null;
         }
+
+        /// <summary>
+        /// The inverse of Until(...). Will wait while a statement is true.
+        /// </summary>
+        /// <param name="wait"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public static bool While(this IWait<IWebDriver> wait,
+            Func<IWebDriver, bool> condition)
+        {
+            if (condition == null)
+            {
+                throw new ArgumentNullException("condition",
+                    "condition cannot be null");
+            }
+
+            return wait.Until(d => !condition(d));
+        }
+
+        /// <summary>
+        /// Waits while the condition returns not null.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="wait"></param>
+        /// <param name="condition"></param>
+        public static void While<TResult>(this IWait<IWebDriver> wait,
+            Func<IWebDriver, TResult> condition) where TResult : class
+        {
+            if (condition == null)
+            {
+                throw new ArgumentNullException("condition",
+                    "condition cannot be null");
+            }
+
+            wait.Until(d => condition(d) == null);
+        }
     }
 }

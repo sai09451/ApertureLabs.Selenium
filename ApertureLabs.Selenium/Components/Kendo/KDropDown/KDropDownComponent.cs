@@ -24,6 +24,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         private readonly By WrappedDropdownSelector = By.CssSelector("select");
         private readonly By OptionsSelector = By.CssSelector("li");
         private readonly By SelectedOptionSelector = By.CssSelector(".k-state-selected");
+        private readonly By OpenAnimationFinishedSelector = By.CssSelector(".k-state-active");
 
         #endregion
 
@@ -125,10 +126,20 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// <summary>
         /// Sets the selected item.
         /// </summary>
-        /// <param name="values"></param>
-        public virtual void SetSelectedItems(params string[] values)
+        /// <param name="value"></param>
+        public virtual void SetSelectedItem(string value)
         {
-            throw new NotImplementedException();
+            Expand();
+
+            var newValEl = OptionsElements
+                .FirstOrDefault(e => e.TextHelper().InnerText == value);
+
+            if (newValEl == null)
+                throw new NoSuchElementException();
+
+            newValEl.Click();
+
+            WaitForAnimationEnd();
         }
 
         /// <summary>
@@ -140,12 +151,6 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         {
             var wrappedElementTagName = WrappedElement.TagName;
             var selectElement = new SelectElement(WrappedElement);
-            var opts = selectElement.WrappedElement
-                .FindElements(By.CssSelector("option"))
-                .Select(e => e.Text)
-                .ToList();
-
-            var val = WrappedElement.GetProperty("value");
 
             return selectElement;
         }
@@ -154,9 +159,13 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         public void WaitForAnimationStart(
             KDropDownAnimationOptions animationData = null)
         {
-            WaitForKendoEvent(
-                IsExpanded() ? "open" : "close",
-                TimeSpan.FromSeconds(30));
+            var data = animationData ?? this.animationData;
+
+            if (!data.AnimationsEnabled)
+                return;
+
+            GetPromiseForKendoEvent(IsExpanded() ? "open" : "close")
+                .Wait(TimeSpan.FromSeconds(30));
         }
 
         /// <inheritdoc/>
@@ -165,13 +174,15 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         {
             var data = animationData ?? this.animationData;
 
+            if (!data.AnimationsEnabled)
+                return;
+
             // Wait the animation duration plus two seconds.
             var timeSpanWithTolerance = data.AnimationDuration
                 + TimeSpan.FromSeconds(2);
 
-            WaitForKendoEvent(
-                IsExpanded() ? "close" : "open",
-                timeSpanWithTolerance);
+            GetPromiseForKendoEvent(IsExpanded() ? "close" : "open")
+                .Wait(timeSpanWithTolerance);
         }
 
         /// <inheritdoc/>
@@ -194,21 +205,37 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
             }
         }
 
-        private void Expand()
+        /// <summary>
+        /// Expands the dropdown if not already expanded.
+        /// </summary>
+        protected void Expand()
         {
             if (!IsExpanded())
             {
-                ContainerElement.Click();
-                WaitForAnimationEnd();
+                var containerElement = ContainerElement;
+                containerElement.Click();
+
+                WrappedDriver.Wait(animationData.AnimationDuration)
+                    .Until(d => containerElement
+                        .FindElements(OpenAnimationFinishedSelector)
+                        .Any());
             }
         }
 
-        private void Close()
+        /// <summary>
+        /// Collapses the dropdown if not already collapsed.
+        /// </summary>
+        protected void Close()
         {
             if (IsExpanded())
             {
-                ContainerElement.Click();
-                WaitForAnimationEnd();
+                var containerElement = ContainerElement;
+                containerElement.Click();
+
+                WrappedDriver.Wait(animationData.AnimationDuration)
+                    .Until(d => !containerElement
+                        .FindElements(OpenAnimationFinishedSelector)
+                        .Any());
             }
         }
 

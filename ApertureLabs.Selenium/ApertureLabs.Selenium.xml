@@ -191,13 +191,12 @@
             </summary>
             <param name="wait">Defaults to one minute</param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.WaitForKendoEvent(System.String,System.Nullable{System.TimeSpan})">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.GetPromiseForKendoEvent(System.String)">
             <summary>
             Since kendo events aren't compatible with native js events use this
             method to listen for kendo events.
             </summary>
             <param name="eventName">Name of the event to listen for.</param>
-            <param name="wait"></param>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions">
             <summary>
@@ -241,7 +240,7 @@
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.AnimationsEnabled">
             <inheritdoc/>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.Default">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.Default">
             <summary>
             Returns a default KDropDownAnimations object with AnimationsEnabled
             and AnimationDuration set to 200ms.
@@ -283,11 +282,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.SetSelectedItems(System.String[])">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.SetSelectedItem(System.String)">
             <summary>
             Sets the selected item.
             </summary>
-            <param name="values"></param>
+            <param name="value"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.GetSelectElement">
             <summary>
@@ -304,6 +303,16 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
             <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.Expand">
+            <summary>
+            Expands the dropdown if not already expanded.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.Close">
+            <summary>
+            Collapses the dropdown if not already collapsed.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KendoGrid.KendoGridComponent">
             <summary>
@@ -1016,7 +1025,15 @@
             Detects if jQuery is defined on a page.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncScript``1(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.JavaScriptExecutor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Returns a javascript executor from the webdriver. Will throw an
+            exception if the driver doesn't support the interface.
+            </summary>
+            <param name="driver"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncJavaScript``1(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
             <summary>
             Executes an asynchronous script synchronously. The scripts last
             argument will be an injected callback that must be called to
@@ -1029,7 +1046,7 @@
             <param name="args"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncScript(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncJavaScript(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
             <summary>
             Executes an asynchronous script synchronously. The scripts last
             argument will be an injected callback that must be called to
@@ -1156,6 +1173,20 @@
             <param name="eventNames"></param>
             <param name="timeout"></param>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetElementProperty(OpenQA.Selenium.IWebElement,System.String,System.String)">
+            <summary>
+            This exists to patch an issue with the current chromedriver not
+            being compatible with the W3C WebDriver spec as of 05 June 2018
+            (https://www.w3.org/TR/2018/REC-webdriver1-20180605/). This will
+            use the native function 'GetProperty' for every driver except
+            chromedriver which instead executes javascript to retrieve the
+            value.
+            </summary>
+            <param name="element"></param>
+            <param name="propertyName"></param>
+            <param name="defaultValueIfNull"></param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
             <summary>
             Extensions for WebDriverWait.
@@ -1211,6 +1242,22 @@
             <param name="exception"></param>
             <param name="conditions"></param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.While(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},System.Func{OpenQA.Selenium.IWebDriver,System.Boolean})">
+            <summary>
+            The inverse of Until(...). Will wait while a statement is true.
+            </summary>
+            <param name="wait"></param>
+            <param name="condition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.While``1(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},System.Func{OpenQA.Selenium.IWebDriver,``0})">
+            <summary>
+            Waits while the condition returns not null.
+            </summary>
+            <typeparam name="TResult"></typeparam>
+            <param name="wait"></param>
+            <param name="condition"></param>
         </member>
         <member name="T:ApertureLabs.Selenium.IPageObjectFactory">
             <summary>
@@ -1678,6 +1725,159 @@
             <param name="subSelectors"></param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus">
+            <summary>
+            Statuses for javascript promises.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.NotFinished">
+            <summary>
+            The promise never finished.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.Resolved">
+            <summary>
+            The promise resolved successfully.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.Rejected">
+            <summary>
+            The promise was rejected.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody">
+            <summary>
+            A helper class for creating a javascript promise body for selenium.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.#ctor">
+            <summary>
+            Ctor.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.#ctor(System.String)">
+            <summary>
+            Ctor. Sets the PromiseBody.
+            </summary>
+            <param name="promiseBody"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Created">
+            <summary>
+            Used to determine if the promise was created.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseWrapper">
+            <summary>
+            The wrapper around the script.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseId">
+            <summary>
+            Id of the created promise. Returns -1 if the promise hasn't been
+            'created' yet.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseBody">
+            <summary>
+            The body of the promise. Supports the following tokens:
+            {0} - To resolve the promise (need to call with paranthesis IE:
+                {0}(23) will resolve 23).
+            {1} - To reject the promise need to call with paranthesis IE:
+                {1}(43) will reject and pass the value 43).
+            {2} - To refer to the arguments array of the intial function.
+                * Attempting to reference the arguments object by name in the
+                    script will return the promises arguments and not what was
+                    passed in.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.ResolveScript">
+            <summary>
+            Name of the function to resolve the promise.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.RejectScript">
+            <summary>
+            Name of the function to reject the script.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.ArgumentsScript">
+            <summary>
+            Name of the variable the initial arguments are assigned to. Since
+            any parameters passed into the script will only be assigned to the
+            initial arguments object, a variable is created to reference the
+            intial arguments to access it from the Promise.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolved">
+            <summary>
+            Checks if the promise was resolved.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Rejected">
+            <summary>
+            Checks if the promise was rejected.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Finished">
+            <summary>
+            Checks if the promise was resolved or rejected.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.IsStale">
+            <summary>
+            Checks if the context the promise was saved in is still valid. IE:
+            navigating off the page will make this a stale promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.CreateScript(OpenQA.Selenium.IWebDriver,System.Object[])">
+            <summary>
+            This will create the js promise in the drivers active window and
+            sets the PromiseId. Can only call this method once. Will throw an
+            exception if the PromiseBody was never set.
+            </summary>
+            <param name="driver"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Reject``1(``0)">
+            <summary>
+            Attempts to reject the promise with a value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Reject">
+            <summary>
+            Attempts to reject the promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolve``1(``0)">
+            <summary>
+            Attempts to resolve the promise with a value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolve">
+            <summary>
+            Attempts to resolve the promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.GetPromiseStatus">
+            <summary>
+            Returns the status of the promise. Throws an exception if the
+            promise was never created.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Wait(System.Nullable{System.TimeSpan})">
+            <summary>
+            Waits for the promise to either resolve or reject.
+            </summary>
+            <param name="wait">Defaults to thirty seconds.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.op_Implicit(System.String)~ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody">
+            <summary>
+            Calls the ctor with the string as the argument.
+            </summary>
+            <param name="script"></param>
+        </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">
             <summary>
             Used for switching between tabs.
@@ -1728,14 +1928,19 @@
             Retrieves and trims the inner text of the element.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.TextHelper.OuterText">
+            <summary>
+            Retrieves and trims the outer text of the element.
+            </summary>
+        </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.InnerHtml">
             <summary>
-            Returns the inner html of the element.
+            Returns the trimmed inner html of the element.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.OuterHtml">
             <summary>
-            Returns the outer html of the element.
+            Returns the trimmed outer html of the element.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.WrappedDriver">

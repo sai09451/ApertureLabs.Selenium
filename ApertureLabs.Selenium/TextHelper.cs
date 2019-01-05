@@ -1,6 +1,7 @@
 ﻿using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
+using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,6 +14,26 @@ namespace ApertureLabs.Selenium
     /// </summary>
     public class TextHelper : IWrapsDriver, IWrapsElement
     {
+        #region Fields
+
+        private const string InnerTextScript =
+            "var el = arguments[0];" +
+            "return el.innerText;";
+
+        private const string OuterTextScript =
+            "var el = arguments[0];" +
+            "return el.outerText;";
+
+        private const string InnerHtmlScript =
+            "var el = arguments[0];" +
+            "return el.innerHTML;";
+
+        private const string OuterHtmlScript =
+            "var el = arguments[0];" +
+            "return el.outerHTML;";
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -22,6 +43,7 @@ namespace ApertureLabs.Selenium
         public TextHelper(IWebElement element)
         {
             WrappedElement = element;
+            WrappedDriver = element.GetDriver();
         }
 
         #endregion
@@ -31,20 +53,33 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Retrieves and trims the inner text of the element.
         /// </summary>
-        public string InnerText => WrappedElement.Text.Trim();
+        public string InnerText => WrappedDriver
+            .ExecuteJavaScript<string>(InnerTextScript, WrappedElement)
+            .Trim();
 
         /// <summary>
-        /// Returns the inner html of the element.
+        /// Retrieves and trims the outer text of the element.
         /// </summary>
-        public string InnerHtml => throw new NotImplementedException();
+        public string OuterText => WrappedDriver
+            .ExecuteJavaScript<string>(OuterTextScript, WrappedElement)
+            .Trim();
 
         /// <summary>
-        /// Returns the outer html of the element.
+        /// Returns the trimmed inner html of the element.
         /// </summary>
-        public string OuterHtml => throw new NotImplementedException();
+        public string InnerHtml => WrappedDriver
+            .ExecuteJavaScript<string>(InnerHtmlScript, WrappedElement)
+            .Trim();
+
+        /// <summary>
+        /// Returns the trimmed outer html of the element.
+        /// </summary>
+        public string OuterHtml => WrappedDriver
+            .ExecuteJavaScript<string>(OuterHtmlScript, WrappedElement)
+            .Trim();
 
         /// <inheritdoc/>
-        public IWebDriver WrappedDriver => WrappedElement.GetDriver();
+        public IWebDriver WrappedDriver { get; protected set; }
 
         /// <inheritdoc/>
         public IWebElement WrappedElement { get; protected set; }
@@ -64,7 +99,7 @@ namespace ApertureLabs.Selenium
         public int ExtractInteger(bool roundUp = false)
         {
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
-            var matches = r.Match(WrappedElement.Text);
+            var matches = r.Match(InnerText);
             var number = Int32.Parse(matches.Groups[2].ToString());
 
             return number;
@@ -210,7 +245,7 @@ namespace ApertureLabs.Selenium
         public int ExtractLastFourCCDigits()
         {
             var regex = new Regex(@"x(\d{4})");
-            var matches = regex.Match(WrappedElement.Text);
+            var matches = regex.Match(InnerText);
 
             if (matches.Groups.Count == 0)
             {

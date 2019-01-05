@@ -114,7 +114,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
                     WrappedDriver,
                     ItemsPerPageSelector,
                     dataSourceOptions,
-                    KDropDownAnimationOptions.Default));
+                    KDropDownAnimationOptions.Default()));
 
         #endregion
 

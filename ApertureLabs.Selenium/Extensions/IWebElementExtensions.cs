@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.Extensions;
 using System;
@@ -166,7 +167,7 @@ namespace ApertureLabs.Selenium.Extensions
                     "});";
 
             var d = element.GetDriver();
-            d.ExecuteAsyncScript(js, element);
+            d.ExecuteAsyncJavaScript(js, element);
         }
 
         /// <summary>
@@ -219,6 +220,43 @@ namespace ApertureLabs.Selenium.Extensions
 
             if (!result)
                 throw new TimeoutException();
+        }
+
+        /// <summary>
+        /// This exists to patch an issue with the current chromedriver not
+        /// being compatible with the W3C WebDriver spec as of 05 June 2018
+        /// (https://www.w3.org/TR/2018/REC-webdriver1-20180605/). This will
+        /// use the native function 'GetProperty' for every driver except
+        /// chromedriver which instead executes javascript to retrieve the
+        /// value.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="defaultValueIfNull"></param>
+        /// <returns></returns>
+        public static string GetElementProperty(this IWebElement element,
+            string propertyName,
+            string defaultValueIfNull = null)
+        {
+            var value = default(string);
+            var driver = element.GetDriver();
+
+            if (driver is ChromeDriver)
+            {
+                // Use js to get element property.
+                var script =
+                    "var el = arguments[0];" +
+                    "return el['" + propertyName + "'];";
+
+                value = driver.ExecuteJavaScript<string>(script, element);
+            }
+            else
+            {
+                // Browser should support get property.
+                value = element.GetProperty(propertyName);
+            }
+
+            return value ?? defaultValueIfNull;
         }
     }
 }

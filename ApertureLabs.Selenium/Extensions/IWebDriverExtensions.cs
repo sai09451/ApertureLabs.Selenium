@@ -123,6 +123,25 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
+        /// Returns a javascript executor from the webdriver. Will throw an
+        /// exception if the driver doesn't support the interface.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <returns></returns>
+        public static IJavaScriptExecutor JavaScriptExecutor(this IWebDriver driver)
+        {
+            if (driver is IJavaScriptExecutor jsExe)
+            {
+                return jsExe;
+            }
+            else
+            {
+                throw new NotImplementedException("The driver doesn't " +
+                    "implement IJavaScriptExecutor.");
+            }
+        }
+
+        /// <summary>
         /// Executes an asynchronous script synchronously. The scripts last
         /// argument will be an injected callback that must be called to
         /// signify the script is done running. When calling the callback pass
@@ -133,7 +152,7 @@ namespace ApertureLabs.Selenium.Extensions
         /// <param name="script"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static T ExecuteAsyncScript<T>(this IWebDriver driver,
+        public static T ExecuteAsyncJavaScript<T>(this IWebDriver driver,
             string script,
             params object[] args)
         {
@@ -153,7 +172,7 @@ namespace ApertureLabs.Selenium.Extensions
         /// <param name="driver"></param>
         /// <param name="script"></param>
         /// <param name="args"></param>
-        public static void ExecuteAsyncScript(this IWebDriver driver,
+        public static void ExecuteAsyncJavaScript(this IWebDriver driver,
             string script,
             params object[] args)
         {
@@ -180,7 +199,7 @@ namespace ApertureLabs.Selenium.Extensions
                         "callback();" +
                     "})";
 
-            driver.ExecuteAsyncScript(script);
+            driver.ExecuteAsyncJavaScript(script);
         }
 
         /// <summary>

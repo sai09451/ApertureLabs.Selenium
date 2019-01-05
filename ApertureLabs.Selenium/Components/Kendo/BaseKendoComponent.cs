@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
@@ -99,29 +100,23 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// method to listen for kendo events.
         /// </summary>
         /// <param name="eventName">Name of the event to listen for.</param>
-        /// <param name="wait"></param>
-        protected virtual void WaitForKendoEvent(string eventName,
-            TimeSpan? wait = null)
+        protected virtual SeleniumJavaScriptPromiseBody GetPromiseForKendoEvent(
+            string eventName)
         {
             var script =
-                $"var callback = arguments[arguments.length - 1];" +
-                $"var $el = $(arguments[0]);" +
-                $"var dropdown = $el.data().kendoDropDownList;" +
-                $"var unbindCallback = function () {{" +
-                    $"dropdown.unbind('{eventName}', unbindCallback)" + 
-                    $"callback();" +
-                $"}};" +
-                $"dropdown.bind('{eventName}', unbindCallback)";
+                "var callback = {0};" +
+                "var $el = $({2}[0]);" +
+                "var dropdown = $el.data().kendoDropDownList;" +
+                "var unbindCallback = function () {{" +
+                    $"dropdown.unbind('{eventName}', unbindCallback);" +
+                    "callback();" +
+                "}};" +
+                $"dropdown.bind('{eventName}', unbindCallback);";
 
-            WrappedDriver.Wait(wait ?? TimeSpan.FromSeconds(30))
-                .Until(d =>
-                {
-                    WrappedDriver.ExecuteAsyncScript(script,
-                        wait,
-                        WrappedElement);
+            var promise = new SeleniumJavaScriptPromiseBody(script);
+            promise.CreateScript(WrappedDriver, WrappedElement);
 
-                    return true;
-                });
+            return promise;
         }
 
         #endregion

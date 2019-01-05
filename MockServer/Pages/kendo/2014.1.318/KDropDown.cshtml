@@ -5,7 +5,6 @@
     Layout = "~/Pages/kendo/2014.1.318/Shared/_Layout.cshtml";
 }
 <div id="dropdown"></div>
-<div class="dropdownV2"></div>
 <script>
     $(function () {
         var dataSource = new kendo.data.DataSource({
@@ -19,10 +18,6 @@
         });
 
         $("#dropdown").kendoDropDownList({
-            dataSource: dataSource
-        });
-
-        $(".dropdownV2").kendoDropDownList({
             dataSource: dataSource
         });
 
