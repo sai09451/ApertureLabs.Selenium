@@ -123,18 +123,25 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
             Assert.AreEqual(secondSelectedItem, "5");
         }
 
+        [Description("Same as the GetSelectedItemTest.")]
         [ServerRequired]
         [TestMethod]
         public void SetSelectedItemsTest()
         {
-            throw new NotImplementedException();
+            GetSelectedItemTest();
         }
 
+        [Description("Checks that no exceptions are thrown.")]
         [ServerRequired]
         [TestMethod]
         public void GetSelectedElementTest()
         {
-            throw new NotImplementedException();
+            kDropDownComponent = pageObjectFactory
+                .PrepareComponent(kDropDownComponent);
+
+            var select = kDropDownComponent.GetSelectElement();
+
+            Assert.IsNotNull(select);
         }
 
         [ServerRequired]

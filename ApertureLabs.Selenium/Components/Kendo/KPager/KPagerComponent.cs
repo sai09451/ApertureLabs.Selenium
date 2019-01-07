@@ -6,12 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ApertureLabs.Selenium.Components.Kendo.Pager
+namespace ApertureLabs.Selenium.Components.Kendo.KPager
 {
     /// <summary>
     /// PagerComponent.
     /// </summary>
-    public class PagerComponent : BaseKendoComponent
+    public class KPagerComponent : BaseKendoComponent
     {
         #region Fields
 
@@ -43,7 +43,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// <param name="selector"></param>
         /// <param name="dataSourceOptions"></param>
         /// <param name="pageObjectFactory"></param>
-        public PagerComponent(IWebDriver driver,
+        public KPagerComponent(IWebDriver driver,
             By selector,
             DataSourceOptions dataSourceOptions,
             IPageObjectFactory pageObjectFactory = default)
@@ -135,7 +135,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// </summary>
         /// <param name="listedPage"></param>
         /// <returns></returns>
-        public virtual PagerComponent SetPage(int listedPage)
+        public virtual KPagerComponent SetPage(int listedPage)
         {
             var desiredPageEl = AvailablePagesElements
                 .FirstOrDefault(
@@ -171,7 +171,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// Goes to the last page if available.
         /// </summary>
         /// <returns></returns>
-        public virtual PagerComponent LastPage()
+        public virtual KPagerComponent LastPage()
         {
             if (!IsOnLastPage)
             {
@@ -186,7 +186,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// Goes to the first page if available.
         /// </summary>
         /// <returns></returns>
-        public PagerComponent FirstPage()
+        public KPagerComponent FirstPage()
         {
             if (!IsOnFirstPage)
             {
@@ -202,7 +202,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// current page.
         /// </summary>
         /// <returns></returns>
-        public virtual PagerComponent PrevPage()
+        public virtual KPagerComponent PrevPage()
         {
             if (HasPreviousPage)
             {
@@ -217,7 +217,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.Pager
         /// Goes to the next page if available.
         /// </summary>
         /// <returns></returns>
-        public virtual PagerComponent NextPage()
+        public virtual KPagerComponent NextPage()
         {
             if (HasNextPage)
             {

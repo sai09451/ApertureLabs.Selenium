@@ -17,12 +17,10 @@ namespace ApertureLabs.Selenium
         private readonly By contextSelector;
 
         /// <summary>
-        /// Ctor. To create an instance of this class use the
-        /// <code>ApertureLabs.Selenium.ByExtensions</code> namespace.
+        /// Ctor. To create an instance use the static method FromScoped(...).
         /// </summary>
         /// <param name="searchContext"></param>
         /// <param name="subSelectors"></param>
-        /// <see cref="ApertureLabs.Selenium.Extensions.ByExtensions.FromScope"/>
         internal ScopedBy(ISearchContext searchContext, ICollection<By> subSelectors)
         {
             this.Description = "ApertureLabs.Selenium.ScopedBy";

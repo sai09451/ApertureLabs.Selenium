@@ -142,48 +142,6 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
-        /// Executes an asynchronous script synchronously. The scripts last
-        /// argument will be an injected callback that must be called to
-        /// signify the script is done running. When calling the callback pass
-        /// in whatever the script needed to return.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="driver"></param>
-        /// <param name="script"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public static T ExecuteAsyncJavaScript<T>(this IWebDriver driver,
-            string script,
-            params object[] args)
-        {
-            if (String.IsNullOrEmpty(script))
-                throw new ArgumentException(nameof(script));
-
-            var jsExecutor = (IJavaScriptExecutor)driver;
-            return (T)jsExecutor.ExecuteAsyncScript(script, args);
-        }
-
-        /// <summary>
-        /// Executes an asynchronous script synchronously. The scripts last
-        /// argument will be an injected callback that must be called to
-        /// signify the script is done running.
-        /// done running.
-        /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="script"></param>
-        /// <param name="args"></param>
-        public static void ExecuteAsyncJavaScript(this IWebDriver driver,
-            string script,
-            params object[] args)
-        {
-            if (String.IsNullOrEmpty(script))
-                throw new ArgumentException(nameof(script));
-
-            var jsExecutor = (IJavaScriptExecutor)driver;
-            jsExecutor.ExecuteAsyncScript(script, args);
-        }
-
-        /// <summary>
         /// Waits for a document level event matching the eventName to occur.
         /// </summary>
         /// <param name="driver"></param>
@@ -199,7 +157,9 @@ namespace ApertureLabs.Selenium.Extensions
                         "callback();" +
                     "})";
 
-            driver.ExecuteAsyncJavaScript(script);
+            driver
+                .JavaScriptExecutor()
+                .ExecuteAsyncScript(script);
         }
 
         /// <summary>
@@ -215,17 +175,33 @@ namespace ApertureLabs.Selenium.Extensions
             if (!eventNames?.Any() ?? true)
                 throw new ArgumentException(nameof(eventNames));
 
-            var tasks = eventNames.Select(e =>
+            var script =
+                "var callback = arguments[arguments.length - 1];" +
+                "var eventListeners = [];" +
+                "var evtListener = null;";
+
+            foreach (var eventName in eventNames)
             {
-                var evtName = e;
-                return new Task(() => driver.WaitForEvent(evtName));
-            });
+                script +=
+                    $"evtListener = document.addEventListener('" +
+                        $"{eventName}'," +
+                        $"function (e) {{" +
+                            $"for (var i = 0; i < eventListeners.length; i++) {{" +
+                                $"var handler = eventListeners[i];" +
+                                $"document.removeEventListener(" +
+                                    $"handler.event," +
+                                    $"handler.handler);" +
+                            $"}}" +
+                            $"callback();" +
+                        $"}});" +
+                    $"eventListeners.push({{" +
+                        $"handler: evtListener," +
+                        $"event: {eventName}" +
+                    $"}})";
+            }
 
-            var result = Task.WhenAny(tasks)
-                .Wait(timeout ?? TimeSpan.FromSeconds(30));
-
-            if (!result)
-                throw new TimeoutException();
+            driver.Wait(timeout ?? TimeSpan.FromSeconds(30))
+                .Until(d => d.JavaScriptExecutor().ExecuteAsyncScript(script));
         }
 
         /// <summary>
@@ -241,17 +217,38 @@ namespace ApertureLabs.Selenium.Extensions
             if (!eventNames?.Any() ?? true)
                 throw new ArgumentException(nameof(eventNames));
 
-            var tasks = eventNames.Select(e =>
+            var script =
+                "var callback = arguments[arguments.length - 1];" +
+                "var eventListeners = [];" +
+                "var evtListener = null;";
+
+            foreach (var eventName in eventNames)
             {
-                var evtName = e;
-                return new Task(() => driver.WaitForEvent(evtName));
-            });
+                script +=
+                    $"evtListener = document.addEventListener('" +
+                        $"{eventName}'," +
+                        $"function (e) {{" +
+                            $"for (var i = 0; i < eventListeners.length; i++) {{" +
+                                $"var handler = eventListeners[i];" +
+                                $"if (handler.event === '{eventName}') {{" +
+                                    $"document.removeEventListener(" +
+                                        $"handler.event," +
+                                        $"handler.handler);" +
+                                    $"eventListeners.remove(handler);" +
+                                $"}}" +
+                            $"}}" +
+                            $"if (eventListeners.length === 0) {{" +
+                                $"callback();" +
+                            $"}}" +
+                        $"}});" +
+                    $"eventListeners.push({{" +
+                        $"handler: evtListener," +
+                        $"event: {eventName}" +
+                    $"}});";
+            }
 
-            var result = Task.WhenAll(tasks)
-                .Wait(timeout ?? TimeSpan.FromSeconds(30));
-
-            if (!result)
-                throw new TimeoutException();
+            driver.Wait(timeout ?? TimeSpan.FromSeconds(30))
+                .Until(d => d.JavaScriptExecutor().ExecuteAsyncScript(script));
         }
     }
 }

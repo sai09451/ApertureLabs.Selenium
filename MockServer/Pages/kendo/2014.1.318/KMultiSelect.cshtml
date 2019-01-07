@@ -1,0 +1,26 @@
+﻿@page
+@model MockServer.Pages.kendo._2014._1._318.KMultiSelectModel
+@{
+    Layout = "~/Pages/kendo/2014.1.318/Shared/_Layout.cshtml";
+}
+<div id="container">
+    <div class="my-multiselect"></div>
+</div>
+<script>
+    $(function () {
+        $(".my-multiselect").kendoMultiSelect({
+            dataSource: [
+                { id: 1, name: "Apples" },
+                { id: 2, name: "Oranges" },
+                { id: 3, name: "Cranberries" },
+                { id: 4, name: "Blueberries" },
+                { id: 5, name: "Tangerines" },
+                { id: 6, name: "Pineapples" },
+                { id: 7, name: "Kiwis" },
+                { id: 8, name: "Tomatoes" },
+            ],
+            dataTextField: "name",
+            dataValueField: "id"
+        });
+    });
+</script>

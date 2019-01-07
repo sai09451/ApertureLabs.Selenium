@@ -314,24 +314,12 @@
             Collapses the dropdown if not already collapsed.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Kendo.KendoGrid.KendoGridComponent">
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent">
             <summary>
             Represents a kendo grid.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KendoGrid.KendoGridComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
-            <summary>
-            Ctor.
-            </summary>
-            <param name="driver"></param>
-            <param name="selector"></param>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent">
-            <summary>
-            PagerComponent.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
             <summary>
             Ctor.
             </summary>
@@ -340,103 +328,216 @@
             <param name="dataSourceOptions"></param>
             <param name="pageObjectFactory"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.IsOnFirstPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.IsMultiColumnHeader">
+            <summary>
+            Used to check for nested headers.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.PagerComponent">
+            <summary>
+            The pager used to control the grid.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Load">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.GetColumnHeaders">
+            <summary>
+            Returns a list of all column names.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.GetCell(System.Int32,System.Int32)">
+            <summary>
+            Returns the element cell.
+            </summary>
+            <param name="row"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.GetCell(System.String,System.Int32)">
+            <summary>
+            NOTE: Throws an exception if this is a multi-header grid.
+            </summary>
+            <param name="columnHeaderName"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions">
+            <summary>
+            Animation options for the KMultiSelectComponent.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.AnimationDuration">
+            <inheritDoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.AnimationsEnabled">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.Default">
+            <summary>
+            Default options for the KMultiSelectAnimationOptions.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent">
+            <summary>
+            Represents a kendo multi-select component.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="driver"></param>
+            <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
+            <param name="animationData"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.GetAllOptions">
+                <summary>
+            Returns a list of all options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.GetSelectedOptions">
+            <summary>
+            Returns a list of all selected items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.SelectItem(System.String)">
+            <summary>
+            Selects an item if not already selected.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.DeselectItem(System.String)">
+            <summary>
+            Deselects an item if it's selected.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <inheritDoc/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent">
+            <summary>
+            PagerComponent.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="driver"></param>
+            <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
+            <param name="pageObjectFactory"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.IsOnFirstPage">
             <summary>
             Returns true if on the first page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.HasPreviousPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.HasPreviousPage">
             <summary>
             Returns false if the previous page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.HasNextPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.HasNextPage">
             <summary>
             Returns false if the next page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.IsOnLastPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.IsOnLastPage">
             <summary>
             Returns true if the last page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.HasPageInfo">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.HasPageInfo">
             <summary>
             Used to determine if the current page range total items are displayed.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.Load">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.Load">
             <inheritdoc/>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.SetPage(System.Int32)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.SetPage(System.Int32)">
             <summary>
             Sets the page the listed page with the matching number.
             </summary>
             <param name="listedPage"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetListedPages">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetListedPages">
             <summary>
             Returns a list of listed pages.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.LastPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.LastPage">
             <summary>
             Goes to the last page if available.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.FirstPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.FirstPage">
             <summary>
             Goes to the first page if available.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.PrevPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.PrevPage">
             <summary>
             Goes to the previous page if available, otherwise remains on the
             current page.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.NextPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.NextPage">
             <summary>
             Goes to the next page if available.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetActivePage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetActivePage">
             <summary>
             Returns the active page number.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetTotalItems">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetTotalItems">
             <summary>
             Returns the total items.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetAvailableItemsPerPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetAvailableItemsPerPage">
             <summary>
             Retrieves the available items per page.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetItemsPerPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetItemsPerPage">
             <summary>
             Returns the selected value for items per page.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.SetItemsPerPage(System.Int32)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.SetItemsPerPage(System.Int32)">
             <summary>
             Sets the 'Items per Page'.
             </summary>
             <param name="itemsPerPage"></param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.Refresh">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.Refresh">
             <summary>
             Refreshes the context the pager is attached to.
             </summary>
@@ -963,6 +1064,16 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="collection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IEnumerableExtensions.IndexOf``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Retrieves the index of an item in a collection. Returns -1 if the
+            item isn't in the collection.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="collection"></param>
+            <param name="item"></param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebDriverExtensions">
@@ -1673,12 +1784,10 @@
         </member>
         <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
             <summary>
-            Ctor. To create an instance of this class use the
-            <code>ApertureLabs.Selenium.ByExtensions</code> namespace.
+            Ctor. To create an instance use the static method FromScoped(...).
             </summary>
             <param name="searchContext"></param>
             <param name="subSelectors"></param>
-            <see cref="!:ApertureLabs.Selenium.Extensions.ByExtensions.FromScope"/>
         </member>
         <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
             <summary>

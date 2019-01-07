@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ApertureLabs.Selenium.Components.Kendo;
-using ApertureLabs.Selenium.Components.Kendo.Pager;
+using ApertureLabs.Selenium.Components.Kendo.KPager;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
@@ -16,7 +16,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
     {
         #region Fields
 
-        private static PagerComponent PagerComponent;
+        private static KPagerComponent PagerComponent;
         private static IPageObjectFactory PageObjectFactory;
         private static WebDriverFactory WebDriverFactory;
 
@@ -63,7 +63,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                     "KPager");
 
                 var pagerComponent = PageObjectFactory.PrepareComponent(
-                    new PagerComponent(driver,
+                    new KPagerComponent(driver,
                         By.CssSelector("#pager"),
                         DataSourceOptions.DefaultKendoOptions(),
                         PageObjectFactory));

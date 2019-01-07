@@ -120,7 +120,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// <returns></returns>
         public virtual string GetSelectedItem()
         {
-            return SelectedOption.Text.Trim();
+            return SelectedOption.TextHelper().InnerText;
         }
 
         /// <summary>

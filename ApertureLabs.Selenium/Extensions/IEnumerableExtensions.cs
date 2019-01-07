@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ApertureLabs.Selenium.Extensions
 {
@@ -22,6 +21,23 @@ namespace ApertureLabs.Selenium.Extensions
         {
             var rnd = Random.Next(collection.Count());
             return collection.ElementAt(rnd);
+        }
+
+        /// <summary>
+        /// Retrieves the index of an item in a collection. Returns -1 if the
+        /// item isn't in the collection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public static int IndexOf<T>(this IEnumerable<T> collection, T item)
+        {
+            var match = collection
+                .Select((Item, Index) => new { Item, Index })
+                .FirstOrDefault(q => q.Item.Equals(item));
+
+            return match?.Index ?? -1;
         }
     }
 }
