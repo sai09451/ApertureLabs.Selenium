@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using ApertureLabs.Selenium.Components.Kendo;
 using ApertureLabs.Selenium.Components.Kendo.KPager;
 using ApertureLabs.Selenium.PageObjects;
@@ -12,7 +11,7 @@ using OpenQA.Selenium;
 namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
 {
     [TestClass]
-    public class KendoPagerComponentTests
+    public class KPagerComponentTests
     {
         #region Fields
 

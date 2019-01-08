@@ -394,8 +394,14 @@
             <param name="dataSourceOptions"></param>
             <param name="animationData"></param>
         </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsExpanded">
+            <summary>
+            Checks if the widget is expanded.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.GetAllOptions">
-                <summary>
+            <summary>
             Returns a list of all options.
             </summary>
             <returns></returns>
@@ -426,6 +432,11 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
             <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.Expand">
+            <summary>
+            Expands the widget if not already expanded.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent">
             <summary>
@@ -1143,30 +1154,6 @@
             </summary>
             <param name="driver"></param>
             <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncJavaScript``1(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
-            <summary>
-            Executes an asynchronous script synchronously. The scripts last
-            argument will be an injected callback that must be called to
-            signify the script is done running. When calling the callback pass
-            in whatever the script needed to return.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="driver"></param>
-            <param name="script"></param>
-            <param name="args"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncJavaScript(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
-            <summary>
-            Executes an asynchronous script synchronously. The scripts last
-            argument will be an injected callback that must be called to
-            signify the script is done running.
-            done running.
-            </summary>
-            <param name="driver"></param>
-            <param name="script"></param>
-            <param name="args"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.WaitForEvent(OpenQA.Selenium.IWebDriver,System.String)">
             <summary>

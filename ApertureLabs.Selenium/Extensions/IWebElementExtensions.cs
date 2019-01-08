@@ -167,7 +167,7 @@ namespace ApertureLabs.Selenium.Extensions
                     "});";
 
             var d = element.GetDriver();
-            d.ExecuteAsyncJavaScript(js, element);
+            d.JavaScriptExecutor().ExecuteAsyncScript(js, element);
         }
 
         /// <summary>
