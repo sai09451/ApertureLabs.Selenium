@@ -23,7 +23,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         {
             return new KDropDownAnimationOptions
             {
-                AnimationDuration = TimeSpan.FromSeconds(30),
+                AnimationDuration = TimeSpan.FromMilliseconds(500),
                 AnimationsEnabled = true
             };
         }

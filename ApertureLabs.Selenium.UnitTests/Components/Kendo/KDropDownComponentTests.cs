@@ -131,19 +131,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
             GetSelectedItemTest();
         }
 
-        [Description("Checks that no exceptions are thrown.")]
-        [ServerRequired]
-        [TestMethod]
-        public void GetSelectedElementTest()
-        {
-            kDropDownComponent = pageObjectFactory
-                .PrepareComponent(kDropDownComponent);
-
-            var select = kDropDownComponent.GetSelectElement();
-
-            Assert.IsNotNull(select);
-        }
-
         [ServerRequired]
         [TestMethod]
         public void WaitForAnimationStartTest()

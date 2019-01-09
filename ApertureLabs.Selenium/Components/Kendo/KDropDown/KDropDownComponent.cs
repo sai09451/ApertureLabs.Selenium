@@ -142,19 +142,6 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
             WaitForAnimationEnd();
         }
 
-        /// <summary>
-        /// Returns the wrapped select element that KDropDownList
-        /// uses internally.
-        /// </summary>
-        /// <returns></returns>
-        public virtual SelectElement GetSelectElement()
-        {
-            var wrappedElementTagName = WrappedElement.TagName;
-            var selectElement = new SelectElement(WrappedElement);
-
-            return selectElement;
-        }
-
         /// <inheritdoc/>
         public void WaitForAnimationStart(
             KDropDownAnimationOptions animationData = null)
@@ -165,7 +152,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
                 return;
 
             GetPromiseForKendoEvent(IsExpanded() ? "open" : "close")
-                .Wait(TimeSpan.FromSeconds(30));
+                .Wait(data.AnimationDuration);
         }
 
         /// <inheritdoc/>
@@ -177,32 +164,15 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
             if (!data.AnimationsEnabled)
                 return;
 
-            // Wait the animation duration plus two seconds.
-            var timeSpanWithTolerance = data.AnimationDuration
-                + TimeSpan.FromSeconds(2);
-
             GetPromiseForKendoEvent(IsExpanded() ? "close" : "open")
-                .Wait(timeSpanWithTolerance);
+                .Wait(data.AnimationDuration);
         }
 
         /// <inheritdoc/>
         public bool IsCurrentlyAnimating(
             KDropDownAnimationOptions animationData = null)
         {
-            var opts = animationData ?? this.animationData;
-
-            if (!opts.AnimationsEnabled)
-                return false;
-
-            try
-            {
-                WaitForAnimationEnd(opts);
-                return true;
-            }
-            catch (TimeoutException)
-            {
-                return false;
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>

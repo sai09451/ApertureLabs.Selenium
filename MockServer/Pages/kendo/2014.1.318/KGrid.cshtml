@@ -10,12 +10,18 @@
             data: [
                 { id: 1, name: "Jane Doe", age: 30 },
                 { id: 2, name: "John Doe", age: 33 },
-                { id: 3, name: "Tom", age: 30 },
-                { id: 4, name: "Bob", age: 33 },
-                { id: 5, name: "Sarah", age: 30 },
-                { id: 6, name: "Alex", age: 33 },
-                { id: 7, name: "Tim", age: 30 },
-                { id: 8, name: "Cook", age: 33 },
+                { id: 3, name: "Tom", age: 29 },
+                { id: 4, name: "Bob", age: 34 },
+                { id: 5, name: "Sarah", age: 35 },
+                { id: 6, name: "Alex", age: 44 },
+                { id: 7, name: "Tim", age: 43 },
+                { id: 8, name: "Cook", age: 54 },
+                { id: 9, name: "Bleu", age: 21 },
+                { id: 10, name: "Washington", age: 41 },
+                { id: 11, name: "Jefferson", age: 85 },
+                { id: 12, name: "Adams", age: 34 },
+                { id: 13, name: "Walker", age: 55 },
+                { id: 14, name: "Cook", age: 58 },
             ],
             pageSize: 2
         });
@@ -28,8 +34,11 @@
             dataSource: dataSource,
             editable: true,
             pageable: {
-                pageSize: 2,
-                pageSizes: true,
+                pageSizes: [
+                    2,
+                    5,
+                    10
+                ],
                 refresh: true
             }
         });

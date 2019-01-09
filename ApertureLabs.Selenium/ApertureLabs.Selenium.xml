@@ -333,7 +333,7 @@
             Used to check for nested headers.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.PagerComponent">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Pager">
             <summary>
             The pager used to control the grid.
             </summary>

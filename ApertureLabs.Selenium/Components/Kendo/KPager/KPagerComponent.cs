@@ -280,7 +280,14 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// <param name="itemsPerPage"></param>
         public virtual void SetItemsPerPage(int itemsPerPage)
         {
-            throw new NotImplementedException();
+            var value = itemsPerPage.ToString();
+            var currentValue = ItemsPerPageComponent.GetSelectedItem();
+
+            if (!String.Equals(value, currentValue, StringComparison.Ordinal))
+            {
+                ItemsPerPageComponent.SetSelectedItem(itemsPerPage.ToString());
+            }
+
         }
 
         /// <summary>

@@ -19,10 +19,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
 
         #region Selectors
 
-        private readonly By RowsSelector = By.CssSelector("*[role='row']");
+        private readonly By RowsSelector = By.CssSelector(".k-grid-content *[role='row']");
         private readonly By CellsSelector = By.CssSelector("*[role='gridcell']");
-        private readonly By HeadersSelector = By.CssSelector(".h-header");
-        private readonly By PagerSelector;
+        private readonly By HeadersSelector = By.CssSelector("*[role='columnheader']");
+        private By PagerSelector;
 
         #endregion
 
@@ -45,10 +45,6 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         {
             this.pageObjectFactory = pageObjectFactory
                 ?? new PageObjectFactory();
-
-            PagerSelector = ScopedBy.FromScope(
-                WrappedElement,
-                new[] { By.CssSelector(".k-pager-wrap.k-grid-pager") });
         }
 
         #endregion
@@ -68,7 +64,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// <summary>
         /// The pager used to control the grid.
         /// </summary>
-        public KPagerComponent PagerComponent => pageObjectFactory.PrepareComponent(
+        public KPagerComponent Pager => pageObjectFactory.PrepareComponent(
             new KPagerComponent(
                 WrappedDriver,
                 PagerSelector,
@@ -85,6 +81,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         public override ILoadableComponent Load()
         {
             base.Load();
+
+            PagerSelector = ScopedBy.FromScope(
+                WrappedElement,
+                new[] { By.CssSelector(".k-pager-wrap.k-grid-pager") });
 
             // Check for multi-column headers.
             var theadRows = WrappedElement
