@@ -40,7 +40,21 @@
                     10
                 ],
                 refresh: true
-            }
+            },
+            toolbar: ["create"],
+            columns: [
+                {
+                    title: "name"
+                },
+                {
+                    title: "age"
+                },
+                {
+                    command: ["edit", "destroy"],
+                    title: "&nbsp;",
+                    width: "250px"
+                }
+            ]
         });
     });
 </script>

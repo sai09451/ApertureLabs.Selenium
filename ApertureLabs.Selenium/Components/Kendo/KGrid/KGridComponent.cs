@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApertureLabs.Selenium.Components.Kendo.KPager;
+using ApertureLabs.Selenium.Components.Kendo.KToolbar;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -23,6 +24,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         private readonly By CellsSelector = By.CssSelector("*[role='gridcell']");
         private readonly By HeadersSelector = By.CssSelector("*[role='columnheader']");
         private By PagerSelector;
+        private By ToolbarSelector;
 
         #endregion
 
@@ -71,6 +73,15 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
                 dataSourceOptions,
                 pageObjectFactory));
 
+        /// <summary>
+        /// Toolbar component.
+        /// </summary>
+        public KToolbarComponent Toolbar => pageObjectFactory.PrepareComponent(
+            new KToolbarComponent(
+                WrappedDriver,
+                ToolbarSelector,
+                dataSourceOptions));
+
         #endregion
 
         #endregion
@@ -85,6 +96,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
             PagerSelector = ScopedBy.FromScope(
                 WrappedElement,
                 new[] { By.CssSelector(".k-pager-wrap.k-grid-pager") });
+
+            ToolbarSelector = ScopedBy.FromScope(
+                WrappedElement,
+                new[] { By.CssSelector(".k-toolbar") });
 
             // Check for multi-column headers.
             var theadRows = WrappedElement

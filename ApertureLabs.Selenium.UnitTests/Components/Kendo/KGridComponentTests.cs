@@ -110,7 +110,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         public void GetCellNegativeTest()
         {
             var kGridComponent = PrepareComponent();
-            kGridComponent.GetCell(0, 3);
+            kGridComponent.GetCell(0, 4);
         }
 
         [ServerRequired]
