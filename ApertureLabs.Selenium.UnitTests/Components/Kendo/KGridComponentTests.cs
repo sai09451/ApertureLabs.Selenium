@@ -18,6 +18,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
     {
         #region Fields
 
+        private static KGridComponent kGridComponent;
         private static IPageObjectFactory pageObjectFactory;
         private static IWebDriver driver;
         private static WebDriverFactory webDriverFactory;
@@ -51,6 +52,12 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 new HomePage(driver, Startup.ServerUrl, pageObjectFactory));
 
             widgetPage = homePage.GoToWidget("kendo", "2014.1.318", "KGrid");
+            kGridComponent = pageObjectFactory.PrepareComponent(
+                new KGridComponent(
+                    driver,
+                    By.CssSelector("#grid"),
+                    DataSourceOptions.DefaultKendoOptions(),
+                    pageObjectFactory));
         }
 
         [TestCleanup]
@@ -72,15 +79,12 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         [ServerRequired]
         [TestMethod()]
         public void LoadTest()
-        {
-            PrepareComponent();
-        }
+        { }
 
         [ServerRequired]
         [TestMethod]
         public void GetColumnHeadersTest()
         {
-            var kGridComponent = PrepareComponent();
             var columnHeaders = kGridComponent.GetColumnHeaders()
                 .ToArray();
 
@@ -91,7 +95,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         [TestMethod]
         public void GetCellTest()
         {
-            var kGridComponent = PrepareComponent();
             var cell_0_0 = kGridComponent.GetCell(0, 0);
             var cell_0_1 = kGridComponent.GetCell(0, 1);
 
@@ -109,16 +112,13 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         [TestMethod]
         public void GetCellNegativeTest()
         {
-            var kGridComponent = PrepareComponent();
             kGridComponent.GetCell(0, 4);
         }
 
         [ServerRequired]
         [TestMethod]
-        public void KPagerComponentTest()
+        public void PagerTest()
         {
-            var kGridComponent = PrepareComponent();
-
             var firstname = kGridComponent.GetCell(0, 0)
                 .TextHelper()
                 .InnerText;
@@ -135,14 +135,24 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 StringComparison.Ordinal));
         }
 
-        private KGridComponent PrepareComponent()
+        [Description("Verifies no exceptions are thrown.")]
+        [ServerRequired]
+        [TestMethod]
+        public void ToolbarTest()
         {
-            return pageObjectFactory.PrepareComponent(
-                new KGridComponent(
-                    driver,
-                    By.CssSelector("#grid"),
-                    DataSourceOptions.DefaultKendoOptions(),
-                    pageObjectFactory));
+            var previousItemTotal = kGridComponent.Pager.GetTotalItems();
+
+            // Click 'Add new record'.
+            var createNewBtnEl = kGridComponent.Toolbar.GetItems().First();
+            createNewBtnEl.Click();
+
+            // Wait for new record to appear.
+            driver.Wait(TimeSpan.FromMilliseconds(500))
+                .Until(d =>
+                {
+                    var newTotal = kGridComponent.Pager.GetTotalItems();
+                    return newTotal > previousItemTotal;
+                });
         }
 
         #endregion

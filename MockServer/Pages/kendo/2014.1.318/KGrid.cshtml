@@ -23,7 +23,15 @@
                 { id: 13, name: "Walker", age: 55 },
                 { id: 14, name: "Cook", age: 58 },
             ],
-            pageSize: 2
+            pageSize: 2,
+            model: {
+                id: "id",
+                fields: {
+                    id: { editable: false, type: "number" },
+                    age: { editable: true, type: "number" },
+                    name: { editable: true, type: "string" }
+                }
+            }
         });
 
         $("#grid").kendoGrid({
@@ -32,7 +40,9 @@
                 { field: "age" }
             ],
             dataSource: dataSource,
-            editable: true,
+            editable: {
+                mode: "inline"
+            },
             pageable: {
                 pageSizes: [
                     2,
@@ -41,16 +51,16 @@
                 ],
                 refresh: true
             },
-            toolbar: ["create"],
+            toolbar: ["create","save","cancel"],
             columns: [
                 {
-                    title: "name"
+                    field: "name"
                 },
                 {
-                    title: "age"
+                    field: "age"
                 },
                 {
-                    command: ["edit", "destroy"],
+                    command: ["edit","destroy"],
                     title: "&nbsp;",
                     width: "250px"
                 }

@@ -288,13 +288,6 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.GetSelectElement">
-            <summary>
-            Returns the wrapped select element that KDropDownList
-            uses internally.
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
             <inheritdoc/>
         </member>
@@ -336,6 +329,11 @@
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Pager">
             <summary>
             The pager used to control the grid.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Toolbar">
+            <summary>
+            Toolbar component.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Load">
@@ -552,6 +550,25 @@
             <summary>
             Refreshes the context the pager is attached to.
             </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent">
+            <summary>
+            KToolbarComponent.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="driver"></param>
+            <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.GetItems">
+            <summary>
+            Returns all item container elements.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions">
             <summary>

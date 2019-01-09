@@ -252,9 +252,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// <returns></returns>
         public virtual IList<int> GetAvailableItemsPerPage()
         {
-            var itemsPerPage = ItemsPerPageComponent.GetSelectElement()
-                .Options
-                .Select(e => e.TextHelper().ExtractInteger())
+            var itemsPerPage = ItemsPerPageComponent.GetItems()
+                .Select(str => int.Parse(str))
                 .ToList();
 
             return itemsPerPage;
@@ -266,10 +265,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// <returns></returns>
         public virtual int GetItemsPerPage()
         {
-            var selectedOpt = ItemsPerPageComponent.GetSelectElement()
-                .SelectedOption
-                .TextHelper()
-                .ExtractInteger();
+            var selectedOpt = int.Parse(ItemsPerPageComponent.GetSelectedItem());
 
             return selectedOpt;
         }
@@ -287,7 +283,6 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
             {
                 ItemsPerPageComponent.SetSelectedItem(itemsPerPage.ToString());
             }
-
         }
 
         /// <summary>

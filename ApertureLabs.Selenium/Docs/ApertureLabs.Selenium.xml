@@ -9,12 +9,36 @@
             Represents a bootstrap collapsable.
             </summary>
         </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventShowCollapse">
+            <summary>
+            This event fires immediately when the show instance method is
+            called.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventShownCollapse">
+            <summary>
+            This event is fired when a collapse element has been made visible
+            to the user (will wait for CSS transitions to complete).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventHideCollapse">
+            <summary>
+            This event is fired immediately when the hide method has been
+            called.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.EventHiddenCollapse">
+            <summary>
+            This event is fired when a collapse element has been hidden from
+            the user (will wait for CSS transitions to complete).
+            </summary>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.#ctor(OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
-            <param name="options"></param>
+            <param name="animationData"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.GetAllOpenElements(System.Boolean)">
             <summary>
@@ -33,7 +57,7 @@
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.Open(OpenQA.Selenium.IWebElement)">
             <summary>
             Will click an element that will open the collapsable if not
-            already open.
+            already open and wait for the animation to finish.
             </summary>
             <param name="element">
             Optional. If null will use the first element identified by
@@ -45,44 +69,46 @@
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.Close(OpenQA.Selenium.IWebElement)">
             <summary>
             Will click an element that will close the collapsable if not
-            already closed.
+            already closed and wait for the animation to finish.
             </summary>
             <param name="element"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsOpen">
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsExpanded">
             <summary>
             Checks if the element is open.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsClosed">
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsCollapsed">
             <summary>
             Checks if the element is closed.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsAnimating(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
-            <summary>
-            Determines if the component is being animated.
-            </summary>
-            <param name="options"></param>
-            <returns></returns>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
+            <inheritdoc/>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions">
             <summary>
             Contains classes and selectors for the Bootstrap CollapsableComponent.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CollapsableOpenSelectors">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.OpenSelectors">
             <summary>
             Selectors for elements that ONLY expand the component.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CollapsableCloseSelectors">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CloseSelectors">
             <summary>
             Selectors for elements that ONLY collapse the component.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CollapsableToggleSelectors">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.ToggleSelectors">
             <summary>
             Selectors for elements that both expand and collapse the component.
             </summary>
@@ -90,11 +116,6 @@
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.CollapsableContainerSelector">
             <summary>
             The selector for the element being expanded/collapsed.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.ClosedClass">
-            <summary>
-            The class used when the CollapsableContainer is closed.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.OpenClass">
@@ -113,6 +134,9 @@
             Classes used to represent when the component is being animated.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.AnimationsEnabled">
+            <inheritdoc/>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,OpenQA.Selenium.By)">
             <summary>
             Ctor.
@@ -130,345 +154,471 @@
             Base class
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.BusySelector">
+        <member name="F:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.dataSourceOptions">
             <summary>
-            Selector for the ajaxBusy element.
+            Configuration on how to handle the datasource.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.BusyElement">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.PageLoadingIndicator">
             <summary>
-            The 'busy' or loading element displayed during an ajax call.
+            The 'busy' or loading element displayed on the page.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.ContainerLoadingIndicator">
+            <summary>
+            The 'busy' or loading element displayed on the container.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.IsBusy">
             <summary>
-            Determines if the page is displaying the loading indicator or the
-            component is loading/busy.
+            Checks if the page is displaying the loading indicator (page
+            or container).
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.WaitForAjaxOperation(System.Nullable{System.TimeSpan})">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.WaitForLoadingOperation(System.Nullable{System.TimeSpan})">
             <summary>
-            Waits for the busy indicator to appear (if not already visible)
-            then dissapear.
+            If DataSourceOptions.RemoteDataSource is true then waits for the
+            busy indicator to appear (if not already visible) then dissapear.
             </summary>
             <param name="wait">Defaults to one minute</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.GetPromiseForKendoEvent(System.String)">
+            <summary>
+            Since kendo events aren't compatible with native js events use this
+            method to listen for kendo events.
+            </summary>
+            <param name="eventName">Name of the event to listen for.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions">
+            <summary>
+            Used to configure datasource kendo components.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.RemoteDataSource">
+            <summary>
+            Determines if data-changing operations display a loading
+            indicator.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.PageLoadingSelector">
+            <summary>
+            Kendo page loading indicator. Selector is relative to the document.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.ContainerLoadingSelector">
+            <summary>
+            Kendo container loading indicator. Selector is relative to the
+            document.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions.DefaultKendoOptions">
+            <summary>
+            Initializes a new DataSourceOptions object with RemoteDataSource
+            set to false and the page/container loading selectors set to
+            ".k-loading-mask");
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions">
+            <summary>
+            Options that configures which classes to observer when determining if
+            the dropdown is animating.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.AnimationDuration">
+            <inheritdoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.AnimationsEnabled">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.Default">
+            <summary>
+            Returns a default KDropDownAnimations object with AnimationsEnabled
+            and AnimationDuration set to 200ms.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent">
             <summary>
             Kendo dropdown widget.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
             <summary>
-            Ctor.
+            The selector should target the original element that's been wrapped
+            by kendo.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
+            <param name="animationData"></param>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Kendo.KendoGrid.KendoGridComponent">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.IsExpanded">
+            <summary>
+            Returns true if the component is expanded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.GetItems">
+            <summary>
+            Returns the list of items in the dropdown.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.GetSelectedItem">
+            <summary>
+            Returns the currently selected item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.SetSelectedItem(System.String)">
+            <summary>
+            Sets the selected item.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.Expand">
+            <summary>
+            Expands the dropdown if not already expanded.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.Close">
+            <summary>
+            Collapses the dropdown if not already collapsed.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent">
             <summary>
             Represents a kendo grid.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KendoGrid.KendoGridComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
+            <param name="pageObjectFactory"></param>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.IsMultiColumnHeader">
+            <summary>
+            Used to check for nested headers.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Pager">
+            <summary>
+            The pager used to control the grid.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Toolbar">
+            <summary>
+            Toolbar component.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.Load">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.GetColumnHeaders">
+            <summary>
+            Returns a list of all column names.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.GetCell(System.Int32,System.Int32)">
+            <summary>
+            Returns the element cell.
+            </summary>
+            <param name="row"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.GetCell(System.String,System.Int32)">
+            <summary>
+            NOTE: Throws an exception if this is a multi-header grid.
+            </summary>
+            <param name="columnHeaderName"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions">
+            <summary>
+            Animation options for the KMultiSelectComponent.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.AnimationDuration">
+            <inheritDoc/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.AnimationsEnabled">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.Default">
+            <summary>
+            Default options for the KMultiSelectAnimationOptions.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent">
+            <summary>
+            Represents a kendo multi-select component.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="driver"></param>
+            <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
+            <param name="animationData"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsExpanded">
+            <summary>
+            Checks if the widget is expanded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.GetAllOptions">
+            <summary>
+            Returns a list of all options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.GetSelectedOptions">
+            <summary>
+            Returns a list of all selected items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.SelectItem(System.String)">
+            <summary>
+            Selects an item if not already selected.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.DeselectItem(System.String)">
+            <summary>
+            Deselects an item if it's selected.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.Expand">
+            <summary>
+            Expands the widget if not already expanded.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent">
             <summary>
             PagerComponent.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
             <param name="pageObjectFactory"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.IsOnFirstPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.IsOnFirstPage">
             <summary>
             Returns true if on the first page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.HasPreviousPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.HasPreviousPage">
             <summary>
             Returns false if the previous page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.HasNextPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.HasNextPage">
             <summary>
             Returns false if the next page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.IsOnLastPage">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.IsOnLastPage">
             <summary>
             Returns true if the last page button is disabled.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.HasPageInfo">
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.HasPageInfo">
             <summary>
             Used to determine if the current page range total items are displayed.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.SetPage(System.Int32)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.SetPage(System.Int32)">
             <summary>
             Sets the page the listed page with the matching number.
             </summary>
             <param name="listedPage"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetListedPages">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetListedPages">
             <summary>
             Returns a list of listed pages.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.LastPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.LastPage">
             <summary>
             Goes to the last page if available.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.FirstPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.FirstPage">
             <summary>
             Goes to the first page if available.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.PrevPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.PrevPage">
             <summary>
             Goes to the previous page if available, otherwise remains on the
             current page.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.NextPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.NextPage">
             <summary>
             Goes to the next page if available.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetTotalItems">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetActivePage">
+            <summary>
+            Returns the active page number.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetTotalItems">
             <summary>
             Returns the total items.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetAvailableItemsPerPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetAvailableItemsPerPage">
             <summary>
             Retrieves the available items per page.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.GetItemsPerPage">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.GetItemsPerPage">
             <summary>
             Returns the selected value for items per page.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.SetItemsPerPage(System.Int32)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.SetItemsPerPage(System.Int32)">
             <summary>
             Sets the 'Items per Page'.
             </summary>
             <param name="itemsPerPage"></param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.Pager.PagerComponent.Refresh">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.Refresh">
             <summary>
             Refreshes the context the pager is attached to.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.ViewMode">
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent">
             <summary>
-            How items are displayed in a pager. Corresponds to
-            Nop.Web/Views/Catalog/_CatalogSelectors.cshtml
+            KToolbarComponent.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.Components.Nop.ViewMode.GridMode">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
             <summary>
-            Displays items in a grid.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.Components.Nop.ViewMode.ListMode">
-            <summary>
-            Displays items in a list.
-            </summary>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent">
-            <summary>
-            CatalogPagingFilterComponent
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.#ctor(OpenQA.Selenium.IWebDriver)">
-            <summary>
-            Uses the '.product-selectors' as the selector to get the element.
-            </summary>
-            <param name="driver"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
-            <summary>
-            Gets the element the selector.
+            Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
+            <param name="dataSourceOptions"></param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortOptions">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortedBy">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.PageSizeOptions">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.PageSize">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.UseGridMode">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.GetItems">
             <summary>
-            Clicks grid mode.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.UseListMode">
-            <summary>
-            Clicks list mode.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByIndex(System.Int32)">
-            <summary>
-            Selects the option by index.
-            </summary>
-            <param name="optionIndex"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByText(System.String)">
-            <summary>
-            Selects the option by its text.
-            </summary>
-            <param name="optionText"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.CatalogPagingFilterComponent.SortByValue(System.String)">
-            <summary>
-            Selects the option by value.
-            </summary>
-            <param name="optionValue"></param>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.PagerComponent">
-            <summary>
-            PagerComponent. Corresponds to Nop.Web.Framework.UI.Paging.Pager.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver)">
-            <summary>
-            Uses the '.pager' selector to locate the component.
-            </summary>
-            <param name="driver"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
-            <summary>
-            Can pass in a custom selector in case there are multiple pagers
-            displayed.
-            </summary>
-            <param name="driver"></param>
-            <param name="selector"></param>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.CurrentPage">
-            <summary>
-            The current page.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.HasPrevious">
-            <summary>
-            Checks if there are previous results.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.HasNext">
-            <summary>
-            Checks if there are next results.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Nop.PagerComponent.IndividualPages">
-            <summary>
-            Gets a list of displayed page numbers.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.IsStale">
-            <summary>
-            IsStale.
+            Returns all item container elements.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.First">
+        <member name="T:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions">
             <summary>
-            Goes to the first result.
+            The default options for kendo datasources used in NopCommerce.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Previous">
+        <member name="M:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions.#ctor">
             <summary>
-            Goes to the previous result.
+            Sets the <c>PageLoadingIndicator</c> to '#ajaxBusy'.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.GoToPage(System.Int32)">
+        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1">
             <summary>
-            Clicks on the page by the number it's displaying.
-            </summary>
-            <param name="pageNumber"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Next">
-            <summary>
-            Goes to the next result.
+            Represents a component that can have an animation (css or js
+            animation/transition).
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.PagerComponent.Last">
+        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationStart(`0)">
             <summary>
-            Goes to the last result.
+            Waits for an animation to start.
             </summary>
+            <param name="animationData"></param>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableComponent`1">
+        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationEnd(`0)">
             <summary>
-            Represents a component
+            Waits for an animation to end.
             </summary>
+            <param name="animationData"></param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableComponent`1.IsAnimating(`0)">
+        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.IsCurrentlyAnimating(`0)">
             <summary>
-            True if the element contains any of the 'animated' designated
-            classes.
+            Checks if an animation is currently running.
             </summary>
-            <param name="options">Optional 'options' object.</param>
+            <param name="animationData"></param>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableOptions">
+        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions">
             <summary>
-            Contains classes that indicate if the element is being animated.
+            Base interface for IAnimatableComponent generic argument.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IClassBasedAnimatableOptions.AnimationClasses">
+        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationDuration">
             <summary>
-            A list of classes that may represent a 'stage' of the animation.
+            The duration of the animation.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IEventBasedAnimatableComponent">
+        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationsEnabled">
             <summary>
-            An animatable component that uses events to determine when it
-            enters/exits an animated state.
+            Used to check if animations are enabled for the element.
             </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IEventBasedAnimatableComponent.IsAnimating">
-            <summary>
-            Determines if the element is in an animated state.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Css.CssColor">
             <summary>
@@ -906,6 +1056,31 @@
             <param name="by"></param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.IDisposableExtensions">
+            <summary>
+            Contains extensions for classes implementing IDisposable.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IDisposableExtensions.Using``2(System.Collections.Generic.IEnumerable{``0},System.Func{System.Collections.Generic.IEnumerable{``0},``1})">
+            <summary>
+            Calls <code>IDisposable.Dispose</code> on each disposable after
+            executing the function.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="disposables"></param>
+            <param name="function"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IDisposableExtensions.Using``1(System.Collections.Generic.IEnumerable{``0},System.Action{System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Calls <code>IDisposable.Dispose</code> on each disposable after
+            executing the function.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="disposables"></param>
+            <param name="action"></param>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IEnumerableExtensions">
             <summary>
             Contains extensions for ICollection.
@@ -917,6 +1092,16 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="collection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IEnumerableExtensions.IndexOf``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Retrieves the index of an item in a collection. Returns -1 if the
+            item isn't in the collection.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="collection"></param>
+            <param name="item"></param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebDriverExtensions">
@@ -979,29 +1164,13 @@
             Detects if jQuery is defined on a page.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncScript``1(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.JavaScriptExecutor(OpenQA.Selenium.IWebDriver)">
             <summary>
-            Executes an asynchronous script synchronously. The scripts last
-            argument will be an injected callback that must be called to
-            signify the script is done running. When calling the callback pass
-            in whatever the script needed to return.
+            Returns a javascript executor from the webdriver. Will throw an
+            exception if the driver doesn't support the interface.
             </summary>
-            <typeparam name="T"></typeparam>
             <param name="driver"></param>
-            <param name="script"></param>
-            <param name="args"></param>
             <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.ExecuteAsyncScript(OpenQA.Selenium.IWebDriver,System.String,System.Object[])">
-            <summary>
-            Executes an asynchronous script synchronously. The scripts last
-            argument will be an injected callback that must be called to
-            signify the script is done running.
-            done running.
-            </summary>
-            <param name="driver"></param>
-            <param name="script"></param>
-            <param name="args"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.WaitForEvent(OpenQA.Selenium.IWebDriver,System.String)">
             <summary>
@@ -1089,13 +1258,6 @@
             <param name="index"></param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetTextHelper(OpenQA.Selenium.IWebElement)">
-            <summary>
-            Shorthand for <code>new TextHelper(element);</code>.
-            </summary>
-            <param name="element"></param>
-            <returns></returns>
-        </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.IsStale(OpenQA.Selenium.IWebElement)">
             <summary>
             Checks if an element is stale.
@@ -1125,6 +1287,20 @@
             <param name="element"></param>
             <param name="eventNames"></param>
             <param name="timeout"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetElementProperty(OpenQA.Selenium.IWebElement,System.String,System.String)">
+            <summary>
+            This exists to patch an issue with the current chromedriver not
+            being compatible with the W3C WebDriver spec as of 05 June 2018
+            (https://www.w3.org/TR/2018/REC-webdriver1-20180605/). This will
+            use the native function 'GetProperty' for every driver except
+            chromedriver which instead executes javascript to retrieve the
+            value.
+            </summary>
+            <param name="element"></param>
+            <param name="propertyName"></param>
+            <param name="defaultValueIfNull"></param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
             <summary>
@@ -1178,8 +1354,25 @@
             wait result.
             </summary>
             <param name="wait"></param>
+            <param name="exception"></param>
+            <param name="conditions"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.While(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},System.Func{OpenQA.Selenium.IWebDriver,System.Boolean})">
+            <summary>
+            The inverse of Until(...). Will wait while a statement is true.
+            </summary>
+            <param name="wait"></param>
             <param name="condition"></param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.While``1(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},System.Func{OpenQA.Selenium.IWebDriver,``0})">
+            <summary>
+            Waits while the condition returns not null.
+            </summary>
+            <typeparam name="TResult"></typeparam>
+            <param name="wait"></param>
+            <param name="condition"></param>
         </member>
         <member name="T:ApertureLabs.Selenium.IPageObjectFactory">
             <summary>
@@ -1587,6 +1780,217 @@
             <param name="maxWidth"></param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.ScopedBy">
+            <summary>
+            Similar to the normal <code>OpenQA.Selenium.By</code> class but will
+            always search from the passed in searchContext.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. To create an instance use the static method FromScoped(...).
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. Instead fo passing in an instance of ISearchContext, pass in a
+            selector that will fetch the ISearchContext and then the subSelector
+            will search for the child elements.
+            </summary>
+            <param name="contextSelector"></param>
+            <param name="subSelectors"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElement(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElements(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will always use the passed in
+            search context instead of what the current context is for the
+            driver.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,OpenQA.Selenium.By[])">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus">
+            <summary>
+            Statuses for javascript promises.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.NotFinished">
+            <summary>
+            The promise never finished.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.Resolved">
+            <summary>
+            The promise resolved successfully.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.Rejected">
+            <summary>
+            The promise was rejected.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody">
+            <summary>
+            A helper class for creating a javascript promise body for selenium.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.#ctor">
+            <summary>
+            Ctor.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.#ctor(System.String)">
+            <summary>
+            Ctor. Sets the PromiseBody.
+            </summary>
+            <param name="promiseBody"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Created">
+            <summary>
+            Used to determine if the promise was created.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseWrapper">
+            <summary>
+            The wrapper around the script.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseId">
+            <summary>
+            Id of the created promise. Returns -1 if the promise hasn't been
+            'created' yet.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseBody">
+            <summary>
+            The body of the promise. Supports the following tokens:
+            {0} - To resolve the promise (need to call with paranthesis IE:
+                {0}(23) will resolve 23).
+            {1} - To reject the promise need to call with paranthesis IE:
+                {1}(43) will reject and pass the value 43).
+            {2} - To refer to the arguments array of the intial function.
+                * Attempting to reference the arguments object by name in the
+                    script will return the promises arguments and not what was
+                    passed in.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.ResolveScript">
+            <summary>
+            Name of the function to resolve the promise.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.RejectScript">
+            <summary>
+            Name of the function to reject the script.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.ArgumentsScript">
+            <summary>
+            Name of the variable the initial arguments are assigned to. Since
+            any parameters passed into the script will only be assigned to the
+            initial arguments object, a variable is created to reference the
+            intial arguments to access it from the Promise.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolved">
+            <summary>
+            Checks if the promise was resolved.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Rejected">
+            <summary>
+            Checks if the promise was rejected.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Finished">
+            <summary>
+            Checks if the promise was resolved or rejected.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.IsStale">
+            <summary>
+            Checks if the context the promise was saved in is still valid. IE:
+            navigating off the page will make this a stale promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.CreateScript(OpenQA.Selenium.IWebDriver,System.Object[])">
+            <summary>
+            This will create the js promise in the drivers active window and
+            sets the PromiseId. Can only call this method once. Will throw an
+            exception if the PromiseBody was never set.
+            </summary>
+            <param name="driver"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Reject``1(``0)">
+            <summary>
+            Attempts to reject the promise with a value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Reject">
+            <summary>
+            Attempts to reject the promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolve``1(``0)">
+            <summary>
+            Attempts to resolve the promise with a value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolve">
+            <summary>
+            Attempts to resolve the promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.GetPromiseStatus">
+            <summary>
+            Returns the status of the promise. Throws an exception if the
+            promise was never created.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Wait(System.Nullable{System.TimeSpan})">
+            <summary>
+            Waits for the promise to either resolve or reject.
+            </summary>
+            <param name="wait">Defaults to thirty seconds.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.op_Implicit(System.String)~ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody">
+            <summary>
+            Calls the ctor with the string as the argument.
+            </summary>
+            <param name="script"></param>
+        </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">
             <summary>
             Used for switching between tabs.
@@ -1637,14 +2041,19 @@
             Retrieves and trims the inner text of the element.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.TextHelper.OuterText">
+            <summary>
+            Retrieves and trims the outer text of the element.
+            </summary>
+        </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.InnerHtml">
             <summary>
-            Returns the inner html of the element.
+            Returns the trimmed inner html of the element.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.OuterHtml">
             <summary>
-            Returns the outer html of the element.
+            Returns the trimmed outer html of the element.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.WrappedDriver">
