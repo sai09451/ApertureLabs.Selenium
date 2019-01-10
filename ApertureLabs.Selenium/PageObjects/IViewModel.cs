@@ -9,6 +9,6 @@
         /// <summary>
         /// Retrieves the viewmodel.
         /// </summary>
-        T ViewModel { get; }
+        T ViewModel();
     }
 }

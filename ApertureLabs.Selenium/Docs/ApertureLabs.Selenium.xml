@@ -1653,7 +1653,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:ApertureLabs.Selenium.PageObjects.IViewModel`1.ViewModel">
+        <member name="M:ApertureLabs.Selenium.PageObjects.IViewModel`1.ViewModel">
             <summary>
             Retrieves the viewmodel.
             </summary>
