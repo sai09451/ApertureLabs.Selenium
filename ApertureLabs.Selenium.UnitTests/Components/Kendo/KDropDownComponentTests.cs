@@ -5,9 +5,11 @@ using ApertureLabs.Selenium.Components.Kendo.KDropDown;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MockServer.PageObjects.HomePage;
-using MockServer.PageObjects.WidgetPage;
+using MockServer.PageObjects;
+using MockServer.PageObjects.Home;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
@@ -17,12 +19,12 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
     {
         #region Fields
 
-        private static IPageObjectFactory pageObjectFactory;
         private static WebDriverFactory webDriverFactory;
 
         private KDropDownComponent kDropDownComponent;
-        private WidgetPage widgetPage;
+        private IPageObjectFactory pageObjectFactory;
         private IWebDriver driver;
+        private WidgetPage widgetPage;
 
         #endregion
 
@@ -31,7 +33,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         [ClassInitialize]
         public static void Setup(TestContext testContext)
         {
-            pageObjectFactory = new PageObjectFactory();
             webDriverFactory = new WebDriverFactory();
         }
 
@@ -48,10 +49,17 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 MajorWebDriver.Chrome,
                 WindowSize.DefaultDesktop);
 
-            var homePage = pageObjectFactory.PreparePage(
-                    new HomePage(driver,
-                        Startup.ServerUrl,
-                        pageObjectFactory));
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddSingleton(driver);
+            serviceCollection.AddSingleton(new PageOptions
+            {
+                Url = Startup.ServerUrl
+            });
+
+            pageObjectFactory = new PageObjectFactory(serviceCollection);
+
+            var homePage = pageObjectFactory.PreparePage<HomePage>();
 
             widgetPage = homePage.GoToWidget(
                 "kendo",

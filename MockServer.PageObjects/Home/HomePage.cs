@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApertureLabs.Selenium;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace MockServer.PageObjects.HomePage
+namespace MockServer.PageObjects.Home
 {
     public class HomePage : BasePage
     {
@@ -27,9 +28,9 @@ namespace MockServer.PageObjects.HomePage
         #region Constructor
 
         public HomePage(IWebDriver driver,
-            string url,
+            PageOptions pageOptions,
             IPageObjectFactory pageObjectFactory)
-            : base(driver, url, pageObjectFactory)
+            : base(driver, pageOptions, pageObjectFactory)
         {
             this.pageObjectFactory = pageObjectFactory;
         }
@@ -48,7 +49,7 @@ namespace MockServer.PageObjects.HomePage
 
         #region Methods
 
-        public WidgetPage.WidgetPage GoToWidget(string frameworkName,
+        public WidgetPage GoToWidget(string frameworkName,
             string version,
             string widget)
         {
@@ -86,11 +87,7 @@ namespace MockServer.PageObjects.HomePage
 
             widgetEl.Click();
 
-            var widgetPage = new WidgetPage.WidgetPage(
-                WrappedDriver,
-                WrappedDriver.Url);
-
-            pageObjectFactory.PreparePage(widgetPage);
+            var widgetPage = pageObjectFactory.PreparePage<WidgetPage>();
 
             return widgetPage;
         }

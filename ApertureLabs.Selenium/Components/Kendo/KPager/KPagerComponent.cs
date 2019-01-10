@@ -46,12 +46,19 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         public KPagerComponent(IWebDriver driver,
             By selector,
             DataSourceOptions dataSourceOptions,
-            IPageObjectFactory pageObjectFactory = default)
+            IPageObjectFactory pageObjectFactory)
             : base(driver, selector, dataSourceOptions)
         {
-            this.pageObjectFactory = pageObjectFactory
-                ?? new PageObjectFactory();
+            if (driver == null)
+                throw new ArgumentNullException(nameof(driver));
+            else if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
+            else if (dataSourceOptions == null)
+                throw new ArgumentNullException(nameof(dataSourceOptions));
+            else if (pageObjectFactory == null)
+                throw new ArgumentNullException(nameof(pageObjectFactory));
 
+            this.pageObjectFactory = pageObjectFactory;
             ItemsPerPageSelector = ScopedBy.FromScope(
                 selector,
                 By.CssSelector(".k-pager-sizes .k-dropdown select"));

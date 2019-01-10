@@ -1,7 +1,8 @@
-﻿using ApertureLabs.Selenium;
+﻿using System;
+using ApertureLabs.Selenium;
 using ApertureLabs.Selenium.PageObjects;
+using MockServer.PageObjects.Home;
 using OpenQA.Selenium;
-using System;
 
 namespace MockServer.PageObjects
 {
@@ -21,11 +22,18 @@ namespace MockServer.PageObjects
         #region Constructor
 
         public BasePage(IWebDriver driver,
-            string url,
-            IPageObjectFactory pageObjectFactory = null) : base(driver)
+            PageOptions pageOptions,
+            IPageObjectFactory pageObjectFactory) : base(driver)
         {
-            this.pageObjectFactory = pageObjectFactory ?? new PageObjectFactory();
-            this.Uri = new Uri(url);
+            if (driver == null)
+                throw new ArgumentNullException(nameof(driver));
+            else if (pageOptions == null)
+                throw new ArgumentNullException(nameof(pageOptions));
+            else if (pageObjectFactory == null)
+                throw new ArgumentNullException(nameof(pageObjectFactory));
+
+            this.pageObjectFactory = pageObjectFactory;
+            this.Uri = new Uri(pageOptions.Url);
         }
 
         #endregion
@@ -42,12 +50,11 @@ namespace MockServer.PageObjects
 
         #region Methods
 
-        public HomePage.HomePage GoToHomePage()
+        public HomePage GoToHomePage()
         {
-            var homePage = new HomePage.HomePage(WrappedDriver,
-                Uri.ToString(),
-                pageObjectFactory);
-            return pageObjectFactory.PreparePage(homePage);
+            var homePage = pageObjectFactory.PreparePage<HomePage>();
+
+            return homePage;
         }
 
         #endregion

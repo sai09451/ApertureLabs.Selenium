@@ -1400,12 +1400,12 @@
                 .PrepareComponent(new YourComponent(arg1, arg2));
             </example>
         </member>
-        <member name="M:ApertureLabs.Selenium.IPageObjectFactory.PreparePage``1(``0)">
+        <member name="M:ApertureLabs.Selenium.IPageObjectFactory.PreparePage``1">
             <summary>
             Essentially just calls 'Load()' on the page object and returns it.
             </summary>
             <typeparam name="T"></typeparam>
-            <param name="pageObject"></param>
+            <param name="args"></param>
             <returns></returns>
             <example>
             Before:
@@ -1568,12 +1568,30 @@
             PageObjectFactory.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.PageObjectFactory.PreparePage``1(``0)">
+        <member name="M:ApertureLabs.Selenium.PageObjectFactory.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean)">
             <summary>
-            Essentially just calls 'Load()' on the page object and returns it.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjectFactory"/>
+            class.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="scanAssemblies"></param>
+            <exception cref="T:System.ArgumentException">
+            Thrown if services doens't have IWebDriver registered.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjectFactory.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjectFactory"/> class.
+            Uses reflection to create the service provider.
+            </summary>
+            <param name="driver"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjectFactory.PreparePage``1">
+            <summary>
+            Essentially just calls 'Load()' on the page object (which is
+            constructed with the service provider) and returns it.
             </summary>
             <typeparam name="T"></typeparam>
-            <param name="pageObject"></param>
             <returns></returns>
             <example>
             Before:

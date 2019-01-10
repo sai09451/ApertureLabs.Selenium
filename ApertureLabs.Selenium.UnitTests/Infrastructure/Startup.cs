@@ -4,7 +4,7 @@ using System.Threading;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
+//[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace ApertureLabs.Selenium.UnitTests.Infrastructure
 {
     [TestClass]

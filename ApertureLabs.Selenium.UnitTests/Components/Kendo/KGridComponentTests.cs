@@ -6,9 +6,11 @@ using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MockServer.PageObjects.HomePage;
-using MockServer.PageObjects.WidgetPage;
+using MockServer.PageObjects;
+using MockServer.PageObjects.Home;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
@@ -22,7 +24,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         private static IPageObjectFactory pageObjectFactory;
         private static IWebDriver driver;
         private static WebDriverFactory webDriverFactory;
-        private static WidgetPage widgetPage;
 
         #endregion
 
@@ -31,7 +32,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         [ClassInitialize]
         public static void Initialize(TestContext testContext)
         {
-            pageObjectFactory = new PageObjectFactory();
             webDriverFactory = new WebDriverFactory();
         }
 
@@ -48,10 +48,19 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 MajorWebDriver.Chrome,
                 WindowSize.DefaultDesktop);
 
-            var homePage = pageObjectFactory.PreparePage(
-                new HomePage(driver, Startup.ServerUrl, pageObjectFactory));
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton(driver);
+            serviceCollection.AddSingleton<HomePage>();
+            serviceCollection.AddSingleton(new PageOptions
+            {
+                Url = Startup.ServerUrl
+            });
 
-            widgetPage = homePage.GoToWidget("kendo", "2014.1.318", "KGrid");
+            pageObjectFactory = new PageObjectFactory(serviceCollection);
+
+            var homePage = pageObjectFactory.PreparePage<HomePage>();
+            var widgetPage = homePage.GoToWidget("kendo", "2014.1.318", "KGrid");
+
             kGridComponent = pageObjectFactory.PrepareComponent(
                 new KGridComponent(
                     driver,

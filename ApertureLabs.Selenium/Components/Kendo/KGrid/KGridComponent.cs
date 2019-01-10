@@ -42,11 +42,13 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         public KGridComponent(IWebDriver driver,
             By selector,
             DataSourceOptions dataSourceOptions,
-            IPageObjectFactory pageObjectFactory = null)
+            IPageObjectFactory pageObjectFactory)
             : base(driver, selector, dataSourceOptions)
         {
-            this.pageObjectFactory = pageObjectFactory
-                ?? new PageObjectFactory();
+            if (pageObjectFactory == null)
+                throw new ArgumentNullException(nameof(pageObjectFactory));
+
+            this.pageObjectFactory = pageObjectFactory;
         }
 
         #endregion

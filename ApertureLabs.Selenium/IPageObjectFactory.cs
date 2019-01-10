@@ -32,7 +32,7 @@ namespace ApertureLabs.Selenium
         /// Essentially just calls 'Load()' on the page object and returns it.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="pageObject"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
         /// <example>
         /// Before:
@@ -45,6 +45,6 @@ namespace ApertureLabs.Selenium
         /// // Instantiate and initialize in one (albeit long) line.
         /// var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
         /// </example>
-        T PreparePage<T>(T pageObject) where T : IPageObject;
+        T PreparePage<T>() where T : IPageObject;
     }
 }

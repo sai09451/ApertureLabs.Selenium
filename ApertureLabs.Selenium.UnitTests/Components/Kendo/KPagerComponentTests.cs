@@ -4,8 +4,10 @@ using ApertureLabs.Selenium.Components.Kendo.KPager;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MockServer.PageObjects.HomePage;
+using MockServer.PageObjects;
+using MockServer.PageObjects.Home;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
@@ -16,8 +18,9 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         #region Fields
 
         private static KPagerComponent PagerComponent;
-        private static IPageObjectFactory PageObjectFactory;
         private static WebDriverFactory WebDriverFactory;
+
+        private IPageObjectFactory PageObjectFactory;
 
         #endregion
 
@@ -26,7 +29,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         [ClassInitialize]
         public static void ClassSetup(TestContext testContext)
         {
-            PageObjectFactory = new PageObjectFactory();
             WebDriverFactory = new WebDriverFactory();
         }
 
@@ -51,11 +53,18 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 driverType,
                 WindowSize.DefaultDesktop);
 
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton(driver);
+            serviceCollection.AddSingleton(new PageOptions
+            {
+                Url = Startup.ServerUrl
+            });
+
+            PageObjectFactory = new PageObjectFactory(serviceCollection, true);
+
             using (driver)
             {
-                var homePage = PageObjectFactory.PreparePage(new HomePage(driver,
-                    Startup.ServerUrl,
-                    PageObjectFactory));
+                var homePage = PageObjectFactory.PreparePage<HomePage>();
 
                 var widgetPage = homePage.GoToWidget("kendo",
                     "2014.1.318",
