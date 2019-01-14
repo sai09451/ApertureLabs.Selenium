@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
@@ -16,9 +15,9 @@ namespace ApertureLabs.Selenium.Components.Kendo
         #region Selectors
 
         /// <summary>
-        /// Configuration on how to handle the datasource.
+        /// The options that define how to interact with the component.
         /// </summary>
-        protected readonly DataSourceOptions dataSourceOptions;
+        protected readonly BaseKendoConfiguration configuration;
 
         #endregion
 
@@ -29,16 +28,16 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="driver"></param>
+        /// <param name="configuration"></param>
         /// <param name="selector"></param>
-        /// <param name="dataSourceOptions"></param>
-        public BaseKendoComponent(IWebDriver driver,
+        /// <param name="driver"></param>
+        public BaseKendoComponent(BaseKendoConfiguration configuration,
             By selector,
-            DataSourceOptions dataSourceOptions)
+            IWebDriver driver)
             : base(driver, selector)
         {
-            this.dataSourceOptions = dataSourceOptions
-                ?? throw new ArgumentNullException(nameof(dataSourceOptions));
+            this.configuration = configuration
+                ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         #endregion
@@ -50,12 +49,12 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// <summary>
         /// The 'busy' or loading element displayed on the page.
         /// </summary>
-        protected virtual IWebElement PageLoadingIndicator => WrappedDriver.FindElement(dataSourceOptions.PageLoadingSelector);
+        protected virtual IWebElement PageLoadingIndicator => WrappedDriver.FindElement(configuration.DataSource.PageLoadingSelector);
 
         /// <summary>
         /// The 'busy' or loading element displayed on the container.
         /// </summary>
-        protected virtual IWebElement ContainerLoadingIndicator => WrappedDriver.FindElement(dataSourceOptions.ContainerLoadingSelector);
+        protected virtual IWebElement ContainerLoadingIndicator => WrappedDriver.FindElement(configuration.DataSource.ContainerLoadingSelector);
 
         #endregion
 
@@ -82,7 +81,7 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// <param name="wait">Defaults to one minute</param>
         protected virtual void WaitForLoadingOperation(TimeSpan? wait = null)
         {
-            if (!dataSourceOptions.RemoteDataSource)
+            if (!configuration.DataSource.RemoteDataSource)
                 return;
 
             wait = wait ?? TimeSpan.FromMinutes(1);

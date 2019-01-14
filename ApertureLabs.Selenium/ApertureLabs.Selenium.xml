@@ -154,18 +154,18 @@
             Base class
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.dataSourceOptions">
+        <member name="F:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.configuration">
             <summary>
-            Configuration on how to handle the datasource.
+            The options that define how to interact with the component.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
-            <param name="driver"></param>
+            <param name="configuration"></param>
             <param name="selector"></param>
-            <param name="dataSourceOptions"></param>
+            <param name="driver"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent.PageLoadingIndicator">
             <summary>
@@ -197,6 +197,32 @@
             method to listen for kendo events.
             </summary>
             <param name="eventName">Name of the event to listen for.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration">
+            <summary>
+            Options for the KDropDownComponent.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration.ControlWithKeyboardInsteadOfMouse">
+            <summary>
+            Gets or sets a value indicating whether to use the mouse or the
+            keyboard to interact with the element. The mouse may still be used
+            to for some interactions where the keyboard will not suffice.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration.DataSource">
+            <summary>
+            Gets or sets the data source.
+            </summary>
+            <value>
+            The data source.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration.DefaultBaseKendoOptions">
+            <summary>
+            Returns a new instance of the default BaseKendoOptions object.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions">
             <summary>
@@ -251,14 +277,14 @@
             Kendo dropdown widget.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
             <summary>
             The selector should target the original element that's been wrapped
             by kendo.
             </summary>
-            <param name="driver"></param>
+            <param name="configuration"></param>
             <param name="selector"></param>
-            <param name="dataSourceOptions"></param>
+            <param name="driver"></param>
             <param name="animationData"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.Load">
@@ -282,11 +308,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.SetSelectedItem(System.String)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.SetSelectedItem(System.String,System.StringComparison)">
             <summary>
             Sets the selected item.
             </summary>
             <param name="value"></param>
+            <param name="stringComparison"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
             <inheritdoc/>
@@ -312,14 +339,14 @@
             Represents a kendo grid.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
             <param name="driver"></param>
             <param name="selector"></param>
-            <param name="dataSourceOptions"></param>
             <param name="pageObjectFactory"></param>
+            <param name="configuration"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.IsMultiColumnHeader">
             <summary>
@@ -383,14 +410,14 @@
             Represents a kendo multi-select component.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration)">
             <summary>
             Ctor.
             </summary>
-            <param name="driver"></param>
             <param name="selector"></param>
-            <param name="dataSourceOptions"></param>
+            <param name="driver"></param>
             <param name="animationData"></param>
+            <param name="configuration"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsExpanded">
             <summary>
@@ -410,17 +437,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.SelectItem(System.String)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.SelectItem(System.String,System.StringComparison)">
             <summary>
             Selects an item if not already selected.
             </summary>
             <param name="item"></param>
+            <param name="stringComparison"></param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.DeselectItem(System.String)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.DeselectItem(System.String,System.StringComparison)">
             <summary>
             Deselects an item if it's selected.
             </summary>
             <param name="item"></param>
+            <param name="stringComparison"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions)">
             <inheritDoc/>
@@ -436,19 +465,36 @@
             Expands the widget if not already expanded.
             </summary>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.Close">
+            <summary>
+            Collapses this widget if not already collapsed.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration">
+            <summary>
+            Configuration and interaction options for the widget.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration" />
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration.AutoClose">
+            <summary>
+            Gets or sets a value indicating whether the widget will
+            automatically close after selecting an item.
+            </summary>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent">
             <summary>
             PagerComponent.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions,ApertureLabs.Selenium.IPageObjectFactory)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
-            <param name="driver"></param>
+            <param name="configuration"></param>
             <param name="selector"></param>
-            <param name="dataSourceOptions"></param>
             <param name="pageObjectFactory"></param>
+            <param name="driver"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.IsOnFirstPage">
             <summary>
@@ -556,13 +602,14 @@
             KToolbarComponent.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,ApertureLabs.Selenium.Components.Kendo.DataSourceOptions)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
-            <param name="driver"></param>
+            <param name="configuration"></param>
             <param name="selector"></param>
             <param name="dataSourceOptions"></param>
+            <param name="driver"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.GetItems">
             <summary>
@@ -1300,6 +1347,13 @@
             <param name="element"></param>
             <param name="propertyName"></param>
             <param name="defaultValueIfNull"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetIndexRelativeToSiblings(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Gets the position of the element relative to it's sibling elements.
+            </summary>
+            <param name="element">The element.</param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">

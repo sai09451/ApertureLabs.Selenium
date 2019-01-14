@@ -4,7 +4,8 @@
     /// Represents a component that can have an animation (css or js
     /// animation/transition).
     /// </summary>
-    public interface IAnimatableComponent<T> where T : class, IAnimatableOptions
+    public interface IAnimatableComponent<T>
+        where T : class, IAnimatableOptions
     {
         /// <summary>
         /// Waits for an animation to start.

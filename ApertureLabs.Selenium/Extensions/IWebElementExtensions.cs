@@ -258,5 +258,34 @@ namespace ApertureLabs.Selenium.Extensions
 
             return value ?? defaultValueIfNull;
         }
+
+        /// <summary>
+        /// Gets the position of the element relative to it's sibling elements.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static int GetIndexRelativeToSiblings(this IWebElement element)
+        {
+            const string script =
+                    "var element = arguments[0];" +
+                    "var parent = element.parentElement;" +
+                    "var i = 0;" +
+                    "for (var el of parent.children) {" +
+                        "if (el == element) {" +
+                        "   return i;" +
+                        "}" +
+                        "i++;" +
+                    "}" +
+                    "return -1";
+
+            var indexStr = element.GetDriver()
+                .JavaScriptExecutor()
+                .ExecuteScript(script, element)
+                .ToString();
+
+            var index = int.Parse(indexStr);
+
+            return index;
+        }
     }
 }

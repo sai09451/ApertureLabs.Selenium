@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using ApertureLabs.Selenium.PageObjects;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -137,11 +138,17 @@ namespace ApertureLabs.Selenium
             // Use reflection to load all types that inherit from IPageObject
             // and IPageComponent.
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var constructorArgs = new List<Type>();
             containerBuilder.RegisterAssemblyTypes(loadedAssemblies)
-                .Where(t => (t.IsAssignableTo<IPageObject>())
-                    && !t.IsAbstract
-                    && t.IsClass
-                    && t.IsVisible)
+                .Where(t =>
+                {
+                    var useType = (t.IsAssignableTo<IPageObject>())
+                        && !t.IsAbstract
+                        && t.IsClass
+                        && t.IsVisible;
+
+                    return useType;
+                })
                 .PublicOnly()
                 .SingleInstance();
         }

@@ -36,15 +36,17 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// The selector should target the original element that's been wrapped
         /// by kendo.
         /// </summary>
-        /// <param name="driver"></param>
+        /// <param name="configuration"></param>
         /// <param name="selector"></param>
-        /// <param name="dataSourceOptions"></param>
+        /// <param name="driver"></param>
         /// <param name="animationData"></param>
-        public KDropDownComponent(IWebDriver driver,
+        public KDropDownComponent(BaseKendoConfiguration configuration,
             By selector,
-            DataSourceOptions dataSourceOptions,
+            IWebDriver driver,
             KDropDownAnimationOptions animationData)
-            : base(driver, selector, dataSourceOptions)
+            : base(configuration,
+                  selector,
+                  driver)
         {
             this.animationData = animationData;
         }
@@ -127,23 +129,60 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// Sets the selected item.
         /// </summary>
         /// <param name="value"></param>
-        public virtual void SetSelectedItem(string value)
+        /// <param name="stringComparison"></param>
+        public virtual void SetSelectedItem(string value,
+            StringComparison stringComparison = StringComparison.Ordinal)
         {
+            // Check if already set.
+            var isAlreadySet = String.Equals(
+                GetSelectedItem(),
+                value,
+                stringComparison);
+
+            if (isAlreadySet)
+                return;
+
             Expand();
 
             var newValEl = OptionsElements
-                .FirstOrDefault(e => e.TextHelper().InnerText == value);
+                .FirstOrDefault(e => String.Equals(
+                    e.TextHelper().InnerText,
+                    value,
+                    stringComparison));
 
             if (newValEl == null)
                 throw new NoSuchElementException();
 
-            newValEl.Click();
+            if (configuration.ControlWithKeyboardInsteadOfMouse)
+            {
+                // Check if the element is above or below.
+                var currentValEl = OptionsElements.First(
+                    e => e.Classes().Contains("k-state-selected"));
+
+                var currentIndex = currentValEl.GetIndexRelativeToSiblings();
+                var newIndex = newValEl.GetIndexRelativeToSiblings();
+
+                // Determine which key to use and how many times to press it.
+                var difference = currentIndex - newIndex;
+                var magnitude = Math.Abs(difference);
+                var key = difference > 0 ? Keys.Up : Keys.Down;
+
+                // Keep sending the key needed.
+                for (var i = 0; i < magnitude; i++)
+                    ContainerElement.SendKeys(key);
+
+                ContainerElement.SendKeys(Keys.Enter);
+            }
+            else
+            {
+                newValEl.Click();
+            }
 
             WaitForAnimationEnd();
         }
 
         /// <inheritdoc/>
-        public void WaitForAnimationStart(
+        public virtual void WaitForAnimationStart(
             KDropDownAnimationOptions animationData = null)
         {
             var data = animationData ?? this.animationData;
@@ -156,7 +195,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         }
 
         /// <inheritdoc/>
-        public void WaitForAnimationEnd(
+        public virtual void WaitForAnimationEnd(
             KDropDownAnimationOptions animationData = null)
         {
             var data = animationData ?? this.animationData;
@@ -169,7 +208,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         }
 
         /// <inheritdoc/>
-        public bool IsCurrentlyAnimating(
+        public virtual bool IsCurrentlyAnimating(
             KDropDownAnimationOptions animationData = null)
         {
             throw new NotImplementedException();
@@ -178,7 +217,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// <summary>
         /// Expands the dropdown if not already expanded.
         /// </summary>
-        protected void Expand()
+        protected virtual void Expand()
         {
             if (!IsExpanded())
             {
@@ -195,12 +234,16 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// <summary>
         /// Collapses the dropdown if not already collapsed.
         /// </summary>
-        protected void Close()
+        protected virtual void Close()
         {
             if (IsExpanded())
             {
                 var containerElement = ContainerElement;
-                containerElement.Click();
+
+                if (configuration.ControlWithKeyboardInsteadOfMouse)
+                    containerElement.SendKeys(Keys.Escape);
+                else
+                    containerElement.Click();
 
                 WrappedDriver.Wait(animationData.AnimationDuration)
                     .Until(d => !containerElement

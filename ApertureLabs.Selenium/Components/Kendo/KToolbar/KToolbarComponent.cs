@@ -15,15 +15,16 @@ namespace ApertureLabs.Selenium.Components.Kendo.KToolbar
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="driver"></param>
+        /// <param name="configuration"></param>
         /// <param name="selector"></param>
         /// <param name="dataSourceOptions"></param>
-        public KToolbarComponent(IWebDriver driver,
+        /// <param name="driver"></param>
+        public KToolbarComponent(BaseKendoConfiguration configuration,
             By selector,
-            DataSourceOptions dataSourceOptions)
-            : base(driver,
+            IWebDriver driver)
+            : base(configuration,
                   selector,
-                  dataSourceOptions)
+                  driver)
         { }
 
         #endregion

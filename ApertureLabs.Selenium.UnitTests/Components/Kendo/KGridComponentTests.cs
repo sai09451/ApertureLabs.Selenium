@@ -63,10 +63,10 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
 
             kGridComponent = pageObjectFactory.PrepareComponent(
                 new KGridComponent(
-                    driver,
+                    BaseKendoConfiguration.DefaultBaseKendoOptions(),
                     By.CssSelector("#grid"),
-                    DataSourceOptions.DefaultKendoOptions(),
-                    pageObjectFactory));
+                    pageObjectFactory,
+                    driver));
         }
 
         [TestCleanup]

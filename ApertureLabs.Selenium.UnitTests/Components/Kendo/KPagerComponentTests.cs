@@ -71,10 +71,11 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                     "KPager");
 
                 var pagerComponent = PageObjectFactory.PrepareComponent(
-                    new KPagerComponent(driver,
+                    new KPagerComponent(
+                        BaseKendoConfiguration.DefaultBaseKendoOptions(),
                         By.CssSelector("#pager"),
-                        DataSourceOptions.DefaultKendoOptions(),
-                        PageObjectFactory));
+                        PageObjectFactory,
+                        driver));
 
                 pagerComponent.Refresh();
                 var availbleSizes = pagerComponent.GetAvailableItemsPerPage();

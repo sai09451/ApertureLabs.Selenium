@@ -37,18 +37,18 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// </summary>
         /// <param name="driver"></param>
         /// <param name="selector"></param>
-        /// <param name="dataSourceOptions"></param>
         /// <param name="pageObjectFactory"></param>
-        public KGridComponent(IWebDriver driver,
+        /// <param name="configuration"></param>
+        public KGridComponent(BaseKendoConfiguration configuration,
             By selector,
-            DataSourceOptions dataSourceOptions,
-            IPageObjectFactory pageObjectFactory)
-            : base(driver, selector, dataSourceOptions)
+            IPageObjectFactory pageObjectFactory,
+            IWebDriver driver)
+            : base(configuration,
+                  selector,
+                  driver)
         {
-            if (pageObjectFactory == null)
-                throw new ArgumentNullException(nameof(pageObjectFactory));
-
-            this.pageObjectFactory = pageObjectFactory;
+            this.pageObjectFactory = pageObjectFactory
+                ?? throw new ArgumentNullException(nameof(pageObjectFactory));
         }
 
         #endregion
@@ -70,19 +70,19 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// </summary>
         public KPagerComponent Pager => pageObjectFactory.PrepareComponent(
             new KPagerComponent(
-                WrappedDriver,
+                configuration,
                 PagerSelector,
-                dataSourceOptions,
-                pageObjectFactory));
+                pageObjectFactory,
+                WrappedDriver));
 
         /// <summary>
         /// Toolbar component.
         /// </summary>
         public KToolbarComponent Toolbar => pageObjectFactory.PrepareComponent(
             new KToolbarComponent(
-                WrappedDriver,
+                configuration,
                 ToolbarSelector,
-                dataSourceOptions));
+                WrappedDriver));
 
         #endregion
 

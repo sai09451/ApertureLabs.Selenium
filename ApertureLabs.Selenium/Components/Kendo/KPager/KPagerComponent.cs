@@ -39,22 +39,22 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="driver"></param>
+        /// <param name="configuration"></param>
         /// <param name="selector"></param>
-        /// <param name="dataSourceOptions"></param>
         /// <param name="pageObjectFactory"></param>
-        public KPagerComponent(IWebDriver driver,
+        /// <param name="driver"></param>
+        public KPagerComponent(BaseKendoConfiguration configuration,
             By selector,
-            DataSourceOptions dataSourceOptions,
-            IPageObjectFactory pageObjectFactory)
-            : base(driver, selector, dataSourceOptions)
+            IPageObjectFactory pageObjectFactory,
+            IWebDriver driver)
+            : base(configuration,
+                  selector,
+                  driver)
         {
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
             else if (selector == null)
                 throw new ArgumentNullException(nameof(selector));
-            else if (dataSourceOptions == null)
-                throw new ArgumentNullException(nameof(dataSourceOptions));
             else if (pageObjectFactory == null)
                 throw new ArgumentNullException(nameof(pageObjectFactory));
 
@@ -117,10 +117,9 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
 
         private KDropDownComponent ItemsPerPageComponent =>
             pageObjectFactory.PrepareComponent(
-                new KDropDownComponent(
-                    WrappedDriver,
+                new KDropDownComponent(configuration,
                     ItemsPerPageSelector,
-                    dataSourceOptions,
+                    WrappedDriver,
                     KDropDownAnimationOptions.Default()));
 
         #endregion
