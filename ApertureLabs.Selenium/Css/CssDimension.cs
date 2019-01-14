@@ -70,6 +70,8 @@ namespace ApertureLabs.Selenium.Css
                     return CssUnit.Picas;
                 case "pt":
                     return CssUnit.Points;
+                case "px":
+                    return CssUnit.Pixels;
                 case "deg":
                     return CssUnit.Degrees;
                 case "grad":

@@ -8,6 +8,7 @@ namespace ApertureLabs.Selenium.UnitTests.Css
     {
         [DataTestMethod]
         [DataRow("43%", 43, CssUnit.Percent)]
+        [DataRow("43px", 43, CssUnit.Pixels)]
         public void CssDimensionTest(string dimensionStr,
             double expectedNumber,
             CssUnit expectedUnit)
