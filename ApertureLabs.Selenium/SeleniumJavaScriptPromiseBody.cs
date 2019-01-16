@@ -126,7 +126,8 @@ namespace ApertureLabs.Selenium
         protected virtual int PromiseId => promiseId;
 
         /// <summary>
-        /// The body of the promise. Supports the following tokens:
+        /// The body of the promise. All <c>{</c> and <c>}</c> MUST be escaped.
+        /// Supports the following tokens:
         /// {0} - To resolve the promise (need to call with paranthesis IE:
         ///     {0}(23) will resolve 23).
         /// {1} - To reject the promise need to call with paranthesis IE:

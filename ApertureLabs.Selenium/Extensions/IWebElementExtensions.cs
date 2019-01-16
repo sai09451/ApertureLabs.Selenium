@@ -151,6 +151,39 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
+        /// Creates an activated SeleniumJavaScriptPromiseBody and returns it.
+        /// NOTE: Don't call CreateScript(...) on the returned object as it has
+        /// already been called.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="eventName">Name of the event.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">eventName</exception>
+        public static SeleniumJavaScriptPromiseBody GetEventWaiter(
+            this IWebElement element,
+            string eventName)
+        {
+            if (String.IsNullOrEmpty(eventName))
+                throw new ArgumentNullException(nameof(eventName));
+
+            var waiter = new SeleniumJavaScriptPromiseBody
+            {
+                PromiseBody =
+                "var el = {2}[0];" +
+                "var callback = {0};" +
+                "var eventListener = el.addEventListener('" + eventName + "'," +
+                    "function(e) {{" +
+                        "el.removeEventListener('" + eventName + "', eventListener);" +
+                        "callback();" +
+                    "}});"
+            };
+
+            waiter.CreateScript(element.GetDriver(), element);
+
+            return waiter;
+        }
+
+        /// <summary>
         /// Waits for an event to occur on the element.
         /// </summary>
         /// <param name="element"></param>

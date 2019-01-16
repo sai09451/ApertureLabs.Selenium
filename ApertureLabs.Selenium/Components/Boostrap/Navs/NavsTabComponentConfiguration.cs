@@ -6,7 +6,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
     /// Options for configuring the NavsComponent. All selectors are relative
     /// to WrappedElement of the NavComponent.
     /// </summary>
-    public class NavsComponentConfiguration
+    public class NavsTabComponentConfiguration
     {
         /// <summary>
         /// Gets or sets the tab header elements selector.
@@ -47,5 +47,21 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
         /// The active tab content element selector.
         /// </value>
         public By ActiveTabContentElementSelector { get; set; }
+
+        /// <summary>
+        /// Default bootstrap selectors.
+        /// </summary>
+        /// <returns></returns>
+        public static NavsTabComponentConfiguration Default()
+        {
+            return new NavsTabComponentConfiguration
+            {
+                ActiveTabContentElementSelector = By.CssSelector(".tab-content .tab-pane.active"),
+                ActiveTabHeaderElementSelector = By.CssSelector(".nav-tabs .nav-link.active"),
+                ActiveTabHeaderNameSelector = By.CssSelector(".nav-tabs .nav-link.active"),
+                TabHeaderElementsSelector = By.CssSelector(".nav-tabs .nav-link"),
+                TabHeaderNamesSelector = By.CssSelector(".nav-tabs .nav-link")
+            };
+        }
     }
 }

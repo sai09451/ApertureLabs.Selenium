@@ -137,6 +137,104 @@
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.AnimationsEnabled">
             <inheritdoc/>
         </member>
+        <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent">
+            <summary>
+            Used for working with Bootstrap navs.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.GetTabNames">
+            <summary>
+            Gets the tab names.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.GetTabHeaderElements">
+            <summary>
+            Gets the tab header elements.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.GetActiveTabBody">
+            <summary>
+            Gets the active tab body.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.GetActiveTabName">
+            <summary>
+            Gets the name of the active tab.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.SetActiveTab(System.String,System.StringComparison)">
+            <summary>
+            Sets the active tab.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration">
+            <summary>
+            Options for configuring the NavsComponent. All selectors are relative
+            to WrappedElement of the NavComponent.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.TabHeaderElementsSelector">
+            <summary>
+            Gets or sets the tab header elements selector.
+            </summary>
+            <value>
+            The tab header elements selector.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.TabHeaderNamesSelector">
+            <summary>
+            Gets or sets the tab header names selector.
+            </summary>
+            <value>
+            The tab header names selector.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.ActiveTabHeaderElementSelector">
+            <summary>
+            Gets or sets the active tab header element selector.
+            </summary>
+            <value>
+            The active tab header element selector.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.ActiveTabHeaderNameSelector">
+            <summary>
+            Gets or sets the active tab header name selector.
+            </summary>
+            <value>
+            The active tab header name selector.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.ActiveTabContentElementSelector">
+            <summary>
+            Gets or sets the active tab content element selector.
+            </summary>
+            <value>
+            The active tab content element selector.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.Default">
+            <summary>
+            Default bootstrap selectors.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,OpenQA.Selenium.By)">
             <summary>
             Ctor.
@@ -1312,6 +1410,15 @@
             <param name="element"></param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetEventWaiter(OpenQA.Selenium.IWebElement,System.String)">
+            <summary>
+            Creates an activated SeleniumJavaScriptPromiseBody and returns it.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="eventName">Name of the event.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">eventName</exception>
+        </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.WaitForEvent(OpenQA.Selenium.IWebElement,System.String)">
             <summary>
             Waits for an event to occur on the element.
@@ -1964,7 +2071,8 @@
         </member>
         <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseBody">
             <summary>
-            The body of the promise. Supports the following tokens:
+            The body of the promise. All <c>{</c> and <c>}</c> MUST be escaped.
+            Supports the following tokens:
             {0} - To resolve the promise (need to call with paranthesis IE:
                 {0}(23) will resolve 23).
             {1} - To reject the promise need to call with paranthesis IE:

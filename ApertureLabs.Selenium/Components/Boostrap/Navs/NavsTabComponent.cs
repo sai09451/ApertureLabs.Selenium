@@ -11,25 +11,25 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
     /// Used for working with Bootstrap navs.
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.PageComponent" />
-    public class NavsComponent : PageComponent
+    public class NavsTabComponent : PageComponent
     {
         #region Fields
 
-        private readonly NavsComponentConfiguration configuration;
+        private readonly NavsTabComponentConfiguration configuration;
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NavsComponent"/> class.
+        /// Initializes a new instance of the <see cref="NavsTabComponent"/> class.
         /// </summary>
         /// <param name="driver">The driver.</param>
         /// <param name="selector">The selector.</param>
         /// <param name="configuration"></param>
-        public NavsComponent(By selector,
+        public NavsTabComponent(By selector,
             IWebDriver driver,
-            NavsComponentConfiguration configuration)
+            NavsTabComponentConfiguration configuration)
             : base(driver, selector)
         {
             this.configuration = configuration;
@@ -118,7 +118,14 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
                     e.TextHelper().InnerText,
                     stringComparison));
 
+            // Need to create a waiter for the event.
+            var waiter = tab.GetEventWaiter("shown.bs.tab");
+
+            // Now perform the action.
             tab.Click();
+
+            // And wait for the event to be emitted.
+            waiter.Wait(TimeSpan.FromMilliseconds(500));
         }
 
         #endregion
