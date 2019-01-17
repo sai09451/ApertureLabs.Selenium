@@ -29,12 +29,12 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <summary>
         /// The IWebDriver of a component.
         /// </summary>
-        public IWebDriver WrappedDriver { get; private set; }
+        public IWebDriver WrappedDriver { get; protected set; }
 
         /// <summary>
         /// The element representing the component.
         /// </summary>
-        public IWebElement WrappedElement { get; private set; }
+        public IWebElement WrappedElement { get; protected set; }
 
         /// <inheritdoc/>
         public By By { get; private set; }
@@ -53,7 +53,8 @@ namespace ApertureLabs.Selenium.PageObjects
         }
 
         /// <summary>
-        /// If overloaded don't forget to call base.Load().
+        /// If overloaded don't forget to call base.Load() or make sure to
+        /// assign the WrappedElement.
         /// </summary>
         /// <returns></returns>
         public virtual ILoadableComponent Load()

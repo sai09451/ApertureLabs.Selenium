@@ -25,6 +25,13 @@
         "jquery.min.js"
       ],
       "destination": "wwwroot/lib/jquery"
+    },
+    {
+      "library": "tinymce@4.9.2",
+      "files": [
+        "jquery.tinymce.min.js"
+      ],
+      "destination": "wwwroot/lib/tinymce"
     }
   ]
 }

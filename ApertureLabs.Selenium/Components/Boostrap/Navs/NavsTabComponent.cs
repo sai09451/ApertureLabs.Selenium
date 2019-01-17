@@ -128,6 +128,21 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
             waiter.Wait(TimeSpan.FromMilliseconds(500));
         }
 
+        /// <summary>
+        /// Determines whether the specified tab exists.
+        /// </summary>
+        /// <param name="tabName">Name of the tab.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        public bool HasTab(string tabName,
+            StringComparison stringComparison = StringComparison.Ordinal)
+        {
+            return GetTabNames().Any(tn => String.Equals(
+                tn,
+                tabName,
+                stringComparison));
+        }
+
         #endregion
     }
 }
