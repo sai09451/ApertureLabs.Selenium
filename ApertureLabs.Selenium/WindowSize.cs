@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace ApertureLabs.Selenium.PageObjects
+namespace ApertureLabs.Selenium
 {
     /// <summary>
     /// Contains sizes for windows.

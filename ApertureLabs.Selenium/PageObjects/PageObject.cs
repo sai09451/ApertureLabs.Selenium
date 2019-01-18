@@ -1,8 +1,8 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.Events;
 using OpenQA.Selenium.Support.UI;
-using System;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
@@ -21,8 +21,8 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Constructor
 
         /// <summary>
-        ///     If passing in an EventFiringWebDriver event listeners will be
-        ///     added.
+        /// If passing in an EventFiringWebDriver event listeners will be
+        /// added.
         /// </summary>
         /// <param name="driver"></param>
         public PageObject(IWebDriver driver)
@@ -37,28 +37,63 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Properties
 
         /// <summary>
-        ///     Gets the OpenQA.Selenium.IWebDriver used to find this element.
+        /// Gets the OpenQA.Selenium.IWebDriver used to find this element.
         /// </summary>
         public IWebDriver WrappedDriver { get; private set; }
 
         /// <summary>
-        ///     The url this page uses.
+        /// The url this page uses.
         /// </summary>
         public Uri Uri { get; protected set; }
+
+        /// <summary>
+        /// Gets the window handle the page was originally loaded on.
+        /// </summary>
+        public string WindowHandle { get; protected set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// By default will check the url to see if it starts with Uri.
+        /// By default will to see if the pages original window handle still
+        /// exists and that windows url matches the Uri.
         /// </summary>
         /// <returns></returns>
         public virtual bool IsStale()
         {
-            if (!WrappedDriver.Url.StartsWith(Uri.ToString()))
+            // Check if this page objects window handle isn't null and that
+            // the window handle still exists.
+            if (!String.IsNullOrEmpty(WindowHandle)
+                && !WrappedDriver.WindowHandles.Contains(WindowHandle))
             {
-                return true;
+                // Store the current window handle.
+                var originalWindowHandle = WrappedDriver.CurrentWindowHandle;
+
+                try
+                {
+                    // Switch to this pages window handle.
+                    WrappedDriver.SwitchTo().Window(WindowHandle);
+
+                    // Check if the url matches this pages url.
+                    var currentUri = new Uri(WrappedDriver.Url);
+
+                    // Ignore the query string, only concerned by the path.
+                    var rawUrl = currentUri.GetLeftPart(UriPartial.Path);
+
+                    var isOnSameUrl = !String.Equals(
+                        rawUrl,
+                        Uri.ToString(),
+                        StringComparison.OrdinalIgnoreCase);
+
+                    if (isOnSameUrl)
+                        return true;
+                }
+                finally
+                {
+                    // Switch back to the original window handle.
+                    WrappedDriver.SwitchTo().Window(originalWindowHandle);
+                }
             }
 
             return false;
@@ -66,7 +101,6 @@ namespace ApertureLabs.Selenium.PageObjects
 
         /// <summary>
         /// If overridding this don't forget to call base.Load().
-        /// 
         /// NOTE: Will navigate to the pages url if the current drivers url
         /// is empty.
         /// </summary>
@@ -101,11 +135,15 @@ namespace ApertureLabs.Selenium.PageObjects
             if (WrappedDriver is ChromeDriver)
             {
                 if (String.IsNullOrEmpty(WrappedDriver.Url)
-                    || WrappedDriver.Url == "data:,")
+                    || WrappedDriver.Url == "data:,"
+                    || WrappedDriver.Url == "about:blank")
                 {
                     WrappedDriver.Navigate().GoToUrl(Uri.ToString());
                 }
             }
+
+            // Assign the window handle.
+            WindowHandle = WrappedDriver.CurrentWindowHandle;
 
             return this;
         }

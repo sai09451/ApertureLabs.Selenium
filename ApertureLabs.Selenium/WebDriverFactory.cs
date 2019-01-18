@@ -2,10 +2,13 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
 
 namespace ApertureLabs.Selenium
 {
@@ -27,7 +30,12 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Firefox.
         /// </summary>
-        Firefox
+        Firefox,
+
+        /// <summary>
+        /// Internet explorer.
+        /// </summary>
+        InternetExplorer
     }
 
     /// <summary>
@@ -38,6 +46,7 @@ namespace ApertureLabs.Selenium
     {
         #region Fields
 
+        private readonly DriverManager driverManager;
         private readonly IList<IWebDriver> trackedDrivers;
 
         private bool disposedValue = false;
@@ -47,11 +56,12 @@ namespace ApertureLabs.Selenium
         #region Constructor/Finalizer
 
         /// <summary>
-        /// Ctor
+        /// Ctor.
         /// </summary>
         public WebDriverFactory()
         {
             disposedValue = false;
+            driverManager = new DriverManager();
             trackedDrivers = new List<IWebDriver>();
         }
 
@@ -83,21 +93,28 @@ namespace ApertureLabs.Selenium
             bool track = true)
         {
             IWebDriver driver = null;
-            var dir = Directory.GetCurrentDirectory();
 
             switch (majorWebDriver)
             {
                 case MajorWebDriver.Chrome:
-                    driver = new ChromeDriver(dir);
+                    driverManager.SetUpDriver(new ChromeConfig());
+                    driver = new ChromeDriver();
                     break;
                 case MajorWebDriver.Edge:
-                    driver = new EdgeDriver(dir);
+                    driverManager.SetUpDriver(new EdgeConfig());
+                    driver = new EdgeDriver();
                     break;
                 case MajorWebDriver.Firefox:
-                    driver = new FirefoxDriver(dir);
+                    var ffConfig = new FirefoxConfig();
+                    driverManager.SetUpDriver(new FirefoxConfig());
+                    driver = new FirefoxDriver();
+                    break;
+                case MajorWebDriver.InternetExplorer:
+                    driverManager.SetUpDriver(new InternetExplorerConfig());
+                    driver = new InternetExplorerDriver();
                     break;
                 default:
-                    throw new NotImplementedException(dir);
+                    throw new NotImplementedException();
             }
 
             // Set the window size.

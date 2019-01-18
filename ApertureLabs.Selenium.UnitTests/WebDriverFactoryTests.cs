@@ -1,6 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
-using System.Drawing;
 
 namespace ApertureLabs.Selenium.UnitTests
 {
@@ -8,6 +6,8 @@ namespace ApertureLabs.Selenium.UnitTests
     public class WebDriverFactoryTests
     {
         private static WebDriverFactory WebDriverFactory;
+
+        public TestContext TestContext { get; set; }
 
         [ClassInitialize]
         public static void Setup(TestContext testContext)
@@ -21,18 +21,20 @@ namespace ApertureLabs.Selenium.UnitTests
             WebDriverFactory.Dispose();
         }
 
-        [TestMethod]
+        [DataTestMethod]
         [DataRow(MajorWebDriver.Chrome)]
         [DataRow(MajorWebDriver.Firefox)]
         [DataRow(MajorWebDriver.Edge)]
+        [DataRow(MajorWebDriver.InternetExplorer)]
         public void GetWebDriver(MajorWebDriver majorWebDriver)
         {
-            IWebDriver chrome = WebDriverFactory.CreateDriver(majorWebDriver,
-                new Size(1000, 1001));
+            var driver = WebDriverFactory.CreateDriver(
+                majorWebDriver,
+                WindowSize.DefaultDesktop);
 
-            using (chrome)
+            using (driver)
             {
-                var defaultUrl = chrome.Url;
+                var defaultUrl = driver.Url;
             }
         }
     }

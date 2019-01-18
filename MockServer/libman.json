@@ -29,7 +29,12 @@
     {
       "library": "tinymce@4.9.2",
       "files": [
-        "jquery.tinymce.min.js"
+        "jquery.tinymce.min.js",
+        "tinymce.min.js",
+        "themes/modern/theme.min.js",
+        "skins/lightgray/skin.min.css",
+        "skins/lightgray/content.min.css",
+        "skins/lightgray/fonts/tinymce.woff"
       ],
       "destination": "wwwroot/lib/tinymce"
     }

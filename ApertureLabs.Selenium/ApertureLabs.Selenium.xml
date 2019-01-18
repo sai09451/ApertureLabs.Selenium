@@ -183,6 +183,14 @@
             <param name="tabName">Name of the tab.</param>
             <param name="stringComparison">The string comparison.</param>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.HasTab(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the specified tab exists.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration">
             <summary>
             Options for configuring the NavsComponent. All selectors are relative
@@ -764,6 +772,193 @@
             <summary>
             Used to check if animations are enabled for the element.
             </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.GroupedMenuItem">
+            <summary>
+            GroupedMenuItem.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.GroupedMenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.GroupedMenuItem"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar">
+            <summary>
+            Defines methods for retrieving items.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItem(System.String,System.StringComparison)">
+            <summary>
+            Gets the item.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.HasItem(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the specified item name has item.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+              <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode">
+            <summary>
+            The 'mode' of a TinyMCE editor.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode.Classic">
+            <summary>
+            The form-based mode.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode.Inline">
+            <summary>
+            The inline mode. No iframe is used with the editor.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode.DistractionFree">
+            <summary>
+            The distraction free mode essentially is just the text editor area
+            without any menus, toolbars, or status bars.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent">
+            <summary>
+            The menu component of a TinyMCEComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem">
+            <summary>
+            Menu item of an IBaseToolbar.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsDropDown">
+            <summary>
+            Returns this as a new DropDownMenuItem.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsText">
+            <summary>
+            Returns the title of this menu item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsGroupedMenuItem">
+            <summary>
+            Returns this as a new GroupedMenuItem.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsElement">
+            <summary>
+            Returns the WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent">
+            <summary>
+            Statusbar of a TinyMCEComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent">
+            <summary>
+            Used for interacting with TinyMCE editors.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory"></param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Menu">
+            <summary>
+            Used to manipulate the menu area. Null if no menu bar.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Toolbar">
+            <summary>
+            Used to manipulate the toolbar. Null if no toolbar.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Statusbar">
+            <summary>
+            Used to manipulate the statusbar. Null if no status bar.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Load">
+            <inheritDoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Write(System.String)">
+            <summary>
+            Writes the specified content.
+            </summary>
+            <param name="content">The content.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.WriteLine(System.String)">
+            <summary>
+            Writes the line.
+            </summary>
+            <param name="content">The content.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.WriteLine">
+            <summary>
+            Writes the line.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.ClearAllContent">
+            <summary>
+            Clears all content in the editable body area.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent">
+            <summary>
+            Toolbar component of the TinyMCEComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
         </member>
         <member name="T:ApertureLabs.Selenium.Css.CssColor">
             <summary>
@@ -1413,6 +1608,8 @@
         <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetEventWaiter(OpenQA.Selenium.IWebElement,System.String)">
             <summary>
             Creates an activated SeleniumJavaScriptPromiseBody and returns it.
+            NOTE: Don't call CreateScript(...) on the returned object as it has
+            already been called.
             </summary>
             <param name="element">The element.</param>
             <param name="eventName">Name of the event.</param>
@@ -1813,6 +2010,11 @@
             The url of the webpage.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.IPageObject.WindowHandle">
+            <summary>
+            Gets the window handle the page was originally loaded on.
+            </summary>
+        </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.IPageObject.IsStale">
             <summary>
             Use to determine if a PageObject is still 'valid'.
@@ -1870,7 +2072,8 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageComponent.Load">
             <summary>
-            If overloaded don't forget to call base.Load().
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
             </summary>
             <returns></returns>
         </member>
@@ -1881,31 +2084,36 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.#ctor(OpenQA.Selenium.IWebDriver)">
             <summary>
-                If passing in an EventFiringWebDriver event listeners will be
-                added.
+            If passing in an EventFiringWebDriver event listeners will be
+            added.
             </summary>
             <param name="driver"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WrappedDriver">
             <summary>
-                Gets the OpenQA.Selenium.IWebDriver used to find this element.
+            Gets the OpenQA.Selenium.IWebDriver used to find this element.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.Uri">
             <summary>
-                The url this page uses.
+            The url this page uses.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WindowHandle">
+            <summary>
+            Gets the window handle the page was originally loaded on.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.IsStale">
             <summary>
-            By default will check the url to see if it starts with Uri.
+            By default will to see if the pages original window handle still
+            exists and that windows url matches the Uri.
             </summary>
             <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Load">
             <summary>
             If overridding this don't forget to call base.Load().
-            
             NOTE: Will navigate to the pages url if the current drivers url
             is empty.
             </summary>
@@ -1929,35 +2137,6 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose">
             <inheritdoc/>
-        </member>
-        <member name="T:ApertureLabs.Selenium.PageObjects.WindowSize">
-            <summary>
-            Contains sizes for windows.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultDesktop">
-            <summary>
-            Default size for desktop (1001, 999).
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultTablet">
-            <summary>
-             Default size for tablet (768, 999).
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultMobile">
-            <summary>
-            Default size for mobile (120, 999).
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.PageObjects.WindowSize.RandomSize(System.Int32,System.Int32)">
-            <summary>
-            Generates a random size in the given range. The height is always
-            999.
-            </summary>
-            <param name="minWidth"></param>
-            <param name="maxWidth"></param>
-            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.ScopedBy">
             <summary>
@@ -2318,6 +2497,11 @@
             Firefox.
             </summary>
         </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.InternetExplorer">
+            <summary>
+            Internet explorer.
+            </summary>
+        </member>
         <member name="T:ApertureLabs.Selenium.WebDriverFactory">
             <summary>
             Responsible for creation and disposing of the various webdrivers.
@@ -2326,7 +2510,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor">
             <summary>
-            Ctor
+            Ctor.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.Finalize">
@@ -2913,6 +3097,35 @@
             <summary>
             Returns the value via attribute or if not present returns the text.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WindowSize">
+            <summary>
+            Contains sizes for windows.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.WindowSize.DefaultDesktop">
+            <summary>
+            Default size for desktop (1001, 999).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.WindowSize.DefaultTablet">
+            <summary>
+             Default size for tablet (768, 999).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.WindowSize.DefaultMobile">
+            <summary>
+            Default size for mobile (120, 999).
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WindowSize.RandomSize(System.Int32,System.Int32)">
+            <summary>
+            Generates a random size in the given range. The height is always
+            999.
+            </summary>
+            <param name="minWidth"></param>
+            <param name="maxWidth"></param>
             <returns></returns>
         </member>
     </members>

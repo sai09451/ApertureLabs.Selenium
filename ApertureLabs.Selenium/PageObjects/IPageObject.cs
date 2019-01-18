@@ -15,6 +15,11 @@ namespace ApertureLabs.Selenium.PageObjects
         Uri Uri { get; }
 
         /// <summary>
+        /// Gets the window handle the page was originally loaded on.
+        /// </summary>
+        string WindowHandle { get; }
+
+        /// <summary>
         /// Use to determine if a PageObject is still 'valid'.
         /// </summary>
         /// <example>

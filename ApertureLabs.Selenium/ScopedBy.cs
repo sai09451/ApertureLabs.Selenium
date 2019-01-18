@@ -21,7 +21,8 @@ namespace ApertureLabs.Selenium
         /// </summary>
         /// <param name="searchContext"></param>
         /// <param name="subSelectors"></param>
-        internal ScopedBy(ISearchContext searchContext, ICollection<By> subSelectors)
+        internal ScopedBy(ISearchContext searchContext,
+            ICollection<By> subSelectors)
         {
             this.Description = "ApertureLabs.Selenium.ScopedBy";
             this.searchContext = searchContext;
@@ -35,7 +36,8 @@ namespace ApertureLabs.Selenium
         /// </summary>
         /// <param name="contextSelector"></param>
         /// <param name="subSelectors"></param>
-        internal ScopedBy(By contextSelector, ICollection<By> subSelectors)
+        internal ScopedBy(By contextSelector,
+            ICollection<By> subSelectors)
         {
             this.contextSelector = contextSelector;
             this.subSelectors = subSelectors;
@@ -85,7 +87,9 @@ namespace ApertureLabs.Selenium
                 // Exit loop early if no child elements matching the selector
                 // were found.
                 if (!previousContexts.Any())
+                {
                     break;
+                }
             }
 
             var elements = previousContexts.Cast<IWebElement>()
@@ -108,11 +112,15 @@ namespace ApertureLabs.Selenium
             ICollection<By> subSelectors)
         {
             if (searchContext == null)
+            {
                 throw new ArgumentNullException(nameof(searchContext));
+            }
             else if (subSelectors == null)
+            {
                 throw new ArgumentNullException(nameof(subSelectors));
+            }
 
-            return new ScopedBy(searchContext, subSelectors) as By;
+            return new ScopedBy(searchContext, subSelectors) as OpenQA.Selenium.By;
         }
 
         /// <summary>
@@ -128,9 +136,13 @@ namespace ApertureLabs.Selenium
             ICollection<By> subSelectors)
         {
             if (searchContext == null)
+            {
                 throw new ArgumentNullException(nameof(searchContext));
+            }
             else if (searchContext == null)
+            {
                 throw new ArgumentNullException(nameof(subSelectors));
+            }
 
             return new ScopedBy(searchContext, subSelectors);
         }

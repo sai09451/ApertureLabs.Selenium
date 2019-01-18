@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using ApertureLabs.Selenium.PageObjects;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -45,10 +44,14 @@ namespace ApertureLabs.Selenium
             }
 
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.Populate(services);
 
+            // First scan assemblies.
             if (scanAssemblies)
                 ScanAssemblies(containerBuilder);
+
+            // Then load the passed in services. This way all overrides will
+            // remain.
+            containerBuilder.Populate(services);
 
             containerBuilder.RegisterInstance<IPageObjectFactory>(this);
             serviceProvider = containerBuilder.Build();
