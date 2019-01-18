@@ -4,6 +4,38 @@
         <name>ApertureLabs.Selenium</name>
     </assembly>
     <members>
+        <member name="T:ApertureLabs.Selenium.ByElement">
+            <summary>
+            Will always ONLY return the stored element.
+            </summary>
+            <seealso cref="T:OpenQA.Selenium.By" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByElement.FindElement(OpenQA.Selenium.ISearchContext)">
+            <summary>
+            Returns the stored element.
+            </summary>
+            <param name="context">An <see cref="T:OpenQA.Selenium.ISearchContext" /> object to use to search for the elements.</param>
+            <returns>
+            The first matching <see cref="T:OpenQA.Selenium.IWebElement" /> on the current context.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByElement.FindElements(OpenQA.Selenium.ISearchContext)">
+            <summary>
+            Returns the stored element.
+            </summary>
+            <param name="context">An <see cref="T:OpenQA.Selenium.ISearchContext" /> object to use to search for the elements.</param>
+            <returns>
+            A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> of all <see cref="T:OpenQA.Selenium.IWebElement">WebElements</see>
+            matching the current criteria, or an empty list if nothing matches.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByElement.FromElement(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Static ctor.
+            </summary>
+            <param name="element">The element.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent">
             <summary>
             Represents a bootstrap collapsable.
@@ -791,22 +823,40 @@
             Defines methods for retrieving items.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItem(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByText(System.String,System.StringComparison)">
             <summary>
-            Gets the item.
+            Gets the item by text.
             </summary>
             <param name="itemName">Name of the item.</param>
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.HasItem(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByClass(System.String,System.StringComparison)">
             <summary>
-            Determines whether the specified item name has item.
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.HasItemWithText(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
             </summary>
             <param name="itemName">Name of the item.</param>
             <param name="stringComparison">The string comparison.</param>
             <returns>
               <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.HasItemWithClass(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+              <c>true</c> if [has item by class] [the specified class name]; otherwise, <c>false</c>.
             </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode">
@@ -836,12 +886,47 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent"/> class.
             </summary>
-            <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The pageObjectFactory.</param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item.
+            </summary>
+            <param name="className"></param>
+            <param name="stringComparison"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.HasItemWithText(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the specified item name has item.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.HasItemWithClass(System.String,System.StringComparison)">
+            <summary>
+            Determines if the menu item exists.
+            </summary>
+            <param name="className"></param>
+            <param name="stringComparison"></param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem">
             <summary>
@@ -1442,6 +1527,34 @@
             <typeparam name="T"></typeparam>
             <param name="collection"></param>
             <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.ISearchContextExtensions">
+            <summary>
+            Contains extensions for ISearchContext objects.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.ISearchContextExtensions.CreateCssSelectorElement(OpenQA.Selenium.ISearchContext,OpenQA.Selenium.IWebElement,System.Boolean)">
+            <summary>
+            Creates a unique CSS selector element.
+            </summary>
+            <param name="searchContext">The search context.</param>
+            <param name="element">The element.</param>
+            <param name="optimize">
+            Whether or not to optimize the selector. This may be time
+            consuming.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.ISearchContextExtensions.TryGetAttribute(OpenQA.Selenium.IWebElement,System.String,System.Func{System.String,System.Boolean},System.String@)">
+            <summary>
+            Tries the get attribute. Will check if the value is null BEFORE
+            executing the expression.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="attribute">The attribute.</param>
+            <param name="predicate">The predicate.</param>
+            <param name="value">The value.</param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebDriverExtensions">

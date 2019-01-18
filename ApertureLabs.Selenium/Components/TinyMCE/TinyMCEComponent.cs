@@ -126,8 +126,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             // Menu.
             if (SourceElement.FindElements(menuComponentSelector).Any())
             {
-                menu = new MenuComponent(WrappedDriver,
-                    menuComponentSelector);
+                menu = new MenuComponent(menuComponentSelector,
+                    pageObjectFactory,
+                    WrappedDriver);
             }
             else
             {

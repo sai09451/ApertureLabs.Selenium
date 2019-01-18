@@ -21,6 +21,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
         private readonly By itemsSelector = By.CssSelector(".mce-container-body *[role='menuitem']");
         private readonly By itemNameSelector = By.CssSelector(".mce-txt");
+        private readonly By itemIconSeletor = By.CssSelector(".mce-ico");
 
         #endregion
 
@@ -38,7 +39,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver)
             : base(driver, selector)
-        { }
+        {
+            this.pageObjectFactory = pageObjectFactory;
+        }
 
         #endregion
 
@@ -63,7 +66,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         public MenuItem GetItemByText(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
-            var el = FirstOrDefaultElement(itemName, stringComparison);
+            var el = FirstOrDefaultElement(itemName, true, stringComparison);
 
             if (el == null)
             {
@@ -78,10 +81,28 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             }
         }
 
+        /// <summary>
+        /// Gets the item.
+        /// </summary>
+        /// <param name="className"></param>
+        /// <param name="stringComparison"></param>
+        /// <returns></returns>
         public MenuItem GetItemByClass(string className,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
-            throw new NotImplementedException();
+            var el = FirstOrDefaultElement(className, false, stringComparison);
+
+            if (el == null)
+            {
+                return null;
+            }
+            else
+            {
+                return pageObjectFactory.PrepareComponent(
+                    new MenuItem(
+                        WrappedDriver,
+                        WrappedDriver.CreateCssSelectorElement(el)));
+            }
         }
 
         /// <summary>
@@ -95,13 +116,19 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         public bool HasItemWithText(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
-            return FirstOrDefaultElement(itemName, stringComparison) != null;
+            return FirstOrDefaultElement(itemName, true, stringComparison) != null;
         }
 
+        /// <summary>
+        /// Determines if the menu item exists.
+        /// </summary>
+        /// <param name="className"></param>
+        /// <param name="stringComparison"></param>
+        /// <returns></returns>
         public bool HasItemWithClass(string className,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
-            throw new NotImplementedException();
+            return FirstOrDefaultElement(className, false, stringComparison) != null;
         }
 
         private IWebElement FirstOrDefaultElement(string itemName,
@@ -112,25 +139,36 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             foreach (var element in ItemElements)
             {
+                var matches = false;
+
                 if (isText)
                 {
                     // Search for matching text.
+                    var titleEl = element.FindElements(itemNameSelector)
+                        .FirstOrDefault();
+
+                    if (titleEl == null)
+                        continue;
+
+                    matches = String.Equals(
+                        itemName,
+                        titleEl.TextHelper().InnerText,
+                        stringComparison);
                 }
                 else
                 {
                     // Search for matching icon class.
+                    var iconEl = element.FindElements(itemIconSeletor)
+                        .FirstOrDefault();
+
+                    if (iconEl == null)
+                        continue;
+
+                    matches = iconEl.Classes().Any(c => String.Equals(
+                        c,
+                        itemName,
+                        stringComparison));
                 }
-
-                var titleEl = element.FindElements(itemNameSelector)
-                    .FirstOrDefault();
-
-                if (titleEl == null)
-                    continue;
-
-                var matches = String.Equals(
-                    itemName,
-                    titleEl.TextHelper().InnerText,
-                    stringComparison);
 
                 if (matches)
                 {
