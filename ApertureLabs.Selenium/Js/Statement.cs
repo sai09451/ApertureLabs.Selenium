@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ApertureLabs.Selenium.Js
@@ -27,6 +28,18 @@ namespace ApertureLabs.Selenium.Js
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Returns the content with an added semicolon if not present.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            if (Content.Last() == ';')
+                return Content;
+            else
+                return Content + ";";
+        }
 
         #endregion
     }

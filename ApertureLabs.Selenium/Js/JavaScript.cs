@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium;
 
@@ -116,7 +115,8 @@ namespace ApertureLabs.Selenium.Js
             if (!otherAcceptedTypes.Contains(passedInType)
                 || !specialParsingTypes.Contains(passedInType))
             {
-                throw new NotImplementedException("WebDriver doesn't support that type yet.");
+                throw new NotImplementedException("WebDriver doesn't " +
+                    "support that type yet.");
             }
 
             var result = IsAsync
