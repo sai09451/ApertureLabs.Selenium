@@ -1,5 +1,6 @@
 ﻿using System;
 using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.Js;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 
@@ -99,7 +100,7 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// method to listen for kendo events.
         /// </summary>
         /// <param name="eventName">Name of the event to listen for.</param>
-        protected virtual SeleniumJavaScriptPromiseBody GetPromiseForKendoEvent(
+        protected virtual PromiseBody GetPromiseForKendoEvent(
             string eventName)
         {
             var script =
@@ -112,7 +113,7 @@ namespace ApertureLabs.Selenium.Components.Kendo
                 "}};" +
                 $"dropdown.bind('{eventName}', unbindCallback);";
 
-            var promise = new SeleniumJavaScriptPromiseBody(script);
+            var promise = new PromiseBody(script);
             promise.CreateScript(WrappedDriver, WrappedElement);
 
             return promise;

@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.Js;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.Extensions;
@@ -162,16 +163,16 @@ namespace ApertureLabs.Selenium.Extensions
         /// <param name="eventName">Name of the event.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">eventName</exception>
-        public static SeleniumJavaScriptPromiseBody GetEventWaiter(
+        public static PromiseBody GetEventWaiter(
             this IWebElement element,
             string eventName)
         {
             if (String.IsNullOrEmpty(eventName))
                 throw new ArgumentNullException(nameof(eventName));
 
-            var waiter = new SeleniumJavaScriptPromiseBody
+            var waiter = new PromiseBody
             {
-                PromiseBody =
+                Body =
                 "var el = {2}[0];" +
                 "var callback = {0};" +
                 "var eventListener = el.addEventListener('" + eventName + "'," +

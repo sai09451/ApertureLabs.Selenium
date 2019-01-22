@@ -9,7 +9,7 @@ using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
 using OpenQA.Selenium;
 
-namespace ApertureLabs.Selenium.UnitTests
+namespace ApertureLabs.Selenium
 {
     [TestClass]
     public class WebElementTest

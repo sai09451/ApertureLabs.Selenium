@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Linq;
 
-namespace ApertureLabs.Selenium.UnitTests
+namespace ApertureLabs.Selenium
 {
     [TestClass]
     public class TextHelperTests

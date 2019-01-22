@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ApertureLabs.Selenium.UnitTests
+namespace ApertureLabs.Selenium
 {
     [TestClass]
     public class WebDriverFactoryTests

@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.Js;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 
-namespace ApertureLabs.Selenium
+namespace ApertureLabs.Selenium.Js
 {
     /// <summary>
     /// Statuses for javascript promises.
@@ -30,7 +34,7 @@ namespace ApertureLabs.Selenium
     /// <summary>
     /// A helper class for creating a javascript promise body for selenium.
     /// </summary>
-    public class SeleniumJavaScriptPromiseBody
+    public class PromiseBody : JavaScript
     {
         private const string FullPromiseObjectName = "window.Aperture.Selenium.Promises";
 
@@ -60,7 +64,7 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Ctor.
         /// </summary>
-        public SeleniumJavaScriptPromiseBody()
+        public PromiseBody()
         {
             promiseId = -1;
         }
@@ -69,9 +73,9 @@ namespace ApertureLabs.Selenium
         /// Ctor. Sets the PromiseBody.
         /// </summary>
         /// <param name="promiseBody"></param>
-        public SeleniumJavaScriptPromiseBody(string promiseBody) : this()
+        public PromiseBody(string promiseBody) : this()
         {
-            PromiseBody = promiseBody;
+            Body = promiseBody;
         }
 
         #endregion
@@ -137,7 +141,7 @@ namespace ApertureLabs.Selenium
         ///         script will return the promises arguments and not what was
         ///         passed in.
         /// </summary>
-        public virtual string PromiseBody { get; set; }
+        public virtual string Body { get; set; }
 
         /// <summary>
         /// Name of the function to resolve the promise.
@@ -219,8 +223,8 @@ namespace ApertureLabs.Selenium
             // Verify this wasn't called more than once.
             if (Created)
                 throw new Exception("Can only call 'CreateScript' once.");
-            else if (String.IsNullOrEmpty(PromiseBody))
-                throw new Exception(nameof(PromiseBody));
+            else if (String.IsNullOrEmpty(Body))
+                throw new Exception(nameof(Body));
 
             // Store the driver and a reference to the page to check if the
             // promise isn't stale.
@@ -230,7 +234,7 @@ namespace ApertureLabs.Selenium
             // Verify the promises array exists.
             AssertJavaScriptPromiseArrayExists();
 
-            var bodyScript = String.Format(PromiseBody,
+            var bodyScript = String.Format(Body,
                 ResolveScript,
                 RejectScript,
                 ArgumentsScript);
@@ -353,9 +357,23 @@ namespace ApertureLabs.Selenium
         /// Calls the ctor with the string as the argument.
         /// </summary>
         /// <param name="script"></param>
-        public static implicit operator SeleniumJavaScriptPromiseBody(string script)
+        public static implicit operator PromiseBody(string script)
         {
-            return new SeleniumJavaScriptPromiseBody(script);
+            return new PromiseBody(script);
+        }
+
+        /// <summary>
+        /// Returns the created script (if created) or the promise body.
+        /// </summary>
+        /// <param name="promise">The promise.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static implicit operator string(PromiseBody promise)
+        {
+            return promise.Created
+                ? promise.createdScript
+                : promise.Body;
         }
     }
 }

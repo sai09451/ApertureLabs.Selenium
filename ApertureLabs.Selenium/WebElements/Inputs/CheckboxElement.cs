@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.Js;
+using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.WebElements.Inputs
 {

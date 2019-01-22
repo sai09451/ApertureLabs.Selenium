@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.Components.TinyMCE;
+﻿using System;
+using ApertureLabs.Selenium.Components.TinyMCE;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,7 +64,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 
             tinyMCE = pageObjectFactory.PrepareComponent(
                 new TinyMCEComponent(
-                    By.CssSelector(".container.body-content > *:first-child"),
+                    By.CssSelector("textarea"),
                     pageObjectFactory,
                     driver));
         }
@@ -81,7 +82,28 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
         [ServerRequired]
         [TestMethod]
         public void TinyMCETest()
-        { }
+        {
+            Assert.IsTrue(tinyMCE.IntegrationMode == IntegrationMode.Classic);
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void WriteTest()
+        {
+            var firstText = tinyMCE.GetContent();
+            tinyMCE.Write("Testing 1 2 3" + Keys.Enter + "43." + Keys.Enter);
+            var secondText = tinyMCE.GetContent();
+
+            Assert.IsTrue(String.Equals(firstText,
+                String.Empty,
+                StringComparison.Ordinal));
+
+            Assert.IsFalse(String.Equals(firstText,
+                secondText,
+                StringComparison.Ordinal));
+
+            Assert.IsFalse(String.IsNullOrEmpty(secondText));
+        }
 
         #endregion
     }

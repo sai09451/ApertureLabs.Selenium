@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.Js;
 using ApertureLabs.Selenium.PageObjects;
+using ApertureLabs.Selenium.Properties;
 using ApertureLabs.Selenium.WebElements.IFrame;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -20,8 +22,6 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         private MenuComponent menu;
         private ToolbarComponent toolbar;
         private StatusbarComponent statusbar;
-
-        private IntegrationMode integrationMode;
         private IFrameElement iframeElement;
 
         #region Selectors
@@ -54,6 +54,11 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the integration mode.
+        /// </summary>
+        public IntegrationMode IntegrationMode { get; private set; }
 
         /// <summary>
         /// Used to manipulate the menu area. Null if no menu bar.
@@ -99,11 +104,14 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
         #region Elements
 
-        private IWebElement SourceElement => integrationMode == IntegrationMode.Classic
-            ? WrappedElement
-            : WrappedDriver.FindElement(By.TagName("html"));
+        /// <summary>
+        /// Gets or sets the element created by tinyMCE.
+        /// </summary>
+        private IWebElement TinyMCECreatedElement { get; set; }
 
-        private IWebElement EditableBodyElement => SourceElement.FindElement(editableBodySelector);
+        private IWebElement EditableBodyElement => IntegrationMode == IntegrationMode.Classic
+            ? WrappedDriver.FindElement(By.TagName("body"))
+            : TinyMCECreatedElement.FindElement(editableBodySelector);
 
         #endregion
 
@@ -114,9 +122,25 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <inheritDoc/>
         public override ILoadableComponent Load()
         {
+            base.Load();
+
+            WaitForInitalization();
+
+            var script =
+                "var el = arguments[0];" +
+                "var editor = tinyMCEUtilties.getEditor(el);" +
+                "return editor == null ? null : editor.getContent();";
+
+            script = AddTinyMCEUtilities(script);
+            script = JavaScript.TrimWhitespace(script);
+
+            TinyMCECreatedElement = (IWebElement)WrappedDriver
+                .JavaScriptExecutor()
+                .ExecuteScript(script, WrappedElement);
+
             UpdateIntegrationMode();
 
-            if (integrationMode == IntegrationMode.Classic)
+            if (IntegrationMode == IntegrationMode.Classic)
             {
                  iframeElement = new IFrameElement(
                      WrappedElement.FindElement(By.TagName("iframe")),
@@ -124,7 +148,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             }
 
             // Menu.
-            if (SourceElement.FindElements(menuComponentSelector).Any())
+            if (TinyMCECreatedElement.FindElements(menuComponentSelector).Any())
             {
                 menu = new MenuComponent(menuComponentSelector,
                     pageObjectFactory,
@@ -136,7 +160,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             }
 
             // Toolbar.
-            if (SourceElement.FindElements(toolbarComponentSelector).Any())
+            if (TinyMCECreatedElement.FindElements(toolbarComponentSelector).Any())
             {
                 toolbar = new ToolbarComponent(WrappedDriver,
                     toolbarComponentSelector);
@@ -147,7 +171,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             }
 
             // Status bar.
-            if (SourceElement.FindElements(statusbarComponentSelector).Any())
+            if (TinyMCECreatedElement.FindElements(statusbarComponentSelector).Any())
             {
                 statusbar = new StatusbarComponent(WrappedDriver,
                     statusbarComponentSelector);
@@ -156,8 +180,6 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             {
                 statusbar = null;
             }
-
-            WrappedElement = SourceElement;
 
             return this;
         }
@@ -168,7 +190,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="content">The content.</param>
         public void Write(string content)
         {
-            if (integrationMode == IntegrationMode.Classic)
+            if (IntegrationMode == IntegrationMode.Classic)
                 iframeElement.InFrameAction(() => _Write(content));
             else
                 _Write(content);
@@ -193,11 +215,30 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         }
 
         /// <summary>
+        /// Gets the content of the editor. This calls the
+        /// tinyMCE.Editor.getContent().
+        /// </summary>
+        /// <returns></returns>
+        public string GetContent()
+        {
+            var script =
+                "var el = arguments[0];" +
+                "var editor = tinyMCEUtilties.getEditor(el);" +
+                "return editor == null ? null : editor.getContent();";
+
+            script = AddTinyMCEUtilities(script);
+            script = JavaScript.TrimWhitespace(script);
+
+            return (string)WrappedDriver.JavaScriptExecutor()
+                .ExecuteScript(script, WrappedElement);
+        }
+
+        /// <summary>
         /// Clears all content in the editable body area.
         /// </summary>
         public void ClearAllContent()
         {
-            if (integrationMode == IntegrationMode.Classic)
+            if (IntegrationMode == IntegrationMode.Classic)
                 iframeElement.InFrameAction(_ClearAllContent);
             else
                 _ClearAllContent();
@@ -227,30 +268,59 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             if (WrappedElement.FindElements(By.TagName("iframe")).Any())
             {
                 // Only classic mode uses iframes.
-                integrationMode = IntegrationMode.Classic;
+                IntegrationMode = IntegrationMode.Classic;
             }
             else
             {
                 // Could be either classic or distraction free.
-                const string script =
-                    "var el = arguments[0]" +
-                    "for (var i = 0; i < tinyMCE.editors.length; i++) {" +
-                        "var editor = tinyMCE.editors[i];" +
-                        "var bodyEl = editor.getElement();" +
-                        "if (bodyEl == el) {" +
-                            "return bodyEl.getParam('theme') === 'inlite';" +
-                        "}" +
-                    "}" +
-                    "return false;";
+                var script =
+                    "var el = arguments[0];" +
+                    "var editor = tinyMCEUtilties.getEditor(el);" +
+                    "if (editor == null) {" +
+                        "return false;" +
+                    "} else {" +
+                        "return editor.getParam('theme') === 'inlite';" +
+                    "}";
+
+                script = AddTinyMCEUtilities(script);
 
                 var isDistractionFreeMode = (bool)WrappedDriver
                     .JavaScriptExecutor()
                     .ExecuteScript(script, WrappedElement);
 
-                integrationMode = isDistractionFreeMode
+                IntegrationMode = isDistractionFreeMode
                     ? IntegrationMode.DistractionFree
                     : IntegrationMode.Inline;
             }
+        }
+
+        private void WaitForInitalization()
+        {
+            var wait = WrappedDriver.Wait(TimeSpan.FromSeconds(10));
+            var timeoutMS = wait.Timeout.TotalMilliseconds;
+            var pollingMS = wait.PollingInterval.TotalMilliseconds;
+
+            var script =
+                "var el = {2}[0];" +
+                "var editor = tinyMCEUtilities.getEditor(el);" +
+                "tinyMCEUtilities.waitForInitialization(editor," +
+                    timeoutMS +
+                    pollingMS +
+                    "{0}," +
+                    "{1});";
+
+            script = AddTinyMCEUtilities(script);
+            script = JavaScript.EscapeScript(script);
+
+            var waiter = new PromiseBody(script);
+
+            wait.Until(d => waiter.Finished);
+            waiter.Wait(TimeSpan.FromSeconds(10));
+        }
+
+        private string AddTinyMCEUtilities(string script)
+        {
+            return Resources.tinyMCEUtilities + script;
         }
 
         #endregion
