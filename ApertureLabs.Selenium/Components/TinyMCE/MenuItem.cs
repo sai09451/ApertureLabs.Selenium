@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.Extensions;
+﻿using System.Collections.Generic;
+using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 
@@ -11,6 +12,11 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
     public class MenuItem : PageComponent
     {
         #region Fields
+
+        /// <summary>
+        /// An ordered list of parent menu items.
+        /// </summary>
+        protected IList<MenuItem> parentMenuItems;
 
         #region Selectors
 
@@ -25,9 +31,14 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// </summary>
         /// <param name="driver">The driver.</param>
         /// <param name="selector">The selector.</param>
-        public MenuItem(IWebDriver driver, By selector)
+        /// <param name="parentMenuItems">The parent menu items.</param>
+        public MenuItem(IWebDriver driver,
+            By selector,
+            IList<MenuItem> parentMenuItems = null)
             : base(driver, selector)
-        { }
+        {
+            this.parentMenuItems = parentMenuItems ?? new List<MenuItem>();
+        }
 
         #endregion
 
@@ -40,6 +51,14 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Determines whether this instance is displayed.
+        /// </summary>
+        public bool IsDisplayed()
+        {
+            return WrappedElement.Displayed;
+        }
 
         /// <summary>
         /// Returns this as a new DropDownMenuItem.

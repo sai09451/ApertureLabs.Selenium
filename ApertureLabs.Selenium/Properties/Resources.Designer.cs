@@ -61,27 +61,24 @@ namespace ApertureLabs.Selenium.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to var tinyMCEUtilties = new function() {
-        ///	this.getEditor = function (element) {
+        ///   Looks up a localized string similar to var tinyMCEUtilties = (function() {
+        ///	var obj = {};
+        ///
+        ///	/**
+        ///	 * Goes thru each editor in tinyMCE.editors and call matches each editors
+        ///	 * getElement() against the passed in element.
+        ///	 * @param {Element} element - The element used to match against
+        ///	 * Editor.getElement().
+        ///	 * @returns {Editor}
+        ///	 */
+        ///	obj.getEditor = function (element) {
         ///		if (element == null) {
         ///			throw new Error(&apos;Argument element cannot be null.&apos;);
         ///		}
         ///
         ///		var editor = null;
         ///
-        ///		for (var i = 0; i &lt; tinyMCE.editors.length; i++) {
-        ///			var _editor = tinyMCE.editors[i];
-        ///			var bodyEl = _editor.getElement();
-        ///			if (bodyEl == el) {
-        ///				editor = _editor;
-        ///				break;
-        ///			}
-        ///		}
-        ///
-        ///		return editor;
-        ///	}
-        ///}
-        ///.
+        ///		for (var i = 0; i &lt; tinyMCE.editors.length; i++) { [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tinyMCEUtilities {
             get {

@@ -104,17 +104,22 @@ namespace ApertureLabs.Selenium.Components.Kendo
             string eventName)
         {
             var script =
-                "var callback = {0};" +
-                "var $el = $({2}[0]);" +
+                "var callback = {resolve};" +
+                "var $el = $({args}[0]);" +
                 "var dropdown = $el.data().kendoDropDownList;" +
-                "var unbindCallback = function () {{" +
+                "var unbindCallback = function () {" +
                     $"dropdown.unbind('{eventName}', unbindCallback);" +
                     "callback();" +
-                "}};" +
+                "};" +
                 $"dropdown.bind('{eventName}', unbindCallback);";
 
-            var promise = new PromiseBody(script);
-            promise.CreateScript(WrappedDriver, WrappedElement);
+            var promise = new PromiseBody(WrappedDriver)
+            {
+                Arguments = new object[] { WrappedElement },
+                Script = script
+            };
+
+            promise.Execute(WrappedDriver.JavaScriptExecutor());
 
             return promise;
         }

@@ -170,19 +170,20 @@ namespace ApertureLabs.Selenium.Extensions
             if (String.IsNullOrEmpty(eventName))
                 throw new ArgumentNullException(nameof(eventName));
 
-            var waiter = new PromiseBody
+            var waiter = new PromiseBody(element.GetDriver())
             {
-                Body =
-                "var el = {2}[0];" +
-                "var callback = {0};" +
-                "var eventListener = el.addEventListener('" + eventName + "'," +
-                    "function(e) {{" +
-                        "el.removeEventListener('" + eventName + "', eventListener);" +
-                        "callback();" +
-                    "}});"
+                Arguments = new object[] { element },
+                Script =
+                    "var el = {args}[0];" +
+                    "var callback = {resolve};" +
+                    "var eventListener = el.addEventListener('" + eventName + "'," +
+                        "function(e) {" +
+                            "el.removeEventListener('" + eventName + "', eventListener);" +
+                            "callback();" +
+                        "});"
             };
 
-            waiter.CreateScript(element.GetDriver(), element);
+            waiter.Execute(element.GetDriver().JavaScriptExecutor());
 
             return waiter;
         }

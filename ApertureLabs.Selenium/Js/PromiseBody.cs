@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApertureLabs.Selenium.Extensions;
-using ApertureLabs.Selenium.Js;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 
@@ -36,6 +32,8 @@ namespace ApertureLabs.Selenium.Js
     /// </summary>
     public class PromiseBody : JavaScript
     {
+        #region Fields
+
         private const string FullPromiseObjectName = "window.Aperture.Selenium.Promises";
 
         private const string CreatePromiseObjectScript =
@@ -52,10 +50,9 @@ namespace ApertureLabs.Selenium.Js
 
         private int promiseId;
         private string createdScript;
-        private IWebDriver driver;
+        private readonly IWebDriver driver;
+        private IJavaScriptExecutor javaScriptExecutor;
         private IWebElement element;
-
-        #region Fields
 
         #endregion
 
@@ -64,18 +61,25 @@ namespace ApertureLabs.Selenium.Js
         /// <summary>
         /// Ctor.
         /// </summary>
-        public PromiseBody()
+        public PromiseBody(IWebDriver driver)
         {
+            this.driver = driver
+                ?? throw new ArgumentNullException(nameof(driver));
+
             promiseId = -1;
+            ResolveToken = "{resolve}";
+            RejectToken = "{reject}";
+            ArgsToken = "{args}";
         }
 
         /// <summary>
         /// Ctor. Sets the PromiseBody.
         /// </summary>
+        /// <param name="driver"></param>
         /// <param name="promiseBody"></param>
-        public PromiseBody(string promiseBody) : this()
+        public PromiseBody(IWebDriver driver, string promiseBody) : this(driver)
         {
-            Body = promiseBody;
+            Script = promiseBody;
         }
 
         #endregion
@@ -130,18 +134,24 @@ namespace ApertureLabs.Selenium.Js
         protected virtual int PromiseId => promiseId;
 
         /// <summary>
-        /// The body of the promise. All <c>{</c> and <c>}</c> MUST be escaped.
-        /// Supports the following tokens:
-        /// {0} - To resolve the promise (need to call with paranthesis IE:
-        ///     {0}(23) will resolve 23).
-        /// {1} - To reject the promise need to call with paranthesis IE:
-        ///     {1}(43) will reject and pass the value 43).
-        /// {2} - To refer to the arguments array of the intial function.
-        ///     * Attempting to reference the arguments object by name in the
-        ///         script will return the promises arguments and not what was
-        ///         passed in.
+        /// Gets or sets a value indicating whether this script is
+        /// asynchronous. This changes how Execute() operates, if true then the
+        /// script will be executed using ExecuteAsyncScript(...), if false
+        /// then ExecuteScript(...).
         /// </summary>
-        public virtual string Body { get; set; }
+        public override bool IsAsync
+        {
+            get => false;
+        }
+
+        /// <summary>
+        /// Gets or sets the arguments passed into the script when executing
+        /// it.
+        /// </summary>
+        /// <value>
+        /// The arguments.
+        /// </value>
+        public override object[] Arguments => new object[0];
 
         /// <summary>
         /// Name of the function to resolve the promise.
@@ -160,6 +170,39 @@ namespace ApertureLabs.Selenium.Js
         /// intial arguments to access it from the Promise.
         /// </summary>
         protected virtual string ArgumentsScript => "args";
+
+        /// <summary>
+        /// The body of the promise.
+        /// Supports the following 'default' tokens:
+        /// {resolve} - To resolve the promise (need to call with paranthesis IE:
+        ///     {resolve}(23) will resolve 23).
+        /// {reject} - To reject the promise need to call with paranthesis IE:
+        ///     {reject}(43) will reject and pass the value 43).
+        /// {args} - To refer to the arguments array of the intial function.
+        ///     * Attempting to reference the arguments object by name in the
+        ///         script will return the promises arguments and not what was
+        ///         passed in.
+        /// </summary>
+        public override string Script
+        {
+            get => base.Script;
+            set => base.Script = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the resolve token.
+        /// </summary>
+        public string ResolveToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reject token.
+        /// </summary>
+        public string RejectToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the arguments token.
+        /// </summary>
+        public string ArgsToken { get; set; }
 
         /// <summary>
         /// Checks if the promise was resolved.
@@ -211,46 +254,7 @@ namespace ApertureLabs.Selenium.Js
 
         #endregion
 
-        /// <summary>
-        /// This will create the js promise in the drivers active window and
-        /// sets the PromiseId. Can only call this method once. Will throw an
-        /// exception if the PromiseBody was never set.
-        /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="args"></param>
-        public virtual void CreateScript(IWebDriver driver, params object[] args)
-        {
-            // Verify this wasn't called more than once.
-            if (Created)
-                throw new Exception("Can only call 'CreateScript' once.");
-            else if (String.IsNullOrEmpty(Body))
-                throw new Exception(nameof(Body));
-
-            // Store the driver and a reference to the page to check if the
-            // promise isn't stale.
-            this.driver = driver;
-            element = driver.FindElement(By.CssSelector("*"));
-
-            // Verify the promises array exists.
-            AssertJavaScriptPromiseArrayExists();
-
-            var bodyScript = String.Format(Body,
-                ResolveScript,
-                RejectScript,
-                ArgumentsScript);
-
-            createdScript = String.Format(PromiseWrapper,
-                ResolveScript,
-                RejectScript,
-                ArgumentsScript,
-                bodyScript);
-
-            var response = driver.JavaScriptExecutor()
-                .ExecuteScript(createdScript, args)
-                .ToString();
-
-            promiseId = int.Parse(response);
-        }
+        #region Methods
 
         /// <summary>
         /// Attempts to reject the promise with a value.
@@ -261,7 +265,7 @@ namespace ApertureLabs.Selenium.Js
                 $"var promise = {FullPromiseObjectName}[{PromiseId}];" +
                 $"promise.{CustomRejectorScript}({rejectWith.ToString()});";
 
-            driver.ExecuteJavaScript(script, rejectWith);
+            javaScriptExecutor.ExecuteScript(script, rejectWith);
         }
 
         /// <summary>
@@ -273,7 +277,7 @@ namespace ApertureLabs.Selenium.Js
                 $"var promise = {FullPromiseObjectName}[{PromiseId}];" +
                 $"promise.{CustomRejectorScript}();";
 
-            driver.ExecuteJavaScript(script);
+            javaScriptExecutor.ExecuteScript(script);
         }
 
         /// <summary>
@@ -285,7 +289,7 @@ namespace ApertureLabs.Selenium.Js
                 $"var promise = {FullPromiseObjectName}[{PromiseId}];" +
                 $"promise.{CustomResolverScript}({resolveWith.ToString()});";
 
-            driver.ExecuteJavaScript(script, resolveWith);
+            javaScriptExecutor.ExecuteScript(script, resolveWith);
         }
 
         /// <summary>
@@ -297,7 +301,7 @@ namespace ApertureLabs.Selenium.Js
                 $"var promise = {FullPromiseObjectName}[{PromiseId}];" +
                 $"promise.{CustomResolverScript}();";
 
-            driver.ExecuteJavaScript(script);
+            javaScriptExecutor.ExecuteScript(script);
         }
 
         /// <summary>
@@ -310,7 +314,7 @@ namespace ApertureLabs.Selenium.Js
             if (!Created)
                 throw new Exception("Promise was never created.");
 
-            var result = driver.JavaScriptExecutor()
+            var result = javaScriptExecutor
                 .ExecuteAsyncScript(PromiseStatusScript)
                 .ToString();
 
@@ -329,51 +333,93 @@ namespace ApertureLabs.Selenium.Js
             if (!Created)
                 throw new Exception("Never created the script.");
 
-            var task = Task.Run(() =>
+            if (javaScriptExecutor is IWebDriver driver)
             {
-                try
+                var task = Task.Run(() =>
                 {
-                    driver.Wait(wait ?? TimeSpan.FromSeconds(30))
-                        .Until(d => Finished);
-                }
-                catch (WebDriverTimeoutException)
-                { }
+                    try
+                    {
+                        driver.Wait(wait ?? TimeSpan.FromSeconds(30))
+                            .Until(d => Finished);
+                    }
+                    catch (WebDriverTimeoutException)
+                    { }
 
-                return GetPromiseStatus();
-            });
+                    return GetPromiseStatus();
+                });
 
-            task.Wait();
-            return task.Result;
+                task.Wait();
+
+                return task.Result;
+            }
+            else
+            {
+                throw new NotImplementedException(
+                    "The IJavaScriptExecutor wasn't an IWebDriver.");
+            }
+        }
+
+        /// <summary>
+        /// Converts to string.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Created
+                ? createdScript
+                : Script;
+        }
+
+        /// <summary>
+        /// This will create the js promise in the drivers active window and
+        /// sets the PromiseId. Can only call this method once. Will throw an
+        /// exception if the PromiseBody was never set.
+        /// </summary>
+        /// <param name="executor">The executor.</param>
+        public override void Execute(IJavaScriptExecutor executor)
+        {
+            // Verify this wasn't called more than once.
+            if (Created)
+                throw new Exception("Can only call 'CreateScript' once.");
+            else if (String.IsNullOrEmpty(Script))
+                throw new Exception(nameof(Script));
+
+            javaScriptExecutor = executor;
+
+            // Store the driver and a reference to the page to check if the
+            // promise isn't stale.
+            element = driver.FindElement(By.CssSelector("*"));
+
+            // Verify the promises array exists.
+            AssertJavaScriptPromiseArrayExists();
+
+            var bodyScript = Script
+                .Replace(ResolveToken, ResolveScript)
+                .Replace(RejectToken, RejectScript)
+                .Replace(ArgsToken, ArgumentsScript);
+
+            createdScript = String.Format(PromiseWrapper,
+                ResolveScript,
+                RejectScript,
+                ArgumentsScript,
+                bodyScript);
+
+            var response = driver.JavaScriptExecutor()
+                .ExecuteScript(createdScript, Arguments)
+                .ToString();
+
+            promiseId = int.Parse(response.ToString());
         }
 
         private void AssertJavaScriptPromiseArrayExists()
         {
             // Verify there is a (hopefully) unique location to store the
             // promises.
-            driver.ExecuteJavaScript(CreatePromiseObjectScript);
+            javaScriptExecutor.ExecuteScript(CreatePromiseObjectScript);
         }
 
-        /// <summary>
-        /// Calls the ctor with the string as the argument.
-        /// </summary>
-        /// <param name="script"></param>
-        public static implicit operator PromiseBody(string script)
-        {
-            return new PromiseBody(script);
-        }
-
-        /// <summary>
-        /// Returns the created script (if created) or the promise body.
-        /// </summary>
-        /// <param name="promise">The promise.</param>
-        /// <returns>
-        /// The result of the conversion.
-        /// </returns>
-        public static implicit operator string(PromiseBody promise)
-        {
-            return promise.Created
-                ? promise.createdScript
-                : promise.Body;
-        }
+        #endregion
     }
 }

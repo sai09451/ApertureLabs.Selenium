@@ -51,7 +51,7 @@ namespace ApertureLabs.Selenium.Js
         public void EscapeScriptTest()
         {
             var before = TestScriptA;
-            var after = JavaScript.EscapeScript(before);
+            var after = JavaScript.Clean(before);
 
             StringAssert.DoesNotMatch(after, new Regex("[ ]{2,}"));
             StringAssert.DoesNotMatch(after, new Regex("\n"));

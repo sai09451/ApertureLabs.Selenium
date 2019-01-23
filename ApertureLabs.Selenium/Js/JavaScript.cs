@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using System.Web;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.Js
@@ -67,8 +69,8 @@ namespace ApertureLabs.Selenium.Js
         /// </summary>
         public virtual void Format()
         {
-            Script = EscapeScript(Script);
-            Script = TrimWhitespace(Script);
+            Script = RemoveComments(Script);
+            Script = Clean(Script);
         }
 
         /// <summary>
@@ -113,7 +115,7 @@ namespace ApertureLabs.Selenium.Js
             };
 
             if (!otherAcceptedTypes.Contains(passedInType)
-                || !specialParsingTypes.Contains(passedInType))
+                && !specialParsingTypes.Contains(passedInType))
             {
                 throw new NotImplementedException("WebDriver doesn't " +
                     "support that type yet.");
@@ -202,75 +204,17 @@ namespace ApertureLabs.Selenium.Js
         }
 
         /// <summary>
-        /// Escapes the script. Replaces all '{' and '}' that aren't followed
-        /// by a number with '{{' or '}}'. Also calls TrimWhitespace on the
-        /// script.
+        /// Removes all line breaks, tabs, and comments in a script.
         /// </summary>
         /// <param name="script">The script.</param>
         /// <returns></returns>
-        public static string EscapeScript(string script)
+        public static string Clean(string script)
         {
-            var dontReplace = Regex.Matches(script, @"(\{\d+\}|\{{2}|\}{2})");
-            var leftBraceMatches = Regex.Matches(script, @"\{(?!\d+\})");
-            var rightBraceMatches = Regex.Matches(script, @"(?<!\{\d+)\}");
-            var allMatches = new List<Match>();
-            var indeciesToReplace = new List<int>();
-            var ignore = new List<Tuple<int, int>>();
-
-            foreach (Match ignoreMatch in dontReplace)
-            {
-                var start = ignoreMatch.Index;
-                var end = start + ignoreMatch.Length;
-
-                ignore.Add(Tuple.Create(start, end));
-            }
-
-            allMatches.AddRange(leftBraceMatches.Cast<Match>());
-            allMatches.AddRange(rightBraceMatches.Cast<Match>());
-            allMatches = allMatches.OrderBy(i => i.Index).ToList();
-
-            foreach (var match in allMatches)
-            {
-                // Check if the match is in the range of any of the ignored
-                // items.
-                var shouldIgnore = ignore.Any(
-                    i => match.Index >= i.Item1 && match.Index <= i.Item2);
-
-                if (shouldIgnore)
-                    continue;
-
-                // Replace the match.
-                indeciesToReplace.Add(match.Index);
-            }
-
-            for (var i = 0; i < indeciesToReplace.Count; i++)
-            {
-                var index = indeciesToReplace[i];
-                script = script.Insert(index,
-                    script[index].Equals('{') ? "{" : "}");
-
-                // Updated the other indicies to account for the offset.
-                for (var ii = i; ii < indeciesToReplace.Count; ii++)
-                    indeciesToReplace[ii]++;
-            }
-
-            return TrimWhitespace(script);
-        }
-
-        /// <summary>
-        /// Removes all line breaks in a script.
-        /// </summary>
-        /// <param name="script">The script.</param>
-        /// <returns></returns>
-        public static string TrimWhitespace(string script)
-        {
-            var regex = new Regex("[ ]{2,}", RegexOptions.None);
-
             // Remove all extra spaces.
             script = Regex.Replace(script, "[ ]{2,}", " ");
 
             // Remove all newlines and tabs (handles ill-formed newlines).
-            script = Regex.Replace(script, @"[\t|\n|\r|\r\n|\n]", "");
+            script = Regex.Replace(script, @"[\t\n\r]", "");
 
             return script;
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using ApertureLabs.Selenium.Components.TinyMCE;
+﻿using ApertureLabs.Selenium.Components.TinyMCE;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +10,7 @@ using OpenQA.Selenium;
 namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 {
     [TestClass]
-    public class TinyMCETests
+    public class MenuComponentTests
     {
         #region Fields
 
@@ -20,6 +19,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
         private IPageObjectFactory pageObjectFactory;
         private IWebDriver driver;
         private TinyMCEComponent tinyMCE;
+        private MenuComponent menu;
 
         public TestContext TestContext { get; set; }
 
@@ -67,6 +67,8 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                     By.CssSelector("textarea"),
                     pageObjectFactory,
                     driver));
+
+            menu = tinyMCE.Menu;
         }
 
         public void TestCleanup()
@@ -81,28 +83,20 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
         [Description("Verifies no errors are thrown when the component is loading.")]
         [ServerRequired]
         [TestMethod]
-        public void TinyMCETest()
+        public void MenuTest()
         {
-            Assert.IsTrue(tinyMCE.IntegrationMode == IntegrationMode.Classic);
+            Assert.IsNotNull(menu);
         }
 
         [ServerRequired]
         [TestMethod]
-        public void WriteTest()
+        public void GetItemByText()
         {
-            var firstText = tinyMCE.GetContent();
-            tinyMCE.Write("Testing 1 2 3" + Keys.Enter + "43." + Keys.Enter);
-            var secondText = tinyMCE.GetContent();
+            var cut = menu.GetItemByText("Edit")
+                .AsDropDown()
+                .SelectOption("Cut");
 
-            Assert.IsTrue(String.Equals(firstText,
-                String.Empty,
-                StringComparison.Ordinal));
-
-            Assert.IsFalse(String.Equals(firstText,
-                secondText,
-                StringComparison.Ordinal));
-
-            Assert.IsFalse(String.IsNullOrEmpty(secondText));
+            Assert.IsNotNull(cut);
         }
 
         #endregion
