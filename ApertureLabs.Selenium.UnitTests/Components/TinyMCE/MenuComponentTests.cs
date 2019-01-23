@@ -96,6 +96,8 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                 .AsDropDown()
                 .SelectOption("Cut");
 
+            cut.AsElement().Click();
+
             Assert.IsNotNull(cut);
         }
 

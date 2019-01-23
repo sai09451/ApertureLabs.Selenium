@@ -805,6 +805,27 @@
             Used to check if animations are enabled for the element.
             </summary>
         </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem">
+            <summary>
+            Represents a drop down style menu item.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.SelectOption(System.String)">
+            <summary>
+            Opens the drop down and returns the option.
+            </summary>
+            <param name="option">The option.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.GroupedMenuItem">
             <summary>
             GroupedMenuItem.
@@ -934,12 +955,23 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.parentMenuItems">
+            <summary>
+            An ordered list of parent menu items.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,System.Collections.Generic.IList{ApertureLabs.Selenium.Components.TinyMCE.MenuItem})">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/> class.
             </summary>
             <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
+            <param name="parentMenuItems">The parent menu items.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDisplayed">
+            <summary>
+            Determines whether this instance is displayed.
+            </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsDropDown">
             <summary>

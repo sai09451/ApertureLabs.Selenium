@@ -97,7 +97,7 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static IWebElement GetParentElement(this IWebElement element)
         {
-            string jsScript = "return arguments[0].parentNode;";
+            string jsScript = "return arguments[0].parentElement;";
             var result = element.GetDriver()
                 .JavaScriptExecutor()
                 .ExecuteScript(jsScript, element);

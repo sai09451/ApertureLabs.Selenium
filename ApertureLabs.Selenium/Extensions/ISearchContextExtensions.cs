@@ -44,7 +44,7 @@ namespace ApertureLabs.Selenium.Extensions
 
                 // Check if the element matches the one passed it.
                 if (results.Count == 1)
-                    return results[0] == element;
+                    return results[0].Equals(element);
                 else
                     return false;
             }
@@ -66,7 +66,7 @@ namespace ApertureLabs.Selenium.Extensions
             {
                 bool shouldCheckSelector = false;
 
-                if (TryGetAttribute(element, "id", out var idAttr))
+                if (TryGetAttribute(currentEl, "id", out var idAttr))
                 {
                     // Use the id.
                     string formattedId = null;
@@ -79,7 +79,7 @@ namespace ApertureLabs.Selenium.Extensions
                     shouldCheckSelector = true;
                     selectorParts.Insert(0, formattedId);
                 }
-                else if (TryGetAttribute(element, "classes", out var classAttr))
+                else if (TryGetAttribute(currentEl, "classes", out var classAttr))
                 {
                     // Use the classes.
                     var formattedClasses = classAttr
@@ -89,7 +89,7 @@ namespace ApertureLabs.Selenium.Extensions
                     shouldCheckSelector = true;
                     selectorParts.Insert(0, formattedClasses);
                 }
-                else if (TryGetAttribute(element, "role", out var roles))
+                else if (TryGetAttribute(currentEl, "role", out var roles))
                 {
                     // Use the role attribute.
                     shouldCheckSelector = true;
@@ -149,7 +149,14 @@ namespace ApertureLabs.Selenium.Extensions
             string attribute,
             out string value)
         {
-            value = element.GetAttribute(attribute);
+            value = default;
+
+            try
+            {
+                value = element.GetAttribute(attribute);
+            }
+            catch
+            { }
 
             return !String.IsNullOrEmpty(value);
         }

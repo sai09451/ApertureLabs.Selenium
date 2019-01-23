@@ -50,6 +50,8 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <exception cref="NotImplementedException"></exception>
         public MenuItem SelectOption(string option)
         {
+            WrappedElement.Click();
+
             throw new NotImplementedException();
         }
 
