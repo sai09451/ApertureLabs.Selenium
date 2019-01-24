@@ -76,8 +76,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             {
                 return pageObjectFactory.PrepareComponent(
                     new MenuItem(
-                        WrappedDriver,
-                        WrappedDriver.CreateCssSelectorElement(el)));
+                        WrappedDriver.GetCssSelector(el),
+                        pageObjectFactory,
+                        WrappedDriver));
             }
         }
 
@@ -100,8 +101,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             {
                 return pageObjectFactory.PrepareComponent(
                     new MenuItem(
-                        WrappedDriver,
-                        WrappedDriver.CreateCssSelectorElement(el)));
+                        WrappedDriver.GetCssSelector(el),
+                        pageObjectFactory,
+                        WrappedDriver));
             }
         }
 

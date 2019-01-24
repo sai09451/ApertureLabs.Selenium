@@ -11,7 +11,7 @@ namespace ApertureLabs.Selenium.Extensions
     public static class ISearchContextExtensions
     {
         /// <summary>
-        /// Creates a unique CSS selector element.
+        /// Creates a unique CSS selector for an element.
         /// </summary>
         /// <param name="searchContext">The search context.</param>
         /// <param name="element">The element.</param>
@@ -20,7 +20,7 @@ namespace ApertureLabs.Selenium.Extensions
         /// consuming.
         /// </param>
         /// <returns></returns>
-        public static By CreateCssSelectorElement(
+        public static By GetCssSelector(
             this ISearchContext searchContext,
             IWebElement element,
             bool optimize = false)

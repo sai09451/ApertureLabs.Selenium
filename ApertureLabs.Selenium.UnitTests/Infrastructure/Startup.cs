@@ -96,8 +96,12 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
         public static void AssemblyCleanup()
         {
             // Stop the server process if it was started.
-            ServerProcess?.Kill();
-            ServerProcess?.WaitForExit();
+            if (!ServerProcess?.HasExited ?? false)
+            {
+                ServerProcess?.Kill();
+                ServerProcess?.WaitForExit();
+            }
+
             ServerProcess?.Dispose();
         }
     }

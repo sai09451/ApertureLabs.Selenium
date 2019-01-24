@@ -8,7 +8,7 @@ namespace ApertureLabs.Selenium.Js
     public class PromiseBodyTests
     {
         const string TestScriptA =
-@"var tinyMCEUtilties = new function() {
+@"var tinyMCEUtilities = new function() {
 	this.getEditor = function (element) {
 		if (element == null) {
 			throw new Error('Argument element cannot be null.');

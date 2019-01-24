@@ -1,12 +1,13 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.Extensions;
-using OpenQA.Selenium.Support.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
+using ApertureLabs.Selenium.Properties;
+using Newtonsoft.Json.Linq;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.Extensions;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.Extensions
 {
@@ -146,20 +147,17 @@ namespace ApertureLabs.Selenium.Extensions
         /// </summary>
         /// <param name="driver"></param>
         /// <param name="eventName"></param>
-        public static void WaitForEvent(this IWebDriver driver,
+        /// <returns></returns>
+        public static JObject WaitForEvent(this IWebDriver driver,
             string eventName)
         {
-            var script =
-                "var callback = arguments[arguments.length - 1];" +
-                "var evtList = document.addEventListener('" + eventName + "'," +
-                    "function (e) {" +
-                        "document.removeEventListener('" + eventName + "', evtList);" +
-                        "callback();" +
-                    "})";
+            var script = Resources.waitForEvent;
 
-            driver
+            var result = (string)driver
                 .JavaScriptExecutor()
-                .ExecuteAsyncScript(script);
+                .ExecuteAsyncScript(script, eventName);
+
+            return JObject.Parse(result);
         }
 
         /// <summary>
@@ -249,6 +247,66 @@ namespace ApertureLabs.Selenium.Extensions
 
             driver.Wait(timeout ?? TimeSpan.FromSeconds(30))
                 .Until(d => d.JavaScriptExecutor().ExecuteAsyncScript(script));
+        }
+
+        /// <summary>
+        /// Returns elements that matched the '*:focus' css selector and
+        /// optionally are filtered by the <c>matchingSelector</c>.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="matchingSelector"></param>
+        /// <returns></returns>
+        public static IReadOnlyCollection<IWebElement> GetFocusedElements(
+            this IWebDriver driver,
+            By matchingSelector = null)
+        {
+            var focusedEls = driver.FindElements(By.CssSelector("*:focus"));
+
+            if (matchingSelector != null)
+            {
+                var elsMatchingSelector = driver
+                    .FindElements(matchingSelector);
+
+                focusedEls = focusedEls
+                    .Where(
+                        el => elsMatchingSelector.Any(
+                            mEl => mEl.Equals(el)))
+                    .ToList()
+                    .AsReadOnly();
+            }
+
+            return focusedEls;
+        }
+
+        /// <summary>
+        /// Returns elements that match the css selector "*:hover" and
+        /// optionally additionally match the <c>matchingSelector</c> if
+        /// provided.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <param name="matchingSelector">Filters the results.</param>
+        /// <returns></returns>
+        public static IReadOnlyCollection<IWebElement> GetHoveredElements(
+            this IWebDriver driver,
+            By matchingSelector = null)
+        {
+            var hoveredEls = driver.FindElements(By.CssSelector("*:hover"));
+
+            // Filter elements that don't match the selector.
+            if (matchingSelector != null)
+            {
+                var elementsMatchingSelector = driver
+                    .FindElements(matchingSelector);
+
+                hoveredEls = hoveredEls
+                    .Where(
+                        el => elementsMatchingSelector.Any(
+                            mEl => mEl.Equals(el)))
+                        .ToList()
+                        .AsReadOnly();
+            }
+
+            return hoveredEls;
         }
     }
 }

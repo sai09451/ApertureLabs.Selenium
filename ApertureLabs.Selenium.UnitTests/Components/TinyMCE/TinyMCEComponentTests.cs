@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using ApertureLabs.Selenium.Components.TinyMCE;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
@@ -66,7 +67,8 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                 new TinyMCEComponent(
                     By.CssSelector("textarea"),
                     pageObjectFactory,
-                    driver));
+                    driver,
+                    TinyMCEOptions.Default()));
         }
 
         public void TestCleanup()
@@ -145,6 +147,43 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 
             Assert.AreNotEqual(beforeClear, afterClear);
             Assert.IsTrue(String.IsNullOrEmpty(afterClear));
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void GetCursorPositionTest()
+        {
+            var firstPos = tinyMCE.GetCursorPosition();
+            tinyMCE.Write("Testing" + Keys.Enter + "1 2 3");
+            var secondPos = tinyMCE.GetCursorPosition();
+
+            Assert.AreEqual(firstPos, new Point(0, 0));
+            Assert.AreEqual(secondPos, new Point(5, 1));
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void SetCursorPositionTest()
+        {
+            tinyMCE.WriteLine("Testing 1 2 3");
+            tinyMCE.SetCursorPosition(new Point(4, 0));
+            var position = tinyMCE.GetCursorPosition();
+
+            Assert.AreEqual(position, new Point(4, 0));
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void HighlightRangeTest()
+        {
+            tinyMCE.WriteLine("Testing 1 2 3");
+            tinyMCE.WriteLine("Testing 1 2 3");
+            tinyMCE.WriteLine("Testing 1 2 3");
+            tinyMCE.WriteLine("Testing 1 2 3");
+
+            tinyMCE.HightlightRange(new Point(0, 0), new Point(5, 1));
+
+            Console.WriteLine();
         }
 
         #endregion

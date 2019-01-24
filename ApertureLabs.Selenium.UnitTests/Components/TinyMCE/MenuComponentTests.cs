@@ -66,7 +66,8 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                 new TinyMCEComponent(
                     By.CssSelector("textarea"),
                     pageObjectFactory,
-                    driver));
+                    driver,
+                    TinyMCEOptions.Default()));
 
             menu = tinyMCE.Menu;
         }

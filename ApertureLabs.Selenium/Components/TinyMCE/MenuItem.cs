@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ApertureLabs.Selenium.Extensions;
+﻿using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 
@@ -14,9 +13,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         #region Fields
 
         /// <summary>
-        /// An ordered list of parent menu items.
+        /// Page object factory.
         /// </summary>
-        protected IList<MenuItem> parentMenuItems;
+        protected IPageObjectFactory pageObjectFactory;
 
         #region Selectors
 
@@ -29,15 +28,16 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuItem"/> class.
         /// </summary>
-        /// <param name="driver">The driver.</param>
         /// <param name="selector">The selector.</param>
-        /// <param name="parentMenuItems">The parent menu items.</param>
-        public MenuItem(IWebDriver driver,
+        /// <param name="pageObjectFactory">The page object factory.</param>
+        /// <param name="driver">The driver.</param>
+        public MenuItem(
             By selector,
-            IList<MenuItem> parentMenuItems = null)
+            IPageObjectFactory pageObjectFactory,
+            IWebDriver driver)
             : base(driver, selector)
         {
-            this.parentMenuItems = parentMenuItems ?? new List<MenuItem>();
+            this.pageObjectFactory = pageObjectFactory;
         }
 
         #endregion
@@ -66,11 +66,15 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <returns></returns>
         public DropDownMenuItem AsDropDown()
         {
-            return new DropDownMenuItem(WrappedDriver, By);
+            return pageObjectFactory.PrepareComponent(
+                new DropDownMenuItem(
+                    By,
+                    pageObjectFactory,
+                    WrappedDriver));
         }
 
         /// <summary>
-        /// Returns the title of this menu item.
+        /// Returns the text of this menu item.
         /// </summary>
         /// <returns></returns>
         public string AsText()
@@ -82,9 +86,13 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// Returns this as a new GroupedMenuItem.
         /// </summary>
         /// <returns></returns>
-        public GroupedMenuItem AsGroupedMenuItem()
+        public ButtonGroupMenuItem AsButtonGroupMenuItem()
         {
-            return new GroupedMenuItem(WrappedDriver, By);
+            return pageObjectFactory.PrepareComponent(
+                new ButtonGroupMenuItem(
+                    By,
+                    pageObjectFactory,
+                    WrappedDriver));
         }
 
         /// <summary>

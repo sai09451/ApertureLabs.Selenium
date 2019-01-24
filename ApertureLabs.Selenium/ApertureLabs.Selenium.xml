@@ -805,39 +805,51 @@
             Used to check if animations are enabled for the element.
             </summary>
         </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem">
+            <summary>
+            GroupedMenuItem.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory"></param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetSubItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the sub item by text.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem">
             <summary>
             Represents a drop down style menu item.
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem"/> class.
             </summary>
-            <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.SelectOption(System.String)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.SelectOption(System.String,System.StringComparison)">
             <summary>
             Opens the drop down and returns the option.
             </summary>
             <param name="option">The option.</param>
+            <param name="stringComparison">The string comparison.</param>
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.GroupedMenuItem">
-            <summary>
-            GroupedMenuItem.
-            </summary>
-            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.GroupedMenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.GroupedMenuItem"/> class.
-            </summary>
-            <param name="driver">The driver.</param>
-            <param name="selector">The selector.</param>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar">
             <summary>
@@ -955,18 +967,18 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.parentMenuItems">
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.pageObjectFactory">
             <summary>
-            An ordered list of parent menu items.
+            Page object factory.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,System.Collections.Generic.IList{ApertureLabs.Selenium.Components.TinyMCE.MenuItem})">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/> class.
             </summary>
-            <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
-            <param name="parentMenuItems">The parent menu items.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDisplayed">
             <summary>
@@ -981,11 +993,11 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsText">
             <summary>
-            Returns the title of this menu item.
+            Returns the text of this menu item.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsGroupedMenuItem">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsButtonGroupMenuItem">
             <summary>
             Returns this as a new GroupedMenuItem.
             </summary>
@@ -1016,13 +1028,14 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent"/> class.
             </summary>
             <param name="selector">The selector.</param>
             <param name="pageObjectFactory"></param>
             <param name="driver">The driver.</param>
+            <param name="tinyMCEOptions">The options.</param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.IntegrationMode">
             <summary>
@@ -1050,7 +1063,36 @@
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Load">
-            <inheritDoc/>
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+            <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetCursorPosition">
+            <summary>
+            Gets the cursor position.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.SetCursorPosition(System.Drawing.Point)">
+            <summary>
+            Sets the cursor position (the point {0,0} will be the top left
+            corner).
+            </summary>
+            <param name="point">The point.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.HightlightRange(System.Drawing.Point,System.Drawing.Point)">
+            <summary>
+            Hightlights the range.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown if the start point is before the end point.
+            </exception>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Write(System.String)">
             <summary>
@@ -1080,6 +1122,28 @@
             <summary>
             Clears all content in the editable body area.
             </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions">
+            <summary>
+            Options for the TinyMCEComponent.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions.InteractWithMenuViaJavaScript">
+            <summary>
+            Gets or sets a value indicating whether to interact with the menu
+            using the javascript api. If false then interactions will be
+            attempted via clicking.
+            </summary>
+            <value>
+              <c>true</c> if [interact with menu via java script]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions.Default">
+            <summary>
+            Creates a new instance with all properties preset to their
+            defaults.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent">
             <summary>
@@ -1583,9 +1647,9 @@
             Contains extensions for ISearchContext objects.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.ISearchContextExtensions.CreateCssSelectorElement(OpenQA.Selenium.ISearchContext,OpenQA.Selenium.IWebElement,System.Boolean)">
+        <member name="M:ApertureLabs.Selenium.Extensions.ISearchContextExtensions.GetCssSelector(OpenQA.Selenium.ISearchContext,OpenQA.Selenium.IWebElement,System.Boolean)">
             <summary>
-            Creates a unique CSS selector element.
+            Creates a unique CSS selector for an element.
             </summary>
             <param name="searchContext">The search context.</param>
             <param name="element">The element.</param>
@@ -1680,6 +1744,7 @@
             </summary>
             <param name="driver"></param>
             <param name="eventName"></param>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.WaitForAnyEvent(OpenQA.Selenium.IWebDriver,System.Collections.Generic.IEnumerable{System.String},System.Nullable{System.TimeSpan})">
             <summary>
@@ -1696,6 +1761,25 @@
             <param name="driver"></param>
             <param name="eventNames"></param>
             <param name="timeout">Defaults to 30 seconds.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.GetFocusedElements(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Returns elements that matched the '*:focus' css selector and
+            optionally are filtered by the <c>matchingSelector</c>.
+            </summary>
+            <param name="driver"></param>
+            <param name="matchingSelector"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.GetHoveredElements(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Returns elements that match the css selector "*:hover" and
+            optionally additionally match the <c>matchingSelector</c> if
+            provided.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="matchingSelector">Filters the results.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
             <summary>
@@ -2030,7 +2114,8 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Js.JavaScript.Clean(System.String)">
             <summary>
-            Removes all line breaks, tabs, and comments in a script.
+            Removes all line breaks, tabs, and comments in a script. WARNING:
+            Make sure all comments are removed prior to calling this.
             </summary>
             <param name="script">The script.</param>
             <returns></returns>
@@ -2250,6 +2335,31 @@
             exception if the PromiseBody was never set.
             </summary>
             <param name="executor">The executor.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Js.SetTimeout">
+            <summary>
+            Convience class for executing scripts in a setTimeout context.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.SetTimeout.#ctor">
+            <summary>
+            Ctor.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.SetTimeout.IsAsync">
+            <summary>
+            Will always be true.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.SetTimeout.Script">
+            <summary>
+            The script to be executed.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.SetTimeout.Timeout">
+            <summary>
+            Gets or sets the timeout.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.Models.NopModels.INopAddress">
             <summary>
@@ -2630,7 +2740,7 @@
         </member>
         <member name="P:ApertureLabs.Selenium.Properties.Resources.tinyMCEUtilities">
              <summary>
-               Looks up a localized string similar to var tinyMCEUtilties = (function() {
+               Looks up a localized string similar to var tinyMCEUtilities = (function() {
             	var obj = {};
             
             	/**
@@ -2638,16 +2748,40 @@
             	 * getElement() against the passed in element.
             	 * @param {Element} element - The element used to match against
             	 * Editor.getElement().
-            	 * @returns {Editor}
+            	 * @returns {Editor} The tinyMCE.Editor.
             	 */
             	obj.getEditor = function (element) {
-            		if (element == null) {
+            		if (element === null || element === undefined) {
             			throw new Error(&apos;Argument element cannot be null.&apos;);
             		}
             
             		var editor = null;
             
-            		for (var i = 0; i &lt; tinyMCE.editors.length; i++) { [rest of string was truncated]&quot;;.
+            		for  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.waitForEvent">
+             <summary>
+               Looks up a localized string similar to var eventName = arguments[0];
+            var callback = arguments[arguments.length - 1];
+            
+            if (eventName === null
+                || eventName === undefined
+                || typeof eventName !== &quot;string&quot;) {
+                throw new Error(&quot;The eventName was null.&quot;);
+            }
+            
+            function handler(evt) {
+                return JSON.stringify(
+                    evt,
+                    function (key, value) {
+            
+                        // Ignore null/undefined values.
+                        if (value === null || value === undefined) {
+                            return undefined;
+                        }
+            
+                        var typeO [rest of string was truncated]&quot;;.
              </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.ScopedBy">

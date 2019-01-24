@@ -61,7 +61,7 @@ namespace ApertureLabs.Selenium.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to var tinyMCEUtilties = (function() {
+        ///   Looks up a localized string similar to var tinyMCEUtilities = (function() {
         ///	var obj = {};
         ///
         ///	/**
@@ -69,20 +69,48 @@ namespace ApertureLabs.Selenium.Properties {
         ///	 * getElement() against the passed in element.
         ///	 * @param {Element} element - The element used to match against
         ///	 * Editor.getElement().
-        ///	 * @returns {Editor}
+        ///	 * @returns {Editor} The tinyMCE.Editor.
         ///	 */
         ///	obj.getEditor = function (element) {
-        ///		if (element == null) {
+        ///		if (element === null || element === undefined) {
         ///			throw new Error(&apos;Argument element cannot be null.&apos;);
         ///		}
         ///
         ///		var editor = null;
         ///
-        ///		for (var i = 0; i &lt; tinyMCE.editors.length; i++) { [rest of string was truncated]&quot;;.
+        ///		for  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tinyMCEUtilities {
             get {
                 return ResourceManager.GetString("tinyMCEUtilities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to var eventName = arguments[0];
+        ///var callback = arguments[arguments.length - 1];
+        ///
+        ///if (eventName === null
+        ///    || eventName === undefined
+        ///    || typeof eventName !== &quot;string&quot;) {
+        ///    throw new Error(&quot;The eventName was null.&quot;);
+        ///}
+        ///
+        ///function handler(evt) {
+        ///    return JSON.stringify(
+        ///        evt,
+        ///        function (key, value) {
+        ///
+        ///            // Ignore null/undefined values.
+        ///            if (value === null || value === undefined) {
+        ///                return undefined;
+        ///            }
+        ///
+        ///            var typeO [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string waitForEvent {
+            get {
+                return ResourceManager.GetString("waitForEvent", resourceCulture);
             }
         }
     }

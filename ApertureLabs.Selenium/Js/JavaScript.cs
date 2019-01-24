@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using System.Web;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.Js
@@ -204,7 +201,8 @@ namespace ApertureLabs.Selenium.Js
         }
 
         /// <summary>
-        /// Removes all line breaks, tabs, and comments in a script.
+        /// Removes all line breaks, tabs, and comments in a script. WARNING:
+        /// Make sure all comments are removed prior to calling this.
         /// </summary>
         /// <param name="script">The script.</param>
         /// <returns></returns>
@@ -227,10 +225,17 @@ namespace ApertureLabs.Selenium.Js
         public static string RemoveComments(string script)
         {
             // Remove all // comments.
-            script = Regex.Replace(script, @"\/\/.*$", "");
-
+            script = Regex.Replace(
+                script,
+                @"\/\/.*$",
+                "",
+                RegexOptions.Multiline);
             // Remove all /**/ comments.
-            script = Regex.Replace(script, @"\/\*\*.*?\*\/", "");
+            script = Regex.Replace(
+                script,
+                @"\/\*\*.*?\*\/",
+                "",
+                RegexOptions.Singleline);
 
             return script;
         }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.Js;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.Properties;
 using ApertureLabs.Selenium.WebElements.IFrame;
+using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -18,6 +20,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
     {
         #region Fields
 
+        private readonly TinyMCEOptions tinyMCEOptions;
         private readonly IPageObjectFactory pageObjectFactory;
         private MenuComponent menu;
         private ToolbarComponent toolbar;
@@ -43,12 +46,15 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="selector">The selector.</param>
         /// <param name="pageObjectFactory"></param>
         /// <param name="driver">The driver.</param>
+        /// <param name="tinyMCEOptions">The options.</param>
         public TinyMCEComponent(By selector,
             IPageObjectFactory pageObjectFactory,
-            IWebDriver driver)
+            IWebDriver driver,
+            TinyMCEOptions tinyMCEOptions)
             : base(driver, selector)
         {
             this.pageObjectFactory = pageObjectFactory;
+            this.tinyMCEOptions = tinyMCEOptions;
         }
 
         #endregion
@@ -119,7 +125,12 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
         #region Methods
 
-        /// <inheritDoc/>
+        /// <summary>
+        /// If overloaded don't forget to call base.Load() or make sure to
+        /// assign the WrappedElement.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NoSuchElementException"></exception>
         public override ILoadableComponent Load()
         {
             base.Load();
@@ -131,10 +142,11 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                 Arguments = new object[] { WrappedElement },
                 IsAsync = false,
                 Script = JavaScript.Clean(
-                    AddTinyMCEUtilities() +
-                    "var el = arguments[0];" +
-                    "var editor = tinyMCEUtilties.getEditor(el);" +
-                    "return editor == null ? null : editor.getContainer();")
+                    JavaScript.RemoveComments(
+                        AddTinyMCEUtilities() +
+                        "var el = arguments[0];" +
+                        "var editor = tinyMCEUtilities.getEditor(el);" +
+                        "return editor == null ? null : editor.getContainer();"))
             };
 
             TinyMCEContainerElement = script.ExecuteWithResult<IWebElement>(
@@ -147,9 +159,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             if (IntegrationMode == IntegrationMode.Classic)
             {
-                 iframeElement = new IFrameElement(
-                     TinyMCEContainerElement.FindElement(By.TagName("iframe")),
-                     WrappedDriver);
+                iframeElement = new IFrameElement(
+                    TinyMCEContainerElement.FindElement(By.TagName("iframe")),
+                    WrappedDriver);
             }
 
             // Menu.
@@ -187,6 +199,94 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Gets the cursor position.
+        /// </summary>
+        /// <returns></returns>
+        public Point GetCursorPosition()
+        {
+            var script =
+                AddTinyMCEUtilities() +
+                "var el = arguments[0];" +
+                "var ed = tinyMCEUtilities.getEditor(el);" +
+                "console.log(ed);" +
+                "return JSON.stringify(tinyMCEUtilities.getCaretPosition(ed))";
+
+            script = JavaScript.RemoveComments(script);
+            script = JavaScript.Clean(script);
+
+            var result = (string)WrappedDriver
+                .JavaScriptExecutor()
+                .ExecuteScript(script, WrappedElement);
+
+            var jsObj = JObject.Parse(result);
+
+            var point = new Point(
+                jsObj["x"].ToObject<int>(),
+                jsObj["y"].ToObject<int>());
+
+            return point;
+        }
+
+        /// <summary>
+        /// Sets the cursor position (the point {0,0} will be the top left
+        /// corner).
+        /// </summary>
+        /// <param name="point">The point.</param>
+        public void SetCursorPosition(Point point)
+        {
+            var script =
+                AddTinyMCEUtilities() +
+                $"var el = arguments[0];" +
+                $"var editor = tinyMCEUtilities.getEditor(el);" +
+                $"tinyMCEUtilities.setCaretPosition(editor, {point.X}, {point.Y});";
+
+            WrappedDriver
+                .JavaScriptExecutor()
+                .ExecuteScript(script, WrappedElement);
+        }
+
+        /// <summary>
+        /// Hightlights the range.
+        /// </summary>
+        /// <param name="start">The start.</param>
+        /// <param name="end">The end.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if the start point is before the end point.
+        /// </exception>
+        public void HightlightRange(Point start, Point end)
+        {
+            // Validate arguments.
+            if (start == null)
+                throw new ArgumentNullException(nameof(start));
+            else if (end == null)
+                throw new ArgumentNullException(nameof(end));
+
+            if (start.Y > end.Y)
+                throw new ArgumentOutOfRangeException(nameof(start));
+            else if (start.Y == end.Y && start.X > end.Y)
+                throw new ArgumentNullException(nameof(end));
+
+            var startRow = GetRowElement(start.Y);
+            var endRow = GetRowElement(end.Y);
+
+            var script =
+                AddTinyMCEUtilities() +
+                $"var el = arguments[0];" +
+                $"var startEl = arguments[1];" +
+                $"var endEl = arguments[2];" +
+                $"var editor = tinyMCEUtilities.getEditor(el);" +
+                $"var rng = editor.selection.getRng();" +
+                $"rng.setStart(startEl, {start.X});" +
+                $"rng.setEnd(endEl, {end.X});" +
+                $"editor.selection.setRng(rng);";
+
+            WrappedDriver
+                .JavaScriptExecutor()
+                .ExecuteScript(script, WrappedElement, startRow, endRow);
         }
 
         /// <summary>
@@ -229,9 +329,10 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             var script =
                 AddTinyMCEUtilities() +
                 "var el = arguments[0];" +
-                "var editor = tinyMCEUtilties.getEditor(el);" +
+                "var editor = tinyMCEUtilities.getEditor(el);" +
                 "return editor == null ? null : editor.getContent();";
 
+            script = JavaScript.RemoveComments(script);
             script = JavaScript.Clean(script);
 
             return (string)WrappedDriver.JavaScriptExecutor()
@@ -247,6 +348,16 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                 iframeElement.InFrameAction(_ClearAllContent);
             else
                 _ClearAllContent();
+        }
+
+        private IWebElement GetRowElement(int row)
+        {
+            // Determine the row element.
+            var rowEl = EditableBodyElement
+                .Children()
+                .ElementAt(row + 1);
+
+            return rowEl;
         }
 
         private void _Write(string content)
@@ -280,7 +391,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                 // Could be either classic or distraction free.
                 var script =
                     "var el = arguments[0];" +
-                    "var editor = tinyMCEUtilties.getEditor(el);" +
+                    "var editor = tinyMCEUtilities.getEditor(el);" +
                     "if (editor == null) {" +
                         "return false;" +
                     "} else {" +
@@ -314,6 +425,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                     $"{pollingMS}," +
                     "{resolve}," +
                     "{reject});";
+
+            script = JavaScript.RemoveComments(script);
+            script = JavaScript.Clean(script);
 
             var waiter = new PromiseBody(WrappedDriver)
             {
