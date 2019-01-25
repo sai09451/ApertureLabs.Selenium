@@ -154,8 +154,10 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             if (TinyMCEContainerElement.FindElements(toolbarComponentSelector).Any())
             {
                 Toolbar = pageObjectFactory.PrepareComponent(
-                    new ToolbarComponent(WrappedDriver,
-                        toolbarComponentSelector));
+                    new ToolbarComponent(
+                        toolbarComponentSelector,
+                        pageObjectFactory,
+                        WrappedDriver));
             }
             else
             {

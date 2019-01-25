@@ -199,6 +199,23 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             return items;
         }
 
+        /// <summary>
+        /// Gets the menu item at the index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public MenuItem GetMenuItemAt(int index)
+        {
+            var menuItem = pageObjectFactory.PrepareComponent(
+                new MenuItem(
+                    WrappedDriver.GetCssSelector(ItemElements.ElementAt(index)),
+                    pageObjectFactory,
+                    WrappedDriver));
+
+            return menuItem;
+        }
+
         #endregion
     }
 }

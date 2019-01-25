@@ -15,6 +15,13 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         IReadOnlyList<MenuItem> GetMenuItems();
 
         /// <summary>
+        /// Gets the menu item at the index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        MenuItem GetMenuItemAt(int index);
+
+        /// <summary>
         /// Gets the item by text.
         /// </summary>
         /// <param name="itemName">Name of the item.</param>

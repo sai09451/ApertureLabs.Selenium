@@ -49,6 +49,8 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
         #region Elements
 
+        private IReadOnlyCollection<IWebElement> ItemElements => WrappedElement.FindElements(itemsSelector);
+
         #endregion
 
         #endregion
@@ -82,13 +84,30 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         }
 
         /// <summary>
+        /// Gets the menu item at the index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public MenuItem GetMenuItemAt(int index)
+        {
+            var menuItem = pageObjectFactory.PrepareComponent(
+                new MenuItem(
+                    WrappedDriver.GetCssSelector(ItemElements.ElementAt(index)),
+                    pageObjectFactory,
+                    WrappedDriver));
+
+            return menuItem;
+        }
+
+        /// <summary>
         /// Gets all menu items.
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public IReadOnlyList<MenuItem> GetMenuItems()
         {
-            var menuItems = WrappedElement.FindElements(itemsSelector)
+            var menuItems = ItemElements
                 .Select(e => pageObjectFactory.PrepareComponent(
                     new MenuItem(
                         WrappedDriver.GetCssSelector(e),
