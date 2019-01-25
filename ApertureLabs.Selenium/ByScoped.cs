@@ -10,7 +10,7 @@ namespace ApertureLabs.Selenium
     /// Similar to the normal <code>OpenQA.Selenium.By</code> class but will
     /// always search from the passed in searchContext.
     /// </summary>
-    public class ScopedBy : By
+    public class ByScoped : By
     {
         private readonly ISearchContext searchContext;
         private readonly ICollection<By> subSelectors;
@@ -21,7 +21,7 @@ namespace ApertureLabs.Selenium
         /// </summary>
         /// <param name="searchContext"></param>
         /// <param name="subSelectors"></param>
-        internal ScopedBy(ISearchContext searchContext,
+        internal ByScoped(ISearchContext searchContext,
             ICollection<By> subSelectors)
         {
             this.Description = "ApertureLabs.Selenium.ScopedBy";
@@ -36,7 +36,7 @@ namespace ApertureLabs.Selenium
         /// </summary>
         /// <param name="contextSelector"></param>
         /// <param name="subSelectors"></param>
-        internal ScopedBy(By contextSelector,
+        internal ByScoped(By contextSelector,
             ICollection<By> subSelectors)
         {
             this.contextSelector = contextSelector;
@@ -120,7 +120,7 @@ namespace ApertureLabs.Selenium
                 throw new ArgumentNullException(nameof(subSelectors));
             }
 
-            return new ScopedBy(searchContext, subSelectors) as OpenQA.Selenium.By;
+            return new ByScoped(searchContext, subSelectors) as OpenQA.Selenium.By;
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace ApertureLabs.Selenium
                 throw new ArgumentNullException(nameof(subSelectors));
             }
 
-            return new ScopedBy(searchContext, subSelectors);
+            return new ByScoped(searchContext, subSelectors);
         }
 
         /// <summary>

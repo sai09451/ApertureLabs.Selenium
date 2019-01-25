@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ApertureLabs.Selenium.Components.TinyMCE
 {
@@ -7,6 +8,12 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
     /// </summary>
     public interface IBaseToolbar
     {
+        /// <summary>
+        /// Gets all menu items.
+        /// </summary>
+        /// <returns></returns>
+        IReadOnlyList<MenuItem> GetMenuItems();
+
         /// <summary>
         /// Gets the item by text.
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
@@ -69,11 +70,15 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             WrappedElement.Click();
             Thread.Sleep(500);
 
+            // Determine where the float-menu will appear. Usually it's either
+            // directly below or to the right.
+            var vector = GetDirectionFloatMenuWillOpen();
+
             // Move below the WrappedElement.
             WrappedDriver.CreateActions()
                 .MoveToElement(WrappedElement,
-                    0,
-                    WrappedElement.Size.Height,
+                    vector.Y,
+                    vector.X,
                     MoveToElementOffsetOrigin.Center)
                 .Perform();
 
@@ -107,6 +112,33 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                     selector,
                     pageObjectFactory,
                     WrappedDriver));
+        }
+
+        /// <summary>
+        /// Gets the direction float menu will open relative to the CENTER of
+        /// this WrappedElement.
+        /// </summary>
+        /// <returns></returns>
+        private (int X, int Y) GetDirectionFloatMenuWillOpen()
+        {
+            var vector = (X: 0, Y: 0);
+
+            if (WrappedElement.Classes().Contains("mce-button"))
+            {
+                // Opens to the right if enough space. Need to check if there
+                // is enough space. TODO: identify way to check the offset of
+                // the container due to lack of space.
+                vector.X = WrappedElement.Size.Width;
+                vector.Y = 0;
+            }
+            else
+            {
+                // Opens below.
+                vector.X = 0;
+                vector.Y = WrappedElement.Size.Height * -1;
+            }
+
+            return vector;
         }
 
         #endregion

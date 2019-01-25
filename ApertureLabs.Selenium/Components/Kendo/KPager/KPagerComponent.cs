@@ -59,7 +59,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
                 throw new ArgumentNullException(nameof(pageObjectFactory));
 
             this.pageObjectFactory = pageObjectFactory;
-            ItemsPerPageSelector = ScopedBy.FromScope(
+            ItemsPerPageSelector = ByScoped.FromScope(
                 selector,
                 By.CssSelector(".k-pager-sizes .k-dropdown select"));
         }

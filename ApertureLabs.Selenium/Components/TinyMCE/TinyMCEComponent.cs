@@ -22,9 +22,6 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
         private readonly TinyMCEOptions tinyMCEOptions;
         private readonly IPageObjectFactory pageObjectFactory;
-        private MenuComponent menu;
-        private ToolbarComponent toolbar;
-        private StatusbarComponent statusbar;
         private IFrameElement iframeElement;
 
         #region Selectors
@@ -33,6 +30,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         private readonly By toolbarComponentSelector = By.CssSelector("*[role='toolbar']");
         private readonly By statusbarComponentSelector = By.CssSelector(".mce-statusbar");
         private readonly By editableBodySelector = By.CssSelector(".mce-edit-area");
+        private readonly By resizeHandleSelector = By.CssSelector(".mce-i-resize");
 
         #endregion
 
@@ -69,44 +67,17 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Used to manipulate the menu area. Null if no menu bar.
         /// </summary>
-        public MenuComponent Menu
-        {
-            get
-            {
-                if (menu != null)
-                    return pageObjectFactory.PrepareComponent(menu);
-                else
-                    return null;
-            }
-        }
+        public MenuComponent Menu { get; protected set; }
 
         /// <summary>
         /// Used to manipulate the toolbar. Null if no toolbar.
         /// </summary>
-        public ToolbarComponent Toolbar
-        {
-            get
-            {
-                if (toolbar != null)
-                    return pageObjectFactory.PrepareComponent(toolbar);
-                else
-                    return null;
-            }
-        }
+        public ToolbarComponent Toolbar { get; protected set; }
 
         /// <summary>
         /// Used to manipulate the statusbar. Null if no status bar.
         /// </summary>
-        public StatusbarComponent Statusbar
-        {
-            get
-            {
-                if (statusbar != null)
-                    return pageObjectFactory.PrepareComponent(statusbar);
-                else
-                    return null;
-            }
-        }
+        public StatusbarComponent Statusbar { get; protected set; }
 
         #region Elements
 
@@ -118,6 +89,8 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         private IWebElement EditableBodyElement => IntegrationMode == IntegrationMode.Classic
             ? WrappedDriver.FindElement(By.TagName("body"))
             : TinyMCEContainerElement.FindElement(editableBodySelector);
+
+        private IWebElement ResizeHandleElement => WrappedDriver.FindElement(resizeHandleSelector);
 
         #endregion
 
@@ -167,45 +140,74 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             // Menu.
             if (TinyMCEContainerElement.FindElements(menuComponentSelector).Any())
             {
-                menu = new MenuComponent(menuComponentSelector,
-                    pageObjectFactory,
-                    WrappedDriver);
+                Menu = pageObjectFactory.PrepareComponent(
+                    new MenuComponent(menuComponentSelector,
+                        pageObjectFactory,
+                        WrappedDriver));
             }
             else
             {
-                menu = null;
+                Menu = null;
             }
 
             // Toolbar.
             if (TinyMCEContainerElement.FindElements(toolbarComponentSelector).Any())
             {
-                toolbar = new ToolbarComponent(WrappedDriver,
-                    toolbarComponentSelector);
+                Toolbar = pageObjectFactory.PrepareComponent(
+                    new ToolbarComponent(WrappedDriver,
+                        toolbarComponentSelector));
             }
             else
             {
-                toolbar = null;
+                Toolbar = null;
             }
 
             // Status bar.
             if (TinyMCEContainerElement.FindElements(statusbarComponentSelector).Any())
             {
-                statusbar = new StatusbarComponent(WrappedDriver,
-                    statusbarComponentSelector);
+                Statusbar = pageObjectFactory.PrepareComponent(
+                    new StatusbarComponent(WrappedDriver,
+                        statusbarComponentSelector));
             }
             else
             {
-                statusbar = null;
+                Statusbar = null;
             }
 
             return this;
         }
 
         /// <summary>
+        /// Sets the size of the editor.
+        /// </summary>
+        /// <param name="desiredSize">Size of the desired.</param>
+        public virtual void SetEditorSize(Size desiredSize)
+        {
+            var currentDimensions = TinyMCEContainerElement.Size;
+            var diff = Size.Subtract(desiredSize, currentDimensions);
+
+            WrappedDriver.CreateActions()
+                .MoveToElement(ResizeHandleElement)
+                .ClickAndHold()
+                .MoveByOffset(diff.Width, diff.Height)
+                .Release()
+                .Perform();
+        }
+
+        /// <summary>
+        /// Gets the size of the editor.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Size GetEditorSize()
+        {
+            return TinyMCEContainerElement.Size;
+        }
+
+        /// <summary>
         /// Gets the cursor position.
         /// </summary>
         /// <returns></returns>
-        public Point GetCursorPosition()
+        public virtual Point GetCursorPosition()
         {
             var script =
                 AddTinyMCEUtilities() +
@@ -235,17 +237,30 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// corner).
         /// </summary>
         /// <param name="point">The point.</param>
-        public void SetCursorPosition(Point point)
+        public virtual void SetCursorPosition(Point point)
         {
             var script =
                 AddTinyMCEUtilities() +
                 $"var el = arguments[0];" +
                 $"var editor = tinyMCEUtilities.getEditor(el);" +
-                $"tinyMCEUtilities.setCaretPosition(editor, {point.X}, {point.Y});";
+                $"tinyMCEUtilities.setCaretPosition(editor, {point.X}, {point.Y});" +
+                // This is to scroll the line into view.
+                $"editor.execCommand('mceInsertContent', false, '');";
 
             WrappedDriver
                 .JavaScriptExecutor()
                 .ExecuteScript(script, WrappedElement);
+        }
+
+        /// <summary>
+        /// Highlights all text.
+        /// </summary>
+        public virtual void HighlightAllText()
+        {
+            if (IntegrationMode == IntegrationMode.Classic)
+                iframeElement.InFrameAction(_HighlightAllText);
+            else
+                _HighlightAllText();
         }
 
         /// <summary>
@@ -257,7 +272,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if the start point is before the end point.
         /// </exception>
-        public void HightlightRange(Point start, Point end)
+        public virtual void HightlightRange(Point start, Point end)
         {
             // Validate arguments.
             if (start == null)
@@ -267,33 +282,55 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             if (start.Y > end.Y)
                 throw new ArgumentOutOfRangeException(nameof(start));
-            else if (start.Y == end.Y && start.X > end.Y)
-                throw new ArgumentNullException(nameof(end));
+            else if (start.Y == end.Y && start.X > end.X)
+                throw new ArgumentOutOfRangeException(nameof(end));
 
-            var startRow = GetRowElement(start.Y);
-            var endRow = GetRowElement(end.Y);
+            // This is to set the start point & end point into view. Both
+            // points are used to (if possible) get both points into view.
+            SetCursorPosition(start);
+            SetCursorPosition(end);
 
             var script =
                 AddTinyMCEUtilities() +
                 $"var el = arguments[0];" +
-                $"var startEl = arguments[1];" +
-                $"var endEl = arguments[2];" +
                 $"var editor = tinyMCEUtilities.getEditor(el);" +
-                $"var rng = editor.selection.getRng();" +
-                $"rng.setStart(startEl, {start.X});" +
-                $"rng.setEnd(endEl, {end.X});" +
-                $"editor.selection.setRng(rng);";
+                $"tinyMCEUtilities.highlight(editor," +
+                    $"{start.X}," +
+                    $"{start.Y}," +
+                    $"{end.X}," +
+                    $"{end.Y});";
 
             WrappedDriver
                 .JavaScriptExecutor()
-                .ExecuteScript(script, WrappedElement, startRow, endRow);
+                .ExecuteScript(script, WrappedElement);
+        }
+
+        /// <summary>
+        /// Gets the highlighted text.
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetHighlightedText()
+        {
+            string text = null;
+
+            if (IntegrationMode == IntegrationMode.Classic)
+            {
+                text = iframeElement.InFrameFunction(
+                    () => WrappedDriver.GetHighlightedText());
+            }
+            else
+            {
+                text = WrappedDriver.GetHighlightedText();
+            }
+
+            return text;
         }
 
         /// <summary>
         /// Writes the specified content.
         /// </summary>
         /// <param name="content">The content.</param>
-        public void Write(string content)
+        public virtual void Write(string content)
         {
             if (IntegrationMode == IntegrationMode.Classic)
                 iframeElement.InFrameAction(() => _Write(content));
@@ -305,7 +342,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// Writes the line.
         /// </summary>
         /// <param name="content">The content.</param>
-        public void WriteLine(string content)
+        public virtual void WriteLine(string content)
         {
             Write(content);
             Write(Keys.Enter);
@@ -314,7 +351,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Writes the line.
         /// </summary>
-        public void WriteLine()
+        public virtual void WriteLine()
         {
             Write(Keys.Enter);
         }
@@ -324,7 +361,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// tinyMCE.Editor.getContent().
         /// </summary>
         /// <returns></returns>
-        public string GetContent()
+        public virtual string GetContent()
         {
             var script =
                 AddTinyMCEUtilities() +
@@ -342,12 +379,21 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Clears all content in the editable body area.
         /// </summary>
-        public void ClearAllContent()
+        public virtual void ClearAllContent()
         {
             if (IntegrationMode == IntegrationMode.Classic)
                 iframeElement.InFrameAction(_ClearAllContent);
             else
                 _ClearAllContent();
+        }
+
+        private void _HighlightAllText()
+        {
+            WrappedDriver.CreateActions()
+                .MoveToElement(EditableBodyElement)
+                .Click()
+                .SendKeys(Keys.LeftControl + "a")
+                .Perform();
         }
 
         private IWebElement GetRowElement(int row)

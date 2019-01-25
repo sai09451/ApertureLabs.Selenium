@@ -95,11 +95,11 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         {
             base.Load();
 
-            PagerSelector = ScopedBy.FromScope(
+            PagerSelector = ByScoped.FromScope(
                 WrappedElement,
                 new[] { By.CssSelector(".k-pager-wrap.k-grid-pager") });
 
-            ToolbarSelector = ScopedBy.FromScope(
+            ToolbarSelector = ByScoped.FromScope(
                 WrappedElement,
                 new[] { By.CssSelector(".k-toolbar") });
 

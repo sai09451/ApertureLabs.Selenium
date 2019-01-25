@@ -1,4 +1,6 @@
-﻿using ApertureLabs.Selenium.Components.TinyMCE;
+﻿using System.Drawing;
+using System.Linq;
+using ApertureLabs.Selenium.Components.TinyMCE;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -93,13 +95,63 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
         [TestMethod]
         public void GetItemByText()
         {
-            var cut = menu.GetItemByText("Edit")
-                .AsDropDown()
-                .SelectOption("Cut");
+            var beforeCut = "Testing 1 2 3" + Keys.Enter;
 
-            cut.AsElement().Click();
+            tinyMCE.Write(beforeCut);
+            tinyMCE.HightlightRange(new Point(7, 0), new Point(12, 0));
+            menu.GetItemByText("Edit")
+                .ConvertTo<DropDownMenuItem>()
+                .SelectOption("Cut")
+                .AsElement()
+                .Click();
 
-            Assert.IsNotNull(cut);
+            // Highlight all text.
+            tinyMCE.HighlightAllText();
+            var afterCut = tinyMCE.GetHighlightedText();
+
+            Assert.AreNotEqual(afterCut, beforeCut);
+        }
+
+        [Description("Don't need to test this as all menu items shouldn't " +
+            "have icons.")]
+        [Ignore]
+        [ServerRequired]
+        [TestMethod]
+        public void GetItemByClassTest()
+        { }
+
+        [ServerRequired]
+        [TestMethod]
+        public void HasItemWithTextTest()
+        {
+            var hasEdit = tinyMCE.Menu.HasItemWithText("Edit");
+
+            Assert.IsTrue(hasEdit);
+        }
+
+        [Description("Don't need to test this as all menu items shouldn't " +
+            "have icons.")]
+        [Ignore]
+        [ServerRequired]
+        [TestMethod]
+        public void HasItemsWithClassTest()
+        { }
+
+        [ServerRequired]
+        [TestMethod]
+        public void GetMenuItemsTest()
+        {
+            var menuItems = tinyMCE.Menu.GetMenuItems().ToArray();
+
+            CollectionAssert.AllItemsAreInstancesOfType(
+                menuItems,
+                typeof(MenuItem));
+
+            CollectionAssert.AllItemsAreNotNull(menuItems);
+
+            CollectionAssert.AllItemsAreUnique(menuItems);
+
+            Assert.IsTrue(menuItems.Any());
         }
 
         #endregion

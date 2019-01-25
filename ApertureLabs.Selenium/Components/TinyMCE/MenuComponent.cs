@@ -182,6 +182,23 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             return result;
         }
 
+        /// <summary>
+        /// Gets all menu items.
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<MenuItem> GetMenuItems()
+        {
+            var items = ItemElements.Select(e => pageObjectFactory.PrepareComponent(
+                    new MenuItem(
+                        WrappedDriver.GetCssSelector(e),
+                        pageObjectFactory,
+                        WrappedDriver)))
+                .ToList()
+                .AsReadOnly();
+
+            return items;
+        }
+
         #endregion
     }
 }

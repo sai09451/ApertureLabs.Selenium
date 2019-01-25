@@ -139,5 +139,58 @@ var tinyMCEUtilities = (function() {
         rng.setEnd(node, x);
     };
 
+    /**
+     * Highlights the text/nodes between the two points.
+     * @param {Editor} editor The tinyMCE.Editor.
+     * @param {Number} x1 The x-coord of the first point.
+     * @param {Number} y1 The y-coord of the first point.
+     * @param {Number} x2 The x-coord of the second point.
+     * @param {Number} y2 The y-coord of the second point.
+     */
+    obj.highlight = function (editor, x1, y1, x2, y2) {
+        if (editor == null) {
+            throw new Error("editor was null.");
+        }
+
+        var bodyEl = editor.getBody();
+
+        if (bodyEl.children.length < y1 || bodyEl.children.length < y2) {
+            throw new Error("No such row at " + y1 + " or " + y2 + ".");
+        }
+
+        var startRowEl = bodyEl.children[y1];
+        var endRowEl = bodyEl.children[y2];
+        var startNode = null;
+        var endNode = null;
+        var accumalatedPosition = 0;
+
+        for (var i = 0; i < startRowEl.childNodes.length; i++) {
+            var _node = startRowEl.childNodes[i];
+            accumalatedPosition += (_node.length || 0);
+
+            if (accumalatedPosition >= x1) {
+                startNode = _node;
+                break;
+            }
+        }
+
+        // Reset accumulatedPosition.
+        accumalatedPosition = 0;
+
+        for (var i = 0; i < endRowEl.childNodes.length; i++) {
+            var _node = endRowEl.childNodes[i];
+            accumalatedPosition += (_node.length || 0);
+
+            if (accumalatedPosition >= x2) {
+                endNode = _node;
+                break;
+            }
+        }
+
+        var rng = editor.selection.getRng();
+        rng.setStart(startNode, x1);
+        rng.setEnd(endNode, x2);
+    };
+
 	return obj;
 }());

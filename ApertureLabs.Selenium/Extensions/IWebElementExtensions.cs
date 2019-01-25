@@ -325,5 +325,22 @@ namespace ApertureLabs.Selenium.Extensions
 
             return index;
         }
+
+        /// <summary>
+        /// Determines whether the element matches the selector. Similar to
+        /// jQuery.is(...).
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>
+        ///   <c>true</c> if the element matches the specified selector;
+        ///   otherwise, <c>false</c>.
+        /// </returns>
+        public static bool Is(this IWebElement element, By selector)
+        {
+            var driver = element.GetDriver();
+
+            return driver.FindElements(selector).Any(e => e.Equals(element));
+        }
     }
 }

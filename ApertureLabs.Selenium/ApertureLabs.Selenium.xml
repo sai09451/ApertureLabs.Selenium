@@ -36,6 +36,64 @@
             <param name="element">The element.</param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.ByScoped">
+            <summary>
+            Similar to the normal <code>OpenQA.Selenium.By</code> class but will
+            always search from the passed in searchContext.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. To create an instance use the static method FromScoped(...).
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. Instead fo passing in an instance of ISearchContext, pass in a
+            selector that will fetch the ISearchContext and then the subSelector
+            will search for the child elements.
+            </summary>
+            <param name="contextSelector"></param>
+            <param name="subSelectors"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FindElement(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FindElements(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will always use the passed in
+            search context instead of what the current context is for the
+            driver.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.By,OpenQA.Selenium.By[])">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent">
             <summary>
             Represents a bootstrap collapsable.
@@ -851,10 +909,23 @@
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.GetDirectionFloatMenuWillOpen">
+            <summary>
+            Gets the direction float menu will open relative to the CENTER of
+            this WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar">
             <summary>
             Defines methods for retrieving items.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetMenuItems">
+            <summary>
+            Gets all menu items.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByText(System.String,System.StringComparison)">
             <summary>
@@ -961,9 +1032,15 @@
             <param name="stringComparison"></param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetMenuItems">
+            <summary>
+            Gets all menu items.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem">
             <summary>
-            Menu item of an IBaseToolbar.
+            Menu item of a TinyMCEComponent.
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
@@ -980,28 +1057,83 @@
             <param name="pageObjectFactory">The page object factory.</param>
             <param name="driver">The driver.</param>
         </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDropDown">
+            <summary>
+            Gets a value indicating whether this instance is drop down.
+            </summary>
+            <value>
+              <c>true</c> if this instance is drop down; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsButtonGroup">
+            <summary>
+            Gets a value indicating whether this instance is button group.
+            </summary>
+            <value>
+              <c>true</c> if this instance is button group; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasTitle">
+            <summary>
+            Gets a value indicating whether this instance has title.
+            </summary>
+            <value>
+              <c>true</c> if this instance has title; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasIcon">
+            <summary>
+            Gets a value indicating whether this instance has icon.
+            </summary>
+            <value>
+              <c>true</c> if this instance has icon; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasShortcut">
+            <summary>
+            Gets a value indicating whether this instance has shortcut.
+            </summary>
+            <value>
+              <c>true</c> if this instance has shortcut; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IconElement">
+            <summary>
+            Gets the icon element. Won't throw an error if the element doens't
+            exist.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.TextElement">
+            <summary>
+            Gets the text element. Won't throw an error if the element doens't
+            exist.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.ShortCutElement">
+            <summary>
+            Gets the shortcut element. Won't throw an error if the element
+            doens't exist.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.CaretElement">
+            <summary>
+            Gets the caret element. Won't throw an error if the element doens't
+            exist.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.ConvertTo``1">
+            <summary>
+            Converts the item to a the derived MenuItem. Will return null if
+            it fails to convert this instance.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDisplayed">
             <summary>
             Determines whether this instance is displayed.
             </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsDropDown">
-            <summary>
-            Returns this as a new DropDownMenuItem.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsText">
-            <summary>
-            Returns the text of this menu item.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsButtonGroupMenuItem">
-            <summary>
-            Returns this as a new GroupedMenuItem.
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsElement">
             <summary>
@@ -1070,6 +1202,18 @@
             <returns></returns>
             <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.SetEditorSize(System.Drawing.Size)">
+            <summary>
+            Sets the size of the editor.
+            </summary>
+            <param name="desiredSize">Size of the desired.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetEditorSize">
+            <summary>
+            Gets the size of the editor.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetCursorPosition">
             <summary>
             Gets the cursor position.
@@ -1083,6 +1227,11 @@
             </summary>
             <param name="point">The point.</param>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.HighlightAllText">
+            <summary>
+            Highlights all text.
+            </summary>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.HightlightRange(System.Drawing.Point,System.Drawing.Point)">
             <summary>
             Hightlights the range.
@@ -1093,6 +1242,12 @@
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown if the start point is before the end point.
             </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetHighlightedText">
+            <summary>
+            Gets the highlighted text.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Write(System.String)">
             <summary>
@@ -1157,6 +1312,53 @@
             </summary>
             <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetMenuItems">
+            <summary>
+            Gets all menu items.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.HasItemWithClass(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if [has item by class] [the specified class name]; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.HasItemWithText(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="T:ApertureLabs.Selenium.Css.CssColor">
             <summary>
@@ -1781,6 +1983,16 @@
             <param name="matchingSelector">Filters the results.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.GetHighlightedText(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Gets highlighted text.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns>
+            The highlighted text content (no element tags but does
+            include new lines).
+            </returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
             <summary>
             Extensions for IWebElement.
@@ -1905,6 +2117,18 @@
             </summary>
             <param name="element">The element.</param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.Is(OpenQA.Selenium.IWebElement,OpenQA.Selenium.By)">
+            <summary>
+            Determines whether the element matches the selector. Similar to
+            jQuery.is(...).
+            </summary>
+            <param name="element">The element.</param>
+            <param name="selector">The selector.</param>
+            <returns>
+              <c>true</c> if the element matches the specified selector;
+              otherwise, <c>false</c>.
+            </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
             <summary>
@@ -2784,64 +3008,6 @@
                         var typeO [rest of string was truncated]&quot;;.
              </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.ScopedBy">
-            <summary>
-            Similar to the normal <code>OpenQA.Selenium.By</code> class but will
-            always search from the passed in searchContext.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Ctor. To create an instance use the static method FromScoped(...).
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Ctor. Instead fo passing in an instance of ISearchContext, pass in a
-            selector that will fetch the ISearchContext and then the subSelector
-            will search for the child elements.
-            </summary>
-            <param name="contextSelector"></param>
-            <param name="subSelectors"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElement(OpenQA.Selenium.ISearchContext)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElements(OpenQA.Selenium.ISearchContext)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Creates a 'scoped' selector which will always use the passed in
-            search context instead of what the current context is for the
-            driver.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Creates a 'scoped' selector which will first find all elements
-            that match the <code>searchContext</code> selector and then keep
-            applying the <code>subSelectors</code> to those elements.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,OpenQA.Selenium.By[])">
-            <summary>
-            Creates a 'scoped' selector which will first find all elements
-            that match the <code>searchContext</code> selector and then keep
-            applying the <code>subSelectors</code> to those elements.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">
             <summary>
             Used for switching between tabs.
@@ -3022,6 +3188,12 @@
             disposed.
             </param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.TrackDriver(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Allows tracking of an externally created webdriver.
+            </summary>
+            <param name="driver">The driver.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.Dispose(System.Boolean)">
             <inheritdoc/>

@@ -1,12 +1,11 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 
@@ -124,6 +123,18 @@ namespace ApertureLabs.Selenium
                 trackedDrivers.Add(driver);
 
             return driver;
+        }
+
+        /// <summary>
+        /// Allows tracking of an externally created webdriver.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        public void TrackDriver(IWebDriver driver)
+        {
+            if (trackedDrivers.Contains(driver))
+                return;
+
+            trackedDrivers.Add(driver);
         }
 
         #region IDisposable Support

@@ -308,5 +308,23 @@ namespace ApertureLabs.Selenium.Extensions
 
             return hoveredEls;
         }
+
+        /// <summary>
+        /// Gets highlighted text.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <returns>
+        /// The highlighted text content (no element tags but does
+        /// include new lines).
+        /// </returns>
+        public static string GetHighlightedText(this IWebDriver driver)
+        {
+            var script =
+                "return window.getSelection().toString();";
+
+            return (string)driver
+                .JavaScriptExecutor()
+                .ExecuteScript(script);
+        }
     }
 }

@@ -174,16 +174,70 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 
         [ServerRequired]
         [TestMethod]
+        public void HighlightAllTextTest()
+        {
+            tinyMCE.Write(
+                "Testing 1 2 3" + Keys.Enter +
+                "Testing 4 5 6" + Keys.Enter +
+                "Testing 7 8 9" + Keys.Enter +
+                "Testing 10 11 12" + Keys.Enter);
+
+            tinyMCE.HighlightAllText();
+            var text = tinyMCE.GetHighlightedText();
+
+            Assert.IsFalse(String.IsNullOrEmpty(text));
+        }
+
+        [ServerRequired]
+        [TestMethod]
         public void HighlightRangeTest()
         {
-            tinyMCE.WriteLine("Testing 1 2 3");
-            tinyMCE.WriteLine("Testing 1 2 3");
-            tinyMCE.WriteLine("Testing 1 2 3");
-            tinyMCE.WriteLine("Testing 1 2 3");
+            tinyMCE.Write(
+                "Testing 1 2 3" + Keys.Enter +
+                "Testing 4 5 6" + Keys.Enter +
+                "Testing 7 8 9" + Keys.Enter +
+                "Testing 10 11 12" + Keys.Enter);
 
-            tinyMCE.HightlightRange(new Point(0, 0), new Point(5, 1));
+            tinyMCE.HightlightRange(new Point(2, 0), new Point(5, 1));
+        }
 
-            Console.WriteLine();
+        [ServerRequired]
+        [TestMethod]
+        public void GetHighlightedTextTest()
+        {
+            HighlightRangeTest();
+            var highlightedText = tinyMCE.GetHighlightedText();
+
+            Assert.IsFalse(String.IsNullOrEmpty(highlightedText));
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void GetEditorSizeTest()
+        {
+            var currentSize = tinyMCE.GetEditorSize();
+
+            Assert.AreNotEqual(currentSize, Size.Empty);
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void SetEditorSizeTest()
+        {
+            var firstSize = tinyMCE.GetEditorSize();
+
+            // Double the height.
+            var newSize = new Size(firstSize.Width, firstSize.Height * 2);
+
+            tinyMCE.SetEditorSize(newSize);
+            var secondSize = tinyMCE.GetEditorSize();
+
+            // Tolerance of how accurate the resize was (in pixels).
+            var tolerance = 2;
+            var diff = Size.Subtract(newSize, secondSize);
+
+            Assert.IsTrue(Math.Abs(diff.Height) < tolerance);
+            Assert.IsTrue(Math.Abs(diff.Width) < tolerance);
         }
 
         #endregion
