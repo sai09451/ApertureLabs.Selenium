@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ApertureLabs.Selenium.Components.Shared.Animatable;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
@@ -8,7 +7,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
     /// <summary>
     /// Contains classes and selectors for the Bootstrap CollapsableComponent.
     /// </summary>
-    public class CollapsableOptions : IAnimatableOptions
+    public class CollapsableOptions
     {
         /// <summary>
         /// Selectors for elements that ONLY expand the component.

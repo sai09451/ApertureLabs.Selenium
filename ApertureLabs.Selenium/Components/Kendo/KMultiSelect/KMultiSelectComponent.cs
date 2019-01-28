@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ApertureLabs.Selenium.Components.Shared.Animatable;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
@@ -11,13 +10,12 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
     /// <summary>
     /// Represents a kendo multi-select component.
     /// </summary>
-    public class KMultiSelectComponent : BaseKendoComponent,
-        IAnimatableComponent<KMultiSelectAnimationOptions>
+    public class KMultiSelectComponent : BaseKendoComponent
     {
         #region Fields
 
         private readonly KMultiSelectAnimationOptions animationData;
-        private readonly KMultiSelectConfiguration options;
+        private readonly new KMultiSelectConfiguration configuration;
 
         #region Selectors
 
@@ -36,18 +34,15 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         /// </summary>
         /// <param name="selector"></param>
         /// <param name="driver"></param>
-        /// <param name="animationData"></param>
         /// <param name="configuration"></param>
         public KMultiSelectComponent(By selector,
             IWebDriver driver,
-            KMultiSelectAnimationOptions animationData,
             KMultiSelectConfiguration configuration)
             : base(configuration,
                   selector,
                   driver)
         {
-            this.animationData = animationData;
-            this.options = configuration;
+            this.configuration = configuration;
         }
 
         #endregion
@@ -130,7 +125,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             Expand();
 
             // Use keyboard or mouse depending on config.
-            if (configuration.ControlWithKeyboardInsteadOfMouse)
+            if (base.configuration.ControlWithKeyboardInsteadOfMouse)
                 el.SendKeys(Keys.Enter);
             else
                 el.Click();
@@ -180,7 +175,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         }
 
         /// <inheritDoc/>
-        public virtual void WaitForAnimationStart(
+        protected virtual void WaitForAnimationStart(
             KMultiSelectAnimationOptions animationData = null)
         {
             var data = animationData ?? this.animationData;
@@ -198,7 +193,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         }
 
         /// <inheritDoc/>
-        public virtual void WaitForAnimationEnd(
+        protected virtual void WaitForAnimationEnd(
             KMultiSelectAnimationOptions animationData = null)
         {
             var data = animationData ?? this.animationData;
@@ -211,7 +206,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         }
 
         /// <inheritDoc/>
-        public virtual bool IsCurrentlyAnimating(
+        protected virtual bool IsCurrentlyAnimating(
             KMultiSelectAnimationOptions animationData = null)
         {
             var animationContainer = ListContainerElement.GetParentElement();
@@ -240,7 +235,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (!IsExpanded)
             {
                 // Use keyboard or mouse depending on config.
-                if (configuration.ControlWithKeyboardInsteadOfMouse)
+                if (base.configuration.ControlWithKeyboardInsteadOfMouse)
                     ContainerElement.SendKeys(Keys.ArrowDown);
                 else
                     ContainerElement.Click();
@@ -257,7 +252,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (IsExpanded)
             {
                 // Use keyboard or mouse depending on config.
-                if (configuration.ControlWithKeyboardInsteadOfMouse)
+                if (base.configuration.ControlWithKeyboardInsteadOfMouse)
                     ContainerElement.SendKeys(Keys.Escape);
                 else
                     ContainerElement.Click();

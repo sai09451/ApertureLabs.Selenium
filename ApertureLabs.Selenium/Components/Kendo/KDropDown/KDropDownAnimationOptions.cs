@@ -1,5 +1,4 @@
 ﻿using System;
-using ApertureLabs.Selenium.Components.Shared.Animatable;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 {
@@ -7,7 +6,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
     /// Options that configures which classes to observer when determining if
     /// the dropdown is animating.
     /// </summary>
-    public class KDropDownAnimationOptions : IAnimatableOptions
+    public class KDropDownAnimationOptions
     {
         /// <inheritdoc/>
         public TimeSpan AnimationDuration { get; set; }

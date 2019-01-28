@@ -61,6 +61,32 @@ namespace ApertureLabs.Selenium.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to function jsonFormatter (key, value) {
+        ///
+        ///    // Ignore null/undefined values.
+        ///    if (value === null || value === undefined) {
+        ///        return undefined;
+        ///    }
+        ///
+        ///    var typeOfValue = typeof value;
+        ///
+        ///    // Only include strings, numbers, and booleans.
+        ///    if (typeOfValue === &quot;string&quot;
+        ///        || typeOfValue === &quot;number&quot;
+        ///        || typeOfValue === &quot;boolean&quot;) {
+        ///        return value;
+        ///    } else {
+        ///        return undefined;
+        ///    }
+        ///}.
+        /// </summary>
+        internal static string jsonFormatterCallback {
+            get {
+                return ResourceManager.GetString("jsonFormatterCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to var tinyMCEUtilities = (function() {
         ///	var obj = {};
         ///
@@ -78,7 +104,7 @@ namespace ApertureLabs.Selenium.Properties {
         ///
         ///		var editor = null;
         ///
-        ///		for  [rest of string was truncated]&quot;;.
+        ///		for [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tinyMCEUtilities {
             get {
@@ -90,23 +116,21 @@ namespace ApertureLabs.Selenium.Properties {
         ///   Looks up a localized string similar to var eventName = arguments[0];
         ///var callback = arguments[arguments.length - 1];
         ///
-        ///if (eventName === null
-        ///    || eventName === undefined
-        ///    || typeof eventName !== &quot;string&quot;) {
+        ///if (eventName == null || typeof eventName !== &quot;string&quot;) {
         ///    throw new Error(&quot;The eventName was null.&quot;);
+        ///} else if (callback == null) {
+        ///    throw new Error(&quot;The callback was null.&quot;);
         ///}
         ///
         ///function handler(evt) {
-        ///    return JSON.stringify(
+        ///    document.removeEventListener(eventName, handler);
+        ///
+        ///    var json = JSON.stringify(
         ///        evt,
         ///        function (key, value) {
         ///
         ///            // Ignore null/undefined values.
-        ///            if (value === null || value === undefined) {
-        ///                return undefined;
-        ///            }
-        ///
-        ///            var typeO [rest of string was truncated]&quot;;.
+        ///            if (value === nu [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string waitForEvent {
             get {

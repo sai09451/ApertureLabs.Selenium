@@ -333,7 +333,136 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,OpenQA.Selenium.By)">
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent">
+            <summary>
+            AccordionComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.#ctor(ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent"/> class.
+            </summary>
+            <param name="accordianComponentOptions">The options.</param>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.Load">
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.GetPanelNames">
+            <summary>
+            Gets all of the panel names.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.SelectPanel(System.String,System.StringComparison)">
+            <summary>
+            Sets the panel to open and returns the panel content element.
+            </summary>
+            <param name="panelName">Name of the panel.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.ClosePanel">
+            <summary>
+            Closes the active panel.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.HasOpenPanel">
+            <summary>
+            Determines whether their is an open panel.
+            </summary>
+            <returns>
+              <c>true</c> if [has open panel]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.GetActivePanelName">
+            <summary>
+            Gets the name of the active panel.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.GetActivePanelContentElement">
+            <summary>
+            Gets the active panels content element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions">
+            <summary>
+            Options for configuring the AccordianComponent and how Selenium
+            interacts with it.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AccordianHeaderClass">
+            <summary>
+            Gets or sets the accordian header class.
+            </summary>
+            <value>
+            The accordian header class.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AccordianHeaderCollapsedClass">
+            <summary>
+            Gets or sets the accordian header collapsed class.
+            </summary>
+            <value>
+            The accordian header collapsed class.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AccordianContentClass">
+            <summary>
+            Gets or sets the accordian content class.
+            </summary>
+            <value>
+            The accordian content class.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AnimationDuration">
+            <summary>
+            Gets or sets the duration of the animation.
+            </summary>
+            <value>
+            The duration of the animation.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.Collaspable">
+            <summary>
+            Gets or sets a value indicating whether this
+            <see cref="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions"/> can have all panels
+            collapsed.
+            </summary>
+            <value>
+              <c>true</c> if collaspable; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.Event">
+            <summary>
+            Gets or sets the event that triggers the panel. Default is 'click'.
+            </summary>
+            <value>
+            The event.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent">
+            <summary>
+            DatePickerComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
@@ -341,9 +470,118 @@
             <param name="selector">
             The input element linked to the calendar.
             </param>
-            <param name="calendarContainerSelector">
-            The element that contains the calendar.
+            <param name="datePickerComponentOptions">
+            The datepciker component options.
             </param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.IsPopup">
+            <summary>
+            Gets or sets a value indicating whether this instance is popup.
+            </summary>
+            <value>
+              <c>true</c> if this instance is popup; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.Load">
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetDate">
+            <summary>
+            Gets the date.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.SetDate(System.DateTime)">
+            <summary>
+            Sets the date.
+            </summary>
+            <param name="dateTime">The date time.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.IsDisabled">
+            <summary>
+            Determines whether this instance is disabled.
+            </summary>
+            <returns>
+              <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetMinAndMaxDates">
+            <summary>
+            Gets the min and max date times.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetOptions">
+            <summary>
+            Gets the options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetData">
+            <summary>
+            Gets the data object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetDay">
+            <summary>
+            Gets the day. Returns -1 if no day has been selected.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions">
+            <summary>
+            DatePickerComponentOptions.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions.AnimationDuration">
+            <summary>
+            Gets or sets the duration of the animation.
+            </summary>
+            <value>
+            The duration of the animation.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions.DateFormat">
+            <summary>
+            Gets or sets the date format used by the DatePicker.
+            </summary>
+            <value>
+            The date format.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase">
+            <summary>
+            Base class for JQuery Widgets.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase.WaitForInitialization(System.String,System.TimeSpan)">
+            <summary>
+            Waits for the <c>dataName</c> to be defined on the
+            $(WrappedElement).data() object. Assumes that <c>WrappedElement</c>
+            has been assigned to.
+            </summary>
+            <param name="dataName">
+            Name of the property on the data object.
+            </param>
+            <param name="timeout">The timeout.</param>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent">
             <summary>
@@ -606,13 +844,12 @@
             Represents a kendo multi-select component.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration)">
             <summary>
             Ctor.
             </summary>
             <param name="selector"></param>
             <param name="driver"></param>
-            <param name="animationData"></param>
             <param name="configuration"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsExpanded">
@@ -672,11 +909,25 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration" />
         </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration.AnimationOptions">
+            <summary>
+            Gets or sets the animation options.
+            </summary>
+            <value>
+            The animation options.
+            </value>
+        </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration.AutoClose">
             <summary>
             Gets or sets a value indicating whether the widget will
             automatically close after selecting an item.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent">
             <summary>
@@ -823,46 +1074,6 @@
             Sets the <c>PageLoadingIndicator</c> to '#ajaxBusy'.
             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1">
-            <summary>
-            Represents a component that can have an animation (css or js
-            animation/transition).
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationStart(`0)">
-            <summary>
-            Waits for an animation to start.
-            </summary>
-            <param name="animationData"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationEnd(`0)">
-            <summary>
-            Waits for an animation to end.
-            </summary>
-            <param name="animationData"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.IsCurrentlyAnimating(`0)">
-            <summary>
-            Checks if an animation is currently running.
-            </summary>
-            <param name="animationData"></param>
-            <returns></returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions">
-            <summary>
-            Base interface for IAnimatableComponent generic argument.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationDuration">
-            <summary>
-            The duration of the animation.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationsEnabled">
-            <summary>
-            Used to check if animations are enabled for the element.
-            </summary>
-        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem">
             <summary>
             GroupedMenuItem.
@@ -925,6 +1136,13 @@
             <summary>
             Gets all menu items.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
             <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByText(System.String,System.StringComparison)">
@@ -1038,6 +1256,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem">
             <summary>
             Menu item of a TinyMCEComponent.
@@ -1147,12 +1373,21 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent"/> class.
             </summary>
-            <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
+            <param name="pageObjectFactory"></param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent">
             <summary>
@@ -1306,12 +1541,13 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent"/> class.
             </summary>
-            <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByClass(System.String,System.StringComparison)">
             <summary>
@@ -1328,6 +1564,14 @@
             </summary>
             <param name="itemName">Name of the item.</param>
             <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
@@ -2962,6 +3206,28 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.jsonFormatterCallback">
+             <summary>
+               Looks up a localized string similar to function jsonFormatter (key, value) {
+            
+                // Ignore null/undefined values.
+                if (value === null || value === undefined) {
+                    return undefined;
+                }
+            
+                var typeOfValue = typeof value;
+            
+                // Only include strings, numbers, and booleans.
+                if (typeOfValue === &quot;string&quot;
+                    || typeOfValue === &quot;number&quot;
+                    || typeOfValue === &quot;boolean&quot;) {
+                    return value;
+                } else {
+                    return undefined;
+                }
+            }.
+             </summary>
+        </member>
         <member name="P:ApertureLabs.Selenium.Properties.Resources.tinyMCEUtilities">
              <summary>
                Looks up a localized string similar to var tinyMCEUtilities = (function() {
@@ -2981,7 +3247,7 @@
             
             		var editor = null;
             
-            		for  [rest of string was truncated]&quot;;.
+            		for [rest of string was truncated]&quot;;.
              </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.Properties.Resources.waitForEvent">
@@ -2989,23 +3255,21 @@
                Looks up a localized string similar to var eventName = arguments[0];
             var callback = arguments[arguments.length - 1];
             
-            if (eventName === null
-                || eventName === undefined
-                || typeof eventName !== &quot;string&quot;) {
+            if (eventName == null || typeof eventName !== &quot;string&quot;) {
                 throw new Error(&quot;The eventName was null.&quot;);
+            } else if (callback == null) {
+                throw new Error(&quot;The callback was null.&quot;);
             }
             
             function handler(evt) {
-                return JSON.stringify(
+                document.removeEventListener(eventName, handler);
+            
+                var json = JSON.stringify(
                     evt,
                     function (key, value) {
             
                         // Ignore null/undefined values.
-                        if (value === null || value === undefined) {
-                            return undefined;
-                        }
-            
-                        var typeO [rest of string was truncated]&quot;;.
+                        if (value === nu [rest of string was truncated]&quot;;.
              </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">

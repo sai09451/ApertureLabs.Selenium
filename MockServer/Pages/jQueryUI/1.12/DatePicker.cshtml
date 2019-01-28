@@ -1,5 +1,15 @@
 ﻿@page
 @model MockServer.Pages.jQueryUI._1._12.DatePickerModel
 @{
-    Layout = "";
+    Layout = "~/Pages/jQueryUI/1.12/Shared/_Layout.cshtml";
 }
+<div id="datepicker1"></div>
+<hr />
+<input id="datepicker2" type="text" />
+
+<script>
+    $(function () {
+        $("#datepicker1").datepicker();
+        $("#datepicker2").datepicker()
+    });
+</script>

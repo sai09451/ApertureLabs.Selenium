@@ -168,8 +168,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             if (TinyMCEContainerElement.FindElements(statusbarComponentSelector).Any())
             {
                 Statusbar = pageObjectFactory.PrepareComponent(
-                    new StatusbarComponent(WrappedDriver,
-                        statusbarComponentSelector));
+                    new StatusbarComponent(statusbarComponentSelector,
+                        pageObjectFactory,
+                        WrappedDriver));
             }
             else
             {

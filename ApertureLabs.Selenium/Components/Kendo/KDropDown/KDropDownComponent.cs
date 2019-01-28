@@ -1,19 +1,17 @@
-﻿using ApertureLabs.Selenium.Components.Shared.Animatable;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 {
     /// <summary>
     /// Kendo dropdown widget.
     /// </summary>
-    public class KDropDownComponent : BaseKendoComponent,
-        IAnimatableComponent<KDropDownAnimationOptions>
+    public class KDropDownComponent : BaseKendoComponent
     {
         #region Fields
 
@@ -182,7 +180,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         }
 
         /// <inheritdoc/>
-        public virtual void WaitForAnimationStart(
+        protected virtual void WaitForAnimationStart(
             KDropDownAnimationOptions animationData = null)
         {
             var data = animationData ?? this.animationData;
@@ -195,7 +193,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         }
 
         /// <inheritdoc/>
-        public virtual void WaitForAnimationEnd(
+        protected virtual void WaitForAnimationEnd(
             KDropDownAnimationOptions animationData = null)
         {
             var data = animationData ?? this.animationData;
@@ -208,7 +206,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         }
 
         /// <inheritdoc/>
-        public virtual bool IsCurrentlyAnimating(
+        protected virtual bool IsCurrentlyAnimating(
             KDropDownAnimationOptions animationData = null)
         {
             throw new NotImplementedException();

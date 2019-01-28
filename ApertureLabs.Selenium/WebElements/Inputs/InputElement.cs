@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -63,7 +64,7 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         /// <returns></returns>
         public virtual T GetValue<T>() where T:IConvertible
         {
-            var value = WrappedElement.GetProperty("value");
+            var value = WrappedElement.GetElementProperty("value");
 
             try
             {
@@ -87,7 +88,7 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
             if (converter == null)
                 throw new ArgumentNullException(nameof(converter));
 
-            var value = WrappedElement.GetProperty("value");
+            var value = WrappedElement.GetElementProperty("value");
 
             try
             {

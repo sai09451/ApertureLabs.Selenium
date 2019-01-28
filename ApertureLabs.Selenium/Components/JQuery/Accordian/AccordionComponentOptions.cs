@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.Components.JQuery.Accordian
 {
@@ -6,7 +7,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
     /// Options for configuring the AccordianComponent and how Selenium
     /// interacts with it.
     /// </summary>
-    public class AccordianComponentOptions
+    public class AccordionComponentOptions
     {
         /// <summary>
         /// Gets or sets the accordian header class.
@@ -33,8 +34,16 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         public By AccordianContentClass { get; set; }
 
         /// <summary>
+        /// Gets or sets the duration of the animation.
+        /// </summary>
+        /// <value>
+        /// The duration of the animation.
+        /// </value>
+        public TimeSpan AnimationDuration { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this
-        /// <see cref="AccordianComponentOptions"/> can have all panels
+        /// <see cref="AccordionComponentOptions"/> can have all panels
         /// collapsed.
         /// </summary>
         /// <value>
@@ -54,13 +63,14 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// Defaults this instance.
         /// </summary>
         /// <returns></returns>
-        public static AccordianComponentOptions Default()
+        public static AccordionComponentOptions Default()
         {
-            return new AccordianComponentOptions
+            return new AccordionComponentOptions
             {
                 AccordianHeaderClass = By.CssSelector(".ui-corner-top"),
                 AccordianHeaderCollapsedClass = By.CssSelector(".ui-corner-all"),
                 AccordianContentClass = By.CssSelector(".ui-corner-bottom"),
+                AnimationDuration = TimeSpan.FromSeconds(2),
                 Collaspable = false,
                 Event = "click"
             };

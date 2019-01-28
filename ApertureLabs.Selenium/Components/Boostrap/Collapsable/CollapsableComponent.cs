@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ApertureLabs.Selenium.Components.Shared.Animatable;
 using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
@@ -11,8 +10,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
     /// <summary>
     /// Represents a bootstrap collapsable.
     /// </summary>
-    public class CollapsableComponent : PageComponent,
-        IAnimatableComponent<CollapsableOptions>
+    public class CollapsableComponent : PageComponent
     {
         #region Fields
 
@@ -228,19 +226,19 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         }
 
         /// <inheritdoc/>
-        public virtual void WaitForAnimationStart(CollapsableOptions animationData = null)
+        protected virtual void WaitForAnimationStart(CollapsableOptions animationData = null)
         {
             WrappedElement.WaitForEvent(EventShowCollapse);
         }
 
         /// <inheritdoc/>
-        public virtual void WaitForAnimationEnd(CollapsableOptions animationData = null)
+        protected virtual void WaitForAnimationEnd(CollapsableOptions animationData = null)
         {
             WrappedElement.WaitForEvent(EventHiddenCollapse);
         }
 
         /// <inheritdoc/>
-        public virtual bool IsCurrentlyAnimating(CollapsableOptions animationData = null)
+        protected virtual bool IsCurrentlyAnimating(CollapsableOptions animationData = null)
         {
             var opts = animationData ?? this.animationData;
 

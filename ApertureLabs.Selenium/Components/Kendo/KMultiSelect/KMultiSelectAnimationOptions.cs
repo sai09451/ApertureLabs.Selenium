@@ -1,12 +1,11 @@
 ﻿using System;
-using ApertureLabs.Selenium.Components.Shared.Animatable;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
 {
     /// <summary>
     /// Animation options for the KMultiSelectComponent.
     /// </summary>
-    public class KMultiSelectAnimationOptions : IAnimatableOptions
+    public class KMultiSelectAnimationOptions
     {
         /// <inheritDoc/>
         public TimeSpan AnimationDuration { get; private set; }

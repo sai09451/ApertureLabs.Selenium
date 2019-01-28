@@ -71,6 +71,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                     TinyMCEOptions.Default()));
         }
 
+        [TestCleanup]
         public void TestCleanup()
         {
             driver?.Dispose();
