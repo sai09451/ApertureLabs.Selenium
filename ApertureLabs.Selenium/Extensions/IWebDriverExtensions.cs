@@ -5,7 +5,9 @@ using System.Linq;
 using ApertureLabs.Selenium.Properties;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Html5;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 
@@ -325,6 +327,32 @@ namespace ApertureLabs.Selenium.Extensions
             return (string)driver
                 .JavaScriptExecutor()
                 .ExecuteScript(script);
+        }
+
+        /// <summary>
+        /// Capabilities object for the driver. Returns null if not implemented
+        /// by the driver.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <returns></returns>
+        public static ICapabilities Capabilities(this IWebDriver driver)
+        {
+            var capabilitesDriver = driver as IHasCapabilities;
+
+            return capabilitesDriver?.Capabilities;
+        }
+
+
+        /// <summary>
+        /// Returns null if the driver doesn't implement IFileDetector.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <returns></returns>
+        public static IFileDetector AllowsFileDetection(this IWebDriver driver)
+        {
+            var allowsFileDetection = driver as IAllowsFileDetection;
+
+            return allowsFileDetection?.FileDetector;
         }
     }
 }

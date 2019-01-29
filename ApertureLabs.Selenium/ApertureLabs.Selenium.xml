@@ -1064,16 +1064,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions">
-            <summary>
-            The default options for kendo datasources used in NopCommerce.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions.#ctor">
-            <summary>
-            Sets the <c>PageLoadingIndicator</c> to '#ajaxBusy'.
-            </summary>
-        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem">
             <summary>
             GroupedMenuItem.
@@ -2236,6 +2226,21 @@
             The highlighted text content (no element tags but does
             include new lines).
             </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.Capabilities(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Capabilities object for the driver. Returns null if not implemented
+            by the driver.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.AllowsFileDetection(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Returns null if the driver doesn't implement IFileDetector.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
             <summary>

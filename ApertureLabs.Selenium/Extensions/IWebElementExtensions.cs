@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Internal;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Collections.Generic;
@@ -279,7 +280,21 @@ namespace ApertureLabs.Selenium.Extensions
             var value = default(string);
             var driver = element.GetDriver();
 
-            if (driver is ChromeDriver)
+            var capabilities = driver.Capabilities();
+            var isChrome = false;
+
+            if (capabilities != null)
+            {
+                var browserName = (string)capabilities.GetCapability(
+                    CapabilityType.BrowserName);
+
+                if (browserName == "chrome")
+                {
+                    isChrome = true;
+                }
+            }
+
+            if (isChrome)
             {
                 // Use js to get element property.
                 var script =
