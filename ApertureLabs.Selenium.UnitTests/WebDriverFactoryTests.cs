@@ -5,30 +5,42 @@ namespace ApertureLabs.Selenium
     [TestClass]
     public class WebDriverFactoryTests
     {
-        private WebDriverFactory WebDriverFactory;
+        #region Fields
+
+        private static WebDriverFactory WebDriverFactory;
+
         public TestContext TestContext { get; set; }
 
-        [TestCleanup]
-        public void TearDown()
+        #endregion
+
+        #region Setup/Teardown
+
+        [ClassInitialize]
+        public static void Setup(TestContext testContext)
+        {
+            WebDriverFactory = new WebDriverFactory();
+        }
+
+        [ClassCleanup]
+        public static void TearDown()
         {
             WebDriverFactory?.Dispose();
         }
 
+        #endregion
+
+        [Description("Verifies no execptions are thrown.")]
         [TestMethod]
         public void WebDriverFactoryTest()
-        {
-            WebDriverFactory = new WebDriverFactory();
-        }
+        { }
 
         [DataTestMethod]
-        [DataRow(MajorWebDriver.Chrome)]
-        //[DataRow(MajorWebDriver.Firefox)]
+        //[DataRow(MajorWebDriver.Chrome)]
+        [DataRow(MajorWebDriver.Firefox)]
         //[DataRow(MajorWebDriver.Edge)]
         //[DataRow(MajorWebDriver.InternetExplorer)]
         public void GetWebDriver(MajorWebDriver majorWebDriver)
         {
-            WebDriverFactory = new WebDriverFactory();
-
             var driver = WebDriverFactory.CreateDriver(
                 majorWebDriver,
                 WindowSize.DefaultDesktop);

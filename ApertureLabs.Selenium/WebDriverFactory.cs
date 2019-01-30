@@ -20,32 +20,6 @@ using WebDriverManager.DriverConfigs.Impl;
 namespace ApertureLabs.Selenium
 {
     /// <summary>
-    /// Enum of common web drivers.
-    /// </summary>
-    public enum MajorWebDriver
-    {
-        /// <summary>
-        /// Chrome.
-        /// </summary>
-        Chrome,
-
-        /// <summary>
-        /// Edge.
-        /// </summary>
-        Edge,
-
-        /// <summary>
-        /// Firefox.
-        /// </summary>
-        Firefox,
-
-        /// <summary>
-        /// Internet explorer.
-        /// </summary>
-        InternetExplorer
-    }
-
-    /// <summary>
     /// Responsible for creation and disposing of the various webdrivers.
     /// Searches the current directory for the location of the drivers.
     /// </summary>
@@ -53,8 +27,7 @@ namespace ApertureLabs.Selenium
     {
         #region Fields
 
-        private static ManualResetEvent Signal = new ManualResetEvent(false);
-
+        private readonly AutoResetEvent signal = new AutoResetEvent(false);
         private readonly IList<string> hubLogs;
         private readonly IList<string> nodeLogs;
         private readonly Process hubProcess;
@@ -75,6 +48,7 @@ namespace ApertureLabs.Selenium
         /// </summary>
         public WebDriverFactory()
         {
+            signal = new AutoResetEvent(false);
             disposedValue = false;
             driverManager = new DriverManager();
             hubLogs = new List<string>();
@@ -106,7 +80,7 @@ namespace ApertureLabs.Selenium
             hubProcess.BeginErrorReadLine();
 
             // Wait for hub to start.
-            Signal.WaitOne(TimeSpan.FromSeconds(30));
+            signal.WaitOne(TimeSpan.FromSeconds(30));
             hubProcess.ErrorDataReceived -= HubProcess_OutputDataReceived;
 
             if (hubProcess.HasExited)
@@ -133,7 +107,7 @@ namespace ApertureLabs.Selenium
             nodeProcess.BeginErrorReadLine();
 
             // Wait for the node to start.
-            Signal.WaitOne(TimeSpan.FromSeconds(30));
+            signal.WaitOne(TimeSpan.FromSeconds(30));
             nodeProcess.ErrorDataReceived -= LocalNodeProcess_OutputDataReceived;
 
             if (nodeProcess.HasExited)
@@ -141,6 +115,8 @@ namespace ApertureLabs.Selenium
                 Dispose();
                 throw new Exception("Failed to start the node process.");
             }
+
+            signal.Dispose();
         }
 
         /// <summary>
@@ -179,7 +155,7 @@ namespace ApertureLabs.Selenium
 
                 nodeRegisterUrl = new Uri(match.Groups[1].Value);
 
-                Signal.Set();
+                signal.Set();
             }
         }
 
@@ -196,7 +172,7 @@ namespace ApertureLabs.Selenium
 
             if (e.Data?.Contains("The node is registered to the hub and ready to use") ?? false)
             {
-                Signal.Set();
+                signal.Set();
             }
         }
 
@@ -362,6 +338,11 @@ namespace ApertureLabs.Selenium
             return (x, y, z);
         }
 
+        private bool IsLocalHubRunning()
+        {
+            return false;
+        }
+
         #region IDisposable Support
         /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
@@ -370,10 +351,10 @@ namespace ApertureLabs.Selenium
             {
                 if (disposing)
                 {
-                    hubProcess?.Close();
+                    hubProcess?.Kill();
                     hubProcess?.WaitForExit(30 * 1000);
                     hubProcess?.Dispose();
-                    nodeProcess?.Close();
+                    nodeProcess?.Kill();
                     nodeProcess?.WaitForExit(30 * 1000);
                     nodeProcess?.Dispose();
 

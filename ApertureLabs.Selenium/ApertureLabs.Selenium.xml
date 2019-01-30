@@ -2242,6 +2242,13 @@
             <param name="driver">The driver.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.SessionId(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Returns the session id.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
             <summary>
             Extensions for IWebElement.
@@ -2834,6 +2841,31 @@
             Gets or sets the timeout.
             </summary>
         </member>
+        <member name="T:ApertureLabs.Selenium.MajorWebDriver">
+            <summary>
+            Enum of common web drivers.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Chrome">
+            <summary>
+            Chrome.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Edge">
+            <summary>
+            Edge.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Firefox">
+            <summary>
+            Firefox.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.InternetExplorer">
+            <summary>
+            Internet explorer.
+            </summary>
+        </member>
         <member name="T:ApertureLabs.Selenium.Models.NopModels.INopAddress">
             <summary>
             Respsents an address according to NopCommerce.
@@ -3403,31 +3435,6 @@
             in a string. Ex: (blah x4444 blah blah) text will return 4444.
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.MajorWebDriver">
-            <summary>
-            Enum of common web drivers.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Chrome">
-            <summary>
-            Chrome.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Edge">
-            <summary>
-            Edge.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Firefox">
-            <summary>
-            Firefox.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.MajorWebDriver.InternetExplorer">
-            <summary>
-            Internet explorer.
-            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.WebDriverFactory">
             <summary>

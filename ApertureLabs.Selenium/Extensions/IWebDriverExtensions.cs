@@ -354,5 +354,17 @@ namespace ApertureLabs.Selenium.Extensions
 
             return allowsFileDetection?.FileDetector;
         }
+
+        /// <summary>
+        /// Returns the session id.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <returns></returns>
+        public static SessionId SessionId(this IWebDriver driver)
+        {
+            var asRemote = driver as RemoteWebDriver;
+
+            return asRemote?.SessionId;
+        }
     }
 }
