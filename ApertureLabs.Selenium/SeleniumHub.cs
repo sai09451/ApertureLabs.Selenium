@@ -8,28 +8,14 @@ using Newtonsoft.Json.Serialization;
 
 namespace ApertureLabs.Selenium
 {
-    interface ISeleniumSession
+    public interface ISeleniumSession
     { }
 
-    class SeleniumHubOptions
-    {
-        public bool? AlwaysCreateHub { get; set; }
-        public int? PortNumber { get; set; }
-        public bool ShutDownHubIfRemote { get; set; }
-        public bool? UseLocalHubIfAlreadyRunning { get; set; }
-
-        public static SeleniumHubOptions Default()
-        {
-            return new SeleniumHubOptions
-            {
-                AlwaysCreateHub = false,
-                PortNumber = 4444,
-                UseLocalHubIfAlreadyRunning = true
-            };
-        }
-    }
-
-    class SeleniumHub : IDisposable
+    /// <summary>
+    /// SeleniumHub.
+    /// </summary>
+    /// <seealso cref="System.IDisposable" />
+    public class SeleniumHub : IDisposable
     {
         #region Fields
 
