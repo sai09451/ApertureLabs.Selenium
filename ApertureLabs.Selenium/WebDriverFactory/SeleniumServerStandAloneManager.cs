@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -12,7 +13,7 @@ namespace ApertureLabs.Selenium
     /// Base class which adds protected methods for using the
     /// selenium-server-standalone{x}.{y}.{z}.jar.
     /// </summary>
-    public class SeleniumServerStandAloneHelper
+    public class SeleniumServerStandAloneManager
     {
         #region Fields
 
@@ -23,9 +24,9 @@ namespace ApertureLabs.Selenium
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeleniumServerStandAloneHelper"/> class.
+        /// Initializes a new instance of the <see cref="SeleniumServerStandAloneManager"/> class.
         /// </summary>
-        public SeleniumServerStandAloneHelper()
+        public SeleniumServerStandAloneManager()
         {
             onlineVersionList = new Uri("http://selenium-release.storage.googleapis.com/");
         }
@@ -153,6 +154,23 @@ namespace ApertureLabs.Selenium
         }
 
         /// <summary>
+        /// Gets the local file name of version.
+        /// </summary>
+        /// <param name="version">The version.</param>
+        /// <returns></returns>
+        public string GetLocalFileNameOfVersion((int x, int y, int z)? version = null)
+        {
+            var _version = version
+                ?? GetLatestLocalStandalone()
+                ?? throw new FileNotFoundException();
+
+            var fileName = VersionToName(_version);
+            var fileInfo = new FileInfo(fileName);
+
+            return fileInfo.FullName;
+        }
+
+        /// <summary>
         /// Determines whether there are any standalone jar files available
         /// locally.
         /// </summary>
@@ -199,9 +217,9 @@ namespace ApertureLabs.Selenium
         private class KeyComparer : IComparer<(int X, int Y, int Z)>,
             IComparer<string>
         {
-            private readonly SeleniumServerStandAloneHelper parent;
+            private readonly SeleniumServerStandAloneManager parent;
 
-            public KeyComparer(SeleniumServerStandAloneHelper parent)
+            public KeyComparer(SeleniumServerStandAloneManager parent)
             {
                 this.parent = parent;
             }

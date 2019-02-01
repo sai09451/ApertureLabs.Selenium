@@ -73,6 +73,7 @@ namespace ApertureLabs.Selenium
             else
             {
                 result.DateTime = DateTime.MinValue;
+                result.IsException = true;
                 result.Message = logEntry;
             }
 

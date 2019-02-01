@@ -2458,53 +2458,6 @@
             <param name="wait"></param>
             <param name="condition"></param>
         </member>
-        <member name="T:ApertureLabs.Selenium.HubStatus">
-            <summary>
-            Implementation of IHubStatus.
-            </summary>
-            <seealso cref="T:ApertureLabs.Selenium.IHubStatus" />
-        </member>
-        <member name="P:ApertureLabs.Selenium.HubStatus.Ready">
-            <summary>
-            Gets or sets a value indicating whether this <see cref="T:ApertureLabs.Selenium.IHubStatus" /> is ready.
-            </summary>
-            <value>
-              <c>true</c> if ready; otherwise, <c>false</c>.
-            </value>
-            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state" />
-        </member>
-        <member name="P:ApertureLabs.Selenium.HubStatus.Message">
-            <summary>
-            Gets or sets the message.
-            </summary>
-            <value>
-            The message.
-            </value>
-        </member>
-        <member name="T:ApertureLabs.Selenium.IHubStatus">
-            <summary>
-            Status returns information about whether a remote end is in a state
-            in which it can create new sessions, but may additionally include arbitrary meta information that is specific to the implementation.
-            </summary>
-            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-status"/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.IHubStatus.Ready">
-            <summary>
-            Gets or sets a value indicating whether this <see cref="T:ApertureLabs.Selenium.IHubStatus"/> is ready.
-            </summary>
-            <value>
-              <c>true</c> if ready; otherwise, <c>false</c>.
-            </value>
-            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state"/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.IHubStatus.Message">
-            <summary>
-            Gets or sets the message.
-            </summary>
-            <value>
-            The message.
-            </value>
-        </member>
         <member name="T:ApertureLabs.Selenium.IPageObjectFactory">
             <summary>
             PageObjectFactory.
@@ -3356,151 +3309,6 @@
                         if (value === nu [rest of string was truncated]&quot;;.
              </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumHub.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumHub"/> class.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumHub.#ctor(ApertureLabs.Selenium.SeleniumHubOptions)">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumHub"/> class.
-            </summary>
-            <param name="seleniumHubOptions">The selenium hub options.</param>
-        </member>
-        <member name="T:ApertureLabs.Selenium.SeleniumLogEntry">
-            <summary>
-            An entry outputted by the selenium-server-standalone.jar.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.DateTime">
-            <summary>
-            Gets or sets the date time.
-            </summary>
-            <value>
-            The date time.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.Message">
-            <summary>
-            Gets or sets the message.
-            </summary>
-            <value>
-            The message.
-            </value>
-        </member>
-        <member name="T:ApertureLabs.Selenium.SeleniumNode">
-            <summary>
-            Used for creating selenium nodes.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumNode.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumNode"/> class.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumNode.#ctor(ApertureLabs.Selenium.SeleniumNodeOptions)">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumNode"/> class.
-            </summary>
-            <param name="seleniumNodeOptions">The selenium node options.</param>
-            <exception cref="T:System.ArgumentNullException">seleniumNodeOptions</exception>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumNode.Start">
-            <summary>
-            Starts the node process.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumNode.Stop">
-            <summary>
-            Stops this instance.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumNode.IsRunning">
-            <summary>
-            Determines whether this instance is running.
-            </summary>
-            <returns>
-              <c>true</c> if this instance is running; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.SeleniumNodeOptions">
-            <summary>
-            Options for configuring a <c>SeleniumNode</c>.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Hub">
-            <summary>
-            The url that will be used to post the registration request. This
-            option takes precedence over -hubHost and -hubPort options.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.HubHost">
-            <summary>
-            IP or hostname : the host address of the hub we're attempting to
-            register with. If -hub is specified the -hubHost is determined from
-            it.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.HubPort">
-            <summary>
-            The port of the hub we're attempting to register with. If -hub is
-            specified the -hubPort is determined from it.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumNodeOptions.Default">
-            <summary>
-            Defaults this instance.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.SeleniumServerStandAloneHelper">
-            <summary>
-            Base class which adds protected methods for using the
-            selenium-server-standalone{x}.{y}.{z}.jar.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneHelper.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumServerStandAloneHelper"/> class.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneHelper.GetOnlineVersions">
-            <summary>
-            Retrieves all online versions of the standalone jar file. They're
-            ordered the newest version as first and the oldest as last.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneHelper.GetLocalVersions">
-            <summary>
-            Retrieves all local versions of the standalone jar file.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneHelper.InstallVersion(System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Int32}})">
-            <summary>
-            Installs the version of the standalone jar file.
-            </summary>
-            <param name="version">
-            The version to install. If null then the latest version will be
-            installed.
-            </param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneHelper.GetLatestLocalStandalone">
-            <summary>
-            Gets the latest local standalone version.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneHelper.HasLocalStandaloneJarFile">
-            <summary>
-            Determines whether there are any standalone jar files available
-            locally.
-            </summary>
-            <returns>
-              <c>true</c> if [has local standalone jar file]; otherwise, <c>false</c>.
-            </returns>
-        </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">
             <summary>
             Used for switching between tabs.
@@ -3628,6 +3436,664 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.HubStatus">
+            <summary>
+            Implementation of IHubStatus.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.IHubStatus" />
+        </member>
+        <member name="P:ApertureLabs.Selenium.HubStatus.Ready">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:ApertureLabs.Selenium.IHubStatus" /> is ready.
+            </summary>
+            <value>
+              <c>true</c> if ready; otherwise, <c>false</c>.
+            </value>
+            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state" />
+        </member>
+        <member name="P:ApertureLabs.Selenium.HubStatus.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.IHubStatus">
+            <summary>
+            Status returns information about whether a remote end is in a state
+            in which it can create new sessions, but may additionally include arbitrary meta information that is specific to the implementation.
+            </summary>
+            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-status"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.IHubStatus.Ready">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:ApertureLabs.Selenium.IHubStatus"/> is ready.
+            </summary>
+            <value>
+              <c>true</c> if ready; otherwise, <c>false</c>.
+            </value>
+            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.IHubStatus.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumHub">
+            <summary>
+            SeleniumHub.
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumHub"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.#ctor(ApertureLabs.Selenium.SeleniumHubOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumHub"/> class.
+            </summary>
+            <param name="seleniumHubOptions">The selenium hub options.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHub.Uri">
+            <summary>
+            Gets the URI.
+            </summary>
+            <value>
+            The URI.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHub.NodeRegisterUrl">
+            <summary>
+            Gets the node register URL.
+            </summary>
+            <value>
+            The node register URL.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.RegisterNode(ApertureLabs.Selenium.SeleniumNodeOptions)">
+            <summary>
+            Registers the node. Will over-write the
+            <c>SeleniumNodeOptions.Hub</c> property with the hubs
+            'register node' url.
+            </summary>
+            <param name="seleniumNodeOptions">The selenium node.</param>
+            <returns>The created selenium node.</returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.UnregisterNode(ApertureLabs.Selenium.SeleniumNode)">
+            <summary>
+            Uns the register node.
+            </summary>
+            <param name="seleniumNode">The selenium node.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetRegisteredNodes">
+            <summary>
+            Gets the registered nodes.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetSessions">
+            <summary>
+            Gets the sessions.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetStatus">
+            <summary>
+            Gets the status.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Stop">
+            <summary>
+            Shuts down the hub and all registered nodes.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Start">
+            <summary>
+            Starts this instance.
+            </summary>
+            <exception cref="T:System.Exception">Failed to start the hub process.</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetCommandLineArguments">
+            <summary>
+            Creates the command line arguments.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetLogs">
+            <summary>
+            Gets the logs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing,
+            releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumHubOptions">
+            <summary>
+            Options for the selenium hub.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.AlwaysCreateHub">
+            <summary>
+            Gets or sets the always create hub.
+            </summary>
+            <value>
+            The always create hub.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.Host">
+            <summary>
+            IP or hostname : usually determined automatically. Most commonly
+            useful in exotic network configurations(e.g.network with VPN).
+            </summary>
+            <value>
+            The host.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.PortNumber">
+            <summary>
+            Gets or sets the port number.
+            </summary>
+            <value>
+            The port number.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.ShutDownHubIfRemote">
+            <summary>
+            Gets or sets whether to shut down the hub if it's a remote process
+            when the hub is disposed.
+            </summary>
+            <value>
+            The shut down hub if remote.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.UseLocalHubIfAlreadyRunning">
+            <summary>
+            Gets or sets the use local hub if already running.
+            </summary>
+            <value>
+            The use local hub if already running.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.Servlets">
+            <summary>
+            Gets or sets the servlets.
+            </summary>
+            <value>
+            The servlets.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHubOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumLogEntry">
+            <summary>
+            An entry outputted by the selenium-server-standalone.jar.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.Action">
+            <summary>
+            Gets or sets the action.
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.DateTime">
+            <summary>
+            Gets or sets the date time.
+            </summary>
+            <value>
+            The date time.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.IsException">
+            <summary>
+            Gets or sets a value indicating whether this instance is exception.
+            </summary>
+            <value>
+              <c>true</c> if this instance is exception; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.LogType">
+            <summary>
+            Gets or sets the type of the log.
+            </summary>
+            <value>
+            The type of the log.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumLogEntry.ParseString(System.String)">
+            <summary>
+            Parses the string.
+            </summary>
+            <param name="logEntry">The log entry.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumNode">
+            <summary>
+            Used for creating selenium nodes.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumNode"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.#ctor(ApertureLabs.Selenium.SeleniumNodeOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumNode"/> class.
+            </summary>
+            <param name="seleniumNodeOptions">The selenium node options.</param>
+            <exception cref="T:System.ArgumentNullException">seleniumNodeOptions</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Start">
+            <summary>
+            Starts the node process.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Stop">
+            <summary>
+            Stops this instance.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.GetLogs">
+            <summary>
+            Gets the logs.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.GetCommandLineArguments">
+            <summary>
+            Creates the command line arguments.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumNodeOptions">
+            <summary>
+            Options for configuring a <c>SeleniumNode</c>.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.BrowserTimeout">
+            <summary>
+            In seconds : number of seconds a browser session is allowed to
+            hang while a WebDriver command is running
+            (example: driver.get(url)). If the timeout is reached while a
+            WebDriver command is still processing, the session will
+            quit.Minimum value is 60. An unspecified, zero, or negative value
+            means wait indefinitely.If a node does not specify it, the hub
+            value will be used.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Capabilities">
+            <summary>
+            Comma separated Capability values.
+            </summary>
+            <example>
+            Example: -capabilities
+            browserName=firefox,platform=linux -capabilities
+            browserName = chrome, platform = linux 
+            </example>
+            <see cref="!:https://github.com/SeleniumHQ/selenium/blob/a61cc22fd053ea827cf39aa4065ae4912bb6af2a/java/server/src/org/openqa/grid/common/defaults/DefaultNodeWebDriver.json"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.CleanUpCycle">
+            <summary>
+            In ms : specifies how often the hub will poll running proxies
+            for timed-out (i.e.hung) threads.Must also specify "timeout" option
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.DownPollingLimit">
+            <summary>
+            Node is marked as "down" if the node hasn't responded after the
+            number of checks specified in [downPollingLimit].
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.EnablePlatformVerification">
+            <summary>
+            Whether or not to drop capabilities that does not belong to the
+            current platform family.Defaults to true.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Host">
+            <summary>
+            IP or hostname : usually determined automatically. Most commonly
+            useful in exotic network configurations(e.g.network with VPN)
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Hub">
+            <summary>
+            The url that will be used to post the registration request. This
+            option takes precedence over -hubHost and -hubPort options.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.HubHost">
+            <summary>
+            IP or hostname : the host address of the hub we're attempting to
+            register with. If -hub is specified the -hubHost is determined from
+            it.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.HubPort">
+            <summary>
+            The port of the hub we're attempting to register with. If -hub is
+            specified the -hubPort is determined from it.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Id">
+            <summary>
+            Optional unique identifier of the remoteHost, when not specified.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.MaxSession">
+            <summary>
+            Max number of tests that can run at the same time on the node,
+            irrespective of the browser used
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.NodeConfig">
+            <summary>
+            Filename : JSON configuration file for the node. Overrides default
+            values
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.NodePolling">
+            <summary>
+            In ms : specifies how often the hub will poll to see if the node is
+            still responding.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.NodeStatusCheckTimeout">
+            <summary>
+            In ms : connection/socket timeout, used for node "nodePolling"
+            check.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Port">
+            <summary>
+            The port number the server will use.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Proxy">
+            <summary>
+            The class used to represent the node proxy. Default is
+            [org.openqa.grid.selenium.proxy.DefaultRemoteProxy].
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Register">
+            <summary>
+            If specified, node will attempt to re-register itself automatically
+            with its known grid hub if the hub becomes unavailable.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.RegisterCycle">
+            <summary>
+            In ms : specifies how often the node will try to register itself
+            again. Allows administrator to restart the hub without restarting
+            (or risk orphaning) registered nodes. Must be specified with the
+            "-register" option.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.RemoteHost">
+            <summary>
+            URL: Address to report to the hub. Used to override default
+            (http://&lt;host&gt;:&lt;port&gt;).
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.SessionTimeout">
+            <summary>
+            In seconds : Specifies the timeout before the server automatically
+            kills a session that hasn't had any activity in the last X seconds.
+            The test slot will then be released for another test to use. This
+            is typically used to take care of client crashes. For grid hub/node
+            roles, cleanUpCycle must also be set. If a node does not specify
+            it, the hub value will be used.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.UnregisterIfStillDownAfter">
+            <summary>
+            In ms : if the node remains down for more than
+            [unregisterIfStillDownAfter] ms, it will stop attempting to
+            re-register from the hub.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNodeOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumServerStandAloneManager">
+            <summary>
+            Base class which adds protected methods for using the
+            selenium-server-standalone{x}.{y}.{z}.jar.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumServerStandAloneManager"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetOnlineVersions">
+            <summary>
+            Retrieves all online versions of the standalone jar file. They're
+            ordered the newest version as first and the oldest as last.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetLocalVersions">
+            <summary>
+            Retrieves all local versions of the standalone jar file.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.InstallVersion(System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Int32}})">
+            <summary>
+            Installs the version of the standalone jar file.
+            </summary>
+            <param name="version">
+            The version to install. If null then the latest version will be
+            installed.
+            </param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetLatestLocalStandalone">
+            <summary>
+            Gets the latest local standalone version.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetLocalFileNameOfVersion(System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Int32}})">
+            <summary>
+            Gets the local file name of version.
+            </summary>
+            <param name="version">The version.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.HasLocalStandaloneJarFile">
+            <summary>
+            Determines whether there are any standalone jar files available
+            locally.
+            </summary>
+            <returns>
+              <c>true</c> if [has local standalone jar file]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumServerStandaloneOptions">
+            <summary>
+            Common options for both the hub and node options.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumServerStandaloneOptions.Log">
+            <summary>
+            Gets or sets the filename of the log.
+            </summary>
+            <value>
+            The log.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumServerStandaloneOptions.JarFileName">
+            <summary>
+            Gets or sets the name of the jar file which will be used to
+            execute the file.
+            </summary>
+            <value>
+            The name of the jar file.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1">
+            <summary>
+            Base class for the <c>SeleniumHub</c> and <c>SeleniumNode</c> classes.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.options">
+            <summary>
+            The options.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.wrappedProcess">
+            <summary>
+            The wrapped process.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1"/> class.
+            </summary>
+            <param name="options">The options.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetOptions">
+            <summary>
+            Gets the options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.IsRunning">
+            <summary>
+            Determines whether this instance is running.
+            </summary>
+            <returns>
+              <c>true</c> if this instance is running; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetLogs">
+            <summary>
+            Gets the logs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.Start">
+            <summary>
+            Starts this instance.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.Stop">
+            <summary>
+            Stops this instance.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetCommandLineArguments">
+            <summary>
+            Creates the command line arguments.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.AddCommand``1(System.Text.StringBuilder,System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Func{``0,System.String})">
+            <summary>
+            Adds the command.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="commandLineArgs">The command line arguments.</param>
+            <param name="property">The property.</param>
+            <param name="customFormatter">The custom formatter.</param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.AddCommand(System.Text.StringBuilder,System.String,System.String)">
+            <summary>
+            Adds the command.
+            </summary>
+            <param name="commandLineArgs">The command line arguments.</param>
+            <param name="commandName">Name of the command.</param>
+            <param name="commandValue">The command value.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.IsLocalPortBusy(System.Int32,System.TimeSpan)">
+            <summary>
+            Determines whether the local port has a tcp listener. If the port
+            less than or equal to zero false is returned.
+            </summary>
+            <param name="port">The port.</param>
+            <param name="timeout">The timeout.</param>
+            <returns>
+              <c>true</c> if [is local port busy] [the specified port]; otherwise, <c>false</c>.
+            </returns>
+            <see cref="!:https://stackoverflow.com/a/38258154"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetFreePort">
+            <summary>
+            Gets the free port.
+            </summary>
+            <returns></returns>
+            <see cref="!:https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.tcplistener.localendpoint?view=netstandard-2.0#remarks"/>
+            <see cref="!:https://stackoverflow.com/a/150974"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.ExtractPort(System.String)">
+            <summary>
+            Extracts the port. Returns null if the url is null or doesn't
+            contain a port.
+            </summary>
+            <param name="url">The URL.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetLastLine">
+            <summary>
+            Gets the last line of a file.
+            </summary>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.WaitForFile(System.String,System.TimeSpan,System.TimeSpan)" -->
         <member name="T:ApertureLabs.Selenium.WebDriverFactory">
             <summary>
             Responsible for creation and disposing of the various webdrivers.
@@ -3636,8 +4102,25 @@
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor">
             <summary>
-            Ctor.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/> class.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor(ApertureLabs.Selenium.SeleniumHubOptions,ApertureLabs.Selenium.SeleniumNodeOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/> class.
+            </summary>
+            <param name="seleniumHubOptions">The selenium hub options.</param>
+            <param name="seleniumNodeOptions">The selenium node options.</param>
+            <exception cref="T:System.ArgumentNullException">
+            seleniumHubOptions
+            or
+            seleniumNodeOptions
+            </exception>
+            <exception cref="T:System.Exception">
+            Failed to start the hub process.
+            or
+            Failed to start the node process.
+            </exception>
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.Finalize">
             <summary>
@@ -4319,6 +4802,44 @@
             <param name="minWidth"></param>
             <param name="maxWidth"></param>
             <returns></returns>
+        </member>
+        <member name="T:DefaultServletNames">
+            <summary>
+            Contains the default servlet names. Meant to be used with the
+            <c>SeleniumHubOptions.Servlets</c>.
+            </summary>
+        </member>
+        <member name="P:DefaultServletNames.LifeCycleServlet">
+            <summary>
+            Gets the life cycle servlet.
+            </summary>
+            <value>
+            The life cycle servlet.
+            </value>
+        </member>
+        <member name="P:DefaultServletNames.ResourceServlet">
+            <summary>
+            Gets the resource servlet.
+            </summary>
+            <value>
+            The resource servlet.
+            </value>
+        </member>
+        <member name="P:DefaultServletNames.ConsoleServlet">
+            <summary>
+            Gets the console servlet.
+            </summary>
+            <value>
+            The console servlet.
+            </value>
+        </member>
+        <member name="P:DefaultServletNames.Grid1HeartbeatServlet">
+            <summary>
+            Gets the grid1 heartbeat servlet.
+            </summary>
+            <value>
+            The grid1 heartbeat servlet.
+            </value>
         </member>
     </members>
 </doc>

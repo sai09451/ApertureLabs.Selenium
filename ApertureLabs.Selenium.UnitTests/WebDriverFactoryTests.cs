@@ -35,8 +35,8 @@ namespace ApertureLabs.Selenium
         { }
 
         [DataTestMethod]
-        //[DataRow(MajorWebDriver.Chrome)]
-        [DataRow(MajorWebDriver.Firefox)]
+        [DataRow(MajorWebDriver.Chrome)]
+        //[DataRow(MajorWebDriver.Firefox)]
         //[DataRow(MajorWebDriver.Edge)]
         //[DataRow(MajorWebDriver.InternetExplorer)]
         public void GetWebDriver(MajorWebDriver majorWebDriver)
