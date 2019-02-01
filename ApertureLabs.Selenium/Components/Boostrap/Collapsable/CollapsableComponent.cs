@@ -20,25 +20,25 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// This event fires immediately when the show instance method is
         /// called.
         /// </summary>
-        private static readonly string EventShowCollapse = "show.bs.collapse";
+        private readonly string EventShowCollapse = "show.bs.collapse";
 
         /// <summary>
         /// This event is fired when a collapse element has been made visible
         /// to the user (will wait for CSS transitions to complete).
         /// </summary>
-        private static readonly string EventShownCollapse = "shown.bs.collapse";
+        private readonly string EventShownCollapse = "shown.bs.collapse";
 
         /// <summary>
         /// This event is fired immediately when the hide method has been
         /// called.
         /// </summary>
-        private static readonly string EventHideCollapse = "hide.bs.collapse";
+        private readonly string EventHideCollapse = "hide.bs.collapse";
 
         /// <summary>
         /// This event is fired when a collapse element has been hidden from
         /// the user (will wait for CSS transitions to complete).
         /// </summary>
-        private static readonly string EventHiddenCollapse = "hidden.bs.collapse";
+        private readonly string EventHiddenCollapse = "hidden.bs.collapse";
 
         #region Selectors
 
@@ -65,6 +65,8 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
                 throw new ArgumentNullException(nameof(animationData.AnimationClasses));
             else if (String.IsNullOrEmpty(animationData.OpenClass))
                 throw new ArgumentNullException(nameof(animationData.OpenClass));
+
+            this.animationData = animationData;
         }
 
         #endregion

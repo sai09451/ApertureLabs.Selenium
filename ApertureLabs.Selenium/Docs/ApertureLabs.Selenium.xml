@@ -339,7 +339,7 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.#ctor(ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.#ctor(ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions,OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent"/> class.
             </summary>
@@ -773,7 +773,7 @@
             Represents a kendo grid.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
@@ -934,7 +934,7 @@
             PagerComponent.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent.#ctor(ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration,OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
@@ -1055,7 +1055,6 @@
             </summary>
             <param name="configuration"></param>
             <param name="selector"></param>
-            <param name="dataSourceOptions"></param>
             <param name="driver"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KToolbar.KToolbarComponent.GetItems">
@@ -1070,7 +1069,7 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem"/> class.
             </summary>
@@ -1093,7 +1092,7 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem"/> class.
             </summary>
@@ -1198,7 +1197,7 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent"/> class.
             </summary>
@@ -1265,7 +1264,7 @@
             Page object factory.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/> class.
             </summary>
@@ -1363,7 +1362,7 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent"/> class.
             </summary>
@@ -1379,13 +1378,59 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetMenuItems">
+            <summary>
+            Gets all menu items.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.HasItemWithClass(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if [has item by class] [the specified class name]; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.HasItemWithText(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent">
             <summary>
             Used for interacting with TinyMCE editors.
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent"/> class.
             </summary>
@@ -1531,7 +1576,7 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent"/> class.
             </summary>
@@ -1716,6 +1761,28 @@
             <summary>
             Represents a css function.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Css.CssFunction.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Css.CssFunction"/> class.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssFunction.Arguments">
+            <summary>
+            Gets the arguments.
+            </summary>
+            <value>
+            The arguments.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Css.CssFunction.FunctionName">
+            <summary>
+            Gets the name of the function.
+            </summary>
+            <value>
+            The name of the function.
+            </value>
         </member>
         <member name="T:ApertureLabs.Selenium.Css.CssUnit">
             <summary>
@@ -2111,6 +2178,16 @@
             Contains extensions for IWebDriver.
             </summary>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.WaitForUserSignal(OpenQA.Selenium.IWebDriver,System.TimeSpan)">
+            <summary>
+            Waits for user signal.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="timeout">
+            How long to wait for a signal
+            </param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.Wait(OpenQA.Selenium.IWebDriver,System.TimeSpan)">
             <summary>
             Shorthand for creating a new WebDriverWait object.
@@ -2457,51 +2534,6 @@
             <typeparam name="TResult"></typeparam>
             <param name="wait"></param>
             <param name="condition"></param>
-        </member>
-        <member name="T:ApertureLabs.Selenium.IPageObjectFactory">
-            <summary>
-            PageObjectFactory.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.IPageObjectFactory.PrepareComponent``1(``0)">
-            <summary>
-            Essentially just calls 'Load()' on the page component and returns
-            it. This is useful for initializing a component in one line.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="pageComponent"></param>
-            <returns></returns>
-            <example>
-            Before:
-            // Uninitialized
-            var component = new YourComponent(arg1, arg2);
-            // Initialized
-            component.Load();
-            
-            After:
-            // Instantiate and initialize in one (ableit long) line.
-            var initializedcomponent = yourPageObjectFactory
-                .PrepareComponent(new YourComponent(arg1, arg2));
-            </example>
-        </member>
-        <member name="M:ApertureLabs.Selenium.IPageObjectFactory.PreparePage``1">
-            <summary>
-            Essentially just calls 'Load()' on the page object and returns it.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="args"></param>
-            <returns></returns>
-            <example>
-            Before:
-            // Instantiated but unintialized.
-            var page = new YourPage(arg1, arg2);
-            // Initialized.
-            page.Load();
-            
-            After:
-            // Instantiate and initialize in one (albeit long) line.
-            var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
-            </example>
         </member>
         <member name="T:ApertureLabs.Selenium.Js.JavaScript">
             <summary>
@@ -3010,68 +3042,20 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.PageObjectFactory">
+        <member name="T:ApertureLabs.Selenium.PageObjects.IOrderedModule">
             <summary>
-            PageObjectFactory.
+            Similary to IModule but adds an index property to order the imports
+            modules by. NOTE: Classes that implement this MUST have a default
+            constructor otherwise they will be ignored.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.PageObjectFactory.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean)">
+        <member name="P:ApertureLabs.Selenium.PageObjects.IOrderedModule.Order">
             <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjectFactory"/>
-            class.
+            Gets the order. Lower numbers will be imported earlier.
             </summary>
-            <param name="services">The service collection.</param>
-            <param name="scanAssemblies"></param>
-            <exception cref="T:System.ArgumentException">
-            Thrown if services doens't have IWebDriver registered.
-            </exception>
-        </member>
-        <member name="M:ApertureLabs.Selenium.PageObjectFactory.#ctor(OpenQA.Selenium.IWebDriver)">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjectFactory"/> class.
-            Uses reflection to create the service provider.
-            </summary>
-            <param name="driver"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.PageObjectFactory.PreparePage``1">
-            <summary>
-            Essentially just calls 'Load()' on the page object (which is
-            constructed with the service provider) and returns it.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-            <example>
-            Before:
-            // Instantiated but unintialized.
-            var page = new YourPage(arg1, arg2);
-            // Initialized.
-            page.Load();
-            
-            After:
-            // Instantiate and initialize in one (albeit long) line.
-            var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
-            </example>
-        </member>
-        <member name="M:ApertureLabs.Selenium.PageObjectFactory.PrepareComponent``1(``0)">
-            <summary>
-            Essentially just calls 'Load()' on the page component and returns
-            it. This is useful for initializing a component in one line.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="pageComponent"></param>
-            <returns></returns>
-            <example>
-            Before:
-            // Uninitialized
-            var component = new YourComponent(arg1, arg2);
-            // Initialized
-            component.Load();
-            
-            After:
-            // Instantiate and initialize in one (ableit long) line.
-            var initializedcomponent = yourPageObjectFactory
-                .PrepareComponent(new YourComponent(arg1, arg2));
-            </example>
+            <value>
+            The order.
+            </value>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.IPageComponent">
             <summary>
@@ -3115,6 +3099,57 @@
             return false while the <code>homePage.IsStateValid();</code> will
             return true.
             </example>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.IPageObjectFactory">
+            <summary>
+            PageObjectFactory.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IPageObjectFactory.PrepareComponent``1(``0)">
+            <summary>
+            Essentially just calls 'Load()' on the page component and returns
+            it. This is useful for initializing a component in one line.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageComponent"></param>
+            <returns></returns>
+            <example>
+            Before:
+            // Uninitialized
+            var component = new YourComponent(arg1, arg2);
+            // Initialized
+            component.Load();
+            
+            After:
+            // Instantiate and initialize in one (ableit long) line.
+            var initializedcomponent = yourPageObjectFactory
+                .PrepareComponent(new YourComponent(arg1, arg2));
+            </example>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IPageObjectFactory.PreparePage``1">
+            <summary>
+            Essentially just calls 'Load()' on the page object and returns it.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="args"></param>
+            <returns></returns>
+            <example>
+            Before:
+            // Instantiated but unintialized.
+            var page = new YourPage(arg1, arg2);
+            // Initialized.
+            page.Load();
+            
+            After:
+            // Instantiate and initialize in one (albeit long) line.
+            var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
+            </example>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IPageObjectFactory.GetImportedModules">
+            <summary>
+            Gets the imported modules.
+            </summary>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.IViewModel`1">
@@ -3227,6 +3262,81 @@
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose">
             <inheritdoc/>
         </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.PageObjectFactory">
+            <summary>
+            PageObjectFactory.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObjectFactory.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.PageObjectFactory"/>
+            class.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="scanAssemblies">
+            Scans all assemblies for page objects and registers them as
+            singletons.
+            </param>
+            <param name="loadModules"></param>
+            <exception cref="T:System.ArgumentException">
+            Thrown if services doens't have IWebDriver registered.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObjectFactory.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.PageObjectFactory"/>
+            class. Uses reflection to create the service provider. All
+            IPageObjects will be registered and then IOrderedModules will be
+            registered.
+            </summary>
+            <param name="driver"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObjectFactory.PreparePage``1">
+            <summary>
+            Essentially just calls 'Load()' on the page object (which is
+            constructed with the service provider) and returns it.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+            <example>
+            Before:
+            // Instantiated but unintialized.
+            var page = new YourPage(arg1, arg2);
+            // Initialized.
+            page.Load();
+            
+            After:
+            // Instantiate and initialize in one (albeit long) line.
+            var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
+            </example>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObjectFactory.PrepareComponent``1(``0)">
+            <summary>
+            Essentially just calls 'Load()' on the page component and returns
+            it. This is useful for initializing a component in one line.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageComponent"></param>
+            <returns></returns>
+            <example>
+            Before:
+            // Uninitialized
+            var component = new YourComponent(arg1, arg2);
+            // Initialized
+            component.Load();
+            
+            After:
+            // Instantiate and initialize in one (ableit long) line.
+            var initializedcomponent = yourPageObjectFactory
+                .PrepareComponent(new YourComponent(arg1, arg2));
+            </example>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObjectFactory.GetImportedModules">
+            <summary>
+            Gets the imported modules.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Properties.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -3308,6 +3418,11 @@
                         // Ignore null/undefined values.
                         if (value === nu [rest of string was truncated]&quot;;.
              </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.waitForUserSignal">
+            <summary>
+              Looks up a localized string similar to .
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">
             <summary>
@@ -4093,7 +4208,16 @@
             </summary>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.WaitForFile(System.String,System.TimeSpan,System.TimeSpan)" -->
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.WaitForFile(System.String,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Blocks until the file is not locked any more.
+            </summary>
+            <param name="fullPath"></param>
+            <param name="poll"></param>
+            <param name="timeout"></param>
+            <exception cref="T:System.TimeoutException"></exception>
+            <see cref="!:https://stackoverflow.com/a/50800"/>
+        </member>
         <member name="T:ApertureLabs.Selenium.WebDriverFactory">
             <summary>
             Responsible for creation and disposing of the various webdrivers.

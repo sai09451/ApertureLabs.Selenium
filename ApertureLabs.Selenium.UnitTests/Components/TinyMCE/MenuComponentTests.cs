@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using ApertureLabs.Selenium.Components.TinyMCE;
+using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.Extensions.DependencyInjection;

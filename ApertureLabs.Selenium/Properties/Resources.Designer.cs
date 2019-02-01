@@ -137,5 +137,14 @@ namespace ApertureLabs.Selenium.Properties {
                 return ResourceManager.GetString("waitForEvent", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string waitForUserSignal {
+            get {
+                return ResourceManager.GetString("waitForUserSignal", resourceCulture);
+            }
+        }
     }
 }

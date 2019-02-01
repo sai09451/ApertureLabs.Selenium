@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApertureLabs.Selenium;
+using ApertureLabs.Selenium.PageObjects;
 using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;

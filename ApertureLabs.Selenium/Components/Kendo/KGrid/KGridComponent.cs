@@ -4,6 +4,7 @@ using System.Linq;
 using ApertureLabs.Selenium.Components.Kendo.KPager;
 using ApertureLabs.Selenium.Components.Kendo.KToolbar;
 using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 

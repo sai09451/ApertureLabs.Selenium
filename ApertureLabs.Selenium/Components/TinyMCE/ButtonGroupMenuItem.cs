@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.Components.TinyMCE

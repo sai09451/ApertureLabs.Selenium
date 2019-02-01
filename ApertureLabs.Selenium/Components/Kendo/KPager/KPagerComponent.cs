@@ -1,10 +1,11 @@
-﻿using ApertureLabs.Selenium.Components.Kendo.KDropDown;
-using ApertureLabs.Selenium.Extensions;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ApertureLabs.Selenium.Components.Kendo.KDropDown;
+using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.PageObjects;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KPager
 {

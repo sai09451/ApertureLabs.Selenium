@@ -1,5 +1,6 @@
 ﻿using System;
 using ApertureLabs.Selenium.Components.JQuery.DatePicker;
+using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.Extensions.DependencyInjection;

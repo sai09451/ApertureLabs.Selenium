@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Numerics;
 using System.Threading;
 using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 

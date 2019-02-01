@@ -1,6 +1,6 @@
-﻿using ApertureLabs.Selenium.PageObjects;
+﻿using System.Collections.Generic;
 
-namespace ApertureLabs.Selenium
+namespace ApertureLabs.Selenium.PageObjects
 {
     /// <summary>
     /// PageObjectFactory.
@@ -32,7 +32,6 @@ namespace ApertureLabs.Selenium
         /// Essentially just calls 'Load()' on the page object and returns it.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="args"></param>
         /// <returns></returns>
         /// <example>
         /// Before:
@@ -46,5 +45,11 @@ namespace ApertureLabs.Selenium
         /// var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
         /// </example>
         T PreparePage<T>() where T : IPageObject;
+
+        /// <summary>
+        /// Gets the imported modules.
+        /// </summary>
+        /// <returns></returns>
+        IList<IOrderedModule> GetImportedModules();
     }
 }

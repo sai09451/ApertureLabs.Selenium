@@ -17,7 +17,6 @@ namespace ApertureLabs.Selenium.Components.Kendo.KToolbar
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="selector"></param>
-        /// <param name="dataSourceOptions"></param>
         /// <param name="driver"></param>
         public KToolbarComponent(BaseKendoConfiguration configuration,
             By selector,

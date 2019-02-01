@@ -200,6 +200,17 @@ namespace ApertureLabs.Selenium
                 if (disposing)
                 {
                     seleniumHub?.Dispose();
+
+                    foreach (var driver in trackedDrivers)
+                    {
+                        try
+                        {
+                            driver.Quit();
+                            driver.Dispose();
+                        }
+                        catch
+                        { }
+                    }
                 }
 
                 disposedValue = true;

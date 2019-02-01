@@ -39,10 +39,8 @@ namespace ApertureLabs.Selenium
         /// <param name="options">The options.</param>
         public SeleniumServerStandaloneWrapper(U options)
         {
-            if (options == null)
-                throw new ArgumentNullException(nameof(options));
-
-            this.options = options;
+            this.options = options
+                ?? throw new ArgumentNullException(nameof(options));
         }
 
         #endregion
@@ -270,7 +268,7 @@ namespace ApertureLabs.Selenium
         /// <param name="fullPath"></param>
         /// <param name="poll"></param>
         /// <param name="timeout"></param>
-        /// <exception cref="TimeoutException"></exception
+        /// <exception cref="TimeoutException"></exception>
         /// <see cref="https://stackoverflow.com/a/50800"/>
         private FileStream WaitForFile(string fullPath,
             TimeSpan poll,

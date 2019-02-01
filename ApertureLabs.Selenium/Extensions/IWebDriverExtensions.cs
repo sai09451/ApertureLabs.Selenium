@@ -19,6 +19,25 @@ namespace ApertureLabs.Selenium.Extensions
     public static class IWebDriverExtensions
     {
         /// <summary>
+        /// Waits for user signal.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <param name="timeout">
+        /// How long to wait for a signal
+        /// </param>
+        /// <returns></returns>
+        public static string WaitForUserSignal(this IWebDriver driver,
+            TimeSpan timeout)
+        {
+            var script = Resources.waitForUserSignal;
+            var response = (string)driver
+                .JavaScriptExecutor()
+                .ExecuteAsyncScript(script, timeout.TotalMilliseconds);
+
+            return response;
+        }
+
+        /// <summary>
         /// Shorthand for creating a new WebDriverWait object.
         /// </summary>
         /// <param name="driver"></param>

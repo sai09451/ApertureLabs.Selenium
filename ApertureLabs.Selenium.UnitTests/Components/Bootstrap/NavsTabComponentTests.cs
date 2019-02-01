@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using ApertureLabs.Selenium.Components.Boostrap.Navs;
+using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
         private IWebDriver driver;
         private WidgetPage widgetPage;
         private NavsTabComponent navsTabComponent;
-        private NavsTabComponentConfiguration configuration;
 
         #endregion
 

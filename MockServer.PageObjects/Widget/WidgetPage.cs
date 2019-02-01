@@ -1,4 +1,5 @@
 ﻿using ApertureLabs.Selenium;
+using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 
 namespace MockServer.PageObjects.Widget

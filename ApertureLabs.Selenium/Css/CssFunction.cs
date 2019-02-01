@@ -12,6 +12,10 @@ namespace ApertureLabs.Selenium.Css
     {
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CssFunction"/> class.
+        /// </summary>
+        /// <param name="value"></param>
         public CssFunction(string value) : base(value)
         {
             var results = new List<CssValue>();
@@ -39,8 +43,20 @@ namespace ApertureLabs.Selenium.Css
 
         #region Properties
 
+        /// <summary>
+        /// Gets the arguments.
+        /// </summary>
+        /// <value>
+        /// The arguments.
+        /// </value>
         public IReadOnlyList<CssValue> Arguments { get; private set; }
 
+        /// <summary>
+        /// Gets the name of the function.
+        /// </summary>
+        /// <value>
+        /// The name of the function.
+        /// </value>
         public string FunctionName { get; private set; }
 
         #endregion

@@ -17,7 +17,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
     {
         #region Fields
 
-        private static KPagerComponent PagerComponent;
         private static WebDriverFactory WebDriverFactory;
 
         private IPageObjectFactory PageObjectFactory;

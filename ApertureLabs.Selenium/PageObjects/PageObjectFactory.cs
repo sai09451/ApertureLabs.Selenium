@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ApertureLabs.Selenium.PageObjects;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 
-namespace ApertureLabs.Selenium
+namespace ApertureLabs.Selenium.PageObjects
 {
     /// <summary>
     /// PageObjectFactory.
@@ -16,6 +15,7 @@ namespace ApertureLabs.Selenium
     {
         #region Fields
 
+        private readonly IList<IOrderedModule> orderedModules;
         private readonly IContainer serviceProvider;
 
         #endregion
@@ -27,13 +27,21 @@ namespace ApertureLabs.Selenium
         /// class.
         /// </summary>
         /// <param name="services">The service collection.</param>
-        /// <param name="scanAssemblies"></param>
+        /// <param name="scanAssemblies">
+        /// Scans all assemblies for page objects and registers them as
+        /// singletons.
+        /// </param>
+        /// <param name="loadModules"></param>
         /// <exception cref="System.ArgumentException">
         /// Thrown if services doens't have IWebDriver registered.
         /// </exception>
         public PageObjectFactory(IServiceCollection services,
-            bool scanAssemblies = true)
+            bool scanAssemblies = true,
+            bool loadModules = true)
         {
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
             var driverRegistered = services
                 .Any(s => s.ServiceType == typeof(IWebDriver));
 
@@ -43,11 +51,12 @@ namespace ApertureLabs.Selenium
                     "have the IWebDriver interface registered.");
             }
 
+            orderedModules = new List<IOrderedModule>();
             var containerBuilder = new ContainerBuilder();
 
             // First scan assemblies.
             if (scanAssemblies)
-                ScanAssemblies(containerBuilder);
+                ScanAssemblies(containerBuilder, loadModules);
 
             // Then load the passed in services. This way all overrides will
             // remain.
@@ -58,8 +67,10 @@ namespace ApertureLabs.Selenium
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PageObjectFactory"/> class.
-        /// Uses reflection to create the service provider.
+        /// Initializes a new instance of the <see cref="PageObjectFactory"/>
+        /// class. Uses reflection to create the service provider. All
+        /// IPageObjects will be registered and then IOrderedModules will be
+        /// registered.
         /// </summary>
         /// <param name="driver"></param>
         public PageObjectFactory(IWebDriver driver)
@@ -67,10 +78,11 @@ namespace ApertureLabs.Selenium
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
 
+            orderedModules = new List<IOrderedModule>();
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterInstance<IPageObjectFactory>(this);
             containerBuilder.RegisterInstance<IWebDriver>(driver);
-            ScanAssemblies(containerBuilder);
+            ScanAssemblies(containerBuilder, true);
 
             serviceProvider = containerBuilder.Build();
         }
@@ -136,12 +148,47 @@ namespace ApertureLabs.Selenium
             return (T)pageComponent.Load();
         }
 
-        private void ScanAssemblies(ContainerBuilder containerBuilder)
+        /// <summary>
+        /// Gets the imported modules.
+        /// </summary>
+        /// <returns></returns>
+        public virtual IList<IOrderedModule> GetImportedModules()
         {
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var modules = loadedAssemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsClass
+                    && !t.IsAbstract
+                    && t.IsPublic
+                    && t.IsVisible
+                    && t.IsAssignableTo<IOrderedModule>()
+                    && t.GetConstructors().Any(
+                        c => c.IsPublic && !c.GetParameters().Any()))
+                .Select(t =>
+                {
+                    var ctor = t.GetMatchingConstructor(new Type[0]);
+                    var instance = ctor.Invoke(new object[0]);
+
+                    if (instance is IOrderedModule orderedModule)
+                    {
+                        return orderedModule;
+                    }
+
+                    throw new InvalidCastException($"Invalid module: {t.Name}");
+                })
+                .OrderBy(om => om.Order)
+                .ToList();
+
+            return modules;
+        }
+
+        private void ScanAssemblies(ContainerBuilder containerBuilder,
+            bool loadModules)
+        {
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
             // Use reflection to load all types that inherit from IPageObject
             // and IPageComponent.
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var constructorArgs = new List<Type>();
             containerBuilder.RegisterAssemblyTypes(loadedAssemblies)
                 .Where(t =>
                 {
@@ -154,6 +201,12 @@ namespace ApertureLabs.Selenium
                 })
                 .PublicOnly()
                 .SingleInstance();
+
+            // Register all modules.
+            var modules = GetImportedModules();
+
+            foreach (var module in modules)
+                containerBuilder.RegisterModule(module);
         }
 
         #endregion
