@@ -4102,12 +4102,17 @@
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/> class.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/>
+            class. NOTE: This will use STANDALONE mode. It won't create a hub
+            and node. This generally is quicker for running tests sequentially
+            but slower for parallel stuff.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor(ApertureLabs.Selenium.SeleniumHubOptions,ApertureLabs.Selenium.SeleniumNodeOptions)">
             <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/> class.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/>
+            class. NOTE: This will create a hub and node process for better
+            performance when running tests in parallel.
             </summary>
             <param name="seleniumHubOptions">The selenium hub options.</param>
             <param name="seleniumNodeOptions">The selenium node options.</param>

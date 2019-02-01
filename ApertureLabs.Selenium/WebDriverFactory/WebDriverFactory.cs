@@ -27,6 +27,7 @@ namespace ApertureLabs.Selenium
     {
         #region Fields
 
+        private readonly bool isStandalone;
         private readonly DriverManager driverManager;
         private readonly IList<IWebDriver> trackedDrivers;
         private readonly SeleniumServerStandAloneManager seleniumServerStandAloneHelper;
@@ -39,14 +40,24 @@ namespace ApertureLabs.Selenium
         #region Constructor/Finalizer
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebDriverFactory"/> class.
+        /// Initializes a new instance of the <see cref="WebDriverFactory"/>
+        /// class. NOTE: This will use STANDALONE mode. It won't create a hub
+        /// and node. This generally is quicker for running tests sequentially
+        /// but slower for parallel stuff.
         /// </summary>
         public WebDriverFactory()
-            : this(SeleniumHubOptions.Default(), SeleniumNodeOptions.Default())
-        { }
+        {
+            isStandalone = true;
+            disposedValue = false;
+            driverManager = new DriverManager();
+            trackedDrivers = new List<IWebDriver>();
+            seleniumHub = null;
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebDriverFactory"/> class.
+        /// Initializes a new instance of the <see cref="WebDriverFactory"/>
+        /// class. NOTE: This will create a hub and node process for better
+        /// performance when running tests in parallel.
         /// </summary>
         /// <param name="seleniumHubOptions">The selenium hub options.</param>
         /// <param name="seleniumNodeOptions">The selenium node options.</param>
@@ -69,6 +80,7 @@ namespace ApertureLabs.Selenium
             else if (seleniumNodeOptions == null)
                 throw new ArgumentNullException(nameof(seleniumNodeOptions));
 
+            isStandalone = false;
             disposedValue = false;
             driverManager = new DriverManager();
             trackedDrivers = new List<IWebDriver>();
@@ -105,32 +117,60 @@ namespace ApertureLabs.Selenium
             Size windowSize,
             bool track = true)
         {
-            var driverOptions = new RemoteSessionSettings();
+            var driver = default(IWebDriver);
+            var driverOpts = default(DriverOptions);
 
             switch (majorWebDriver)
             {
                 case MajorWebDriver.Chrome:
                     driverManager.SetUpDriver(new ChromeConfig());
-                    driverOptions.AddFirstMatchDriverOption(new ChromeOptions());
+                    driverOpts = new ChromeOptions();
                     break;
                 case MajorWebDriver.Edge:
                     driverManager.SetUpDriver(new EdgeConfig());
-                    driverOptions.AddFirstMatchDriverOption(new EdgeOptions());
+                    driverOpts = new EdgeOptions();
                     break;
                 case MajorWebDriver.Firefox:
                     driverManager.SetUpDriver(new FirefoxConfig());
-                    driverOptions.AddFirstMatchDriverOption(new FirefoxOptions());
+                    driverOpts = new FirefoxOptions();
                     break;
                 case MajorWebDriver.InternetExplorer:
                     driverManager.SetUpDriver(new InternetExplorerConfig());
-                    driverOptions.AddFirstMatchDriverOption(new InternetExplorerOptions());
+                    driverOpts = new InternetExplorerOptions();
                     break;
                 default:
                     throw new NotImplementedException();
             }
 
+            if (isStandalone)
+            {
+                switch (majorWebDriver)
+                {
+                    case MajorWebDriver.Chrome:
+                        driver = new ChromeDriver(driverOpts as ChromeOptions);
+                        break;
+                    case MajorWebDriver.Edge:
+                        driver = new EdgeDriver(driverOpts as EdgeOptions);
+                        break;
+                    case MajorWebDriver.Firefox:
+                        driver = new FirefoxDriver(driverOpts as FirefoxOptions);
+                        break;
+                    case MajorWebDriver.InternetExplorer:
+                        driver = new InternetExplorerDriver(driverOpts as InternetExplorerOptions);
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                var d = new RemoteSessionSettings();
+                d.AddFirstMatchDriverOption(driverOpts);
+
+                driver = new RemoteWebDriver(d);
+            }
+
             // Set the window size.
-            var driver = new RemoteWebDriver(driverOptions);
             driver.Manage().Window.Size = windowSize;
 
             if (track)
@@ -149,11 +189,6 @@ namespace ApertureLabs.Selenium
                 return;
 
             trackedDrivers.Add(driver);
-        }
-
-        private bool IsLocalHubRunning()
-        {
-            return false;
         }
 
         #region IDisposable Support

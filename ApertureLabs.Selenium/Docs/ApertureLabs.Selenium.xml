@@ -4,6 +4,96 @@
         <name>ApertureLabs.Selenium</name>
     </assembly>
     <members>
+        <member name="T:ApertureLabs.Selenium.ByElement">
+            <summary>
+            Will always ONLY return the stored element.
+            </summary>
+            <seealso cref="T:OpenQA.Selenium.By" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByElement.FindElement(OpenQA.Selenium.ISearchContext)">
+            <summary>
+            Returns the stored element.
+            </summary>
+            <param name="context">An <see cref="T:OpenQA.Selenium.ISearchContext" /> object to use to search for the elements.</param>
+            <returns>
+            The first matching <see cref="T:OpenQA.Selenium.IWebElement" /> on the current context.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByElement.FindElements(OpenQA.Selenium.ISearchContext)">
+            <summary>
+            Returns the stored element.
+            </summary>
+            <param name="context">An <see cref="T:OpenQA.Selenium.ISearchContext" /> object to use to search for the elements.</param>
+            <returns>
+            A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> of all <see cref="T:OpenQA.Selenium.IWebElement">WebElements</see>
+            matching the current criteria, or an empty list if nothing matches.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByElement.FromElement(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Static ctor.
+            </summary>
+            <param name="element">The element.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.ByScoped">
+            <summary>
+            Similar to the normal <code>OpenQA.Selenium.By</code> class but will
+            always search from the passed in searchContext.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. To create an instance use the static method FromScoped(...).
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Ctor. Instead fo passing in an instance of ISearchContext, pass in a
+            selector that will fetch the ISearchContext and then the subSelector
+            will search for the child elements.
+            </summary>
+            <param name="contextSelector"></param>
+            <param name="subSelectors"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FindElement(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FindElements(OpenQA.Selenium.ISearchContext)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will always use the passed in
+            search context instead of what the current context is for the
+            driver.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.By,OpenQA.Selenium.By[])">
+            <summary>
+            Creates a 'scoped' selector which will first find all elements
+            that match the <code>searchContext</code> selector and then keep
+            applying the <code>subSelectors</code> to those elements.
+            </summary>
+            <param name="searchContext"></param>
+            <param name="subSelectors"></param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent">
             <summary>
             Represents a bootstrap collapsable.
@@ -183,6 +273,14 @@
             <param name="tabName">Name of the tab.</param>
             <param name="stringComparison">The string comparison.</param>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent.HasTab(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the specified tab exists.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration">
             <summary>
             Options for configuring the NavsComponent. All selectors are relative
@@ -235,7 +333,136 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By,OpenQA.Selenium.By)">
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent">
+            <summary>
+            AccordionComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.#ctor(ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions,OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent"/> class.
+            </summary>
+            <param name="accordianComponentOptions">The options.</param>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.Load">
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.GetPanelNames">
+            <summary>
+            Gets all of the panel names.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.SelectPanel(System.String,System.StringComparison)">
+            <summary>
+            Sets the panel to open and returns the panel content element.
+            </summary>
+            <param name="panelName">Name of the panel.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.ClosePanel">
+            <summary>
+            Closes the active panel.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.HasOpenPanel">
+            <summary>
+            Determines whether their is an open panel.
+            </summary>
+            <returns>
+              <c>true</c> if [has open panel]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.GetActivePanelName">
+            <summary>
+            Gets the name of the active panel.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent.GetActivePanelContentElement">
+            <summary>
+            Gets the active panels content element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions">
+            <summary>
+            Options for configuring the AccordianComponent and how Selenium
+            interacts with it.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AccordianHeaderClass">
+            <summary>
+            Gets or sets the accordian header class.
+            </summary>
+            <value>
+            The accordian header class.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AccordianHeaderCollapsedClass">
+            <summary>
+            Gets or sets the accordian header collapsed class.
+            </summary>
+            <value>
+            The accordian header collapsed class.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AccordianContentClass">
+            <summary>
+            Gets or sets the accordian content class.
+            </summary>
+            <value>
+            The accordian content class.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.AnimationDuration">
+            <summary>
+            Gets or sets the duration of the animation.
+            </summary>
+            <value>
+            The duration of the animation.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.Collaspable">
+            <summary>
+            Gets or sets a value indicating whether this
+            <see cref="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions"/> can have all panels
+            collapsed.
+            </summary>
+            <value>
+              <c>true</c> if collaspable; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.Event">
+            <summary>
+            Gets or sets the event that triggers the panel. Default is 'click'.
+            </summary>
+            <value>
+            The event.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent">
+            <summary>
+            DatePickerComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions,OpenQA.Selenium.IWebDriver)">
             <summary>
             Ctor.
             </summary>
@@ -243,9 +470,118 @@
             <param name="selector">
             The input element linked to the calendar.
             </param>
-            <param name="calendarContainerSelector">
-            The element that contains the calendar.
+            <param name="datePickerComponentOptions">
+            The datepciker component options.
             </param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.IsPopup">
+            <summary>
+            Gets or sets a value indicating whether this instance is popup.
+            </summary>
+            <value>
+              <c>true</c> if this instance is popup; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.Load">
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetDate">
+            <summary>
+            Gets the date.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.SetDate(System.DateTime)">
+            <summary>
+            Sets the date.
+            </summary>
+            <param name="dateTime">The date time.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.IsDisabled">
+            <summary>
+            Determines whether this instance is disabled.
+            </summary>
+            <returns>
+              <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetMinAndMaxDates">
+            <summary>
+            Gets the min and max date times.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetOptions">
+            <summary>
+            Gets the options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetData">
+            <summary>
+            Gets the data object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent.GetDay">
+            <summary>
+            Gets the day. Returns -1 if no day has been selected.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions">
+            <summary>
+            DatePickerComponentOptions.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions.AnimationDuration">
+            <summary>
+            Gets or sets the duration of the animation.
+            </summary>
+            <value>
+            The duration of the animation.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions.DateFormat">
+            <summary>
+            Gets or sets the date format used by the DatePicker.
+            </summary>
+            <value>
+            The date format.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase">
+            <summary>
+            Base class for JQuery Widgets.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="selector">The selector.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase.WaitForInitialization(System.String,System.TimeSpan)">
+            <summary>
+            Waits for the <c>dataName</c> to be defined on the
+            $(WrappedElement).data() object. Assumes that <c>WrappedElement</c>
+            has been assigned to.
+            </summary>
+            <param name="dataName">
+            Name of the property on the data object.
+            </param>
+            <param name="timeout">The timeout.</param>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent">
             <summary>
@@ -508,13 +844,12 @@
             Represents a kendo multi-select component.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration)">
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration)">
             <summary>
             Ctor.
             </summary>
             <param name="selector"></param>
             <param name="driver"></param>
-            <param name="animationData"></param>
             <param name="configuration"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent.IsExpanded">
@@ -574,11 +909,25 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration" />
         </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration.AnimationOptions">
+            <summary>
+            Gets or sets the animation options.
+            </summary>
+            <value>
+            The animation options.
+            </value>
+        </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration.AutoClose">
             <summary>
             Gets or sets a value indicating whether the widget will
             automatically close after selecting an item.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectConfiguration.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent">
             <summary>
@@ -715,55 +1064,535 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions">
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem">
             <summary>
-            The default options for kendo datasources used in NopCommerce.
+            GroupedMenuItem.
             </summary>
+            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Nop.DefaultNopDatasourceOptions.#ctor">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
-            Sets the <c>PageLoadingIndicator</c> to '#ajaxBusy'.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem"/> class.
             </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory"></param>
+            <param name="driver">The driver.</param>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetSubItemByText(System.String,System.StringComparison)">
             <summary>
-            Represents a component that can have an animation (css or js
-            animation/transition).
+            Gets the sub item by text.
             </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationStart(`0)">
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem">
             <summary>
-            Waits for an animation to start.
+            Represents a drop down style menu item.
             </summary>
-            <param name="animationData"></param>
+            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.WaitForAnimationEnd(`0)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
-            Waits for an animation to end.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem"/> class.
             </summary>
-            <param name="animationData"></param>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableComponent`1.IsCurrentlyAnimating(`0)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.SelectOption(System.String,System.StringComparison)">
             <summary>
-            Checks if an animation is currently running.
+            Opens the drop down and returns the option.
             </summary>
-            <param name="animationData"></param>
+            <param name="option">The option.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.GetDirectionFloatMenuWillOpen">
+            <summary>
+            Gets the direction float menu will open relative to the CENTER of
+            this WrappedElement.
+            </summary>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions">
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar">
             <summary>
-            Base interface for IAnimatableComponent generic argument.
+            Defines methods for retrieving items.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationDuration">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetMenuItems">
             <summary>
-            The duration of the animation.
+            Gets all menu items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.HasItemWithText(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+              <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.HasItemWithClass(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+              <c>true</c> if [has item by class] [the specified class name]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode">
+            <summary>
+            The 'mode' of a TinyMCE editor.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Shared.Animatable.IAnimatableOptions.AnimationsEnabled">
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode.Classic">
             <summary>
-            Used to check if animations are enabled for the element.
+            The form-based mode.
             </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode.Inline">
+            <summary>
+            The inline mode. No iframe is used with the editor.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode.DistractionFree">
+            <summary>
+            The distraction free mode essentially is just the text editor area
+            without any menus, toolbars, or status bars.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent">
+            <summary>
+            The menu component of a TinyMCEComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The pageObjectFactory.</param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item.
+            </summary>
+            <param name="className"></param>
+            <param name="stringComparison"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.HasItemWithText(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the specified item name has item.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.HasItemWithClass(System.String,System.StringComparison)">
+            <summary>
+            Determines if the menu item exists.
+            </summary>
+            <param name="className"></param>
+            <param name="stringComparison"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetMenuItems">
+            <summary>
+            Gets all menu items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem">
+            <summary>
+            Menu item of a TinyMCEComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.pageObjectFactory">
+            <summary>
+            Page object factory.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDropDown">
+            <summary>
+            Gets a value indicating whether this instance is drop down.
+            </summary>
+            <value>
+              <c>true</c> if this instance is drop down; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsButtonGroup">
+            <summary>
+            Gets a value indicating whether this instance is button group.
+            </summary>
+            <value>
+              <c>true</c> if this instance is button group; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasTitle">
+            <summary>
+            Gets a value indicating whether this instance has title.
+            </summary>
+            <value>
+              <c>true</c> if this instance has title; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasIcon">
+            <summary>
+            Gets a value indicating whether this instance has icon.
+            </summary>
+            <value>
+              <c>true</c> if this instance has icon; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasShortcut">
+            <summary>
+            Gets a value indicating whether this instance has shortcut.
+            </summary>
+            <value>
+              <c>true</c> if this instance has shortcut; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IconElement">
+            <summary>
+            Gets the icon element. Won't throw an error if the element doens't
+            exist.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.TextElement">
+            <summary>
+            Gets the text element. Won't throw an error if the element doens't
+            exist.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.ShortCutElement">
+            <summary>
+            Gets the shortcut element. Won't throw an error if the element
+            doens't exist.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.CaretElement">
+            <summary>
+            Gets the caret element. Won't throw an error if the element doens't
+            exist.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.ConvertTo``1">
+            <summary>
+            Converts the item to a the derived MenuItem. Will return null if
+            it fails to convert this instance.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDisplayed">
+            <summary>
+            Determines whether this instance is displayed.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsElement">
+            <summary>
+            Returns the WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent">
+            <summary>
+            Statusbar of a TinyMCEComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory"></param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent">
+            <summary>
+            Used for interacting with TinyMCE editors.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory"></param>
+            <param name="driver">The driver.</param>
+            <param name="tinyMCEOptions">The options.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.IntegrationMode">
+            <summary>
+            Gets the integration mode.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Menu">
+            <summary>
+            Used to manipulate the menu area. Null if no menu bar.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Toolbar">
+            <summary>
+            Used to manipulate the toolbar. Null if no toolbar.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Statusbar">
+            <summary>
+            Used to manipulate the statusbar. Null if no status bar.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.TinyMCEContainerElement">
+            <summary>
+            Gets or sets the element created by tinyMCE.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Load">
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+            <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.SetEditorSize(System.Drawing.Size)">
+            <summary>
+            Sets the size of the editor.
+            </summary>
+            <param name="desiredSize">Size of the desired.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetEditorSize">
+            <summary>
+            Gets the size of the editor.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetCursorPosition">
+            <summary>
+            Gets the cursor position.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.SetCursorPosition(System.Drawing.Point)">
+            <summary>
+            Sets the cursor position (the point {0,0} will be the top left
+            corner).
+            </summary>
+            <param name="point">The point.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.HighlightAllText">
+            <summary>
+            Highlights all text.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.HightlightRange(System.Drawing.Point,System.Drawing.Point)">
+            <summary>
+            Hightlights the range.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown if the start point is before the end point.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetHighlightedText">
+            <summary>
+            Gets the highlighted text.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Write(System.String)">
+            <summary>
+            Writes the specified content.
+            </summary>
+            <param name="content">The content.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.WriteLine(System.String)">
+            <summary>
+            Writes the line.
+            </summary>
+            <param name="content">The content.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.WriteLine">
+            <summary>
+            Writes the line.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.GetContent">
+            <summary>
+            Gets the content of the editor. This calls the
+            tinyMCE.Editor.getContent().
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.ClearAllContent">
+            <summary>
+            Clears all content in the editable body area.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions">
+            <summary>
+            Options for the TinyMCEComponent.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions.InteractWithMenuViaJavaScript">
+            <summary>
+            Gets or sets a value indicating whether to interact with the menu
+            using the javascript api. If false then interactions will be
+            attempted via clicking.
+            </summary>
+            <value>
+              <c>true</c> if [interact with menu via java script]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEOptions.Default">
+            <summary>
+            Creates a new instance with all properties preset to their
+            defaults.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent">
+            <summary>
+            Toolbar component of the TinyMCEComponent.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetMenuItems">
+            <summary>
+            Gets all menu items.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.HasItemWithClass(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if [has item by class] [the specified class name]; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.HasItemWithText(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the item exists.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+            <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="T:ApertureLabs.Selenium.Css.CssColor">
             <summary>
@@ -1249,6 +2078,34 @@
             <param name="item"></param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.ISearchContextExtensions">
+            <summary>
+            Contains extensions for ISearchContext objects.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.ISearchContextExtensions.GetCssSelector(OpenQA.Selenium.ISearchContext,OpenQA.Selenium.IWebElement,System.Boolean)">
+            <summary>
+            Creates a unique CSS selector for an element.
+            </summary>
+            <param name="searchContext">The search context.</param>
+            <param name="element">The element.</param>
+            <param name="optimize">
+            Whether or not to optimize the selector. This may be time
+            consuming.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.ISearchContextExtensions.TryGetAttribute(OpenQA.Selenium.IWebElement,System.String,System.Func{System.String,System.Boolean},System.String@)">
+            <summary>
+            Tries the get attribute. Will check if the value is null BEFORE
+            executing the expression.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="attribute">The attribute.</param>
+            <param name="predicate">The predicate.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebDriverExtensions">
             <summary>
             Contains extensions for IWebDriver.
@@ -1323,6 +2180,7 @@
             </summary>
             <param name="driver"></param>
             <param name="eventName"></param>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.WaitForAnyEvent(OpenQA.Selenium.IWebDriver,System.Collections.Generic.IEnumerable{System.String},System.Nullable{System.TimeSpan})">
             <summary>
@@ -1339,6 +2197,57 @@
             <param name="driver"></param>
             <param name="eventNames"></param>
             <param name="timeout">Defaults to 30 seconds.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.GetFocusedElements(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Returns elements that matched the '*:focus' css selector and
+            optionally are filtered by the <c>matchingSelector</c>.
+            </summary>
+            <param name="driver"></param>
+            <param name="matchingSelector"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.GetHoveredElements(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.By)">
+            <summary>
+            Returns elements that match the css selector "*:hover" and
+            optionally additionally match the <c>matchingSelector</c> if
+            provided.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="matchingSelector">Filters the results.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.GetHighlightedText(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Gets highlighted text.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns>
+            The highlighted text content (no element tags but does
+            include new lines).
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.Capabilities(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Capabilities object for the driver. Returns null if not implemented
+            by the driver.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.AllowsFileDetection(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Returns null if the driver doesn't implement IFileDetector.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.SessionId(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Returns the session id.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
             <summary>
@@ -1465,6 +2374,18 @@
             <param name="element">The element.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.Is(OpenQA.Selenium.IWebElement,OpenQA.Selenium.By)">
+            <summary>
+            Determines whether the element matches the selector. Similar to
+            jQuery.is(...).
+            </summary>
+            <param name="element">The element.</param>
+            <param name="selector">The selector.</param>
+            <returns>
+              <c>true</c> if the element matches the specified selector;
+              otherwise, <c>false</c>.
+            </returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
             <summary>
             Extensions for WebDriverWait.
@@ -1581,6 +2502,369 @@
             // Instantiate and initialize in one (albeit long) line.
             var page = pageObjectFactory.PreparePage(new YourPage(arg1, arg2));
             </example>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Js.JavaScript">
+            <summary>
+            Base class for writing javascript.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScript"/> class.
+            </summary>
+            <param name="script">The script.</param>
+            <exception cref="T:System.ArgumentNullException">script</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScript"/> class.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.JavaScript.Arguments">
+            <summary>
+            Gets or sets the arguments passed into the script when executing
+            it.
+            </summary>
+            <value>
+            The arguments.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.JavaScript.Script">
+            <summary>
+            The script to be executed.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.JavaScript.IsAsync">
+            <summary>
+            Gets or sets a value indicating whether this script is
+            asynchronous. This changes how Execute() operates, if true then the
+            script will be executed using ExecuteAsyncScript(...), if false
+            then ExecuteScript(...).
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.Format">
+            <summary>
+            Formats the script.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.Execute(OpenQA.Selenium.IJavaScriptExecutor)">
+            <summary>
+            Executes the script.
+            </summary>
+            <param name="executor">The executor.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.ExecuteWithResult``1(OpenQA.Selenium.IJavaScriptExecutor)">
+            <summary>
+            Executes the with result. Accepts the following type arguments:
+            <c>int</c>, <c>double</c>, <c>long</c>, <c>decimal</c>,
+            <c>string</c>, <c>bool</c>, and <c>IWebElement</c>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="executor">The executor.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException">
+            Thrown if a typeargument is passed in that's not supported.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.TryExecuteWithResult``1(OpenQA.Selenium.IJavaScriptExecutor,``0@,System.Exception@)">
+            <summary>
+            Tries to execute with result.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="executor">The executor.</param>
+            <param name="result">The result.</param>
+            <param name="exception">The exception.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.TryExecute(OpenQA.Selenium.IJavaScriptExecutor,System.Exception@)">
+            <summary>
+            Tries the execute.
+            </summary>
+            <param name="executor">The executor.</param>
+            <param name="exception">The exception.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.ToString">
+            <summary>
+            Converts to string.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.Clean(System.String)">
+            <summary>
+            Removes all line breaks, tabs, and comments in a script. WARNING:
+            Make sure all comments are removed prior to calling this.
+            </summary>
+            <param name="script">The script.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.RemoveComments(System.String)">
+            <summary>
+            Removes the comments.
+            </summary>
+            <param name="script">The script.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.op_Explicit(ApertureLabs.Selenium.Js.JavaScript)~System.String">
+            <summary>
+            Performs an explicit conversion from <see cref="T:ApertureLabs.Selenium.Js.JavaScript"/> to
+            <see cref="T:System.String"/>.
+            </summary>
+            <param name="js">The js.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.op_Addition(ApertureLabs.Selenium.Js.JavaScript,ApertureLabs.Selenium.Js.JavaScript)">
+            <summary>
+            Implements the operator +. Returns a new JavaScript object with
+            the Script property being set to the result of (a + b).
+            </summary>
+            <param name="a">a.</param>
+            <param name="b">The b.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Js.SeleniumJavaScriptPromiseStatus">
+            <summary>
+            Statuses for javascript promises.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.SeleniumJavaScriptPromiseStatus.NotFinished">
+            <summary>
+            The promise never finished.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.SeleniumJavaScriptPromiseStatus.Resolved">
+            <summary>
+            The promise resolved successfully.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.SeleniumJavaScriptPromiseStatus.Rejected">
+            <summary>
+            The promise was rejected.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Js.PromiseBody">
+            <summary>
+            A helper class for creating a javascript promise body for selenium.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Ctor.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.#ctor(OpenQA.Selenium.IWebDriver,System.String)">
+            <summary>
+            Ctor. Sets the PromiseBody.
+            </summary>
+            <param name="driver"></param>
+            <param name="promiseBody"></param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Created">
+            <summary>
+            Used to determine if the promise was created.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.PromiseWrapper">
+            <summary>
+            The wrapper around the script.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.PromiseId">
+            <summary>
+            Id of the created promise. Returns -1 if the promise hasn't been
+            'created' yet.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.IsAsync">
+            <summary>
+            Gets or sets a value indicating whether this script is
+            asynchronous. This changes how Execute() operates, if true then the
+            script will be executed using ExecuteAsyncScript(...), if false
+            then ExecuteScript(...).
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Arguments">
+            <summary>
+            Gets or sets the arguments passed into the script when executing
+            it.
+            </summary>
+            <value>
+            The arguments.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.ResolveScript">
+            <summary>
+            Name of the function to resolve the promise.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.RejectScript">
+            <summary>
+            Name of the function to reject the script.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.ArgumentsScript">
+            <summary>
+            Name of the variable the initial arguments are assigned to. Since
+            any parameters passed into the script will only be assigned to the
+            initial arguments object, a variable is created to reference the
+            intial arguments to access it from the Promise.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Script">
+            <summary>
+            The body of the promise.
+            Supports the following 'default' tokens:
+            {resolve} - To resolve the promise (need to call with paranthesis IE:
+                {resolve}(23) will resolve 23).
+            {reject} - To reject the promise need to call with paranthesis IE:
+                {reject}(43) will reject and pass the value 43).
+            {args} - To refer to the arguments array of the intial function.
+                * Attempting to reference the arguments object by name in the
+                    script will return the promises arguments and not what was
+                    passed in.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.ResolveToken">
+            <summary>
+            Gets or sets the resolve token.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.RejectToken">
+            <summary>
+            Gets or sets the reject token.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.ArgsToken">
+            <summary>
+            Gets or sets the arguments token.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Resolved">
+            <summary>
+            Checks if the promise was resolved.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Rejected">
+            <summary>
+            Checks if the promise was rejected.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Finished">
+            <summary>
+            Checks if the promise was resolved or rejected.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.PromiseBody.IsStale">
+            <summary>
+            Checks if the context the promise was saved in is still valid. IE:
+            navigating off the page will make this a stale promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.Reject``1(``0)">
+            <summary>
+            Attempts to reject the promise with a value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.Reject">
+            <summary>
+            Attempts to reject the promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.Resolve``1(``0)">
+            <summary>
+            Attempts to resolve the promise with a value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.Resolve">
+            <summary>
+            Attempts to resolve the promise.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.GetPromiseStatus">
+            <summary>
+            Returns the status of the promise. Throws an exception if the
+            promise was never created.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.Wait(System.Nullable{System.TimeSpan})">
+            <summary>
+            Waits for the promise to either resolve or reject.
+            </summary>
+            <param name="wait">Defaults to thirty seconds.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.ToString">
+            <summary>
+            Converts to string.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.Execute(OpenQA.Selenium.IJavaScriptExecutor)">
+            <summary>
+            This will create the js promise in the drivers active window and
+            sets the PromiseId. Can only call this method once. Will throw an
+            exception if the PromiseBody was never set.
+            </summary>
+            <param name="executor">The executor.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Js.SetTimeout">
+            <summary>
+            Convience class for executing scripts in a setTimeout context.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.SetTimeout.#ctor">
+            <summary>
+            Ctor.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.SetTimeout.IsAsync">
+            <summary>
+            Will always be true.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.SetTimeout.Script">
+            <summary>
+            The script to be executed.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Js.SetTimeout.Timeout">
+            <summary>
+            Gets or sets the timeout.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.MajorWebDriver">
+            <summary>
+            Enum of common web drivers.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Chrome">
+            <summary>
+            Chrome.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Edge">
+            <summary>
+            Edge.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Firefox">
+            <summary>
+            Firefox.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.MajorWebDriver.InternetExplorer">
+            <summary>
+            Internet explorer.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.Models.NopModels.INopAddress">
             <summary>
@@ -1815,6 +3099,11 @@
             The url of the webpage.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.IPageObject.WindowHandle">
+            <summary>
+            Gets the window handle the page was originally loaded on.
+            </summary>
+        </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.IPageObject.IsStale">
             <summary>
             Use to determine if a PageObject is still 'valid'.
@@ -1872,7 +3161,8 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageComponent.Load">
             <summary>
-            If overloaded don't forget to call base.Load().
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
             </summary>
             <returns></returns>
         </member>
@@ -1883,31 +3173,36 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.#ctor(OpenQA.Selenium.IWebDriver)">
             <summary>
-                If passing in an EventFiringWebDriver event listeners will be
-                added.
+            If passing in an EventFiringWebDriver event listeners will be
+            added.
             </summary>
             <param name="driver"></param>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WrappedDriver">
             <summary>
-                Gets the OpenQA.Selenium.IWebDriver used to find this element.
+            Gets the OpenQA.Selenium.IWebDriver used to find this element.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.Uri">
             <summary>
-                The url this page uses.
+            The url this page uses.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WindowHandle">
+            <summary>
+            Gets the window handle the page was originally loaded on.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.IsStale">
             <summary>
-            By default will check the url to see if it starts with Uri.
+            By default will to see if the pages original window handle still
+            exists and that windows url matches the Uri.
             </summary>
             <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Load">
             <summary>
             If overridding this don't forget to call base.Load().
-            
             NOTE: Will navigate to the pages url if the current drivers url
             is empty.
             </summary>
@@ -1932,246 +3227,87 @@
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose">
             <inheritdoc/>
         </member>
-        <member name="T:ApertureLabs.Selenium.PageObjects.WindowSize">
+        <member name="T:ApertureLabs.Selenium.Properties.Resources">
             <summary>
-            Contains sizes for windows.
+              A strongly-typed resource class, for looking up localized strings, etc.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultDesktop">
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.ResourceManager">
             <summary>
-            Default size for desktop (1001, 999).
+              Returns the cached ResourceManager instance used by this class.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultTablet">
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.Culture">
             <summary>
-             Default size for tablet (768, 999).
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.PageObjects.WindowSize.DefaultMobile">
-            <summary>
-            Default size for mobile (120, 999).
-            </summary>
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.jsonFormatterCallback">
+             <summary>
+               Looks up a localized string similar to function jsonFormatter (key, value) {
+            
+                // Ignore null/undefined values.
+                if (value === null || value === undefined) {
+                    return undefined;
+                }
+            
+                var typeOfValue = typeof value;
+            
+                // Only include strings, numbers, and booleans.
+                if (typeOfValue === &quot;string&quot;
+                    || typeOfValue === &quot;number&quot;
+                    || typeOfValue === &quot;boolean&quot;) {
+                    return value;
+                } else {
+                    return undefined;
+                }
+            }.
+             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.PageObjects.WindowSize.RandomSize(System.Int32,System.Int32)">
-            <summary>
-            Generates a random size in the given range. The height is always
-            999.
-            </summary>
-            <param name="minWidth"></param>
-            <param name="maxWidth"></param>
-            <returns></returns>
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.tinyMCEUtilities">
+             <summary>
+               Looks up a localized string similar to var tinyMCEUtilities = (function() {
+            	var obj = {};
+            
+            	/**
+            	 * Goes thru each editor in tinyMCE.editors and call matches each editors
+            	 * getElement() against the passed in element.
+            	 * @param {Element} element - The element used to match against
+            	 * Editor.getElement().
+            	 * @returns {Editor} The tinyMCE.Editor.
+            	 */
+            	obj.getEditor = function (element) {
+            		if (element === null || element === undefined) {
+            			throw new Error(&apos;Argument element cannot be null.&apos;);
+            		}
+            
+            		var editor = null;
+            
+            		for [rest of string was truncated]&quot;;.
+             </summary>
         </member>
-        <member name="T:ApertureLabs.Selenium.ScopedBy">
-            <summary>
-            Similar to the normal <code>OpenQA.Selenium.By</code> class but will
-            always search from the passed in searchContext.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Ctor. To create an instance use the static method FromScoped(...).
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Ctor. Instead fo passing in an instance of ISearchContext, pass in a
-            selector that will fetch the ISearchContext and then the subSelector
-            will search for the child elements.
-            </summary>
-            <param name="contextSelector"></param>
-            <param name="subSelectors"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElement(OpenQA.Selenium.ISearchContext)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FindElements(OpenQA.Selenium.ISearchContext)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Creates a 'scoped' selector which will always use the passed in
-            search context instead of what the current context is for the
-            driver.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Creates a 'scoped' selector which will first find all elements
-            that match the <code>searchContext</code> selector and then keep
-            applying the <code>subSelectors</code> to those elements.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ScopedBy.FromScope(OpenQA.Selenium.By,OpenQA.Selenium.By[])">
-            <summary>
-            Creates a 'scoped' selector which will first find all elements
-            that match the <code>searchContext</code> selector and then keep
-            applying the <code>subSelectors</code> to those elements.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus">
-            <summary>
-            Statuses for javascript promises.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.NotFinished">
-            <summary>
-            The promise never finished.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.Resolved">
-            <summary>
-            The promise resolved successfully.
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.SeleniumJavaScriptPromiseStatus.Rejected">
-            <summary>
-            The promise was rejected.
-            </summary>
-        </member>
-        <member name="T:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody">
-            <summary>
-            A helper class for creating a javascript promise body for selenium.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.#ctor">
-            <summary>
-            Ctor.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.#ctor(System.String)">
-            <summary>
-            Ctor. Sets the PromiseBody.
-            </summary>
-            <param name="promiseBody"></param>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Created">
-            <summary>
-            Used to determine if the promise was created.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseWrapper">
-            <summary>
-            The wrapper around the script.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseId">
-            <summary>
-            Id of the created promise. Returns -1 if the promise hasn't been
-            'created' yet.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.PromiseBody">
-            <summary>
-            The body of the promise. All <c>{</c> and <c>}</c> MUST be escaped.
-            Supports the following tokens:
-            {0} - To resolve the promise (need to call with paranthesis IE:
-                {0}(23) will resolve 23).
-            {1} - To reject the promise need to call with paranthesis IE:
-                {1}(43) will reject and pass the value 43).
-            {2} - To refer to the arguments array of the intial function.
-                * Attempting to reference the arguments object by name in the
-                    script will return the promises arguments and not what was
-                    passed in.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.ResolveScript">
-            <summary>
-            Name of the function to resolve the promise.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.RejectScript">
-            <summary>
-            Name of the function to reject the script.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.ArgumentsScript">
-            <summary>
-            Name of the variable the initial arguments are assigned to. Since
-            any parameters passed into the script will only be assigned to the
-            initial arguments object, a variable is created to reference the
-            intial arguments to access it from the Promise.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolved">
-            <summary>
-            Checks if the promise was resolved.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Rejected">
-            <summary>
-            Checks if the promise was rejected.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Finished">
-            <summary>
-            Checks if the promise was resolved or rejected.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.IsStale">
-            <summary>
-            Checks if the context the promise was saved in is still valid. IE:
-            navigating off the page will make this a stale promise.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.CreateScript(OpenQA.Selenium.IWebDriver,System.Object[])">
-            <summary>
-            This will create the js promise in the drivers active window and
-            sets the PromiseId. Can only call this method once. Will throw an
-            exception if the PromiseBody was never set.
-            </summary>
-            <param name="driver"></param>
-            <param name="args"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Reject``1(``0)">
-            <summary>
-            Attempts to reject the promise with a value.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Reject">
-            <summary>
-            Attempts to reject the promise.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolve``1(``0)">
-            <summary>
-            Attempts to resolve the promise with a value.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Resolve">
-            <summary>
-            Attempts to resolve the promise.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.GetPromiseStatus">
-            <summary>
-            Returns the status of the promise. Throws an exception if the
-            promise was never created.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.Wait(System.Nullable{System.TimeSpan})">
-            <summary>
-            Waits for the promise to either resolve or reject.
-            </summary>
-            <param name="wait">Defaults to thirty seconds.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody.op_Implicit(System.String)~ApertureLabs.Selenium.SeleniumJavaScriptPromiseBody">
-            <summary>
-            Calls the ctor with the string as the argument.
-            </summary>
-            <param name="script"></param>
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.waitForEvent">
+             <summary>
+               Looks up a localized string similar to var eventName = arguments[0];
+            var callback = arguments[arguments.length - 1];
+            
+            if (eventName == null || typeof eventName !== &quot;string&quot;) {
+                throw new Error(&quot;The eventName was null.&quot;);
+            } else if (callback == null) {
+                throw new Error(&quot;The callback was null.&quot;);
+            }
+            
+            function handler(evt) {
+                document.removeEventListener(eventName, handler);
+            
+                var json = JSON.stringify(
+                    evt,
+                    function (key, value) {
+            
+                        // Ignore null/undefined values.
+                        if (value === nu [rest of string was truncated]&quot;;.
+             </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.TabHelper">
             <summary>
@@ -2300,26 +3436,664 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.MajorWebDriver">
+        <member name="T:ApertureLabs.Selenium.HubStatus">
             <summary>
-            Enum of common web drivers.
+            Implementation of IHubStatus.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.IHubStatus" />
+        </member>
+        <member name="P:ApertureLabs.Selenium.HubStatus.Ready">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:ApertureLabs.Selenium.IHubStatus" /> is ready.
+            </summary>
+            <value>
+              <c>true</c> if ready; otherwise, <c>false</c>.
+            </value>
+            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state" />
+        </member>
+        <member name="P:ApertureLabs.Selenium.HubStatus.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.IHubStatus">
+            <summary>
+            Status returns information about whether a remote end is in a state
+            in which it can create new sessions, but may additionally include arbitrary meta information that is specific to the implementation.
+            </summary>
+            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-status"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.IHubStatus.Ready">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:ApertureLabs.Selenium.IHubStatus"/> is ready.
+            </summary>
+            <value>
+              <c>true</c> if ready; otherwise, <c>false</c>.
+            </value>
+            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.IHubStatus.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumHub">
+            <summary>
+            SeleniumHub.
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumHub"/> class.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Chrome">
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.#ctor(ApertureLabs.Selenium.SeleniumHubOptions)">
             <summary>
-            Chrome.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumHub"/> class.
+            </summary>
+            <param name="seleniumHubOptions">The selenium hub options.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHub.Uri">
+            <summary>
+            Gets the URI.
+            </summary>
+            <value>
+            The URI.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHub.NodeRegisterUrl">
+            <summary>
+            Gets the node register URL.
+            </summary>
+            <value>
+            The node register URL.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.RegisterNode(ApertureLabs.Selenium.SeleniumNodeOptions)">
+            <summary>
+            Registers the node. Will over-write the
+            <c>SeleniumNodeOptions.Hub</c> property with the hubs
+            'register node' url.
+            </summary>
+            <param name="seleniumNodeOptions">The selenium node.</param>
+            <returns>The created selenium node.</returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.UnregisterNode(ApertureLabs.Selenium.SeleniumNode)">
+            <summary>
+            Uns the register node.
+            </summary>
+            <param name="seleniumNode">The selenium node.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetRegisteredNodes">
+            <summary>
+            Gets the registered nodes.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetSessions">
+            <summary>
+            Gets the sessions.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetStatus">
+            <summary>
+            Gets the status.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Stop">
+            <summary>
+            Shuts down the hub and all registered nodes.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Edge">
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Start">
             <summary>
-            Edge.
+            Starts this instance.
+            </summary>
+            <exception cref="T:System.Exception">Failed to start the hub process.</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetCommandLineArguments">
+            <summary>
+            Creates the command line arguments.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.GetLogs">
+            <summary>
+            Gets the logs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHub.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing,
+            releasing, or resetting unmanaged resources.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.MajorWebDriver.Firefox">
+        <member name="T:ApertureLabs.Selenium.SeleniumHubOptions">
             <summary>
-            Firefox.
+            Options for the selenium hub.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.AlwaysCreateHub">
+            <summary>
+            Gets or sets the always create hub.
+            </summary>
+            <value>
+            The always create hub.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.Host">
+            <summary>
+            IP or hostname : usually determined automatically. Most commonly
+            useful in exotic network configurations(e.g.network with VPN).
+            </summary>
+            <value>
+            The host.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.PortNumber">
+            <summary>
+            Gets or sets the port number.
+            </summary>
+            <value>
+            The port number.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.ShutDownHubIfRemote">
+            <summary>
+            Gets or sets whether to shut down the hub if it's a remote process
+            when the hub is disposed.
+            </summary>
+            <value>
+            The shut down hub if remote.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.UseLocalHubIfAlreadyRunning">
+            <summary>
+            Gets or sets the use local hub if already running.
+            </summary>
+            <value>
+            The use local hub if already running.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumHubOptions.Servlets">
+            <summary>
+            Gets or sets the servlets.
+            </summary>
+            <value>
+            The servlets.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumHubOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumLogEntry">
+            <summary>
+            An entry outputted by the selenium-server-standalone.jar.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.Action">
+            <summary>
+            Gets or sets the action.
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.DateTime">
+            <summary>
+            Gets or sets the date time.
+            </summary>
+            <value>
+            The date time.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.IsException">
+            <summary>
+            Gets or sets a value indicating whether this instance is exception.
+            </summary>
+            <value>
+              <c>true</c> if this instance is exception; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.LogType">
+            <summary>
+            Gets or sets the type of the log.
+            </summary>
+            <value>
+            The type of the log.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumLogEntry.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumLogEntry.ParseString(System.String)">
+            <summary>
+            Parses the string.
+            </summary>
+            <param name="logEntry">The log entry.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumNode">
+            <summary>
+            Used for creating selenium nodes.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumNode"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.#ctor(ApertureLabs.Selenium.SeleniumNodeOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumNode"/> class.
+            </summary>
+            <param name="seleniumNodeOptions">The selenium node options.</param>
+            <exception cref="T:System.ArgumentNullException">seleniumNodeOptions</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Start">
+            <summary>
+            Starts the node process.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Stop">
+            <summary>
+            Stops this instance.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.GetLogs">
+            <summary>
+            Gets the logs.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.GetCommandLineArguments">
+            <summary>
+            Creates the command line arguments.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNode.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumNodeOptions">
+            <summary>
+            Options for configuring a <c>SeleniumNode</c>.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.BrowserTimeout">
+            <summary>
+            In seconds : number of seconds a browser session is allowed to
+            hang while a WebDriver command is running
+            (example: driver.get(url)). If the timeout is reached while a
+            WebDriver command is still processing, the session will
+            quit.Minimum value is 60. An unspecified, zero, or negative value
+            means wait indefinitely.If a node does not specify it, the hub
+            value will be used.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Capabilities">
+            <summary>
+            Comma separated Capability values.
+            </summary>
+            <example>
+            Example: -capabilities
+            browserName=firefox,platform=linux -capabilities
+            browserName = chrome, platform = linux 
+            </example>
+            <see cref="!:https://github.com/SeleniumHQ/selenium/blob/a61cc22fd053ea827cf39aa4065ae4912bb6af2a/java/server/src/org/openqa/grid/common/defaults/DefaultNodeWebDriver.json"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.CleanUpCycle">
+            <summary>
+            In ms : specifies how often the hub will poll running proxies
+            for timed-out (i.e.hung) threads.Must also specify "timeout" option
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.DownPollingLimit">
+            <summary>
+            Node is marked as "down" if the node hasn't responded after the
+            number of checks specified in [downPollingLimit].
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.EnablePlatformVerification">
+            <summary>
+            Whether or not to drop capabilities that does not belong to the
+            current platform family.Defaults to true.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Host">
+            <summary>
+            IP or hostname : usually determined automatically. Most commonly
+            useful in exotic network configurations(e.g.network with VPN)
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Hub">
+            <summary>
+            The url that will be used to post the registration request. This
+            option takes precedence over -hubHost and -hubPort options.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.HubHost">
+            <summary>
+            IP or hostname : the host address of the hub we're attempting to
+            register with. If -hub is specified the -hubHost is determined from
+            it.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.HubPort">
+            <summary>
+            The port of the hub we're attempting to register with. If -hub is
+            specified the -hubPort is determined from it.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Id">
+            <summary>
+            Optional unique identifier of the remoteHost, when not specified.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.MaxSession">
+            <summary>
+            Max number of tests that can run at the same time on the node,
+            irrespective of the browser used
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.NodeConfig">
+            <summary>
+            Filename : JSON configuration file for the node. Overrides default
+            values
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.NodePolling">
+            <summary>
+            In ms : specifies how often the hub will poll to see if the node is
+            still responding.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.NodeStatusCheckTimeout">
+            <summary>
+            In ms : connection/socket timeout, used for node "nodePolling"
+            check.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Port">
+            <summary>
+            The port number the server will use.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Proxy">
+            <summary>
+            The class used to represent the node proxy. Default is
+            [org.openqa.grid.selenium.proxy.DefaultRemoteProxy].
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.Register">
+            <summary>
+            If specified, node will attempt to re-register itself automatically
+            with its known grid hub if the hub becomes unavailable.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.RegisterCycle">
+            <summary>
+            In ms : specifies how often the node will try to register itself
+            again. Allows administrator to restart the hub without restarting
+            (or risk orphaning) registered nodes. Must be specified with the
+            "-register" option.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.RemoteHost">
+            <summary>
+            URL: Address to report to the hub. Used to override default
+            (http://&lt;host&gt;:&lt;port&gt;).
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.SessionTimeout">
+            <summary>
+            In seconds : Specifies the timeout before the server automatically
+            kills a session that hasn't had any activity in the last X seconds.
+            The test slot will then be released for another test to use. This
+            is typically used to take care of client crashes. For grid hub/node
+            roles, cleanUpCycle must also be set. If a node does not specify
+            it, the hub value will be used.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.UnregisterIfStillDownAfter">
+            <summary>
+            In ms : if the node remains down for more than
+            [unregisterIfStillDownAfter] ms, it will stop attempting to
+            re-register from the hub.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumNodeOptions.Default">
+            <summary>
+            Defaults this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumServerStandAloneManager">
+            <summary>
+            Base class which adds protected methods for using the
+            selenium-server-standalone{x}.{y}.{z}.jar.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumServerStandAloneManager"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetOnlineVersions">
+            <summary>
+            Retrieves all online versions of the standalone jar file. They're
+            ordered the newest version as first and the oldest as last.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetLocalVersions">
+            <summary>
+            Retrieves all local versions of the standalone jar file.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.InstallVersion(System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Int32}})">
+            <summary>
+            Installs the version of the standalone jar file.
+            </summary>
+            <param name="version">
+            The version to install. If null then the latest version will be
+            installed.
+            </param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetLatestLocalStandalone">
+            <summary>
+            Gets the latest local standalone version.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.GetLocalFileNameOfVersion(System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Int32}})">
+            <summary>
+            Gets the local file name of version.
+            </summary>
+            <param name="version">The version.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandAloneManager.HasLocalStandaloneJarFile">
+            <summary>
+            Determines whether there are any standalone jar files available
+            locally.
+            </summary>
+            <returns>
+              <c>true</c> if [has local standalone jar file]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumServerStandaloneOptions">
+            <summary>
+            Common options for both the hub and node options.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumServerStandaloneOptions.Log">
+            <summary>
+            Gets or sets the filename of the log.
+            </summary>
+            <value>
+            The log.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.SeleniumServerStandaloneOptions.JarFileName">
+            <summary>
+            Gets or sets the name of the jar file which will be used to
+            execute the file.
+            </summary>
+            <value>
+            The name of the jar file.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1">
+            <summary>
+            Base class for the <c>SeleniumHub</c> and <c>SeleniumNode</c> classes.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.options">
+            <summary>
+            The options.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.wrappedProcess">
+            <summary>
+            The wrapped process.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1"/> class.
+            </summary>
+            <param name="options">The options.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetOptions">
+            <summary>
+            Gets the options.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.IsRunning">
+            <summary>
+            Determines whether this instance is running.
+            </summary>
+            <returns>
+              <c>true</c> if this instance is running; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetLogs">
+            <summary>
+            Gets the logs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.Start">
+            <summary>
+            Starts this instance.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.Stop">
+            <summary>
+            Stops this instance.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetCommandLineArguments">
+            <summary>
+            Creates the command line arguments.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.AddCommand``1(System.Text.StringBuilder,System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Func{``0,System.String})">
+            <summary>
+            Adds the command.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="commandLineArgs">The command line arguments.</param>
+            <param name="property">The property.</param>
+            <param name="customFormatter">The custom formatter.</param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.AddCommand(System.Text.StringBuilder,System.String,System.String)">
+            <summary>
+            Adds the command.
+            </summary>
+            <param name="commandLineArgs">The command line arguments.</param>
+            <param name="commandName">Name of the command.</param>
+            <param name="commandValue">The command value.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.IsLocalPortBusy(System.Int32,System.TimeSpan)">
+            <summary>
+            Determines whether the local port has a tcp listener. If the port
+            less than or equal to zero false is returned.
+            </summary>
+            <param name="port">The port.</param>
+            <param name="timeout">The timeout.</param>
+            <returns>
+              <c>true</c> if [is local port busy] [the specified port]; otherwise, <c>false</c>.
+            </returns>
+            <see cref="!:https://stackoverflow.com/a/38258154"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetFreePort">
+            <summary>
+            Gets the free port.
+            </summary>
+            <returns></returns>
+            <see cref="!:https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.tcplistener.localendpoint?view=netstandard-2.0#remarks"/>
+            <see cref="!:https://stackoverflow.com/a/150974"/>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.ExtractPort(System.String)">
+            <summary>
+            Extracts the port. Returns null if the url is null or doesn't
+            contain a port.
+            </summary>
+            <param name="url">The URL.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.GetLastLine">
+            <summary>
+            Gets the last line of a file.
+            </summary>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ApertureLabs.Selenium.SeleniumServerStandaloneWrapper`1.WaitForFile(System.String,System.TimeSpan,System.TimeSpan)" -->
         <member name="T:ApertureLabs.Selenium.WebDriverFactory">
             <summary>
             Responsible for creation and disposing of the various webdrivers.
@@ -2328,8 +4102,30 @@
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor">
             <summary>
-            Ctor
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/>
+            class. NOTE: This will use STANDALONE mode. It won't create a hub
+            and node. This generally is quicker for running tests sequentially
+            but slower for parallel stuff.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.#ctor(ApertureLabs.Selenium.SeleniumHubOptions,ApertureLabs.Selenium.SeleniumNodeOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebDriverFactory"/>
+            class. NOTE: This will create a hub and node process for better
+            performance when running tests in parallel.
+            </summary>
+            <param name="seleniumHubOptions">The selenium hub options.</param>
+            <param name="seleniumNodeOptions">The selenium node options.</param>
+            <exception cref="T:System.ArgumentNullException">
+            seleniumHubOptions
+            or
+            seleniumNodeOptions
+            </exception>
+            <exception cref="T:System.Exception">
+            Failed to start the hub process.
+            or
+            Failed to start the node process.
+            </exception>
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.Finalize">
             <summary>
@@ -2349,11 +4145,221 @@
             </param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.WebDriverFactory.TrackDriver(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Allows tracking of an externally created webdriver.
+            </summary>
+            <param name="driver">The driver.</param>
+        </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.Dispose(System.Boolean)">
             <inheritdoc/>
         </member>
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.Dispose">
             <inheritdoc/>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.BaseElement">
+            <summary>
+            Base class for element wrappers.
+            </summary>
+            <seealso cref="T:OpenQA.Selenium.Internal.IWrapsElement" />
+            <seealso cref="T:OpenQA.Selenium.IWebElement" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebElements.BaseElement"/> class.
+            </summary>
+            <param name="element">The element.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.WrappedElement">
+            <summary>
+            Gets the <see cref="T:OpenQA.Selenium.IWebElement" /> wrapped by this object.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.TagName">
+            <summary>
+            Gets the tag name of this element.
+            </summary>
+            <remarks>
+            The <see cref="P:OpenQA.Selenium.IWebElement.TagName" /> property returns the tag name of the
+            element, not the value of the name attribute. For example, it will return
+            "input" for an element specified by the HTML markup &lt;input name="foo" /&gt;.
+            </remarks>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.Text">
+            <summary>
+            Gets the innerText of this element, without any leading or trailing whitespace,
+            and with other whitespace collapsed.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.Enabled">
+            <summary>
+            Gets a value indicating whether or not this element is enabled.
+            </summary>
+            <remarks>
+            The <see cref="P:OpenQA.Selenium.IWebElement.Enabled" /> property will generally
+            return <see langword="true" /> for everything except explicitly disabled input elements.
+            </remarks>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.Selected">
+            <summary>
+            Gets a value indicating whether or not this element is selected.
+            </summary>
+            <remarks>
+            This operation only applies to input elements such as checkboxes,
+            options in a select element and radio buttons.
+            </remarks>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.Location">
+            <summary>
+            Gets a <see cref="T:System.Drawing.Point" /> object containing the coordinates of the upper-left corner
+            of this element relative to the upper-left corner of the page.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.Size">
+            <summary>
+            Gets a <see cref="P:OpenQA.Selenium.IWebElement.Size" /> object containing the height and width of this element.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.WebElements.BaseElement.Displayed">
+            <summary>
+            Gets a value indicating whether or not this element is displayed.
+            </summary>
+            <remarks>
+            The <see cref="P:OpenQA.Selenium.IWebElement.Displayed" /> property avoids the problem
+            of having to parse an element's "style" attribute to determine
+            visibility of an element.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.Clear">
+            <summary>
+            Clears the content of this element.
+            </summary>
+            <remarks>
+            If this element is a text entry element, the <see cref="M:OpenQA.Selenium.IWebElement.Clear" />
+            method will clear the value. It has no effect on other elements. Text entry elements
+            are defined as elements with INPUT or TEXTAREA tags.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.Click">
+            <summary>
+            Clicks this element.
+            </summary>
+            <remarks>
+            <para>
+            Click this element. If the click causes a new page to load, the <see cref="M:OpenQA.Selenium.IWebElement.Click" />
+            method will attempt to block until the page has loaded. After calling the
+            <see cref="M:OpenQA.Selenium.IWebElement.Click" /> method, you should discard all references to this
+            element unless you know that the element and the page will still be present.
+            Otherwise, any further operations performed on this element will have an undefined.
+            behavior.
+            </para>
+            <para>
+            If this element is not clickable, then this operation is ignored. This allows you to
+            simulate a users to accidentally missing the target when clicking.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.FindElement(OpenQA.Selenium.By)">
+            <summary>
+            Finds the first <see cref="T:OpenQA.Selenium.IWebElement" /> using the given method.
+            </summary>
+            <param name="by">The locating mechanism to use.</param>
+            <returns>
+            The first matching <see cref="T:OpenQA.Selenium.IWebElement" /> on the current context.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.FindElements(OpenQA.Selenium.By)">
+            <summary>
+            Finds all <see cref="T:OpenQA.Selenium.IWebElement">IWebElements</see> within the current context
+            using the given mechanism.
+            </summary>
+            <param name="by">The locating mechanism to use.</param>
+            <returns>
+            A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> of all <see cref="T:OpenQA.Selenium.IWebElement">WebElements</see>
+            matching the current criteria, or an empty list if nothing matches.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.GetAttribute(System.String)">
+            <summary>
+            Gets the value of the specified attribute for this element.
+            </summary>
+            <param name="attributeName">The name of the attribute.</param>
+            <returns>
+            The attribute's current value. Returns a <see langword="null" /> if the
+            value is not set.
+            </returns>
+            <remarks>
+            The <see cref="M:OpenQA.Selenium.IWebElement.GetAttribute(System.String)" /> method will return the current value
+            of the attribute, even if the value has been modified after the page has been
+            loaded. Note that the value of the following attributes will be returned even if
+            there is no explicit attribute on the element:
+            <list type="table"><listheader><term>Attribute name</term><term>Value returned if not explicitly specified</term><term>Valid element types</term></listheader><item><description>checked</description><description>checked</description><description>Check Box</description></item><item><description>selected</description><description>selected</description><description>Options in Select elements</description></item><item><description>disabled</description><description>disabled</description><description>Input and other UI elements</description></item></list>
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.GetCssValue(System.String)">
+            <summary>
+            Gets the value of a CSS property of this element.
+            </summary>
+            <param name="propertyName">The name of the CSS property to get the value of.</param>
+            <returns>
+            The value of the specified CSS property.
+            </returns>
+            <remarks>
+            The value returned by the <see cref="M:OpenQA.Selenium.IWebElement.GetCssValue(System.String)" />
+            method is likely to be unpredictable in a cross-browser environment.
+            Color values should be returned as hex strings. For example, a
+            "background-color" property set as "green" in the HTML source, will
+            return "#008000" for its value.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.GetProperty(System.String)">
+            <summary>
+            Gets the value of a JavaScript property of this element.
+            </summary>
+            <param name="propertyName">The name JavaScript the JavaScript property to get the value of.</param>
+            <returns>
+            The JavaScript property's current value. Returns a <see langword="null" /> if the
+            value is not set or the property does not exist.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.SendKeys(System.String)">
+            <summary>
+            Simulates typing text into the element.
+            </summary>
+            <param name="text">The text to type into the element.</param>
+            <remarks>
+            The text to be typed may include special characters like arrow keys,
+            backspaces, function keys, and so on. Valid special keys are defined in
+            <see cref="T:OpenQA.Selenium.Keys" />.
+            </remarks>
+            <seealso cref="T:OpenQA.Selenium.Keys" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.Submit">
+            <summary>
+            Submits this element to the web server.
+            </summary>
+            <remarks>
+            If this current element is a form, or an element within a form,
+            then this will be submitted to the web server. If this causes the current
+            page to change, then this method will block until the new page is loaded.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.BaseElement.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement">
             <summary>
@@ -2365,54 +4371,6 @@
             Ctor.
             </summary>
             <param name="element"></param>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.TagName">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Text">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Enabled">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Selected">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Location">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Size">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Displayed">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Clear">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Click">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.FindElement(OpenQA.Selenium.By)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.FindElements(OpenQA.Selenium.By)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.GetAttribute(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.GetCssValue(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.GetProperty(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.SendKeys(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Submit">
-            <inheritdoc/>
         </member>
         <member name="M:ApertureLabs.Selenium.WebElements.Canvas.CanvasElement.Draw(System.Drawing.Point,System.Drawing.Point)">
             <summary>
@@ -2441,27 +4399,6 @@
             Thrown if the element isn't an iframe.
             </exception>
         </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.TagName">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Text">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Enabled">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Selected">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Location">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Size">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Displayed">
-            <inheritdoc/>
-        </member>
         <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.InFrameAction(System.Action)">
             <summary>
             Executes an action in the context of the IFrame.
@@ -2486,33 +4423,6 @@
             <summary>
             Exits the iframe only if previously entered.
             </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Clear">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.SendKeys(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Submit">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.Click">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.GetAttribute(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.GetProperty(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.GetCssValue(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.FindElement(OpenQA.Selenium.By)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.FindElements(OpenQA.Selenium.By)">
-            <inheritdoc/>
         </member>
         <member name="T:ApertureLabs.Selenium.WebElements.Inputs.CheckboxElement">
             <summary>
@@ -2614,58 +4524,10 @@
             Thrown when the elements tagname isn't input.
             </exception>
         </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.TagName">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Text">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Enabled">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Selected">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Location">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Size">
-            <inheritdoc/>
-        </member>
-        <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Displayed">
-            <inheritdoc/>
-        </member>
         <member name="P:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Type">
             <summary>
             Returns the type of the input element.
             </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Clear">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Click">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.FindElement(OpenQA.Selenium.By)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.FindElements(OpenQA.Selenium.By)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetAttribute(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetCssValue(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetProperty(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.SendKeys(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.Submit">
-            <inheritdoc/>
         </member>
         <member name="M:ApertureLabs.Selenium.WebElements.Inputs.InputElement.GetValue``1">
             <summary>
@@ -2916,6 +4778,73 @@
             Returns the value via attribute or if not present returns the text.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WindowSize">
+            <summary>
+            Contains sizes for windows.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.WindowSize.DefaultDesktop">
+            <summary>
+            Default size for desktop (1001, 999).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.WindowSize.DefaultTablet">
+            <summary>
+             Default size for tablet (768, 999).
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.WindowSize.DefaultMobile">
+            <summary>
+            Default size for mobile (120, 999).
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WindowSize.RandomSize(System.Int32,System.Int32)">
+            <summary>
+            Generates a random size in the given range. The height is always
+            999.
+            </summary>
+            <param name="minWidth"></param>
+            <param name="maxWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DefaultServletNames">
+            <summary>
+            Contains the default servlet names. Meant to be used with the
+            <c>SeleniumHubOptions.Servlets</c>.
+            </summary>
+        </member>
+        <member name="P:DefaultServletNames.LifeCycleServlet">
+            <summary>
+            Gets the life cycle servlet.
+            </summary>
+            <value>
+            The life cycle servlet.
+            </value>
+        </member>
+        <member name="P:DefaultServletNames.ResourceServlet">
+            <summary>
+            Gets the resource servlet.
+            </summary>
+            <value>
+            The resource servlet.
+            </value>
+        </member>
+        <member name="P:DefaultServletNames.ConsoleServlet">
+            <summary>
+            Gets the console servlet.
+            </summary>
+            <value>
+            The console servlet.
+            </value>
+        </member>
+        <member name="P:DefaultServletNames.Grid1HeartbeatServlet">
+            <summary>
+            Gets the grid1 heartbeat servlet.
+            </summary>
+            <value>
+            The grid1 heartbeat servlet.
+            </value>
         </member>
     </members>
 </doc>
