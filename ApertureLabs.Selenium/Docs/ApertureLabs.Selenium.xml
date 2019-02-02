@@ -3132,7 +3132,6 @@
             Essentially just calls 'Load()' on the page object and returns it.
             </summary>
             <typeparam name="T"></typeparam>
-            <param name="args"></param>
             <returns></returns>
             <example>
             Before:

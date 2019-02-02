@@ -70,6 +70,10 @@ namespace ApertureLabs.Selenium.PageObjects
                 // Store the current window handle.
                 var originalWindowHandle = WrappedDriver.CurrentWindowHandle;
 
+                // If the uri is null, assume true.
+                if (Uri == null)
+                    return true;
+
                 try
                 {
                     // Switch to this pages window handle.

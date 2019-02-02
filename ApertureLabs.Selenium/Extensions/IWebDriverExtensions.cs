@@ -385,5 +385,22 @@ namespace ApertureLabs.Selenium.Extensions
 
             return asRemote?.SessionId;
         }
+
+        /// <summary>
+        /// Waits for jquery to be ready.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        public static void WaitForJqueryReady(this IWebDriver driver)
+        {
+            var script =
+                "var callback = arguments[arguments.length - 1];" +
+                "$(function () {" +
+                    "callback();" +
+                "});";
+
+            driver
+                .JavaScriptExecutor()
+                .ExecuteAsyncScript(script);
+        }
     }
 }
