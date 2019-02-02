@@ -15,7 +15,6 @@ namespace ApertureLabs.Selenium.PageObjects
     {
         #region Fields
 
-        private readonly IList<IOrderedModule> orderedModules;
         private readonly IContainer serviceProvider;
 
         #endregion
@@ -51,8 +50,8 @@ namespace ApertureLabs.Selenium.PageObjects
                     "have the IWebDriver interface registered.");
             }
 
-            orderedModules = new List<IOrderedModule>();
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterInstance<IPageObjectFactory>(this);
 
             // First scan assemblies.
             if (scanAssemblies)
@@ -61,8 +60,6 @@ namespace ApertureLabs.Selenium.PageObjects
             // Then load the passed in services. This way all overrides will
             // remain.
             containerBuilder.Populate(services);
-
-            containerBuilder.RegisterInstance<IPageObjectFactory>(this);
             serviceProvider = containerBuilder.Build();
         }
 
@@ -78,7 +75,6 @@ namespace ApertureLabs.Selenium.PageObjects
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
 
-            orderedModules = new List<IOrderedModule>();
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterInstance<IPageObjectFactory>(this);
             containerBuilder.RegisterInstance<IWebDriver>(driver);

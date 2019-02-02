@@ -41,7 +41,10 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
 
     public class MockD : PageObject, IMockD
     {
-        public MockD(IMockA mockA, IMockB mockB, IWebDriver driver)
+        public MockD(IMockA mockA,
+            IMockB mockB,
+            IPageObjectFactory pageObjectFactory,
+            IWebDriver driver)
             : base(driver)
         { }
     }

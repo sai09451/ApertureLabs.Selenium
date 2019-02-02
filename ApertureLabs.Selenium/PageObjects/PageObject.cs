@@ -132,7 +132,7 @@ namespace ApertureLabs.Selenium.PageObjects
             }
 
             // Navigate to this pages Uri if the current url is blank.
-            if (WrappedDriver is ChromeDriver)
+            if (Uri != null)
             {
                 if (String.IsNullOrEmpty(WrappedDriver.Url)
                     || WrappedDriver.Url == "data:,"
