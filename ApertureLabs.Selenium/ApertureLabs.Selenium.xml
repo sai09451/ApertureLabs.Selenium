@@ -175,18 +175,50 @@
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.WaitForAnimationStart(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
-            <inheritdoc/>
+            <summary>
+            Waits for animation start.
+            </summary>
+            <param name="animationData">The animation data.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
-            <inheritdoc/>
+            <summary>
+            Waits for animation end.
+            </summary>
+            <param name="animationData">The animation data.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions)">
-            <inheritdoc/>
+            <summary>
+            Determines whether the <c>WrappedElement</c> is animating.
+            </summary>
+            <param name="animationData">The animation data.</param>
+            <returns>
+              <c>true</c> if [is currently animating] [the specified animation data]; otherwise, <c>false</c>.
+            </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions">
             <summary>
             Contains classes and selectors for the Bootstrap CollapsableComponent.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.#ctor(OpenQA.Selenium.By,System.Collections.Generic.IEnumerable{OpenQA.Selenium.By})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.#ctor(OpenQA.Selenium.By,System.Collections.Generic.IEnumerable{OpenQA.Selenium.By},System.Collections.Generic.IEnumerable{OpenQA.Selenium.By})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions"/> class.
+            </summary>
+            <param name="collapsableContainerSelector">The collapsable container selector.</param>
+            <param name="openSelectors">The open selectors.</param>
+            <param name="closeSelectors">The close selectors.</param>
+            <exception cref="T:System.ArgumentNullException">
+            collapsableContainerSelector
+            or
+            openSelectors
+            or
+            closeSelectors
+            </exception>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.OpenSelectors">
             <summary>
@@ -208,9 +240,9 @@
             The selector for the element being expanded/collapsed.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.OpenClass">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.IsOpenSelector">
             <summary>
-            The class used when the CollapsableContainer is open.
+            The selector used when the CollapsableContainer is open.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.AnimationDuration">
@@ -219,13 +251,18 @@
             added onto this time for wait conditions).
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.AnimationClasses">
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.AnimationSelectors">
             <summary>
             Classes used to represent when the component is being animated.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableOptions.AnimationsEnabled">
-            <inheritdoc/>
+            <summary>
+            Gets or sets a value indicating whether [animations enabled].
+            </summary>
+            <value>
+              <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent">
             <summary>
@@ -2325,6 +2362,12 @@
             </summary>
             <param name="driver">The driver.</param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.WaitForJqueryReady(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Waits for jquery to be ready.
+            </summary>
+            <param name="driver">The driver.</param>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
             <summary>

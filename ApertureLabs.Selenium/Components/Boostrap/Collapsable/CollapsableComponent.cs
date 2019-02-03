@@ -61,10 +61,10 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
                 throw new ArgumentNullException(nameof(driver));
             else if (animationData == null)
                 throw new ArgumentNullException(nameof(animationData));
-            else if (!animationData.AnimationClasses.Any())
-                throw new ArgumentNullException(nameof(animationData.AnimationClasses));
-            else if (String.IsNullOrEmpty(animationData.OpenClass))
-                throw new ArgumentNullException(nameof(animationData.OpenClass));
+            else if (!animationData.AnimationsEnabled && !animationData.AnimationSelectors.Any())
+                throw new ArgumentNullException(nameof(animationData.AnimationSelectors));
+            else if (animationData.IsOpenSelector == null)
+                throw new ArgumentNullException(nameof(animationData.IsOpenSelector));
 
             this.animationData = animationData;
         }
@@ -160,9 +160,16 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
                     element.Click();
                 }
 
-                WrappedDriver
-                    .Wait(animationData.AnimationDuration + TimeSpan.FromSeconds(2))
-                    .Until(d => !IsCurrentlyAnimating());
+                if (animationData.AnimationsEnabled)
+                {
+                    WrappedDriver
+                        .Wait(animationData.AnimationDuration + TimeSpan.FromSeconds(1))
+                        .TrySequentialWait(
+                            out var exc,
+                            d => IsCurrentlyAnimating(),
+                            d => !IsCurrentlyAnimating(),
+                            d => IsExpanded());
+                }
             }
 
             return this;
@@ -212,11 +219,10 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// </summary>
         public virtual bool IsExpanded()
         {
-            var classes = WrappedElement.Classes();
-
-            return classes.Contains(animationData.OpenClass)
-                && !IsCollapsed()
+            var isExpanded = WrappedElement.Is(animationData.IsOpenSelector)
                 && !IsCurrentlyAnimating();
+
+            return isExpanded;
         }
 
         /// <summary>
@@ -227,25 +233,51 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
             return !IsExpanded() && !IsCurrentlyAnimating();
         }
 
-        /// <inheritdoc/>
-        protected virtual void WaitForAnimationStart(CollapsableOptions animationData = null)
+        /// <summary>
+        /// Waits for animation start.
+        /// </summary>
+        /// <param name="animationData">The animation data.</param>
+        protected virtual void WaitForAnimationStart(
+            CollapsableOptions animationData = null)
         {
             WrappedElement.WaitForEvent(EventShowCollapse);
         }
 
-        /// <inheritdoc/>
-        protected virtual void WaitForAnimationEnd(CollapsableOptions animationData = null)
+        /// <summary>
+        /// Waits for animation end.
+        /// </summary>
+        /// <param name="animationData">The animation data.</param>
+        protected virtual void WaitForAnimationEnd(
+            CollapsableOptions animationData = null)
         {
             WrappedElement.WaitForEvent(EventHiddenCollapse);
         }
 
-        /// <inheritdoc/>
-        protected virtual bool IsCurrentlyAnimating(CollapsableOptions animationData = null)
+        /// <summary>
+        /// Determines whether the <c>WrappedElement</c> is animating.
+        /// </summary>
+        /// <param name="animationData">The animation data.</param>
+        /// <returns>
+        ///   <c>true</c> if [is currently animating] [the specified animation data]; otherwise, <c>false</c>.
+        /// </returns>
+        protected virtual bool IsCurrentlyAnimating(
+            CollapsableOptions animationData = null)
         {
             var opts = animationData ?? this.animationData;
 
-            return WrappedElement.Classes()
-                .Any(c => opts.AnimationClasses.Contains(c, StringComparer.Ordinal));
+            // Check that animations are enabled and that there are animation
+            // selectors.
+            if (!opts.AnimationsEnabled
+                || (opts.AnimationSelectors?.Any() ?? false))
+            {
+                return false;
+            }
+
+            // Check if any of the animation selectors match the wrapped
+            // element.
+            return opts
+                .AnimationSelectors
+                .Any(s => WrappedElement.Is(s));
         }
 
         #endregion

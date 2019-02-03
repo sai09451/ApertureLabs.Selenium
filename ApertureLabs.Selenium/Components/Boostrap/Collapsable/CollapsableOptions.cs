@@ -9,6 +9,64 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
     /// </summary>
     public class CollapsableOptions
     {
+        #region Constructors
+
+        private CollapsableOptions()
+        {
+            AnimationDuration = TimeSpan.FromMilliseconds(750);
+            AnimationsEnabled = true;
+            AnimationSelectors = new[] { By.CssSelector(".collapsing") };
+            CollapsableContainerSelector = null;
+            CloseSelectors = new By[0];
+            IsOpenSelector = By.CssSelector(".collapse.show");
+            OpenSelectors = new By[0];
+            ToggleSelectors = new By[0];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollapsableOptions"/> class.
+        /// </summary>
+        public CollapsableOptions(By collapsableContainerSelector,
+            IEnumerable<By> toggleSelectors)
+            : this()
+        {
+            CollapsableContainerSelector = collapsableContainerSelector
+                ?? throw new ArgumentNullException(nameof(collapsableContainerSelector));
+            ToggleSelectors = toggleSelectors
+                ?? throw new ArgumentNullException(nameof(toggleSelectors));
+
+            OpenSelectors = new By[0];
+            CloseSelectors = new By[0];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollapsableOptions"/> class.
+        /// </summary>
+        /// <param name="collapsableContainerSelector">The collapsable container selector.</param>
+        /// <param name="openSelectors">The open selectors.</param>
+        /// <param name="closeSelectors">The close selectors.</param>
+        /// <exception cref="ArgumentNullException">
+        /// collapsableContainerSelector
+        /// or
+        /// openSelectors
+        /// or
+        /// closeSelectors
+        /// </exception>
+        public CollapsableOptions(By collapsableContainerSelector,
+            IEnumerable<By> openSelectors,
+            IEnumerable<By> closeSelectors)
+            : this()
+        {
+            CollapsableContainerSelector = collapsableContainerSelector
+                ?? throw new ArgumentNullException(nameof(collapsableContainerSelector));
+            OpenSelectors = openSelectors
+                ?? throw new ArgumentNullException(nameof(openSelectors));
+            CloseSelectors = closeSelectors
+                ?? throw new ArgumentNullException(nameof(closeSelectors));
+        }
+
+        #endregion
+
         /// <summary>
         /// Selectors for elements that ONLY expand the component.
         /// </summary>
@@ -30,9 +88,9 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         public By CollapsableContainerSelector { get; set; }
 
         /// <summary>
-        /// The class used when the CollapsableContainer is open.
+        /// The selector used when the CollapsableContainer is open.
         /// </summary>
-        public string OpenClass { get; set; }
+        public By IsOpenSelector { get; set; }
 
         /// <summary>
         /// The expected duration of the animation (Usually five seconds is
@@ -43,9 +101,14 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// <summary>
         /// Classes used to represent when the component is being animated.
         /// </summary>
-        public IEnumerable<string> AnimationClasses { get; set; }
+        public IEnumerable<By> AnimationSelectors { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets a value indicating whether [animations enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
+        /// </value>
         public bool AnimationsEnabled { get; set; }
     }
 }
