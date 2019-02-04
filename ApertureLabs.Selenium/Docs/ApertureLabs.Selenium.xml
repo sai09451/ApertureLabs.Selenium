@@ -4552,6 +4552,26 @@
             </param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.DescriptionList.DescriptionListElement">
+            <summary>
+            DescriptionListElement.
+            </summary>
+            <seealso cref="T:OpenQA.Selenium.IWebElement" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.DescriptionList.DescriptionListElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebElements.DescriptionList.DescriptionListElement"/> class.
+            </summary>
+            <param name="element">The element.</param>
+            <exception cref="T:OpenQA.Selenium.Support.UI.UnexpectedTagNameException">dl</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.DescriptionList.DescriptionListElement.GetDescriptions">
+            <summary>
+            Returns a list of all dt-elements with their corresponding
+            dd-elements.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement">
             <summary>
             Wrapper around the IWebElement for IFrames.
