@@ -147,15 +147,6 @@ namespace ApertureLabs.Selenium
 
             // Download driver if not available locally.
             driverManager.SetUpDriver(driverConfig);
-            var architecture = ArchitectureHelper.GetArchitecture();
-            var version = driverConfig.GetLatestVersion();
-            var currentDir = Directory.GetCurrentDirectory();
-            var binaryLocation = Path.GetDirectoryName(
-                FileHelper.GetBinDestination(
-                    driverConfig.GetName(),
-                    version,
-                    architecture,
-                    driverConfig.GetBinaryName()));
 
             if (isStandalone)
             {
@@ -164,26 +155,25 @@ namespace ApertureLabs.Selenium
                     case MajorWebDriver.Chrome:
                         {
                             var opts = driverOpts as ChromeOptions;
-                            driver = new ChromeDriver(binaryLocation, opts);
+                            opts.BinaryLocation = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+                            driver = new ChromeDriver(opts);
                             break;
                         }
                     case MajorWebDriver.Edge:
                         {
-                            var opts = driverOpts as EdgeOptions;
-                            driver = new EdgeDriver(binaryLocation, opts);
+                            driver = new EdgeDriver();
                             break;
                         }
                     case MajorWebDriver.Firefox:
                         {
                             var opts = driverOpts as FirefoxOptions;
-                            var driverService = FirefoxDriverService.CreateDefaultService(binaryLocation);
-                            driver = new FirefoxDriver(driverService, opts);
+                            opts.BrowserExecutableLocation = @"C:\Program Files\Mozilla Firefox\firefox.exe";
+                            driver = new FirefoxDriver(opts);
                             break;
                         }
                     case MajorWebDriver.InternetExplorer:
                         {
-                            var opts = driverOpts as InternetExplorerOptions;
-                            driver = new InternetExplorerDriver(binaryLocation, opts);
+                            driver = new InternetExplorerDriver();
                             break;
                         }
                     default:
