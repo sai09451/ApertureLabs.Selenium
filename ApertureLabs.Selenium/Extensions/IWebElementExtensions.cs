@@ -321,6 +321,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static int GetIndexRelativeToSiblings(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             const string script =
                     "var element = arguments[0];" +
                     "var parent = element.parentElement;" +

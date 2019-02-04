@@ -98,11 +98,17 @@ namespace ApertureLabs.Selenium.Extensions
                 else
                 {
                     // Use the tagname[ + index if greather than 0].
-                    var index = currentEl.GetIndexRelativeToSiblings();
                     var selector = currentEl.TagName;
+                    var useIndex = currentEl
+                        ?.GetParentElement()
+                        ?.Children()
+                        .Count > 1;
 
-                    if (index > 0)
+                    if (useIndex)
+                    {
+                        var index = currentEl.GetIndexRelativeToSiblings();
                         selector += $":nth-child({index + 1})";
+                    }
 
                     selectorParts.Insert(0, selector);
                 }
