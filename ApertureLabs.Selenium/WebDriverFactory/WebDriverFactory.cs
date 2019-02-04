@@ -15,7 +15,9 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 using WebDriverManager;
+using WebDriverManager.DriverConfigs;
 using WebDriverManager.DriverConfigs.Impl;
+using WebDriverManager.Helpers;
 
 namespace ApertureLabs.Selenium
 {
@@ -119,45 +121,71 @@ namespace ApertureLabs.Selenium
         {
             var driver = default(IWebDriver);
             var driverOpts = default(DriverOptions);
+            var driverConfig = default(IDriverConfig);
 
             switch (majorWebDriver)
             {
                 case MajorWebDriver.Chrome:
-                    driverManager.SetUpDriver(new ChromeConfig());
+                    driverConfig = new ChromeConfig();
                     driverOpts = new ChromeOptions();
                     break;
                 case MajorWebDriver.Edge:
-                    driverManager.SetUpDriver(new EdgeConfig());
+                    driverConfig = new EdgeConfig();
                     driverOpts = new EdgeOptions();
                     break;
                 case MajorWebDriver.Firefox:
-                    driverManager.SetUpDriver(new FirefoxConfig());
+                    driverConfig = new FirefoxConfig();
                     driverOpts = new FirefoxOptions();
                     break;
                 case MajorWebDriver.InternetExplorer:
-                    driverManager.SetUpDriver(new InternetExplorerConfig());
+                    driverConfig = new InternetExplorerConfig();
                     driverOpts = new InternetExplorerOptions();
                     break;
                 default:
                     throw new NotImplementedException();
             }
 
+            // Download driver if not available locally.
+            driverManager.SetUpDriver(driverConfig);
+            var architecture = ArchitectureHelper.GetArchitecture();
+            var version = driverConfig.GetLatestVersion();
+            var currentDir = Directory.GetCurrentDirectory();
+            var binaryLocation = Path.GetDirectoryName(
+                FileHelper.GetBinDestination(
+                    driverConfig.GetName(),
+                    version,
+                    architecture,
+                    driverConfig.GetBinaryName()));
+
             if (isStandalone)
             {
                 switch (majorWebDriver)
                 {
                     case MajorWebDriver.Chrome:
-                        driver = new ChromeDriver(driverOpts as ChromeOptions);
-                        break;
+                        {
+                            var opts = driverOpts as ChromeOptions;
+                            driver = new ChromeDriver(binaryLocation, opts);
+                            break;
+                        }
                     case MajorWebDriver.Edge:
-                        driver = new EdgeDriver(driverOpts as EdgeOptions);
-                        break;
+                        {
+                            var opts = driverOpts as EdgeOptions;
+                            driver = new EdgeDriver(binaryLocation, opts);
+                            break;
+                        }
                     case MajorWebDriver.Firefox:
-                        driver = new FirefoxDriver(driverOpts as FirefoxOptions);
-                        break;
+                        {
+                            var opts = driverOpts as FirefoxOptions;
+                            var driverService = FirefoxDriverService.CreateDefaultService(binaryLocation);
+                            driver = new FirefoxDriver(driverService, opts);
+                            break;
+                        }
                     case MajorWebDriver.InternetExplorer:
-                        driver = new InternetExplorerDriver(driverOpts as InternetExplorerOptions);
-                        break;
+                        {
+                            var opts = driverOpts as InternetExplorerOptions;
+                            driver = new InternetExplorerDriver(binaryLocation, opts);
+                            break;
+                        }
                     default:
                         throw new NotImplementedException();
                 }
