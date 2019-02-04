@@ -97,8 +97,14 @@ namespace ApertureLabs.Selenium.Extensions
                 }
                 else
                 {
-                    // Use the tagname
-                    selectorParts.Insert(0, currentEl.TagName);
+                    // Use the tagname[ + index if greather than 0].
+                    var index = currentEl.GetIndexRelativeToSiblings();
+                    var selector = currentEl.TagName;
+
+                    if (index > 0)
+                        selector += $":nth-child({index + 1})";
+
+                    selectorParts.Insert(0, selector);
                 }
 
                 // Set currentEl to the parent element.

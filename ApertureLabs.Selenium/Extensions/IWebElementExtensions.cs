@@ -314,6 +314,8 @@ namespace ApertureLabs.Selenium.Extensions
 
         /// <summary>
         /// Gets the position of the element relative to it's sibling elements.
+        /// NOTE: Is zero based: first element of parent is zero, second is
+        /// one, etc...
         /// </summary>
         /// <param name="element">The element.</param>
         /// <returns></returns>
