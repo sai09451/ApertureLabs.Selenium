@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Drawing;
+using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 
@@ -201,7 +202,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// </returns>
         public string GetProperty(string propertyName)
         {
-            return WrappedElement.GetProperty(propertyName);
+            return WrappedElement.GetElementProperty(propertyName);
         }
 
         /// <summary>
