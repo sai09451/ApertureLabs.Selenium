@@ -301,7 +301,10 @@ namespace ApertureLabs.Selenium.Extensions
                     "var el = arguments[0];" +
                     "return el['" + propertyName + "'];";
 
-                value = driver.ExecuteJavaScript<string>(script, element);
+                value = driver
+                    .JavaScriptExecutor()
+                    .ExecuteScript(script, element)
+                    .ToString();
             }
             else
             {

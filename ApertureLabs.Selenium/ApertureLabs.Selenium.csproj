@@ -8,15 +8,15 @@
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageTags>ApertureLabs, Selenium</PackageTags>
-    <Version>1.0.60</Version>
-    <AssemblyVersion>1.0.60.0</AssemblyVersion>
+    <Version>1.0.62</Version>
+    <AssemblyVersion>1.0.62.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>7.1</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>1.0.60.0</FileVersion>
+    <FileVersion>1.0.62.0</FileVersion>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <NeutralLanguage />
-    <PackageReleaseNotes>Added the DescriptionList element.</PackageReleaseNotes>
+    <PackageReleaseNotes>Patched IWebElement.GetElementProperty(...).</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
