@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.Extensions;
+﻿using System;
+using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -12,14 +13,24 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Constructor
 
         /// <summary>
-        /// Ctor
+        /// Initializes a new instance of the <see cref="PageComponent"/> class.
         /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="by"></param>
-        public PageComponent(IWebDriver driver, By by)
+        /// <param name="by">The by.</param>
+        /// <param name="driver">The driver.</param>
+        /// <exception cref="ArgumentNullException">
+        /// by
+        /// or
+        /// driver
+        /// </exception>
+        public PageComponent(By by, IWebDriver driver)
         {
-            By = by;
-            WrappedDriver = driver;
+            if (by == null)
+                throw new ArgumentNullException(nameof(by));
+            else if (driver == null)
+                throw new ArgumentNullException(nameof(driver));
+
+            this.By = by;
+            this.WrappedDriver = driver;
         }
 
         #endregion

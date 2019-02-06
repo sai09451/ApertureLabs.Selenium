@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.Events;
@@ -63,8 +64,10 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <returns></returns>
         public virtual bool Equals(IPageObject pageObject)
         {
-            return pageObject.Uri.Equals(Uri)
-                || pageObject.WindowHandle.Equals(WindowHandle);
+            if (pageObject == null)
+                throw new ArgumentNullException(nameof(pageObject));
+
+            return GetHashCode() == pageObject.GetHashCode();
         }
 
         /// <summary>
@@ -181,6 +184,29 @@ namespace ApertureLabs.Selenium.PageObjects
             WindowHandle = WrappedDriver.CurrentWindowHandle;
 
             return this;
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance. Only uses the WrappedDriver,
+        /// Uri, and the WindowHandle to generate the hash code.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing
+        /// algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            var hashCode = -1839585392;
+            hashCode = hashCode
+                * -1521134295
+                + EqualityComparer<IWebDriver>.Default.GetHashCode(WrappedDriver);
+            hashCode = hashCode
+                * -1521134295
+                + EqualityComparer<Uri>.Default.GetHashCode(Uri);
+            hashCode = hashCode
+                * -1521134295
+                + EqualityComparer<string>.Default.GetHashCode(WindowHandle);
+            return hashCode;
         }
 
         private void OnNavigation(object sender, WebDriverNavigationEventArgs eventArgs)

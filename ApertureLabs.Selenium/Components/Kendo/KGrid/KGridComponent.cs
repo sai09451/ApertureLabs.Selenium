@@ -13,11 +13,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
     /// <summary>
     /// Represents a kendo grid.
     /// </summary>
-    public class KGridComponent : BaseKendoComponent
+    /// <typeparam name="T"></typeparam>
+    public class KGridComponent<T> : BaseKendoComponent<T>
     {
         #region Fields
-
-        private readonly IPageObjectFactory pageObjectFactory;
 
         #region Selectors
 
@@ -29,6 +28,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
 
         #endregion
 
+        private readonly IPageObjectFactory pageObjectFactory;
+
         #endregion
 
         #region Constructor
@@ -36,17 +37,20 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="selector"></param>
-        /// <param name="pageObjectFactory"></param>
-        /// <param name="configuration"></param>
+        /// <param name="driver">The driver.</param>
+        /// <param name="selector">The selector.</param>
+        /// <param name="pageObjectFactory">The page object factory.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="parent">The parent.</param>
         public KGridComponent(BaseKendoConfiguration configuration,
             By selector,
             IPageObjectFactory pageObjectFactory,
-            IWebDriver driver)
+            IWebDriver driver,
+            T parent)
             : base(configuration,
                   selector,
-                  driver)
+                  driver,
+                  parent)
         {
             this.pageObjectFactory = pageObjectFactory
                 ?? throw new ArgumentNullException(nameof(pageObjectFactory));
@@ -69,21 +73,12 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// <summary>
         /// The pager used to control the grid.
         /// </summary>
-        public KPagerComponent Pager => pageObjectFactory.PrepareComponent(
-            new KPagerComponent(
-                configuration,
-                PagerSelector,
-                pageObjectFactory,
-                WrappedDriver));
+        public KPagerComponent<KGridComponent<T>> Pager { get; private set; }
 
         /// <summary>
         /// Toolbar component.
         /// </summary>
-        public KToolbarComponent Toolbar => pageObjectFactory.PrepareComponent(
-            new KToolbarComponent(
-                configuration,
-                ToolbarSelector,
-                WrappedDriver));
+        public KToolbarComponent<KGridComponent<T>> Toolbar { get; private set; }
 
         #endregion
 
@@ -103,6 +98,22 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
             ToolbarSelector = ByScoped.FromScope(
                 WrappedElement,
                 new[] { By.CssSelector(".k-toolbar") });
+
+            Pager = new KPagerComponent<KGridComponent<T>>(
+                configuration,
+                PagerSelector,
+                pageObjectFactory,
+                WrappedDriver,
+                this);
+
+            Toolbar = new KToolbarComponent<KGridComponent<T>>(
+                configuration,
+                ToolbarSelector,
+                WrappedDriver,
+                this);
+
+            pageObjectFactory.PrepareComponent(Pager);
+            pageObjectFactory.PrepareComponent(Toolbar);
 
             // Check for multi-column headers.
             var theadRows = WrappedElement

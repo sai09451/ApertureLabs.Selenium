@@ -10,7 +10,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
     /// <summary>
     /// Represents a kendo multi-select component.
     /// </summary>
-    public class KMultiSelectComponent : BaseKendoComponent
+    /// <typeparam name="T"></typeparam>
+    public class KMultiSelectComponent<T> : BaseKendoComponent<T>
     {
         #region Fields
 
@@ -30,17 +31,20 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         #region Constructor
 
         /// <summary>
-        /// Ctor.
+        /// Initializes a new instance of the <see cref="KMultiSelectComponent{T}"/> class.
         /// </summary>
-        /// <param name="selector"></param>
-        /// <param name="driver"></param>
-        /// <param name="configuration"></param>
+        /// <param name="selector">The selector.</param>
+        /// <param name="driver">The driver.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="parent">The parent.</param>
         public KMultiSelectComponent(By selector,
             IWebDriver driver,
-            KMultiSelectConfiguration configuration)
+            KMultiSelectConfiguration configuration,
+            T parent)
             : base(configuration,
                   selector,
-                  driver)
+                  driver,
+                  parent)
         {
             this.configuration = configuration;
         }

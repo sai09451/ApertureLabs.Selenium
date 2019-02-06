@@ -16,10 +16,56 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Fields
 
         private readonly IContainer serviceProvider;
+        private readonly IList<IOrderedModule> importedModules;
 
         #endregion
 
         #region Constructor
+
+        private PageObjectFactory()
+        {
+            importedModules = new List<IOrderedModule>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageObjectFactory"/> class.
+        /// </summary>
+        /// <param name="modules">The modules.</param>
+        /// <param name="services">
+        /// The services. Make sure a web driver has been registered as
+        /// <c>IWebDriver</c> or else this will throw an Exception.
+        /// </param>
+        public PageObjectFactory(
+            IEnumerable<IOrderedModule> modules,
+            IServiceCollection services)
+            : this()
+        {
+            if (modules == null)
+                throw new ArgumentNullException(nameof(modules));
+            else if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
+            var driverRegistered = services
+                .Any(s => s.ServiceType == typeof(IWebDriver));
+
+            if (!driverRegistered)
+            {
+                throw new ArgumentException("The services collection must " +
+                    "have the IWebDriver interface registered.");
+            }
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterInstance<IPageObjectFactory>(this);
+            var orderedModules = modules.OrderBy(m => m.Order);
+
+            foreach (var module in orderedModules)
+            {
+                
+            }
+
+            containerBuilder.Populate(services);
+            serviceProvider = containerBuilder.Build();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PageObjectFactory"/>
@@ -31,12 +77,18 @@ namespace ApertureLabs.Selenium.PageObjects
         /// singletons.
         /// </param>
         /// <param name="loadModules"></param>
+        /// <param name="ignoredTypesAndModules">
+        /// These types will not be loaded into the service provider. They
+        /// can be types derived from IOrderedModule or IPageIObject.
+        /// </param>
         /// <exception cref="System.ArgumentException">
         /// Thrown if services doens't have IWebDriver registered.
         /// </exception>
         public PageObjectFactory(IServiceCollection services,
             bool scanAssemblies = true,
-            bool loadModules = true)
+            bool loadModules = true,
+            IEnumerable<Type> ignoredTypesAndModules = null)
+            : this()
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
@@ -70,7 +122,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// registered.
         /// </summary>
         /// <param name="driver"></param>
-        public PageObjectFactory(IWebDriver driver)
+        public PageObjectFactory(IWebDriver driver) : this()
         {
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
@@ -145,11 +197,46 @@ namespace ApertureLabs.Selenium.PageObjects
         }
 
         /// <summary>
-        /// Gets the imported modules.
+        /// Gets the imported modules. Exists solely to check if the correct
+        /// modules are being imported.
         /// </summary>
         /// <returns></returns>
         public virtual IList<IOrderedModule> GetImportedModules()
         {
+            return importedModules;
+        }
+
+        private void ScanAssemblies(ContainerBuilder containerBuilder,
+            bool loadModules,
+            IEnumerable<Type> ignoredTypesAndModules = null)
+        {
+            ignoredTypesAndModules = ignoredTypesAndModules ?? new List<Type>();
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            // Use reflection to load all types that inherit from IPageObject
+            // and IPageComponent.
+            containerBuilder.RegisterAssemblyTypes(loadedAssemblies)
+                .Where(t =>
+                {
+                    var useType = (t.IsAssignableTo<IPageObject>())
+                        && !t.IsAbstract
+                        && t.IsClass
+                        && t.IsVisible
+                        && !ignoredTypesAndModules.Contains(t);
+
+                    return useType;
+                })
+                .PublicOnly()
+                .InstancePerLifetimeScope();
+
+            // Register all modules.
+            LoadModules(containerBuilder, ignoredTypesAndModules);
+        }
+
+        private void LoadModules(ContainerBuilder containerBuilder,
+            IEnumerable<Type> ignoredModules = null)
+        {
+            ignoredModules = ignoredModules ?? new List<Type>();
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var modules = loadedAssemblies
                 .SelectMany(a => a.GetTypes())
@@ -159,7 +246,8 @@ namespace ApertureLabs.Selenium.PageObjects
                     && t.IsVisible
                     && t.IsAssignableTo<IOrderedModule>()
                     && t.GetConstructors().Any(
-                        c => c.IsPublic && !c.GetParameters().Any()))
+                        c => c.IsPublic && !c.GetParameters().Any())
+                    && !ignoredModules.Contains(t))
                 .Select(t =>
                 {
                     var ctor = t.GetMatchingConstructor(new Type[0]);
@@ -174,32 +262,6 @@ namespace ApertureLabs.Selenium.PageObjects
                 })
                 .OrderBy(om => om.Order)
                 .ToList();
-
-            return modules;
-        }
-
-        private void ScanAssemblies(ContainerBuilder containerBuilder,
-            bool loadModules)
-        {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            // Use reflection to load all types that inherit from IPageObject
-            // and IPageComponent.
-            containerBuilder.RegisterAssemblyTypes(loadedAssemblies)
-                .Where(t =>
-                {
-                    var useType = (t.IsAssignableTo<IPageObject>())
-                        && !t.IsAbstract
-                        && t.IsClass
-                        && t.IsVisible;
-
-                    return useType;
-                })
-                .PublicOnly()
-                .InstancePerLifetimeScope();
-
-            // Register all modules.
-            var modules = GetImportedModules();
 
             foreach (var module in modules)
                 containerBuilder.RegisterModule(module);

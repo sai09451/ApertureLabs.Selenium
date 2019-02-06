@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
@@ -19,6 +20,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
 
         private static WebDriverFactory WebDriverFactory;
 
+        private WidgetPage widgetPage;
         private IPageObjectFactory PageObjectFactory;
 
         #endregion
@@ -65,16 +67,17 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
             {
                 var homePage = PageObjectFactory.PreparePage<HomePage>();
 
-                var widgetPage = homePage.GoToWidget("kendo",
+                widgetPage = homePage.GoToWidget("kendo",
                     "2014.1.318",
                     "KPager");
 
                 var pagerComponent = PageObjectFactory.PrepareComponent(
-                    new KPagerComponent(
+                    new KPagerComponent<WidgetPage>(
                         BaseKendoConfiguration.DefaultBaseKendoOptions(),
                         By.CssSelector("#pager"),
                         PageObjectFactory,
-                        driver));
+                        driver,
+                        widgetPage));
 
                 pagerComponent.Refresh();
                 var availbleSizes = pagerComponent.GetAvailableItemsPerPage();

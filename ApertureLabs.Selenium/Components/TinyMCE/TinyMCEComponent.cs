@@ -49,7 +49,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver,
             TinyMCEOptions tinyMCEOptions)
-            : base(driver, selector)
+            : base(selector, driver)
         {
             this.pageObjectFactory = pageObjectFactory;
             this.tinyMCEOptions = tinyMCEOptions;

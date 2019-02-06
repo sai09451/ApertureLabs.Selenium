@@ -21,7 +21,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
 
         private static WebDriverFactory webDriverFactory;
 
-        private KDropDownComponent kDropDownComponent;
+        private KDropDownComponent<WidgetPage> kDropDownComponent;
         private IPageObjectFactory pageObjectFactory;
         private IWebDriver driver;
         private WidgetPage widgetPage;
@@ -71,7 +71,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
             //    By.CssSelector("#dropdown"),
             //    driver,
             //    KDropDownAnimationOptions.Default());
-            kDropDownComponent = new KDropDownComponent(
+            kDropDownComponent = new KDropDownComponent<WidgetPage>(
                 new BaseKendoConfiguration
                 {
                     ControlWithKeyboardInsteadOfMouse = true,
@@ -79,7 +79,8 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 },
                 By.CssSelector("#dropdown"),
                 driver,
-                KDropDownAnimationOptions.Default());
+                KDropDownAnimationOptions.Default(),
+                widgetPage);
         }
 
         [TestCleanup]

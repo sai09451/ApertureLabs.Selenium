@@ -8,22 +8,26 @@ namespace ApertureLabs.Selenium.Components.Kendo.KToolbar
     /// <summary>
     /// KToolbarComponent.
     /// </summary>
-    public class KToolbarComponent : BaseKendoComponent
+    /// <typeparam name="T"></typeparam>
+    public class KToolbarComponent<T> : BaseKendoComponent<T>
     {
         #region Constructor
 
         /// <summary>
-        /// Ctor.
+        /// Initializes a new instance of the <see cref="KToolbarComponent{T}"/> class.
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="selector"></param>
         /// <param name="driver"></param>
+        /// <param name="parent">The parent.</param>
         public KToolbarComponent(BaseKendoConfiguration configuration,
             By selector,
-            IWebDriver driver)
+            IWebDriver driver,
+            T parent)
             : base(configuration,
                   selector,
-                  driver)
+                  driver,
+                  parent)
         { }
 
         #endregion

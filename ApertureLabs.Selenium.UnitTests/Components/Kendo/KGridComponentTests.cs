@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
@@ -19,10 +20,12 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
     {
         #region Fields
 
-        private static KGridComponent kGridComponent;
-        private static IPageObjectFactory pageObjectFactory;
-        private static IWebDriver driver;
         private static WebDriverFactory webDriverFactory;
+
+        private KGridComponent<WidgetPage> kGridComponent;
+        private IPageObjectFactory pageObjectFactory;
+        private IWebDriver driver;
+        private WidgetPage widgetPage;
 
         #endregion
 
@@ -58,14 +61,18 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
             pageObjectFactory = new PageObjectFactory(serviceCollection);
 
             var homePage = pageObjectFactory.PreparePage<HomePage>();
-            var widgetPage = homePage.GoToWidget("kendo", "2014.1.318", "KGrid");
+            widgetPage = homePage.GoToWidget(
+                "kendo",
+                "2014.1.318",
+                "KGrid");
 
             kGridComponent = pageObjectFactory.PrepareComponent(
-                new KGridComponent(
+                new KGridComponent<WidgetPage>(
                     BaseKendoConfiguration.DefaultBaseKendoOptions(),
                     By.CssSelector("#grid"),
                     pageObjectFactory,
-                    driver));
+                    driver,
+                    widgetPage));
         }
 
         [TestCleanup]

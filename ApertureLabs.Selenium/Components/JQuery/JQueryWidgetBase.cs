@@ -8,7 +8,9 @@ namespace ApertureLabs.Selenium.Components.JQuery
     /// <summary>
     /// Base class for JQuery Widgets.
     /// </summary>
-    public abstract class JQueryWidgetBase : PageComponent
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="FluidPageComponent{T}"/>
+    public abstract class JQueryWidgetBase<T> : FluidPageComponent<T>
     {
         #region Fields
 
@@ -17,14 +19,17 @@ namespace ApertureLabs.Selenium.Components.JQuery
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JQueryWidgetBase"/> class.
+        /// Initializes a new instance of the <see cref="JQueryWidgetBase{T}"/>
+        /// class.
         /// </summary>
         /// <param name="driver">The driver.</param>
         /// <param name="selector">The selector.</param>
+        /// <param name="parent"></param>
         public JQueryWidgetBase(
+            By selector,
             IWebDriver driver,
-            By selector)
-            : base(driver, selector)
+            T parent)
+            : base(selector, driver, parent)
         { }
 
         #endregion

@@ -7,9 +7,10 @@ using OpenQA.Selenium;
 namespace ApertureLabs.Selenium.Components.Kendo
 {
     /// <summary>
-    /// Base class
+    /// Base class for kendo components.
     /// </summary>
-    public abstract class BaseKendoComponent : PageComponent
+    /// <typeparam name="T"></typeparam>
+    public abstract class BaseKendoComponent<T> : FluidPageComponent<T>
     {
         #region Fields
 
@@ -32,10 +33,12 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// <param name="configuration"></param>
         /// <param name="selector"></param>
         /// <param name="driver"></param>
+        /// <param name="parent">The parent.</param>
         public BaseKendoComponent(BaseKendoConfiguration configuration,
             By selector,
-            IWebDriver driver)
-            : base(driver, selector)
+            IWebDriver driver,
+            T parent)
+            : base(selector, driver, parent)
         {
             this.configuration = configuration
                 ?? throw new ArgumentNullException(nameof(configuration));

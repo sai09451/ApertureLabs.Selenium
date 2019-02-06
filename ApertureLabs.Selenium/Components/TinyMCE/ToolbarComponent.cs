@@ -38,7 +38,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         public ToolbarComponent(By selector,
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver)
-            : base(driver, selector)
+            : base(selector, driver)
         {
             this.pageObjectFactory = pageObjectFactory;
         }

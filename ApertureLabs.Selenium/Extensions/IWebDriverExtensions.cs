@@ -38,6 +38,16 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
+        /// Shorthand for creating a new TabHelper object.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <returns></returns>
+        public static TabHelper TabHelper(this IWebDriver driver)
+        {
+            return new TabHelper(driver);
+        }
+
+        /// <summary>
         /// Shorthand for creating a new WebDriverWait object.
         /// </summary>
         /// <param name="driver"></param>

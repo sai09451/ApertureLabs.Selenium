@@ -11,7 +11,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
     /// <summary>
     /// Kendo dropdown widget.
     /// </summary>
-    public class KDropDownComponent : BaseKendoComponent
+    /// <typeparam name="T"></typeparam>
+    public class KDropDownComponent<T> : BaseKendoComponent<T>
     {
         #region Fields
 
@@ -34,17 +35,20 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// The selector should target the original element that's been wrapped
         /// by kendo.
         /// </summary>
-        /// <param name="configuration"></param>
-        /// <param name="selector"></param>
-        /// <param name="driver"></param>
-        /// <param name="animationData"></param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="selector">The selector.</param>
+        /// <param name="driver">The driver.</param>
+        /// <param name="animationData">The animation data.</param>
+        /// <param name="parent">The parent.</param>
         public KDropDownComponent(BaseKendoConfiguration configuration,
             By selector,
             IWebDriver driver,
-            KDropDownAnimationOptions animationData)
+            KDropDownAnimationOptions animationData,
+            T parent)
             : base(configuration,
                   selector,
-                  driver)
+                  driver,
+                  parent)
         {
             this.animationData = animationData;
         }

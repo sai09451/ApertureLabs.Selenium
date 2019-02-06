@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
@@ -18,10 +19,11 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
 
         private static WebDriverFactory WebDriverFactory;
 
+        private DatePickerComponent<WidgetPage> datepickerInline;
+        private DatePickerComponent<WidgetPage> datepickerPopUp;
         private IPageObjectFactory pageObjectFactory;
         private IWebDriver driver;
-        private DatePickerComponent datepickerInline;
-        private DatePickerComponent datepickerPopUp;
+        private WidgetPage widgetPage;
 
         public TestContext TestContext { get; set; }
 
@@ -58,23 +60,25 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
 
             pageObjectFactory = new PageObjectFactory(serviceCollection);
 
-            pageObjectFactory.PreparePage<HomePage>()
+            widgetPage = pageObjectFactory.PreparePage<HomePage>()
                 .GoToWidget(
                     "jQueryUI",
                     "1.12",
                     "DatePicker");
 
             datepickerInline = pageObjectFactory.PrepareComponent(
-                new DatePickerComponent(
+                new DatePickerComponent<WidgetPage>(
                     By.CssSelector("#datepicker1"),
                     DatePickerComponentOptions.Default(),
-                    driver));
+                    driver,
+                    widgetPage));
 
             datepickerPopUp = pageObjectFactory.PrepareComponent(
-                new DatePickerComponent(
+                new DatePickerComponent<WidgetPage>(
                     By.CssSelector("#datepicker2"),
                     DatePickerComponentOptions.Default(),
-                    driver));
+                    driver,
+                    widgetPage));
         }
 
         [TestCleanup]

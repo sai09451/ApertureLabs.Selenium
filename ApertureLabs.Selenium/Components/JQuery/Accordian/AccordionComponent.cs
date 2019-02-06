@@ -11,8 +11,9 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
     /// <summary>
     /// AccordionComponent.
     /// </summary>
-    /// <seealso cref="ApertureLabs.Selenium.PageObjects.PageComponent" />
-    public class AccordionComponent : JQueryWidgetBase
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="JQueryWidgetBase{T}" />
+    public class AccordionComponent<T> : JQueryWidgetBase<T>
     {
         #region Fields
 
@@ -32,18 +33,20 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccordionComponent"/> class.
+        /// Initializes a new instance of the <see cref="AccordionComponent{T}"/> class.
         /// </summary>
         /// <param name="accordianComponentOptions">The options.</param>
         /// <param name="selector">The selector.</param>
         /// <param name="pageObjectFactory">The page object factory.</param>
         /// <param name="driver">The driver.</param>
+        /// <param name="parent">The parent.</param>
         public AccordionComponent(
             AccordionComponentOptions accordianComponentOptions,
             By selector,
             IPageObjectFactory pageObjectFactory,
-            IWebDriver driver)
-            : base(driver, selector)
+            IWebDriver driver,
+            T parent)
+            : base(selector, driver, parent)
         {
             this.accordianComponentOptions = accordianComponentOptions
                 ?? throw new ArgumentNullException(nameof(accordianComponentOptions));

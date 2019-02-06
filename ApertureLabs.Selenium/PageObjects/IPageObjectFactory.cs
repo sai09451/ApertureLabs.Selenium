@@ -12,6 +12,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// it. This is useful for initializing a component in one line.
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
         /// <param name="pageComponent"></param>
         /// <returns></returns>
         /// <example>
@@ -47,7 +48,8 @@ namespace ApertureLabs.Selenium.PageObjects
         T PreparePage<T>() where T : IPageObject;
 
         /// <summary>
-        /// Gets the imported modules.
+        /// Gets the imported modules. Exists solely to check if the correct
+        /// modules are being imported.
         /// </summary>
         /// <returns></returns>
         IList<IOrderedModule> GetImportedModules();

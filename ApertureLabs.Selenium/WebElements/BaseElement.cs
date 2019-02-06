@@ -2,6 +2,7 @@
 using System.Drawing;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions.Internal;
 using OpenQA.Selenium.Internal;
 
 namespace ApertureLabs.Selenium.WebElements
@@ -11,7 +12,17 @@ namespace ApertureLabs.Selenium.WebElements
     /// </summary>
     /// <seealso cref="OpenQA.Selenium.Internal.IWrapsElement" />
     /// <seealso cref="OpenQA.Selenium.IWebElement" />
-    public abstract class BaseElement : IWrapsElement, IWebElement
+    public abstract class BaseElement : IWrapsElement,
+        IWebElement,
+        IFindsById,
+        IFindsByName,
+        IFindsByClassName,
+        IFindsByXPath,
+        IFindsByPartialLinkText,
+        IFindsByCssSelector,
+        IWrapsDriver,
+        ILocatable,
+        ITakesScreenshot
     {
         #region Constructor
 
@@ -31,7 +42,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// <summary>
         /// Gets the <see cref="T:OpenQA.Selenium.IWebElement" /> wrapped by this object.
         /// </summary>
-        public IWebElement WrappedElement { get; }
+        public virtual IWebElement WrappedElement { get; }
 
         /// <summary>
         /// Gets the tag name of this element.
@@ -41,13 +52,13 @@ namespace ApertureLabs.Selenium.WebElements
         /// element, not the value of the name attribute. For example, it will return
         /// "input" for an element specified by the HTML markup &lt;input name="foo" /&gt;.
         /// </remarks>
-        public string TagName => WrappedElement.TagName;
+        public virtual string TagName => WrappedElement.TagName;
 
         /// <summary>
         /// Gets the innerText of this element, without any leading or trailing whitespace,
         /// and with other whitespace collapsed.
         /// </summary>
-        public string Text => WrappedElement.Text;
+        public virtual string Text => WrappedElement.Text;
 
         /// <summary>
         /// Gets a value indicating whether or not this element is enabled.
@@ -56,7 +67,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// The <see cref="P:OpenQA.Selenium.IWebElement.Enabled" /> property will generally
         /// return <see langword="true" /> for everything except explicitly disabled input elements.
         /// </remarks>
-        public bool Enabled => WrappedElement.Enabled;
+        public virtual bool Enabled => WrappedElement.Enabled;
 
         /// <summary>
         /// Gets a value indicating whether or not this element is selected.
@@ -65,18 +76,18 @@ namespace ApertureLabs.Selenium.WebElements
         /// This operation only applies to input elements such as checkboxes,
         /// options in a select element and radio buttons.
         /// </remarks>
-        public bool Selected => WrappedElement.Selected;
+        public virtual bool Selected => WrappedElement.Selected;
 
         /// <summary>
         /// Gets a <see cref="T:System.Drawing.Point" /> object containing the coordinates of the upper-left corner
         /// of this element relative to the upper-left corner of the page.
         /// </summary>
-        public Point Location => WrappedElement.Location;
+        public virtual Point Location => WrappedElement.Location;
 
         /// <summary>
         /// Gets a <see cref="P:OpenQA.Selenium.IWebElement.Size" /> object containing the height and width of this element.
         /// </summary>
-        public Size Size => WrappedElement.Size;
+        public virtual Size Size => WrappedElement.Size;
 
         /// <summary>
         /// Gets a value indicating whether or not this element is displayed.
@@ -86,7 +97,13 @@ namespace ApertureLabs.Selenium.WebElements
         /// of having to parse an element's "style" attribute to determine
         /// visibility of an element.
         /// </remarks>
-        public bool Displayed => WrappedElement.Displayed;
+        public virtual bool Displayed => WrappedElement.Displayed;
+
+        IWebDriver IWrapsDriver.WrappedDriver => (WrappedElement as IWrapsDriver).WrappedDriver;
+
+        Point ILocatable.LocationOnScreenOnceScrolledIntoView => (WrappedElement as ILocatable).LocationOnScreenOnceScrolledIntoView;
+
+        ICoordinates ILocatable.Coordinates => (WrappedElement as ILocatable).Coordinates;
 
         #endregion
 
@@ -100,7 +117,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// method will clear the value. It has no effect on other elements. Text entry elements
         /// are defined as elements with INPUT or TEXTAREA tags.
         /// </remarks>
-        public void Clear()
+        public virtual void Clear()
         {
             WrappedElement.Clear();
         }
@@ -122,7 +139,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// simulate a users to accidentally missing the target when clicking.
         /// </para>
         /// </remarks>
-        public void Click()
+        public virtual void Click()
         {
             WrappedElement.Click();
         }
@@ -134,7 +151,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// <returns>
         /// The first matching <see cref="T:OpenQA.Selenium.IWebElement" /> on the current context.
         /// </returns>
-        public IWebElement FindElement(By by)
+        public virtual IWebElement FindElement(By by)
         {
             return WrappedElement.FindElement(by);
         }
@@ -148,7 +165,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> of all <see cref="T:OpenQA.Selenium.IWebElement">WebElements</see>
         /// matching the current criteria, or an empty list if nothing matches.
         /// </returns>
-        public ReadOnlyCollection<IWebElement> FindElements(By by)
+        public virtual ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             return WrappedElement.FindElements(by);
         }
@@ -168,7 +185,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// there is no explicit attribute on the element:
         /// <list type="table"><listheader><term>Attribute name</term><term>Value returned if not explicitly specified</term><term>Valid element types</term></listheader><item><description>checked</description><description>checked</description><description>Check Box</description></item><item><description>selected</description><description>selected</description><description>Options in Select elements</description></item><item><description>disabled</description><description>disabled</description><description>Input and other UI elements</description></item></list>
         /// </remarks>
-        public string GetAttribute(string attributeName)
+        public virtual string GetAttribute(string attributeName)
         {
             return WrappedElement.GetAttribute(attributeName);
         }
@@ -187,7 +204,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// "background-color" property set as "green" in the HTML source, will
         /// return "#008000" for its value.
         /// </remarks>
-        public string GetCssValue(string propertyName)
+        public virtual string GetCssValue(string propertyName)
         {
             return WrappedElement.GetCssValue(propertyName);
         }
@@ -200,7 +217,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// The JavaScript property's current value. Returns a <see langword="null" /> if the
         /// value is not set or the property does not exist.
         /// </returns>
-        public string GetProperty(string propertyName)
+        public virtual string GetProperty(string propertyName)
         {
             return WrappedElement.GetElementProperty(propertyName);
         }
@@ -215,7 +232,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// <see cref="T:OpenQA.Selenium.Keys" />.
         /// </remarks>
         /// <seealso cref="T:OpenQA.Selenium.Keys" />
-        public void SendKeys(string text)
+        public virtual void SendKeys(string text)
         {
             WrappedElement.SendKeys(text);
         }
@@ -228,7 +245,7 @@ namespace ApertureLabs.Selenium.WebElements
         /// then this will be submitted to the web server. If this causes the current
         /// page to change, then this method will block until the new page is loaded.
         /// </remarks>
-        public void Submit()
+        public virtual void Submit()
         {
             WrappedElement.Submit();
         }
@@ -254,6 +271,84 @@ namespace ApertureLabs.Selenium.WebElements
         public override int GetHashCode()
         {
             return WrappedElement.GetHashCode();
+        }
+
+        IWebElement IFindsById.FindElementById(string id)
+        {
+            return (WrappedElement as IFindsById)
+                .FindElementById(id);
+        }
+
+        ReadOnlyCollection<IWebElement> IFindsById.FindElementsById(string id)
+        {
+            return (WrappedElement as IFindsById)
+                .FindElementsById(id);
+        }
+
+        IWebElement IFindsByName.FindElementByName(string name)
+        {
+            return (WrappedElement as IFindsByName)
+                .FindElementByName(name);
+        }
+
+        ReadOnlyCollection<IWebElement> IFindsByName.FindElementsByName(string name)
+        {
+            return (WrappedElement as IFindsByName)
+                .FindElementsByName(name);
+        }
+
+        IWebElement IFindsByClassName.FindElementByClassName(string className)
+        {
+            return (WrappedElement as IFindsByClassName)
+                .FindElementByClassName(className);
+        }
+
+        ReadOnlyCollection<IWebElement> IFindsByClassName.FindElementsByClassName(string className)
+        {
+            return (WrappedElement as IFindsByClassName)
+                .FindElementsByClassName(className);
+        }
+
+        IWebElement IFindsByXPath.FindElementByXPath(string xpath)
+        {
+            return (WrappedElement as IFindsByXPath)
+                .FindElementByXPath(xpath);
+        }
+
+        ReadOnlyCollection<IWebElement> IFindsByXPath.FindElementsByXPath(string xpath)
+        {
+            return (WrappedElement as IFindsByXPath)
+                .FindElementsByXPath(xpath);
+        }
+
+        IWebElement IFindsByPartialLinkText.FindElementByPartialLinkText(string partialLinkText)
+        {
+            return (WrappedElement as IFindsByPartialLinkText)
+                .FindElementByPartialLinkText(partialLinkText);
+        }
+
+        ReadOnlyCollection<IWebElement> IFindsByPartialLinkText.FindElementsByPartialLinkText(string partialLinkText)
+        {
+            return (WrappedElement as IFindsByPartialLinkText)
+                .FindElementsByPartialLinkText(partialLinkText);
+        }
+
+        IWebElement IFindsByCssSelector.FindElementByCssSelector(string cssSelector)
+        {
+            return (WrappedElement as IFindsByCssSelector)
+                .FindElementByCssSelector(cssSelector);
+        }
+
+        ReadOnlyCollection<IWebElement> IFindsByCssSelector.FindElementsByCssSelector(string cssSelector)
+        {
+            return (WrappedElement as IFindsByCssSelector)
+                .FindElementsByCssSelector(cssSelector);
+        }
+
+        Screenshot ITakesScreenshot.GetScreenshot()
+        {
+            return (WrappedElement as ITakesScreenshot)
+                .GetScreenshot();
         }
 
         #endregion

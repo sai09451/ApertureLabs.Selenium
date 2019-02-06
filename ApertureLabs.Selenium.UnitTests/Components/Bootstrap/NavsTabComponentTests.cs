@@ -22,7 +22,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
         private IPageObjectFactory pageObjectFactory;
         private IWebDriver driver;
         private WidgetPage widgetPage;
-        private NavsTabComponent navsTabComponent;
+        private NavsTabComponent<WidgetPage> navsTabComponent;
 
         #endregion
 
@@ -59,10 +59,11 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
                 "NavsTab");
 
             navsTabComponent = pageObjectFactory.PrepareComponent(
-                new NavsTabComponent(
+                new NavsTabComponent<WidgetPage>(
                     By.CssSelector(".container.body-content"),
                     driver,
-                    NavsTabComponentConfiguration.Default()));
+                    NavsTabComponentConfiguration.Default(),
+                    widgetPage));
         }
 
         [ClassCleanup]

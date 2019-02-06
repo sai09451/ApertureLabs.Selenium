@@ -12,7 +12,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
     /// <summary>
     /// PagerComponent.
     /// </summary>
-    public class KPagerComponent : BaseKendoComponent
+    /// <typeparam name="T"></typeparam>
+    public class KPagerComponent<T> : BaseKendoComponent<T>
     {
         #region Fields
 
@@ -38,19 +39,23 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         #region Constructor
 
         /// <summary>
-        /// Ctor.
+        /// Initializes a new instance of the
+        /// <see cref="KPager.KPagerComponent{T}"/> class.
         /// </summary>
-        /// <param name="configuration"></param>
-        /// <param name="selector"></param>
-        /// <param name="pageObjectFactory"></param>
-        /// <param name="driver"></param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="selector">The selector.</param>
+        /// <param name="pageObjectFactory">The page object factory.</param>
+        /// <param name="driver">The driver.</param>
+        /// <param name="parent">The parent.</param>
         public KPagerComponent(BaseKendoConfiguration configuration,
             By selector,
             IPageObjectFactory pageObjectFactory,
-            IWebDriver driver)
+            IWebDriver driver,
+            T parent)
             : base(configuration,
                   selector,
-                  driver)
+                  driver,
+                  parent)
         {
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
@@ -60,9 +65,17 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
                 throw new ArgumentNullException(nameof(pageObjectFactory));
 
             this.pageObjectFactory = pageObjectFactory;
+
             ItemsPerPageSelector = ByScoped.FromScope(
                 selector,
                 By.CssSelector(".k-pager-sizes .k-dropdown select"));
+
+            ItemsPerPageComponent =new KDropDownComponent<KPagerComponent<T>>(
+                configuration,
+                ItemsPerPageSelector,
+                WrappedDriver,
+                KDropDownAnimationOptions.Default(),
+                this);
         }
 
         #endregion
@@ -116,12 +129,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         private IWebElement PageInfoElement => WrappedElement.FindElement(PagerInfoSelector);
         private IWebElement SelectedPageElement => WrappedElement.FindElement(SelectedPageSelector);
 
-        private KDropDownComponent ItemsPerPageComponent =>
-            pageObjectFactory.PrepareComponent(
-                new KDropDownComponent(configuration,
-                    ItemsPerPageSelector,
-                    WrappedDriver,
-                    KDropDownAnimationOptions.Default()));
+        private KDropDownComponent<KPagerComponent<T>> ItemsPerPageComponent { get; set; }
 
         #endregion
 
@@ -129,10 +137,16 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
 
         #region Methods
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// If overloaded don't forget to call base.Load() or make sure to
+        /// assign the WrappedElement.
+        /// </summary>
+        /// <returns></returns>
         public override ILoadableComponent Load()
         {
             base.Load();
+
+            pageObjectFactory.PrepareComponent(ItemsPerPageComponent);
 
             return this;
         }
@@ -142,7 +156,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// </summary>
         /// <param name="listedPage"></param>
         /// <returns></returns>
-        public virtual KPagerComponent SetPage(int listedPage)
+        public virtual KPagerComponent<T> SetPage(int listedPage)
         {
             var desiredPageEl = AvailablePagesElements
                 .FirstOrDefault(
@@ -178,7 +192,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// Goes to the last page if available.
         /// </summary>
         /// <returns></returns>
-        public virtual KPagerComponent LastPage()
+        public virtual KPagerComponent<T> LastPage()
         {
             if (!IsOnLastPage)
             {
@@ -193,7 +207,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// Goes to the first page if available.
         /// </summary>
         /// <returns></returns>
-        public KPagerComponent FirstPage()
+        public KPagerComponent<T> FirstPage()
         {
             if (!IsOnFirstPage)
             {
@@ -209,7 +223,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// current page.
         /// </summary>
         /// <returns></returns>
-        public virtual KPagerComponent PrevPage()
+        public virtual KPagerComponent<T> PrevPage()
         {
             if (HasPreviousPage)
             {
@@ -224,7 +238,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// Goes to the next page if available.
         /// </summary>
         /// <returns></returns>
-        public virtual KPagerComponent NextPage()
+        public virtual KPagerComponent<T> NextPage()
         {
             if (HasNextPage)
             {

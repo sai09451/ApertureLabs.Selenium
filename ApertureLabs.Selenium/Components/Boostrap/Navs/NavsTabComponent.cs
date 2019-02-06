@@ -10,8 +10,9 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
     /// <summary>
     /// Used for working with Bootstrap navs.
     /// </summary>
-    /// <seealso cref="ApertureLabs.Selenium.PageObjects.PageComponent" />
-    public class NavsTabComponent : PageComponent
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="ApertureLabs.Selenium.PageObjects.FluidPageComponent{T}" />
+    public class NavsTabComponent<T> : FluidPageComponent<T>
     {
         #region Fields
 
@@ -22,15 +23,17 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NavsTabComponent"/> class.
+        /// Initializes a new instance of the <see cref="NavsTabComponent{T}"/> class.
         /// </summary>
-        /// <param name="driver">The driver.</param>
         /// <param name="selector">The selector.</param>
+        /// <param name="driver">The driver.</param>
         /// <param name="configuration"></param>
+        /// <param name="parent">The parent.</param>
         public NavsTabComponent(By selector,
             IWebDriver driver,
-            NavsTabComponentConfiguration configuration)
-            : base(driver, selector)
+            NavsTabComponentConfiguration configuration,
+            T parent)
+            : base(selector, driver, parent)
         {
             this.configuration = configuration;
         }

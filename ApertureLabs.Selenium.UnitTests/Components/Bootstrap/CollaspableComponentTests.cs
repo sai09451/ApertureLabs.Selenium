@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
@@ -17,9 +18,10 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
 
         private static WebDriverFactory webDriverFactory;
 
-        private CollapsableComponent collaspableComponent;
+        private CollapsableComponent<WidgetPage> collaspableComponent;
         private IWebDriver driver;
         private IPageObjectFactory pageObjectFactory;
+        private WidgetPage widgetPage;
 
         public TestContext TestContext { get; set; }
 
@@ -56,18 +58,19 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
 
             pageObjectFactory = new PageObjectFactory(serviceCollection);
 
-            pageObjectFactory.PreparePage<HomePage>()
+            widgetPage = pageObjectFactory.PreparePage<HomePage>()
                 .GoToWidget(
                     "Bootstrap",
                     "4.1",
                     "Collapsable");
 
             collaspableComponent = pageObjectFactory.PrepareComponent(
-                new CollapsableComponent(
-                    driver,
+                new CollapsableComponent<WidgetPage>(
                     new CollapsableOptions(
                         By.CssSelector("#multiCollapseExample1"),
-                        new[] { By.CssSelector("#toggle-first") })));
+                        new[] { By.CssSelector("#toggle-first") }),
+                    driver,
+                    widgetPage));
         }
 
         #endregion

@@ -7,6 +7,9 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <summary>
     /// Represents a partial view or view component.
     /// </summary>
+    /// <seealso cref="OpenQA.Selenium.Support.UI.ILoadableComponent" />
+    /// <seealso cref="OpenQA.Selenium.Internal.IWrapsDriver" />
+    /// <seealso cref="OpenQA.Selenium.Internal.IWrapsElement" />
     public interface IPageComponent : ILoadableComponent,
         IWrapsDriver,
         IWrapsElement

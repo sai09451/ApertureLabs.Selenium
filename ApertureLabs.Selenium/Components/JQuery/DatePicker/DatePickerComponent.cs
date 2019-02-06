@@ -1,22 +1,22 @@
-﻿using ApertureLabs.Selenium.Extensions;
-using ApertureLabs.Selenium.PageObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.Properties;
 using ApertureLabs.Selenium.WebElements.Inputs;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
 {
     /// <summary>
     /// DatePickerComponent.
     /// </summary>
-    /// <seealso cref="ApertureLabs.Selenium.PageObjects.PageComponent" />
-    public class DatePickerComponent : PageComponent
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="JQueryWidgetBase{T}" />
+    public class DatePickerComponent<T> : JQueryWidgetBase<T>
     {
         #region Fields
 
@@ -44,19 +44,22 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         #region Constructor
 
         /// <summary>
-        /// Ctor.
+        /// Initializes a new instance of the
+        /// <see cref="DatePickerComponent{T}"/> class.
         /// </summary>
-        /// <param name="driver"></param>
         /// <param name="selector">
         /// The input element linked to the calendar.
         /// </param>
         /// <param name="datePickerComponentOptions">
         /// The datepciker component options.
         /// </param>
+        /// <param name="driver">The driver.</param>
+        /// <param name="parent">The parent.</param>
         public DatePickerComponent(By selector,
             DatePickerComponentOptions datePickerComponentOptions,
-            IWebDriver driver)
-            : base(driver, selector)
+            IWebDriver driver,
+            T parent)
+            : base(selector, driver, parent)
         {
             this.datePickerComponentOptions = datePickerComponentOptions;
         }

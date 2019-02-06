@@ -32,7 +32,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         public StatusbarComponent(By selector,
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver)
-            : base(driver, selector)
+            : base(selector, driver)
         {
             this.pageObjectFactory = pageObjectFactory;
         }

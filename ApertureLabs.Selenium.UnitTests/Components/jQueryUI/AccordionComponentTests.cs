@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
+using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
@@ -18,9 +19,10 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
         #region Fields
 
         private static WebDriverFactory WebDriverFactory;
-        private AccordionComponent accordionComponent;
+        private AccordionComponent<WidgetPage> accordionComponent;
         private IWebDriver driver;
         private IPageObjectFactory pageObjectFactory;
+        private WidgetPage widgetPage;
 
         public TestContext TestContext { get; set; }
 
@@ -57,18 +59,19 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
 
             pageObjectFactory = new PageObjectFactory(serviceCollection);
 
-            pageObjectFactory.PreparePage<HomePage>()
+            widgetPage = pageObjectFactory.PreparePage<HomePage>()
                 .GoToWidget(
                     "jQueryUI",
                     "1.12",
                     "Accordian");
 
             accordionComponent = pageObjectFactory.PrepareComponent(
-                new AccordionComponent(
+                new AccordionComponent<WidgetPage>(
                     AccordionComponentOptions.Default(),
                     By.CssSelector("#accordion"),
                     pageObjectFactory,
-                    driver));
+                    driver,
+                    widgetPage));
         }
 
         [TestCleanup]
@@ -113,11 +116,12 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
             options.Collaspable = true;
 
             accordionComponent = pageObjectFactory.PrepareComponent(
-                new AccordionComponent(
+                new AccordionComponent<WidgetPage>(
                     options,
                     By.CssSelector("#accordion"),
                     pageObjectFactory,
-                    driver));
+                    driver,
+                    widgetPage));
 
             accordionComponent.ClosePanel();
 

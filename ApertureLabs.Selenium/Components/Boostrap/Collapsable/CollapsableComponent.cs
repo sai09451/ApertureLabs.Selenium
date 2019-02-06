@@ -10,7 +10,9 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
     /// <summary>
     /// Represents a bootstrap collapsable.
     /// </summary>
-    public class CollapsableComponent : PageComponent
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="ApertureLabs.Selenium.PageObjects.FluidPageComponent{T}" />
+    public class CollapsableComponent<T> : FluidPageComponent<T>
     {
         #region Fields
 
@@ -51,11 +53,13 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="driver"></param>
         /// <param name="animationData"></param>
-        public CollapsableComponent(IWebDriver driver,
-            CollapsableOptions animationData)
-            : base(driver, animationData.CollapsableContainerSelector)
+        /// <param name="driver"></param>
+        /// <param name="parent"></param>
+        public CollapsableComponent(CollapsableOptions animationData,
+            IWebDriver driver,
+            T parent)
+            : base(animationData.CollapsableContainerSelector, driver, parent)
         {
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
@@ -135,7 +139,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// Options.ToggleSelector.
         /// </param>
         /// <returns></returns>
-        public virtual CollapsableComponent Open(IWebElement element = null)
+        public virtual CollapsableComponent<T> Open(IWebElement element = null)
         {
             if (!IsExpanded())
             {
@@ -181,7 +185,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public virtual CollapsableComponent Close(IWebElement element = null)
+        public virtual CollapsableComponent<T> Close(IWebElement element = null)
         {
             if (!IsExpanded())
             {
