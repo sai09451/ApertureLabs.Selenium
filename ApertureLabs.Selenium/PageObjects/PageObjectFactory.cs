@@ -196,7 +196,7 @@ namespace ApertureLabs.Selenium.PageObjects
                     return useType;
                 })
                 .PublicOnly()
-                .SingleInstance();
+                .InstancePerLifetimeScope();
 
             // Register all modules.
             var modules = GetImportedModules();

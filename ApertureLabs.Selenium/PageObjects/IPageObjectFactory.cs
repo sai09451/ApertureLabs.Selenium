@@ -3,7 +3,7 @@
 namespace ApertureLabs.Selenium.PageObjects
 {
     /// <summary>
-    /// PageObjectFactory.
+    /// Used for preparing IPageObjects and IPageObjectFactories.
     /// </summary>
     public interface IPageObjectFactory
     {

@@ -7,7 +7,10 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <summary>
     /// Represents a webpage.
     /// </summary>
-    public interface IPageObject : IWrapsDriver, ILoadableComponent, IDisposable
+    public interface IPageObject : IWrapsDriver,
+        ILoadableComponent,
+        IDisposable,
+        IEquatable<IPageObject>
     {
         /// <summary>
         /// The url of the webpage.

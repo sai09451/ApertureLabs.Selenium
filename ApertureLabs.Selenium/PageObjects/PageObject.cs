@@ -56,6 +56,37 @@ namespace ApertureLabs.Selenium.PageObjects
         #region Methods
 
         /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is
+        /// equal to this instance.
+        /// </summary>
+        /// <param name="pageObject">The page object.</param>
+        /// <returns></returns>
+        public virtual bool Equals(IPageObject pageObject)
+        {
+            return pageObject.Uri.Equals(Uri)
+                || pageObject.WindowHandle.Equals(WindowHandle);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is
+        /// equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with
+        /// this instance.
+        /// </param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is
+        ///   equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is IPageObject pageObject)
+                return Equals(pageObject);
+            else
+                return base.Equals(obj);
+        }
+
+        /// <summary>
         /// By default will to see if the pages original window handle still
         /// exists and that windows url matches the Uri.
         /// </summary>
