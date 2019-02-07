@@ -150,6 +150,8 @@ namespace ApertureLabs.Selenium.Extensions
 
                     if (remainingTime > initialTimeout)
                         throw new TimeoutException();
+                    else
+                        remainingTime = initialTimeout - remainingTime;
 
                     wait.Timeout = remainingTime;
                     wait.Until(condition);

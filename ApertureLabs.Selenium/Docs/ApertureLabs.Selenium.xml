@@ -636,7 +636,7 @@
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent`1">
             <summary>
-            Base class
+            Base class for kendo components.
             </summary>
             <typeparam name="T"></typeparam>
         </member>
@@ -2223,6 +2223,15 @@
             <param name="predicate">The predicate.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IEnumerableExtensions.Chunk``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Chunks the specified list into lists of chunkSize.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="items">The items.</param>
+            <param name="chunkSize">Size of the chunk.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.ISearchContextExtensions">
             <summary>
             Contains extensions for ISearchContext objects.
@@ -3158,6 +3167,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.FluidPageComponent`1.Perform(System.Action{ApertureLabs.Selenium.PageObjects.IFluidPageComponent{`0}})">
+            <summary>
+            Used for performing actions on the component that may not be
+            chainable then returns the component.
+            </summary>
+            <param name="action">The action.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.IFluidPageComponent`1">
             <summary>
             Similar to IPageComponent but adds a method for retrieving the parent
@@ -3170,6 +3187,14 @@
             <summary>
             Retrieves the parent/container of this component.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IFluidPageComponent`1.Perform(System.Action{ApertureLabs.Selenium.PageObjects.IFluidPageComponent{`0}})">
+            <summary>
+            Used for performing actions on the component that may not be
+            chainable then returns the component.
+            </summary>
+            <param name="action">The action.</param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.IOrderedModule">
