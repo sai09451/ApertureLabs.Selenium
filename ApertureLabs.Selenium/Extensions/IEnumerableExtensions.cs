@@ -67,5 +67,33 @@ namespace ApertureLabs.Selenium.Extensions
 
             return match?.Index ?? -1;
         }
+
+        /// <summary>
+        /// Chunks the specified list into lists of chunkSize.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items">The items.</param>
+        /// <param name="chunkSize">Size of the chunk.</param>
+        /// <returns></returns>
+        public static IEnumerable<List<T>> Chunk<T>(this IEnumerable<T> items,
+            int chunkSize)
+        {
+            var totalCount = items.Count();
+            var chunks = new List<T>();
+
+            foreach (var chunk in items)
+            {
+                chunks.Add(chunk);
+
+                if (chunks.Count == chunkSize)
+                {
+                    yield return chunks;
+                    chunks = new List<T>();
+                }
+            }
+
+            if (chunks.Any())
+                yield return chunks;
+        }
     }
 }

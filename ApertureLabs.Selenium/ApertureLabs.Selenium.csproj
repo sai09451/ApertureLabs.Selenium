@@ -4,16 +4,16 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>alex.hayes@aperturelabs.biz</Authors>
     <Company>Aperture Labs</Company>
-    <Description>A utility library for working with Selenium. Contains definitions for PageObjects/PageComponents, wrappers classes for IWebElement which provide specialized functionality, a WebDriverFactory which is a simplified way of managing (downloads the drivers if missing) and instantianting webdrivers, and tons of other stuff. NOTE: Requires Java &gt;= 1.8 to be installed and available on the path.</Description>
+    <Description>A utility library for working with Selenium. Contains definitions for PageObjects/PageComponents, wrappers classes for IWebElement, a WebDriverFactory which simplifies managing webdrivers (downloads the drivers if missing), and tons of other stuff. NOTE: Requires Java &gt;= 1.8 to be installed and available on the path.</Description>
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageTags>ApertureLabs, Selenium</PackageTags>
-    <Version>1.0.66</Version>
-    <AssemblyVersion>1.0.66.0</AssemblyVersion>
+    <Version>1.0.67</Version>
+    <AssemblyVersion>1.0.67.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>7.1</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>1.0.66.0</FileVersion>
+    <FileVersion>1.0.67.0</FileVersion>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <NeutralLanguage />
     <PackageReleaseNotes>Minor update. Added an overloaded extension method for IEnumerable&lt;T&gt;.IndexOf&lt;T&gt;(...) which now accepts a predicate for locating the item in the collection.</PackageReleaseNotes>
