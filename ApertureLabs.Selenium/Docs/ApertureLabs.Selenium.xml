@@ -3200,7 +3200,7 @@
             <summary>
             Similary to IModule but adds an index property to order the imports
             modules by. NOTE: Classes that implement this MUST have a default
-            constructor otherwise they will be ignored.
+            constructor (no-args) otherwise they will be ignored.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.IOrderedModule.Order">
@@ -3547,6 +3547,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObjectFactory.LoadAssemblies">
+            <summary>
+            This is used as a workaround for assemblies not loading until one
+            of their types are referenced.
+            </summary>
+        </member>
         <member name="T:ApertureLabs.Selenium.Properties.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -3655,9 +3661,9 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.TabHelper.GetNumberOfTabs">
+        <member name="M:ApertureLabs.Selenium.TabHelper.GetTabHandles">
             <summary>
-            Returns the number of tabs on the current window.
+            Identical to <see cref="P:OpenQA.Selenium.IWebDriver.WindowHandles"/>.
             </summary>
             <returns></returns>
         </member>
@@ -3667,6 +3673,16 @@
             </summary>
             <param name="switchToTab"></param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.SwitchToNextTab">
+            <summary>
+            Switches to next tab.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.SwitchToPreviousTab">
+            <summary>
+            Switches to previous tab.
+            </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.TabHelper.SwitchToTab(System.String)">
             <summary>
