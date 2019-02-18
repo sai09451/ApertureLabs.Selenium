@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +27,7 @@ namespace ApertureLabs.Selenium.PageObjects
         private PageObjectFactory()
         {
             importedModules = new List<IOrderedModule>();
+            LoadAssemblies();
         }
 
         /// <summary>
@@ -230,7 +233,8 @@ namespace ApertureLabs.Selenium.PageObjects
                 .InstancePerLifetimeScope();
 
             // Register all modules.
-            LoadModules(containerBuilder, ignoredTypesAndModules);
+            if (loadModules)
+                LoadModules(containerBuilder, ignoredTypesAndModules);
         }
 
         private void LoadModules(ContainerBuilder containerBuilder,
@@ -265,6 +269,29 @@ namespace ApertureLabs.Selenium.PageObjects
 
             foreach (var module in modules)
                 containerBuilder.RegisterModule(module);
+        }
+
+        /// <summary>
+        /// This is used as a workaround for assemblies not loading until one
+        /// of their types are referenced.
+        /// </summary>
+        private void LoadAssemblies()
+        {
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                LoadReferencedAssembly(assembly);
+        }
+
+        private void LoadReferencedAssembly(Assembly assembly)
+        {
+            foreach (AssemblyName name in assembly.GetReferencedAssemblies())
+            {
+                var isLoaded = AppDomain.CurrentDomain
+                    .GetAssemblies()
+                    .Any(a => a.FullName == name.FullName);
+
+                if (!isLoaded)
+                    LoadReferencedAssembly(Assembly.Load(name));
+            }
         }
 
         #endregion

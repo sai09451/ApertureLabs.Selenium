@@ -42,14 +42,15 @@ namespace ApertureLabs.Selenium
         /// <returns></returns>
         public int GetIndexOfCurrentTab()
         {
-            return WrappedDriver.WindowHandles.IndexOf(WrappedDriver.CurrentWindowHandle);
+            return GetTabHandles()
+                .IndexOf(WrappedDriver.CurrentWindowHandle);
         }
 
         /// <summary>
-        /// Returns the number of tabs on the current window.
+        /// Identical to <see cref="IWebDriver.WindowHandles"/>.
         /// </summary>
         /// <returns></returns>
-        public IReadOnlyCollection<string> GetNumberOfTabs()
+        public IList<string> GetTabHandles()
         {
             return WrappedDriver.WindowHandles.ToList();
         }
@@ -61,17 +62,16 @@ namespace ApertureLabs.Selenium
         /// <returns></returns>
         public string CreateNewTab(bool switchToTab = false)
         {
-            var currentNumberOfHandles = GetNumberOfTabs().Count;
+            var handleCount = GetTabHandles().Count;
             WrappedDriver.CreateActions()
                 .SendKeys(WrappedDriver.Select("body").First(), Keys.LeftControl + "t")
                 .Build()
                 .Perform();
 
             var wait = new WebDriverWait(WrappedDriver, TimeSpan.FromSeconds(30));
-            wait.Until((d) =>
-            {
-                return d.WindowHandles.Count == (currentNumberOfHandles + 1);
-            });
+            WrappedDriver
+                .Wait(TimeSpan.FromSeconds(30))
+                .Until((d) => d.WindowHandles.Count == (handleCount + 1));
 
             if (switchToTab)
             {
@@ -80,6 +80,32 @@ namespace ApertureLabs.Selenium
             }
 
             return WrappedDriver.WindowHandles[WrappedDriver.WindowHandles.Count - 1];
+        }
+
+        /// <summary>
+        /// Switches to next tab.
+        /// </summary>
+        public void SwitchToNextTab()
+        {
+            WrappedDriver.CreateActions()
+                .SendKeys(
+                    WrappedDriver.Select("body").First(),
+                    Keys.LeftControl + Keys.Tab)
+                .Build()
+                .Perform();
+        }
+
+        /// <summary>
+        /// Switches to previous tab.
+        /// </summary>
+        public void SwitchToPreviousTab()
+        {
+            WrappedDriver.CreateActions()
+                .SendKeys(
+                    WrappedDriver.Select("body").First(),
+                    Keys.LeftControl + Keys.LeftShift + Keys.Tab)
+                .Build()
+                .Perform();
         }
 
         /// <summary>
