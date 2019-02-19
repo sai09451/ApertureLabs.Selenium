@@ -204,5 +204,48 @@ namespace ApertureLabs.Selenium.Extensions
 
             wait.Until(d => condition(d) == null);
         }
+
+        /// <summary>
+        /// Performs an action on an element then waits for the page to reload.
+        /// </summary>
+        /// <param name="wait">The wait.</param>
+        /// <param name="element">The element.</param>
+        /// <param name="action">The action.</param>
+        /// <exception cref="ArgumentNullException">
+        /// element
+        /// or
+        /// action
+        /// </exception>
+        public static void UntilPageReloads(this IWait<IWebDriver> wait,
+            IWebElement element,
+            Action<IWebElement> action)
+        {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+            else if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            action(element);
+            wait.Until(d => element.IsStale());
+        }
+
+        /// <summary>
+        /// A fluid version of <c>Until(...)</c>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="wait">The wait.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">predicate</exception>
+        public static IWait<IWebDriver> UntilChain<T>(this IWait<IWebDriver> wait,
+            Func<IWebDriver, T> predicate)
+        {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            wait.Until(predicate);
+
+            return wait;
+        }
     }
 }

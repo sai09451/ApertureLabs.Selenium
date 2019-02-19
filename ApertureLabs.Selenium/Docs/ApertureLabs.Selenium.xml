@@ -3548,6 +3548,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObjectFactory.LoadAssemblies">
+            <summary>
+            This is used as a workaround for assemblies not loading until one
+            of their types are referenced.
+            </summary>
+        </member>
         <member name="T:ApertureLabs.Selenium.Properties.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -3656,9 +3662,9 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.TabHelper.GetNumberOfTabs">
+        <member name="M:ApertureLabs.Selenium.TabHelper.GetTabHandles">
             <summary>
-            Returns the number of tabs on the current window.
+            Identical to <see cref="P:OpenQA.Selenium.IWebDriver.WindowHandles"/>.
             </summary>
             <returns></returns>
         </member>
@@ -3668,6 +3674,16 @@
             </summary>
             <param name="switchToTab"></param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.SwitchToNextTab">
+            <summary>
+            Switches to next tab.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.SwitchToPreviousTab">
+            <summary>
+            Switches to previous tab.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.TextHelper">
             <summary>
