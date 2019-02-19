@@ -108,6 +108,15 @@ namespace ApertureLabs.Selenium
                 .Perform();
         }
 
+        /// <summary>
+        /// Switches to tab.
+        /// </summary>
+        /// <param name="windowHandle">The window handle.</param>
+        public void SwitchToTab(string windowHandle)
+        {
+            WrappedDriver.SwitchTo().Window(windowHandle);
+        }
+
         #endregion
     }
 }

@@ -61,9 +61,10 @@ namespace ApertureLabs.Selenium.PageObjects
             containerBuilder.RegisterInstance<IPageObjectFactory>(this);
             var orderedModules = modules.OrderBy(m => m.Order);
 
-            foreach (var module in orderedModules)
+            foreach (var moduleType in orderedModules)
             {
-                
+                containerBuilder.RegisterModule(moduleType);
+                importedModules.Add(moduleType);
             }
 
             containerBuilder.Populate(services);
@@ -108,9 +109,14 @@ namespace ApertureLabs.Selenium.PageObjects
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterInstance<IPageObjectFactory>(this);
 
-            // First scan assemblies.
+            // Scan assemblies.
             if (scanAssemblies)
-                ScanAssemblies(containerBuilder, loadModules);
+                ScanAssemblies(containerBuilder);
+
+            // Load modules.
+            if (loadModules)
+                LoadModules(containerBuilder, ignoredTypesAndModules);
+
 
             // Then load the passed in services. This way all overrides will
             // remain.
@@ -133,7 +139,8 @@ namespace ApertureLabs.Selenium.PageObjects
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterInstance<IPageObjectFactory>(this);
             containerBuilder.RegisterInstance<IWebDriver>(driver);
-            ScanAssemblies(containerBuilder, true);
+            ScanAssemblies(containerBuilder);
+            LoadModules(containerBuilder);
 
             serviceProvider = containerBuilder.Build();
         }
@@ -210,7 +217,6 @@ namespace ApertureLabs.Selenium.PageObjects
         }
 
         private void ScanAssemblies(ContainerBuilder containerBuilder,
-            bool loadModules,
             IEnumerable<Type> ignoredTypesAndModules = null)
         {
             ignoredTypesAndModules = ignoredTypesAndModules ?? new List<Type>();
@@ -231,10 +237,6 @@ namespace ApertureLabs.Selenium.PageObjects
                 })
                 .PublicOnly()
                 .InstancePerLifetimeScope();
-
-            // Register all modules.
-            if (loadModules)
-                LoadModules(containerBuilder, ignoredTypesAndModules);
         }
 
         private void LoadModules(ContainerBuilder containerBuilder,
@@ -252,23 +254,15 @@ namespace ApertureLabs.Selenium.PageObjects
                     && t.GetConstructors().Any(
                         c => c.IsPublic && !c.GetParameters().Any())
                     && !ignoredModules.Contains(t))
-                .Select(t =>
-                {
-                    var ctor = t.GetMatchingConstructor(new Type[0]);
-                    var instance = ctor.Invoke(new object[0]);
-
-                    if (instance is IOrderedModule orderedModule)
-                    {
-                        return orderedModule;
-                    }
-
-                    throw new InvalidCastException($"Invalid module: {t.Name}");
-                })
+                .Select(InstantiateModule)
                 .OrderBy(om => om.Order)
                 .ToList();
 
             foreach (var module in modules)
+            {
                 containerBuilder.RegisterModule(module);
+                importedModules.Add(module);
+            }
         }
 
         /// <summary>
@@ -281,6 +275,19 @@ namespace ApertureLabs.Selenium.PageObjects
                 LoadReferencedAssembly(assembly);
         }
 
+        private IOrderedModule InstantiateModule(Type type)
+        {
+            var ctor = type.GetMatchingConstructor(new Type[0]);
+            var instance = ctor.Invoke(new object[0]);
+
+            if (instance is IOrderedModule orderedModule)
+            {
+                return orderedModule;
+            }
+
+            throw new InvalidCastException($"Invalid module: {type.Name}");
+        }
+
         private void LoadReferencedAssembly(Assembly assembly)
         {
             foreach (AssemblyName name in assembly.GetReferencedAssemblies())
@@ -290,7 +297,16 @@ namespace ApertureLabs.Selenium.PageObjects
                     .Any(a => a.FullName == name.FullName);
 
                 if (!isLoaded)
-                    LoadReferencedAssembly(Assembly.Load(name));
+                {
+                    try
+                    {
+                        LoadReferencedAssembly(Assembly.Load(name));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
             }
         }
 

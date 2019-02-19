@@ -3158,8 +3158,7 @@
             </summary>
             <param name="selector">The selector.</param>
             <param name="driver">The driver.</param>
-            <param name="parent">The parent.</param>
-            <exception cref="T:System.ArgumentNullException">parent</exception>
+            <param name="parent">The parent. Can be null.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.FluidPageComponent`1.Parent">
             <summary>
@@ -3201,7 +3200,7 @@
             <summary>
             Similary to IModule but adds an index property to order the imports
             modules by. NOTE: Classes that implement this MUST have a default
-            constructor otherwise they will be ignored.
+            constructor (no-args) otherwise they will be ignored.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.IOrderedModule.Order">
@@ -3684,6 +3683,12 @@
             <summary>
             Switches to previous tab.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.TabHelper.SwitchToTab(System.String)">
+            <summary>
+            Switches to tab.
+            </summary>
+            <param name="windowHandle">The window handle.</param>
         </member>
         <member name="T:ApertureLabs.Selenium.TextHelper">
             <summary>

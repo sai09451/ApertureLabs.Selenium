@@ -5,7 +5,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <summary>
     /// Similary to IModule but adds an index property to order the imports
     /// modules by. NOTE: Classes that implement this MUST have a default
-    /// constructor otherwise they will be ignored.
+    /// constructor (no-args) otherwise they will be ignored.
     /// </summary>
     public interface IOrderedModule : IModule
     {

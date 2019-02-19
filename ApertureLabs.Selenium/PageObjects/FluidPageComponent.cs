@@ -24,17 +24,13 @@ namespace ApertureLabs.Selenium.PageObjects
         /// </summary>
         /// <param name="selector">The selector.</param>
         /// <param name="driver">The driver.</param>
-        /// <param name="parent">The parent.</param>
-        /// <exception cref="ArgumentNullException">parent</exception>
+        /// <param name="parent">The parent. Can be null.</param>
         public FluidPageComponent(
             By selector,
             IWebDriver driver,
             T parent)
             : base(selector, driver)
         {
-            if (parent == null)
-                throw new ArgumentNullException(nameof(parent));
-
             this.parent = parent;
         }
 
