@@ -267,6 +267,52 @@
               <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="T:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent">
+            <summary>
+            The bootstrap dropdown component.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent"/> class.
+            </summary>
+            <param name="selector">
+            The selector. Should point to an element that has the btn-group
+            class applied to it.
+            </param>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent.Expand">
+            <summary>
+            Expands the dropdown if not already expanded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent.Collapse">
+            <summary>
+            Collapses the dropdown if not already collapsed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent.GetName">
+            <summary>
+            Gets trimmed inner text of the main button.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent.GetEnabledItems">
+            <summary>
+            Returns the enabled drop down elements (doesn't include dividers).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent.GetAllItems">
+            <summary>
+            Returns all item elements (doesn't include dividers).
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1">
             <summary>
             Used for working with Bootstrap navs.
@@ -2636,6 +2682,29 @@
             <typeparam name="TResult"></typeparam>
             <param name="wait"></param>
             <param name="condition"></param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.UntilPageReloads(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},OpenQA.Selenium.IWebElement,System.Action{OpenQA.Selenium.IWebElement})">
+            <summary>
+            Performs an action on an element then waits for the page to reload.
+            </summary>
+            <param name="wait">The wait.</param>
+            <param name="element">The element.</param>
+            <param name="action">The action.</param>
+            <exception cref="T:System.ArgumentNullException">
+            element
+            or
+            action
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions.UntilChain``1(OpenQA.Selenium.Support.UI.IWait{OpenQA.Selenium.IWebDriver},System.Func{OpenQA.Selenium.IWebDriver,``0})">
+            <summary>
+            A fluid version of <c>Until(...)</c>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="wait">The wait.</param>
+            <param name="predicate">The predicate.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">predicate</exception>
         </member>
         <member name="T:ApertureLabs.Selenium.Js.JavaScript">
             <summary>
