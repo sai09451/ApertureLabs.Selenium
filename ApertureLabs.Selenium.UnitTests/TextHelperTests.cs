@@ -2,6 +2,7 @@
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System;
 using System.Linq;
 
 namespace ApertureLabs.Selenium
@@ -53,6 +54,20 @@ namespace ApertureLabs.Selenium
                 .ToArray();
 
             CollectionAssert.AreEqual(ints, expectedInts);
+        }
+
+        [DataTestMethod]
+        //[DataRow("Todays year is 1994.", "yyyy")]
+        //[DataRow("Todays year is Dec 3 of 1994.", "MMM d of yyyy")]
+        [DataRow("Todays year is 2/24/1994.", @"M//dd//yyyy")]
+        public void ExtractDateTimeTest(string elementText, string dateTimeFormat)
+        {
+            var el = new MockTextWebElement(text: elementText,
+                scriptResult: elementText);
+
+            var dateTime = el.TextHelper().ExtractDateTime(dateTimeFormat);
+
+            Assert.AreEqual(dateTime.Year, 1994);
         }
 
         #endregion

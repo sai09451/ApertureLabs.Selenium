@@ -25,13 +25,15 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
             string pageSource = default,
             string currentWindowHandle = default,
             ReadOnlyCollection<string> windowHandles = default,
-            IEnumerable<IWebElement> elements = default)
+            IEnumerable<IWebElement> elements = default,
+            object scriptResult = null)
         {
             Url = url;
             Title = title;
             PageSource = pageSource;
             CurrentWindowHandle = currentWindowHandle;
             WindowHandles = windowHandles;
+            ScriptResult = scriptResult;
 
             this.elements = elements ?? new List<IWebElement>();
         }
@@ -39,6 +41,8 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
         #endregion
 
         #region Properties
+
+        private object ScriptResult { get; set; }
 
         public string Url
         {
@@ -82,12 +86,12 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
 
         public object ExecuteAsyncScript(string script, params object[] args)
         {
-            throw new NotImplementedException();
+            return ScriptResult;
         }
 
         public object ExecuteScript(string script, params object[] args)
         {
-            throw new NotImplementedException();
+            return ScriptResult;
         }
 
         public IWebElement FindElement(By by)

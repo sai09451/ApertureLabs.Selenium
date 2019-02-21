@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ApertureLabs.Selenium.UnitTests.Infrastructure
 {
-    public class MockTextWebElement : IWebElement, IWrapsDriver
+    public class MockTextWebElement : IWebElement, IWrapsDriver, IJavaScriptExecutor
     {
         #region Constructor
 
@@ -19,7 +19,8 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
             Size size = default,
             bool displayed = true,
             IDictionary<string, string> attributes = default,
-            IWebDriver driver = default)
+            IWebDriver driver = default,
+            object scriptResult = default)
         {
             TagName = tagName;
             Text = text ?? String.Empty;
@@ -28,12 +29,16 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
             Size = size;
             Displayed = displayed;
             Attributes = attributes ?? new Dictionary<string, string>();
-            WrappedDriver = driver ?? new MockWebDriver(elements: new[] { this });
+            WrappedDriver = driver ?? new MockWebDriver(
+                elements: new[] { this },
+                scriptResult: scriptResult);
         }
 
         #endregion
 
         #region Properties
+
+        private object ScriptResult { get; set; }
 
         private IDictionary<string, string> Attributes { get; set; }
 
@@ -93,6 +98,16 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
 
         public void Submit()
         { }
+
+        object IJavaScriptExecutor.ExecuteScript(string script, params object[] args)
+        {
+            return ScriptResult;
+        }
+
+        object IJavaScriptExecutor.ExecuteAsyncScript(string script, params object[] args)
+        {
+            return ScriptResult;
+        }
 
         #endregion
     }

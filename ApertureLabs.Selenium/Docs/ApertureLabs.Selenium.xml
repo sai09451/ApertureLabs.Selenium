@@ -3791,10 +3791,14 @@
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.WrappedDriver">
-            <inheritdoc/>
+            <summary>
+            Gets the <see cref="T:OpenQA.Selenium.IWebDriver" /> used to find this element.
+            </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.TextHelper.WrappedElement">
-            <inheritdoc/>
+            <summary>
+            Gets the <see cref="T:OpenQA.Selenium.IWebElement" /> wrapped by this object.
+            </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.TextHelper.ExtractInteger(System.Boolean)">
             <summary>
