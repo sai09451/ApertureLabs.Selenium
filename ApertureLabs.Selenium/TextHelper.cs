@@ -81,7 +81,13 @@ namespace ApertureLabs.Selenium
             new CustomDateTimeFormatString{ Specifier = "z", RegexString = @"[+-]\d{2}" },
             new CustomDateTimeFormatString{ Specifier = "zzz", RegexString = @"[+-][\d]{1,2}:{2}" },
             new CustomDateTimeFormatString{ Specifier = ":", RegexString = CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator },
-            new CustomDateTimeFormatString{ Specifier = "/", RegexString = CultureInfo.CurrentCulture.DateTimeFormat.DateSeparator }
+            new CustomDateTimeFormatString
+            {
+                Specifier = "/",
+                RegexString =  CultureInfo.CurrentCulture.DateTimeFormat.DateSeparator == "/"
+                    ? "\\" + CultureInfo.CurrentCulture.DateTimeFormat.DateSeparator
+                    : CultureInfo.CurrentCulture.DateTimeFormat.DateSeparator
+            }
         };
 
         #endregion
@@ -237,10 +243,7 @@ namespace ApertureLabs.Selenium
         }
 
         /// <summary>
-        /// Extracts a Date from the text. Currently this only supports
-        /// the text format "Some text...MM/DD/YYYY...other text". It will
-        /// optionally also return the time up to the second if provided after
-        /// the date.
+        /// Extracts a Date from the text.
         /// </summary>
         /// <param name="format">
         /// Optional format the date is in (IE: "MMMM").
@@ -308,14 +311,19 @@ namespace ApertureLabs.Selenium
                         // current one.
                         do
                         {
-                            @char = Convert.ToChar(reader.Read());
+                            @char = Convert.ToChar(reader.Peek());
 
                             var newResult = subPattern + @char;
 
                             if (FormatStrings.Any(fs => fs.Specifier == newResult))
+                            {
                                 subPattern = newResult;
+                                reader.Read();
+                            }
                             else
+                            {
                                 break;
+                            }
                         }
                         while (-1 != reader.Peek()
                             && FormatStrings.Any(fs => fs.Specifier == subPattern));
