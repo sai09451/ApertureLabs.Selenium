@@ -7,6 +7,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
@@ -198,7 +199,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// var initializedcomponent = yourPageObjectFactory
         ///     .PrepareComponent(new YourComponent(arg1, arg2));
         /// </example>
-        public virtual T PrepareComponent<T>(T pageComponent) where T : IPageComponent
+        public virtual T PrepareComponent<T>(T pageComponent) where T : ILoadableComponent
         {
             if (pageComponent == null)
                 throw new ArgumentNullException(nameof(pageComponent));

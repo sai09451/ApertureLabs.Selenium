@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OpenQA.Selenium.Support.UI;
+using System.Collections.Generic;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
@@ -12,8 +13,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// it. This is useful for initializing a component in one line.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="U"></typeparam>
-        /// <param name="pageComponent"></param>
+        /// <param name="loadableComponent"></param>
         /// <returns></returns>
         /// <example>
         /// Before:
@@ -27,10 +27,11 @@ namespace ApertureLabs.Selenium.PageObjects
         /// var initializedcomponent = yourPageObjectFactory
         ///     .PrepareComponent(new YourComponent(arg1, arg2));
         /// </example>
-        T PrepareComponent<T>(T pageComponent) where T : IPageComponent;
+        T PrepareComponent<T>(T loadableComponent) where T : ILoadableComponent;
 
         /// <summary>
-        /// Essentially just calls 'Load()' on the page object and returns it.
+        /// Creates an instance of the PageObject using the service provider to
+        /// resolve the constructor arguments and then calls 'Load()' on it.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -48,7 +49,7 @@ namespace ApertureLabs.Selenium.PageObjects
         T PreparePage<T>() where T : IPageObject;
 
         /// <summary>
-        /// Gets the imported modules. Exists solely to check if the correct
+        /// Gets the imported modules. Exists solely to verify the correct
         /// modules are being imported.
         /// </summary>
         /// <returns></returns>

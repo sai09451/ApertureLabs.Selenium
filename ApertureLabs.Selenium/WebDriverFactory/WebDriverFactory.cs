@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Xml.Linq;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.Events;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs;
 using WebDriverManager.DriverConfigs.Impl;
-using WebDriverManager.Helpers;
 
 namespace ApertureLabs.Selenium
 {
@@ -190,6 +183,9 @@ namespace ApertureLabs.Selenium
 
             // Set the window size.
             driver.Manage().Window.Size = windowSize;
+
+            // Wrap with EventFiringWebDriver.
+            driver = new EventFiringWebDriver(driver);
 
             if (track)
                 trackedDrivers.Add(driver);

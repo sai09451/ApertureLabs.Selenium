@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ApertureLabs.Selenium.PageObjects.Tests
 {
-    public class DemoPage : PageObject
+    public class DemoPage : StaticPageObject
     {
         public DemoPage(IWebDriver driver) : base(driver)
         { }

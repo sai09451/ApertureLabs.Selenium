@@ -12,7 +12,7 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
     public interface IMockA : IPageObject
     { }
 
-    public class MockA : PageObject, IMockA
+    public class MockA : StaticPageObject, IMockA
     {
         public MockA(IWebDriver driver) : base(driver)
         { }
@@ -21,7 +21,7 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
     public interface IMockB : IMockA
     { }
 
-    public class MockB : PageObject, IMockB
+    public class MockB : StaticPageObject, IMockB
     {
         public MockB(IMockA mockA, IWebDriver driver) : base(driver)
         { }
@@ -30,7 +30,7 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
     public interface IMockC : IPageObject
     { }
 
-    public abstract class MockC : PageObject, IMockC
+    public abstract class MockC : StaticPageObject, IMockC
     {
         public MockC(IMockA mockA, IWebDriver driver) : base(driver)
         { }
@@ -39,7 +39,7 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
     public interface IMockD : IMockC
     { }
 
-    public class MockD : PageObject, IMockD
+    public class MockD : StaticPageObject, IMockD
     {
         public MockD(IMockA mockA,
             IMockB mockB,

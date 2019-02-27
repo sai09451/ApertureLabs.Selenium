@@ -6,7 +6,7 @@ using OpenQA.Selenium;
 
 namespace MockServer.PageObjects
 {
-    public class BasePage : PageObject
+    public class BasePage : StaticPageObject
     {
         #region Fields
 
