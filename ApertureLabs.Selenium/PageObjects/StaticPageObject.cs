@@ -190,7 +190,7 @@ namespace ApertureLabs.Selenium.PageObjects
             }
 
             // Navigate to this pages Uri if the current url is blank.
-            var shouldNavigate = Uri != null || !UriMatcherContainerWildCards();
+            var shouldNavigate = Uri != null || !UriMatcherContainsWildCards();
 
             if (shouldNavigate)
             {
@@ -202,7 +202,7 @@ namespace ApertureLabs.Selenium.PageObjects
                     StringComparison.OrdinalIgnoreCase);
 
                 var canUseUriMatcher = !canUseUri
-                    && !UriMatcherContainerWildCards();
+                    && !UriMatcherContainsWildCards();
 
                 if (canUseUri)
                 {
@@ -257,7 +257,7 @@ namespace ApertureLabs.Selenium.PageObjects
             return hashCode;
         }
 
-        protected bool UriMatcherContainerWildCards()
+        protected bool UriMatcherContainsWildCards()
         {
             return UriMatcher.Contains("*")
                 || UriMatcher.Contains("{")
