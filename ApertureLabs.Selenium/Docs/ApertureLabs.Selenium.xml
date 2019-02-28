@@ -3839,10 +3839,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.TextHelper.ExtractDateTime(System.String)">
             <summary>
-            Extracts a Date from the text. Currently this only supports
-            the text format "Some text...MM/DD/YYYY...other text". It will
-            optionally also return the time up to the second if provided after
-            the date.
+            Extracts a Date from the text.
             </summary>
             <param name="format">
             Optional format the date is in (IE: "MMMM").
