@@ -37,7 +37,7 @@ namespace ApertureLabs.Selenium.PageObjects
         {
             WrappedDriver = driver
                 ?? throw new ArgumentNullException(nameof(driver));
-            UriMatcher = uriMatcher
+            Route = uriMatcher
                 ?? throw new ArgumentNullException(nameof(uriMatcher));
 
             assignedEventListeners = false;
@@ -66,7 +66,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// NOTE: All meta-sequences should be in groups (preferrably named
         /// groups).
         /// </summary>
-        public string UriMatcher { get; protected set; }
+        public string Route { get; protected set; }
 
         /// <summary>
         /// Gets the window handle the page was originally loaded on.
@@ -126,7 +126,7 @@ namespace ApertureLabs.Selenium.PageObjects
                 var originalWindowHandle = WrappedDriver.CurrentWindowHandle;
 
                 // If the uri is null, assume true.
-                if (Uri == null || String.IsNullOrEmpty(UriMatcher))
+                if (Uri == null || String.IsNullOrEmpty(Route))
                     return true;
 
                 try
@@ -226,7 +226,7 @@ namespace ApertureLabs.Selenium.PageObjects
         public ILoadableComponent Load(bool firstNavigateToUrl)
         {
             if (!OnCorrectUrl())
-                WrappedDriver.Navigate().GoToUrl(UriMatcher);
+                WrappedDriver.Navigate().GoToUrl(Route);
 
             return Load();
         }
@@ -250,7 +250,7 @@ namespace ApertureLabs.Selenium.PageObjects
                 + EqualityComparer<Uri>.Default.GetHashCode(Uri);
             hashCode = hashCode
                 * -1521134295
-                + EqualityComparer<string>.Default.GetHashCode(UriMatcher);
+                + EqualityComparer<string>.Default.GetHashCode(Route);
             hashCode = hashCode
                 * -1521134295
                 + EqualityComparer<string>.Default.GetHashCode(WindowHandle);
@@ -259,15 +259,15 @@ namespace ApertureLabs.Selenium.PageObjects
 
         protected bool UriMatcherContainerWildCards()
         {
-            return UriMatcher.Contains("*")
-                || UriMatcher.Contains("{")
-                || UriMatcher.Contains("}");
+            return Route.Contains("*")
+                || Route.Contains("{")
+                || Route.Contains("}");
         }
 
         protected bool OnCorrectUrl()
         {
             var url = WrappedDriver.Url;
-            var instanceUrl = Uri?.ToString() ?? UriMatcher;
+            var instanceUrl = Uri?.ToString() ?? Route;
 
             return String.Equals(url,
                 instanceUrl,

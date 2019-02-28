@@ -20,7 +20,7 @@ namespace ApertureLabs.Selenium.PageObjects
 
         public ParameterPageObject(string uriMatcher, IWebDriver driver)
         {
-            UriMatcher = uriMatcher
+            Route = uriMatcher
                 ?? throw new ArgumentNullException(nameof(uriMatcher));
             WrappedDriver = driver
                 ?? throw new ArgumentNullException(nameof(driver));
@@ -30,7 +30,7 @@ namespace ApertureLabs.Selenium.PageObjects
 
         #region Properties
 
-        public string UriMatcher { get; private set; }
+        public string Route { get; private set; }
 
         public Uri Uri { get; private set; }
 
@@ -55,7 +55,7 @@ namespace ApertureLabs.Selenium.PageObjects
         public IEnumerable<RouteParameter> GetUrlParameters()
         {
             var regex = new Regex(@"{.*?}");
-            var matches = regex.Match(UriMatcher);
+            var matches = regex.Match(Route);
 
             while (matches.Success)
             {
