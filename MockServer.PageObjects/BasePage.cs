@@ -1,8 +1,7 @@
-﻿using System;
-using ApertureLabs.Selenium;
-using ApertureLabs.Selenium.PageObjects;
+﻿using ApertureLabs.Selenium.PageObjects;
 using MockServer.PageObjects.Home;
 using OpenQA.Selenium;
+using System;
 
 namespace MockServer.PageObjects
 {
@@ -23,7 +22,8 @@ namespace MockServer.PageObjects
 
         public BasePage(IWebDriver driver,
             PageOptions pageOptions,
-            IPageObjectFactory pageObjectFactory) : base(driver)
+            IPageObjectFactory pageObjectFactory)
+            : base(driver, new Uri(pageOptions.Url))
         {
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));

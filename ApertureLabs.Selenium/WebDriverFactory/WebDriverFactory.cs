@@ -99,7 +99,8 @@ namespace ApertureLabs.Selenium
 
         /// <summary>
         /// Creates a new WebDriver instance for one of the major web
-        /// browsers.
+        /// browsers. Will wrap the driver in an
+        /// <see cref="EventFiringWebDriver"/>.
         /// </summary>
         /// <param name="majorWebDriver"></param>
         /// <param name="windowSize"></param>

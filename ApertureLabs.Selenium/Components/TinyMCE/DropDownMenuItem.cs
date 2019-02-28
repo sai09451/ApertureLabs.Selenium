@@ -72,13 +72,13 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             // Determine where the float-menu will appear. Usually it's either
             // directly below or to the right.
-            var vector = GetDirectionFloatMenuWillOpen();
+            var (X, Y) = GetDirectionFloatMenuWillOpen();
 
             // Move below the WrappedElement.
             WrappedDriver.CreateActions()
                 .MoveToElement(WrappedElement,
-                    vector.Y,
-                    vector.X,
+                    Y,
+                    X,
                     MoveToElementOffsetOrigin.Center)
                 .Perform();
 
@@ -93,13 +93,12 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                     var textEl = el.FindElements(textSelector)
                         .FirstOrDefault();
 
-                    if (textEl == null)
-                        return false;
-
-                    return String.Equals(
-                        textEl.TextHelper().InnerText,
-                        option,
-                        stringComparison);
+                    return textEl == null
+                        ? false
+                        : String.Equals(
+                            textEl.TextHelper().InnerText,
+                            option,
+                            stringComparison);
                 });
 
             if (menuItemEl == null)

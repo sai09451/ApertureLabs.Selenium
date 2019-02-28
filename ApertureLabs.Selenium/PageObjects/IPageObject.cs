@@ -15,9 +15,20 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <summary>
         /// Used to match the Uri of the webpage. Is used to create a Regex
         /// object to verify the url of the page when calling <c>Load</c>.
-        /// The syntax is identical to that of the RouteAttribute.
+        /// The syntax is identical to that of the RouteAttribute. Used with
+        /// the <see cref="BaseUri"/> property to check if the current url is
+        /// valid.
         /// </summary>
-        string Route { get; }
+        UriTemplate Route { get; }
+
+        /// <summary>
+        /// Gets the base URI. Used alongside the <see cref="Route"/> to check
+        /// if the current url is valid.
+        /// </summary>
+        /// <value>
+        /// The base URI.
+        /// </value>
+        Uri BaseUri { get; }
 
         /// <summary>
         /// Gets the URI. Should be null until

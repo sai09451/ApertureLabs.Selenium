@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Text;
-using ApertureLabs.Selenium.Extensions;
-using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium
 {
@@ -22,7 +17,11 @@ namespace ApertureLabs.Selenium
 
         #region Constructor
 
-        internal ByElement(IWebElement element)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ByElement"/> class.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        public ByElement(IWebElement element)
         {
             this.element = element;
         }

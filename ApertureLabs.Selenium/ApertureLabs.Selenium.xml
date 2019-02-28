@@ -4,11 +4,59 @@
         <name>ApertureLabs.Selenium</name>
     </assembly>
     <members>
+        <member name="T:ApertureLabs.Selenium.ByAll">
+            <summary>
+            A version of by that selects element(s) that match all of the
+            selectors.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByAll.#ctor(OpenQA.Selenium.By[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.ByAll"/> class.
+            </summary>
+            <param name="selectors">The selectors.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown if selectors is null.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown if selectors is empty.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByAll.FindElement(OpenQA.Selenium.ISearchContext)">
+            <summary>
+            Finds the first element matching the criteria.
+            </summary>
+            <param name="context">An <see cref="T:OpenQA.Selenium.ISearchContext" /> object to use to search for the elements.</param>
+            <returns>
+            The first matching <see cref="T:OpenQA.Selenium.IWebElement" /> on the current context.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByAll.ToString">
+            <summary>
+            Converts to string.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByAll.FindByAll(OpenQA.Selenium.By[])">
+            <summary>
+            Static ctor.
+            </summary>
+            <param name="selectors">The selectors.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.ByElement">
             <summary>
             Will always ONLY return the stored element.
             </summary>
             <seealso cref="T:OpenQA.Selenium.By" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.ByElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.ByElement"/> class.
+            </summary>
+            <param name="element">The element.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.ByElement.FindElement(OpenQA.Selenium.ISearchContext)">
             <summary>
@@ -34,64 +82,6 @@
             Static ctor.
             </summary>
             <param name="element">The element.</param>
-            <returns></returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.ByScoped">
-            <summary>
-            Similar to the normal <code>OpenQA.Selenium.By</code> class but will
-            always search from the passed in searchContext.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ByScoped.#ctor(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Ctor. To create an instance use the static method FromScoped(...).
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ByScoped.#ctor(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Ctor. Instead fo passing in an instance of ISearchContext, pass in a
-            selector that will fetch the ISearchContext and then the subSelector
-            will search for the child elements.
-            </summary>
-            <param name="contextSelector"></param>
-            <param name="subSelectors"></param>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ByScoped.FindElement(OpenQA.Selenium.ISearchContext)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ByScoped.FindElements(OpenQA.Selenium.ISearchContext)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.ISearchContext,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Creates a 'scoped' selector which will always use the passed in
-            search context instead of what the current context is for the
-            driver.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.By,System.Collections.Generic.ICollection{OpenQA.Selenium.By})">
-            <summary>
-            Creates a 'scoped' selector which will first find all elements
-            that match the <code>searchContext</code> selector and then keep
-            applying the <code>subSelectors</code> to those elements.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.ByScoped.FromScope(OpenQA.Selenium.By,OpenQA.Selenium.By[])">
-            <summary>
-            Creates a 'scoped' selector which will first find all elements
-            that match the <code>searchContext</code> selector and then keep
-            applying the <code>subSelectors</code> to those elements.
-            </summary>
-            <param name="searchContext"></param>
-            <param name="subSelectors"></param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Collapsable.CollapsableComponent`1">
@@ -901,7 +891,11 @@
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.Load">
-            <inheritDoc/>
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.GetColumnHeaders">
             <summary>
@@ -2611,6 +2605,93 @@
               otherwise, <c>false</c>.
             </returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.PageObjectExtensions">
+            <summary>
+            Contains extensions methods for objects implementing the IPageObject.
+            interface.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.StartWithPage``1(ApertureLabs.Selenium.PageObjects.IPageObjectFactory,System.Action{``0})">
+            <summary>
+            Will load up the page and navigate to it's url.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="performActions">
+            The actions to be performed on the page. No navigation events
+            should occur here.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.ContinueWithPage``2(``0,System.Action{``0},System.Func{``0,``1})">
+            <summary>
+            Used to chaing actions between <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances.
+            The only time the wrapped <see cref="T:OpenQA.Selenium.IWebDriver"/> should
+            navigate is in the navigationActions argument..
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="pageObject">The page object.</param>
+            <param name="performActions">
+            The actions on a web-page that don't result in a navigation event.
+            </param>
+            <param name="navigationActions">
+            The actions on a web-page that result in a navigation event. Should
+            return the fully loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.
+            </param>
+            <returns>The loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown if performActions or navigationActions are null.
+            </exception>
+            <exception cref="T:System.Exception">
+            Thrown if a Navigated event is detected while the argument
+            performing actions is called.
+            </exception>
+            <remarks>
+            Exists for organization. Instead of manually indenting the chained
+            method calls (if using a fluid syntax) this can be used to better
+            seperate which methods are acting on which pages.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.ContinueWithPage``2(``0,System.Func{``0,``1})">
+            <summary>
+            Used to chaing actions between <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="pageObject">The page object.</param>
+            <param name="navigationActions">The navigation actions.</param>
+            <returns>
+            The newly loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instance.
+            </returns>
+            <remarks>
+            Exists for organization. Instead of manually indenting the chained
+            method calls (if using a fluid syntax) this can be used to better
+            seperate which methods are acting on which pages.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.ContinueWithPage``1(``0,System.Action{``0})">
+            <summary>
+            Used as the final link in a chain of method calls between
+            <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances. The wrapped
+            <see cref="T:OpenQA.Selenium.IWebDriver"/> should never navigate to another url in
+            this method.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageObject">The page object.</param>
+            <param name="performAction">
+            The final action(s) to be performed on a <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.
+            </param>
+            <exception cref="T:System.Exception">
+            Thrown if a navigation event is detected while performingAction is
+            executing.
+            </exception>
+            <remarks>
+            Exists for organization. Instead of manually indenting the chained
+            method calls (if using a fluid syntax) this can be used to better
+            seperate which methods are acting on which pages.
+            </remarks>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
             <summary>
             Extensions for WebDriverWait.
@@ -3301,12 +3382,34 @@
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.IPageObject">
             <summary>
-            Represents a webpage.
+            Represents a web-page which has a url with parameters.
             </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.IPageObject.Route">
+            <summary>
+            Used to match the Uri of the webpage. Is used to create a Regex
+            object to verify the url of the page when calling <c>Load</c>.
+            The syntax is identical to that of the RouteAttribute. Used with
+            the <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.BaseUri"/> property to check if the current url is
+            valid.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.IPageObject.BaseUri">
+            <summary>
+            Gets the base URI. Used alongside the <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.Route"/> to check
+            if the current url is valid.
+            </summary>
+            <value>
+            The base URI.
+            </value>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.IPageObject.Uri">
             <summary>
-            The url of the webpage.
+            Gets the URI. Should be null until
+            <see cref="M:OpenQA.Selenium.Support.UI.ILoadableComponent.Load"/> is
+            called where it will be set to the Url the
+            <see cref="T:OpenQA.Selenium.IWebDriver" />
+            is on.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.IPageObject.WindowHandle">
@@ -3320,10 +3423,9 @@
             </summary>
             <example>
             If there are two page object instances; one for a login page and
-            one for the home page, if the driver is on the home page the login
-            page should when its <code>loginPage.IsStateValid();</code> should
-            return false while the <code>homePage.IsStateValid();</code> will
-            return true.
+            one for the home page, and the driver is on the home page the login
+            page instance should return true while the home page instance
+            should return true.
             </example>
             <returns></returns>
         </member>
@@ -3338,8 +3440,7 @@
             it. This is useful for initializing a component in one line.
             </summary>
             <typeparam name="T"></typeparam>
-            <typeparam name="U"></typeparam>
-            <param name="pageComponent"></param>
+            <param name="loadableComponent"></param>
             <returns></returns>
             <example>
             Before:
@@ -3356,7 +3457,8 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.IPageObjectFactory.PreparePage``1">
             <summary>
-            Essentially just calls 'Load()' on the page object and returns it.
+            Creates an instance of the PageObject using the service provider to
+            resolve the constructor arguments and then calls 'Load()' on it.
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
@@ -3374,9 +3476,45 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.IPageObjectFactory.GetImportedModules">
             <summary>
-            Gets the imported modules. Exists solely to check if the correct
+            Gets the imported modules. Exists solely to verify the correct
             modules are being imported.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.IParameterPageObject">
+            <summary>
+            Represents a web-page whose url contians parameters.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.IPageObject" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IParameterPageObject.GetUriInfo">
+            <summary>
+            Gets the URI information.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IParameterPageObject.Load(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Replaces the variables in the <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.Route"/> with
+            the parameters and navigates to that url (if not on it already)
+            then calls <see cref="M:OpenQA.Selenium.Support.UI.ILoadableComponent.Load"/>.
+            </summary>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.IStaticPageObject">
+            <summary>
+            Represents a web-page whose url never changes.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.IPageObject" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.IStaticPageObject.Load(System.Boolean)">
+            <summary>
+            Tries to navigate to the IPageObjects Uri before executing
+            <c>Load</c>. If the Uri is null and the UriMatcher contains groups
+            this will throw an exception.
+            </summary>
+            <param name="firstNavigateToUrl">if set to <c>true</c> [first navigate to URL].</param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.IViewModel`1">
@@ -3436,24 +3574,50 @@
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.PageObject">
             <summary>
-            Default implementation of IPageObject
+            Base class for PageObjects. Default implementation of IPageObject
             </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.IPageObject" />
+            <seealso cref="T:System.IDisposable" />
         </member>
-        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.#ctor(OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.#ctor(OpenQA.Selenium.IWebDriver,System.Uri,System.UriTemplate)">
             <summary>
-            If passing in an EventFiringWebDriver event listeners will be
-            added.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.PageObject"/> class.
             </summary>
-            <param name="driver"></param>
+            <param name="driver">The driver.</param>
+            <param name="baseUri">The base uri.</param>
+            <param name="route">The route.</param>
+            <exception cref="T:System.ArgumentNullException">
+            driver
+            or
+            route
+            or baseUri
+            </exception>
         </member>
-        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WrappedDriver">
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.BaseUri">
             <summary>
-            Gets the OpenQA.Selenium.IWebDriver used to find this element.
+            Gets the base URI. Used alongside the <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.Route" /> to check
+            if the current url is valid.
+            </summary>
+            <value>
+            The base URI.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.Route">
+            <summary>
+            Used to match the Uri of the webpage. Is used to create a Regex
+            object to verify the url of the page when calling <c>Load</c>.
+            The syntax is identical to that of the RouteAttribute. Used with
+            the <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.BaseUri" /> property to check if the current url is
+            valid.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.Uri">
             <summary>
-            The url this page uses.
+            Gets the URI. Should be null until
+            <see cref="M:OpenQA.Selenium.Support.UI.ILoadableComponent.Load" /> is
+            called where it will be set to the Url the
+            <see cref="T:OpenQA.Selenium.IWebDriver" />
+            is on.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WindowHandle">
@@ -3461,70 +3625,97 @@
             Gets the window handle the page was originally loaded on.
             </summary>
         </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.WrappedDriver">
+            <summary>
+            Gets the <see cref="T:OpenQA.Selenium.IWebDriver" /> used to find
+            this element.
+            </summary>
+        </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Equals(ApertureLabs.Selenium.PageObjects.IPageObject)">
             <summary>
-            Determines whether the specified <see cref="T:System.Object" />, is
-            equal to this instance.
+            Equalses the specified page object.
             </summary>
             <param name="pageObject">The page object.</param>
             <returns></returns>
+            <exception cref="T:System.ArgumentNullException">pageObject</exception>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Equals(System.Object)">
             <summary>
-            Determines whether the specified <see cref="T:System.Object" />, is
-            equal to this instance.
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
             </summary>
-            <param name="obj">The <see cref="T:System.Object" /> to compare with
-            this instance.
-            </param>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
             <returns>
-              <c>true</c> if the specified <see cref="T:System.Object" /> is
-              equal to this instance; otherwise, <c>false</c>.
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
             </returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.IsStale">
-            <summary>
-            By default will to see if the pages original window handle still
-            exists and that windows url matches the Uri.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Load">
-            <summary>
-            If overridding this don't forget to call base.Load().
-            NOTE: Will navigate to the pages url if the current drivers url
-            is empty.
-            </summary>
-            <remarks>
-            If the driver is an EventFiringWebDriver an event listener will
-            be added to the 'Navigated' event and uses the url to determine
-            if the page is 'stale'.
-            </remarks>
-            <returns></returns>
-            <exception cref="T:System.ObjectDisposedException">
-            Occurs when trying to use after this instance has been
-            disposed.
-            </exception>
-            <exception cref="T:OpenQA.Selenium.Support.UI.LoadableComponentException">
-            Thrown when calling <code>Load()</code> and not on the correct
-            url.
-            </exception>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.GetHashCode">
             <summary>
-            Returns a hash code for this instance. Only uses the WrappedDriver,
-            Uri, and the WindowHandle to generate the hash code.
+            Returns a hash code for this instance.
             </summary>
             <returns>
             A hash code for this instance, suitable for use in hashing
             algorithms and data structures like a hash table. 
             </returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.IsStale">
+            <summary>
+            Use to determine if a PageObject is still 'valid'.
+            </summary>
+            <returns></returns>
+            <example>
+            If there are two page object instances; one for a login page and
+            one for the home page, and the driver is on the home page the login
+            page instance should return true while the home page instance
+            should return true.
+            </example>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Load">
+            <summary>
+            Loads the component. Checks to see if the current url matches
+            the Route and if not an exception is thrown. If the WrappedDriver
+            is an <see cref="T:OpenQA.Selenium.Support.Events.EventFiringWebDriver"/> event listeners will be
+            added to the <see cref="E:OpenQA.Selenium.Support.Events.EventFiringWebDriver.Navigated"/> event
+            which will call <see cref="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose"/> on this instance.
+            
+            NOTE:
+            If overriding don't forget to either call base.Load() or make sure
+            the <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.Uri"/> and the <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.WindowHandle"/> are
+            assigned to.
+            </summary>
+            <returns>
+            A reference to this
+            <see cref="T:OpenQA.Selenium.Support.UI.ILoadableComponent" />.
+            </returns>
+            <exception cref="T:System.ObjectDisposedException">
+            Thrown if this instance has already been loaded.
+            </exception>
+            <exception cref="T:System.UriFormatException">
+            Thrown if the current url doens't match the Route.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.OnValidUrl">
+            <summary>
+            Checks if the current url matches the <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.BaseUri"/> and the
+            <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.Route"/>.
+            </summary>
+            <returns>
+            <c>true</c> if the current url matches this instances
+            <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.BaseUri"/> and <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.Route"/>; otherwise
+            <c>false</c>.
+            </returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose(System.Boolean)">
-            <inheritdoc/>
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing">
+              <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose">
-            <inheritdoc/>
+            <summary>
+            Performs application-defined tasks associated with freeing,
+            releasing, or resetting unmanaged resources.
+            </summary>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.PageObjectFactory">
             <summary>
@@ -3621,6 +3812,122 @@
             This is used as a workaround for assemblies not loading until one
             of their types are referenced.
             </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.ParameterPageObject">
+            <summary>
+            A PageObject whose url has route parameters.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.PageObjects.IParameterPageObject" />
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.ParameterPageObject.#ctor(OpenQA.Selenium.IWebDriver,System.Uri,System.UriTemplate)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.ParameterPageObject"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="baseUri">The base uri.</param>
+            <param name="route">The route.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.ParameterPageObject.GetUriInfo">
+            <summary>
+            Gets the URI information.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.Exception">Need to call Load first.</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.ParameterPageObject.Load(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Replaces the variables in the <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.Route" /> with
+            the parameters and navigates to that url (if not on it already)
+            then calls <see cref="M:OpenQA.Selenium.Support.UI.ILoadableComponent.Load" />.
+            </summary>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown if the <see cref="T:System.Collections.Generic.IDictionary`2"/> argument is
+            null.
+            </exception>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.RouteParameter">
+            <summary>
+            Represents a route parameter. Format should adhere to the
+            RouteAttribute format.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.RouteParameter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.RouteParameter"/> class.
+            </summary>
+            <param name="parameter">The parameter.</param>
+            <exception cref="T:System.ArgumentException">
+            Failed to identify the name of the parameter.
+            </exception>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.RouteParameter.IsOptional">
+            <summary>
+            Gets a value indicating whether this instance is optional.
+            </summary>
+            <value>
+              <c>true</c> if this instance is optional; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.RouteParameter.Type">
+            <summary>
+            Gets the type.
+            </summary>
+            <value>
+            The type.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.RouteParameter.Name">
+            <summary>
+            Gets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.PageObjects.StaticPageObject">
+            <summary>
+            Default implementation of IPageObject. Used to represent web-pages
+            which have urls that don't have any variables in them. Use the
+            <see cref="T:ApertureLabs.Selenium.PageObjects.ParameterPageObject" /> class for page objects whose urls
+            do have parameters.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.StaticPageObject.#ctor(OpenQA.Selenium.IWebDriver,System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.StaticPageObject"/>
+            class.
+            </summary>
+            <param name="driver">The driver.</param>
+            <param name="route">The route.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.StaticPageObject.Load(System.Boolean)">
+            <summary>
+            Tries to navigate to the IPageObjects Uri before executing
+            <c>Load</c>. If the Uri is null and the UriMatcher contains groups
+            this will throw an exception.
+            </summary>
+            <param name="firstNavigateToUrl">if set to <c>true</c> [first navigate to URL].</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.StaticPageObject.Load">
+            <summary>
+            Loads the component. Checks to see if the current url matches
+            the Route and if not an exception is thrown. If the WrappedDriver
+            is an <see cref="T:OpenQA.Selenium.Support.Events.EventFiringWebDriver" /> event listeners will be
+            added to the <see cref="E:OpenQA.Selenium.Support.Events.EventFiringWebDriver.Navigated" /> event
+            which will call <see cref="M:ApertureLabs.Selenium.PageObjects.PageObject.Dispose" /> on this instance.
+            NOTE:
+            If overriding don't forget to either call base.Load() or make sure
+            the <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.Uri" /> and the <see cref="P:ApertureLabs.Selenium.PageObjects.PageObject.WindowHandle" /> are
+            assigned to.
+            </summary>
+            <returns>
+            A reference to this
+            <see cref="T:OpenQA.Selenium.Support.UI.ILoadableComponent" />.
+            </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Properties.Resources">
             <summary>
@@ -3839,10 +4146,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.TextHelper.ExtractDateTime(System.String)">
             <summary>
-            Extracts a Date from the text. Currently this only supports
-            the text format "Some text...MM/DD/YYYY...other text". It will
-            optionally also return the time up to the second if provided after
-            the date.
+            Extracts a Date from the text.
             </summary>
             <param name="format">
             Optional format the date is in (IE: "MMMM").
@@ -4564,7 +4868,8 @@
         <member name="M:ApertureLabs.Selenium.WebDriverFactory.CreateDriver(ApertureLabs.Selenium.MajorWebDriver,System.Drawing.Size,System.Boolean)">
             <summary>
             Creates a new WebDriver instance for one of the major web
-            browsers.
+            browsers. Will wrap the driver in an
+            <see cref="T:OpenQA.Selenium.Support.Events.EventFiringWebDriver"/>.
             </summary>
             <param name="majorWebDriver"></param>
             <param name="windowSize"></param>

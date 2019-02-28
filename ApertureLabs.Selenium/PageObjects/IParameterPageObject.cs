@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.Generic;
 
 namespace ApertureLabs.Selenium.PageObjects
@@ -10,18 +11,18 @@ namespace ApertureLabs.Selenium.PageObjects
     public interface IParameterPageObject : IPageObject
     {
         /// <summary>
-        /// Gets the URL parameters.
+        /// Gets the URI information.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<RouteParameter> GetUrlParameters();
+        UriTemplateMatch GetUriInfo();
 
         /// <summary>
-        /// Gets the parameter information. Attempts to cast the result to the
-        /// type parameter.
+        /// Replaces the variables in the <see cref="IPageObject.Route"/> with
+        /// the parameters and navigates to that url (if not on it already)
+        /// then calls <see cref="ILoadableComponent.Load"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        T GetParameterInfo<T>(string parameterName) where T : IConvertible;
+        ILoadableComponent Load(IDictionary<string, string> parameters);
     }
 }

@@ -6,6 +6,7 @@ using ApertureLabs.Selenium.Components.Kendo.KToolbar;
 using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KGrid
@@ -86,18 +87,22 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
 
         #region Methods
 
-        /// <inheritDoc/>
+        /// <summary>
+        /// If overloaded don't forget to call base.Load() or make sure to
+        /// assign the WrappedElement.
+        /// </summary>
+        /// <returns></returns>
         public override ILoadableComponent Load()
         {
             base.Load();
 
-            PagerSelector = ByScoped.FromScope(
-                WrappedElement,
-                new[] { By.CssSelector(".k-pager-wrap.k-grid-pager") });
+            PagerSelector = new ByChained(
+                new ByElement(WrappedElement),
+                By.CssSelector(".k-pager-wrap.k-grid-pager"));
 
-            ToolbarSelector = ByScoped.FromScope(
-                WrappedElement,
-                new[] { By.CssSelector(".k-toolbar") });
+            ToolbarSelector = new ByChained(
+                new ByElement(WrappedElement),
+                By.CssSelector(".k-toolbar"));
 
             Pager = new KPagerComponent<KGridComponent<T>>(
                 configuration,

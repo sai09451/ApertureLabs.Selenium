@@ -12,145 +12,77 @@ namespace ApertureLabs.Selenium.PageObjects
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.IParameterPageObject" />
     /// <seealso cref="System.IDisposable" />
-    public class ParameterPageObject : IParameterPageObject, IDisposable
+    public abstract class ParameterPageObject : PageObject, IParameterPageObject
     {
-        #region Fields
-
-        private bool assignedEventListeners;
-        private bool disposedValue = false; // To detect redundant calls
-
-        #endregion
-
         #region Constructor
 
-        public ParameterPageObject(string uriMatcher, IWebDriver driver)
-        {
-            Route = uriMatcher
-                ?? throw new ArgumentNullException(nameof(uriMatcher));
-            WrappedDriver = driver
-                ?? throw new ArgumentNullException(nameof(driver));
-        }
-
-        #endregion
-
-        #region Properties
-
-        public string Route { get; private set; }
-
-        public Uri Uri { get; private set; }
-
-        public string WindowHandle { get; private set; }
-
-        public IWebDriver WrappedDriver { get; private set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParameterPageObject"/> class.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <param name="baseUri">The base uri.</param>
+        /// <param name="route">The route.</param>
+        public ParameterPageObject(IWebDriver driver,
+            Uri baseUri,
+            UriTemplate route)
+            : base(driver,
+                  baseUri,
+                  route)
+        { }
 
         #endregion
 
         #region Methods
 
-        public bool Equals(IPageObject other)
+        /// <summary>
+        /// Gets the URI information.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">Need to call Load first.</exception>
+        public virtual UriTemplateMatch GetUriInfo()
         {
-            throw new NotImplementedException();
+            if (Uri == null)
+                throw new Exception("Need to call Load first.");
+
+            var authority = new Uri(Uri.GetLeftPart(UriPartial.Authority));
+            var path = new Uri(
+                Uri.GetComponents(
+                    UriComponents.PathAndQuery,
+                    UriFormat.Unescaped));
+
+            return Route.Match(authority, path);
         }
 
-        public T GetParameterInfo<T>(string parameterName) where T : IConvertible
+        /// <summary>
+        /// Replaces the variables in the <see cref="IPageObject.Route" /> with
+        /// the parameters and navigates to that url (if not on it already)
+        /// then calls <see cref="ILoadableComponent.Load" />.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if the <see cref="IDictionary{TKey, TValue}"/> argument is
+        /// null.
+        /// </exception>
+        public virtual ILoadableComponent Load(IDictionary<string, string> parameters)
         {
-            throw new NotImplementedException();
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            // Need to extract the authority section of the route template.
+            var uri = Route.BindByName(BaseUri, parameters);
+
+            // Navigate to the url.
+            var alreadyOnUrl = String.Equals(
+                uri.ToString(),
+                WrappedDriver.Url,
+                StringComparison.OrdinalIgnoreCase);
+
+            if (!alreadyOnUrl)
+                WrappedDriver.Navigate().GoToUrl(uri);
+
+            return Load();
         }
-
-        public IEnumerable<RouteParameter> GetUrlParameters()
-        {
-            var regex = new Regex(@"{.*?}");
-            var matches = regex.Match(Route);
-
-            while (matches.Success)
-            {
-                var parameterInfo = new RouteParameter(matches.Value);
-                yield return parameterInfo;
-            }
-        }
-
-        public bool IsStale()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ILoadableComponent Load()
-        {
-            if (disposedValue)
-                throw new ObjectDisposedException(nameof(ParameterPageObject));
-
-            if (WrappedDriver is EventFiringWebDriver eventFiringWebDriver
-                && !assignedEventListeners)
-            {
-                eventFiringWebDriver.Navigated += OnNavigation;
-                assignedEventListeners = true;
-            }
-
-            if (Uri != null)
-            {
-                // Verify the Uri isn't null and the driver isn't already on
-                // the url.
-                var canUseUri = !String.Equals(
-                    Uri?.ToString() ?? "",
-                    WrappedDriver.Url,
-                    StringComparison.OrdinalIgnoreCase);
-
-                if (canUseUri)
-                {
-                    WrappedDriver.Navigate().GoToUrl(Uri.ToString());
-                }
-                else if (String.IsNullOrEmpty(WrappedDriver.Url)
-                    || WrappedDriver.Url == "data:,"
-                    || WrappedDriver.Url == "about:blank")
-                {
-                    WrappedDriver.Navigate().GoToUrl(Uri.ToString());
-                }
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private void OnNavigation(object sender, WebDriverNavigationEventArgs eventArgs)
-        {
-            if (IsStale())
-            {
-                Dispose();
-            }
-        }
-
-        protected bool UriMatcherContainsWildCards()
-        {
-            return UriMatcher.Contains("*")
-                || UriMatcher.Contains("{")
-                || UriMatcher.Contains("}");
-        }
-
-        #region IDisposable Support
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    if (assignedEventListeners
-                        && WrappedDriver is EventFiringWebDriver eventFiringWebDriver)
-                    {
-                        eventFiringWebDriver.Navigated -= OnNavigation;
-                    }
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-        
-        #endregion
 
         #endregion
     }
