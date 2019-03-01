@@ -47,7 +47,25 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static IWebDriver GetDriver(this IWebElement element)
         {
-            return ((IWrapsDriver)element).WrappedDriver;
+            IWrapsDriver wrapsDriver = null;
+
+            if (element is IWrapsDriver)
+            {
+                wrapsDriver = element as IWrapsDriver;
+            }
+            else if (element is IWrapsElement wrapsElement)
+            {
+                if (wrapsElement.WrappedElement is IWrapsDriver)
+                    wrapsDriver = wrapsElement.WrappedElement as IWrapsDriver;
+            }
+            else
+            {
+                throw new NotImplementedException("Failed to cast the " +
+                    "wrapped element to an IWrapsDriver or an IWrapsElement " +
+                    "interface.");
+            }
+
+            return wrapsDriver.WrappedDriver;
         }
 
         /// <summary>
