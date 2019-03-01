@@ -164,7 +164,20 @@ namespace ApertureLabs.Selenium
         {
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
             var matches = r.Match(InnerText);
-            var number = Int32.Parse(matches.Groups[2].ToString());
+            var number = default(int);
+
+            if (roundUp)
+            {
+                number = (int)Math.Round(Decimal.Parse(
+                    matches.Groups[2].ToString(),
+                    CultureInfo.CurrentCulture));
+            }
+            else
+            {
+                number = Int32.Parse(
+                    matches.Groups[2].ToString(),
+                    CultureInfo.CurrentCulture);
+            }
 
             return number;
         }
@@ -181,7 +194,9 @@ namespace ApertureLabs.Selenium
 
             while ((match?.Success ?? false) && match.Groups.Count >= 2)
             {
-                var number = Double.Parse(match.Groups[1].Value);
+                var number = Double.Parse(
+                    match.Groups[1].Value,
+                    CultureInfo.CurrentCulture);
 
                 if (roundUp)
                     number = Math.Round(number);
@@ -201,7 +216,9 @@ namespace ApertureLabs.Selenium
         {
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
             var matches = r.Match(InnerText);
-            var number = Decimal.Parse(matches.Groups[1].ToString());
+            var number = Decimal.Parse(
+                matches.Groups[1].ToString(),
+                CultureInfo.CurrentCulture);
 
             return number;
         }
@@ -217,7 +234,9 @@ namespace ApertureLabs.Selenium
             var r = new Regex(@"^.*?((-?\d+)(.\d+)?)");
             var matches = r.Match(InnerText);
 
-            var number = Double.Parse(matches.Groups[1].ToString());
+            var number = Double.Parse(
+                matches.Groups[1].ToString(),
+                CultureInfo.CurrentCulture);
 
             return number;
         }
@@ -233,7 +252,9 @@ namespace ApertureLabs.Selenium
 
             while ((match?.Success ?? false) && match.Groups.Count >= 2)
             {
-                var number = Double.Parse(match.Groups[1].Value);
+                var number = Double.Parse(
+                    match.Groups[1].Value,
+                    CultureInfo.CurrentCulture);
 
                 // Yield the number.
                 yield return number;
@@ -291,10 +312,12 @@ namespace ApertureLabs.Selenium
                 throw new NotFoundException("Failed to find the last four digits of a credit card (xXXXX) in the text");
             }
 
-            return Int32.Parse(matches.Groups[1].ToString());
+            return Int32.Parse(
+                matches.Groups[1].ToString(),
+                CultureInfo.CurrentCulture);
         }
 
-        private Regex BuildRegexFromStringFormat(string dateTimeFormat)
+        private static Regex BuildRegexFromStringFormat(string dateTimeFormat)
         {
             var pattern = String.Empty;
 
@@ -303,7 +326,7 @@ namespace ApertureLabs.Selenium
                 while (-1 != reader.Peek())
                 {
                     var @char = (char)reader.Read();
-                    string subPattern = @char.ToString();
+                    string subPattern = @char.ToString(CultureInfo.CurrentCulture);
 
                     if (FormatStrings.Any(fs => fs.Specifier == subPattern))
                     {
@@ -339,7 +362,7 @@ namespace ApertureLabs.Selenium
                     }
                     else
                     {
-                        pattern += @char.ToString();
+                        pattern += @char.ToString(CultureInfo.CurrentCulture);
                     }
                 }
             }

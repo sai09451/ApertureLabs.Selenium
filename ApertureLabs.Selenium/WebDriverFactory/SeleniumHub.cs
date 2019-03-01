@@ -14,6 +14,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace ApertureLabs.Selenium
 {
+    /// <summary>
+    /// Represents a selenium browser session.
+    /// </summary>
     public interface ISeleniumSession
     { }
 

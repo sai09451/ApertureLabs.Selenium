@@ -66,6 +66,13 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets the sub item by icon.
+        /// </summary>
+        /// <param name="iconClass">The icon class.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
         public MenuItem GetSubItemByIcon(string iconClass,
             StringComparison stringComparison = StringComparison.Ordinal)
         {

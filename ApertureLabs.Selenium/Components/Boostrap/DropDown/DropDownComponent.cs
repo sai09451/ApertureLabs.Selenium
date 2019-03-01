@@ -67,6 +67,13 @@ namespace ApertureLabs.Selenium.Components.Boostrap.DropDown
 
         #region Methods
 
+        /// <summary>
+        /// If overloaded don't forget to call base.Load() or make sure to
+        /// assign the WrappedElement.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidElementStateException">Expected the class " +
+        ///                     "'btn-group' to be present on the WrappedElement.</exception>
         public override ILoadableComponent Load()
         {
             base.Load();

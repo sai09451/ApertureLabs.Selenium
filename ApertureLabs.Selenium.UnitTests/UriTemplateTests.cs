@@ -37,6 +37,12 @@ namespace ApertureLabs.Selenium
             Assert.IsNotNull(uri);
         }
 
+        [TestMethod]
+        public void UriTest()
+        {
+            var uri = new Uri(".", UriKind.Relative);
+        }
+
         #region Nested Classes
 
         /// <summary>

@@ -61,6 +61,16 @@ namespace ApertureLabs.Selenium.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] aperturelabslogoonly {
+            get {
+                object obj = ResourceManager.GetObject("aperturelabslogoonly", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to function jsonFormatter (key, value) {
         ///
         ///    // Ignore null/undefined values.
@@ -139,7 +149,23 @@ namespace ApertureLabs.Selenium.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to var timeoutMs = arguments[0];
+        ///var callback = arguments[arguments.length - 1];
+        ///var stopAfter = Date.now() + timeoutMs;
+        ///
+        ///var userSigWindow = window.open(
+        ///    &quot;about:blank&quot;,
+        ///    &quot;user-signal&quot;,
+        ///    &quot;width=420,height=230,resizable,scrollbars=yes&quot;);
+        ///
+        ///// Create page.
+        ///var usrSigDoc = userSigWindow.document;
+        ///var bodyEl = usrSigDoc.getElementsByTagName(&quot;body&quot;)[0];
+        ///
+        ///// Create timer.
+        ///var timerEl = usrSigDoc.createElement(&quot;div&quot;);
+        ///timerEl.textContent = new Date().toString();
+        ///timerEl.setAttribute(&quot;id&quot;, &quot;co [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string waitForUserSignal {
             get {

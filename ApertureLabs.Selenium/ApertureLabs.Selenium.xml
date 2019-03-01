@@ -2205,6 +2205,93 @@
             <param name="by"></param>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.Extensions.FluidPageObjectExtensions">
+            <summary>
+            Contains extensions methods for objects implementing the IPageObject.
+            interface.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.FluidPageObjectExtensions.StartWithPage``1(ApertureLabs.Selenium.PageObjects.IPageObjectFactory,System.Action{``0})">
+            <summary>
+            Will load up the page and navigate to it's url.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageObjectFactory">The page object factory.</param>
+            <param name="performActions">
+            The actions to be performed on the page. No navigation events
+            should occur here.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.FluidPageObjectExtensions.ContinueWithPage``2(``0,System.Action{``0},System.Func{``0,``1})">
+            <summary>
+            Used to chaing actions between <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances.
+            The only time the wrapped <see cref="T:OpenQA.Selenium.IWebDriver"/> should
+            navigate is in the navigationActions argument..
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="pageObject">The page object.</param>
+            <param name="performActions">
+            The actions on a web-page that don't result in a navigation event.
+            </param>
+            <param name="navigationActions">
+            The actions on a web-page that result in a navigation event. Should
+            return the fully loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.
+            </param>
+            <returns>The loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown if performActions or navigationActions are null.
+            </exception>
+            <exception cref="T:System.Exception">
+            Thrown if a Navigated event is detected while the argument
+            performing actions is called.
+            </exception>
+            <remarks>
+            Exists for organization. Instead of manually indenting the chained
+            method calls (if using a fluid syntax) this can be used to better
+            seperate which methods are acting on which pages.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.FluidPageObjectExtensions.ContinueWithPage``2(``0,System.Func{``0,``1})">
+            <summary>
+            Used to chaing actions between <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="pageObject">The page object.</param>
+            <param name="navigationActions">The navigation actions.</param>
+            <returns>
+            The newly loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instance.
+            </returns>
+            <remarks>
+            Exists for organization. Instead of manually indenting the chained
+            method calls (if using a fluid syntax) this can be used to better
+            seperate which methods are acting on which pages.
+            </remarks>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.FluidPageObjectExtensions.ContinueWithPage``1(``0,System.Action{``0})">
+            <summary>
+            Used as the final link in a chain of method calls between
+            <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances. The wrapped
+            <see cref="T:OpenQA.Selenium.IWebDriver"/> should never navigate to another url in
+            this method.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pageObject">The page object.</param>
+            <param name="performAction">
+            The final action(s) to be performed on a <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.
+            </param>
+            <exception cref="T:System.Exception">
+            Thrown if a navigation event is detected while performingAction is
+            executing.
+            </exception>
+            <remarks>
+            Exists for organization. Instead of manually indenting the chained
+            method calls (if using a fluid syntax) this can be used to better
+            seperate which methods are acting on which pages.
+            </remarks>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IDisposableExtensions">
             <summary>
             Contains extensions for classes implementing IDisposable.
@@ -2604,93 +2691,6 @@
               <c>true</c> if the element matches the specified selector;
               otherwise, <c>false</c>.
             </returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.Extensions.PageObjectExtensions">
-            <summary>
-            Contains extensions methods for objects implementing the IPageObject.
-            interface.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.StartWithPage``1(ApertureLabs.Selenium.PageObjects.IPageObjectFactory,System.Action{``0})">
-            <summary>
-            Will load up the page and navigate to it's url.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="pageObjectFactory">The page object factory.</param>
-            <param name="performActions">
-            The actions to be performed on the page. No navigation events
-            should occur here.
-            </param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.ContinueWithPage``2(``0,System.Action{``0},System.Func{``0,``1})">
-            <summary>
-            Used to chaing actions between <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances.
-            The only time the wrapped <see cref="T:OpenQA.Selenium.IWebDriver"/> should
-            navigate is in the navigationActions argument..
-            </summary>
-            <typeparam name="T"></typeparam>
-            <typeparam name="V"></typeparam>
-            <param name="pageObject">The page object.</param>
-            <param name="performActions">
-            The actions on a web-page that don't result in a navigation event.
-            </param>
-            <param name="navigationActions">
-            The actions on a web-page that result in a navigation event. Should
-            return the fully loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.
-            </param>
-            <returns>The loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.</returns>
-            <exception cref="T:System.ArgumentNullException">
-            Thrown if performActions or navigationActions are null.
-            </exception>
-            <exception cref="T:System.Exception">
-            Thrown if a Navigated event is detected while the argument
-            performing actions is called.
-            </exception>
-            <remarks>
-            Exists for organization. Instead of manually indenting the chained
-            method calls (if using a fluid syntax) this can be used to better
-            seperate which methods are acting on which pages.
-            </remarks>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.ContinueWithPage``2(``0,System.Func{``0,``1})">
-            <summary>
-            Used to chaing actions between <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <typeparam name="V"></typeparam>
-            <param name="pageObject">The page object.</param>
-            <param name="navigationActions">The navigation actions.</param>
-            <returns>
-            The newly loaded <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instance.
-            </returns>
-            <remarks>
-            Exists for organization. Instead of manually indenting the chained
-            method calls (if using a fluid syntax) this can be used to better
-            seperate which methods are acting on which pages.
-            </remarks>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Extensions.PageObjectExtensions.ContinueWithPage``1(``0,System.Action{``0})">
-            <summary>
-            Used as the final link in a chain of method calls between
-            <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/> instances. The wrapped
-            <see cref="T:OpenQA.Selenium.IWebDriver"/> should never navigate to another url in
-            this method.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="pageObject">The page object.</param>
-            <param name="performAction">
-            The final action(s) to be performed on a <see cref="T:ApertureLabs.Selenium.PageObjects.IPageObject"/>.
-            </param>
-            <exception cref="T:System.Exception">
-            Thrown if a navigation event is detected while performingAction is
-            executing.
-            </exception>
-            <remarks>
-            Exists for organization. Instead of manually indenting the chained
-            method calls (if using a fluid syntax) this can be used to better
-            seperate which methods are acting on which pages.
-            </remarks>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
             <summary>

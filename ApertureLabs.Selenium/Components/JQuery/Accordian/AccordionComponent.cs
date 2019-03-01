@@ -211,10 +211,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// <returns></returns>
         public IWebElement GetActivePanelContentElement()
         {
-            if (!HasOpenPanel())
-                return null;
-
-            return ActiveContentElement;
+            return !HasOpenPanel() ? null : ActiveContentElement;
         }
 
         #endregion

@@ -16,6 +16,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.Selenium.Analyzers", "ApertureLabs.Selenium.Analyzers\ApertureLabs.Selenium.Analyzers\ApertureLabs.Selenium.Analyzers.csproj", "{7C5F7BDC-35B2-43E7-91BB-EFC650B65267}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.Selenium.Analyzers.Test", "ApertureLabs.Selenium.Analyzers\ApertureLabs.Selenium.Analyzers.Test\ApertureLabs.Selenium.Analyzers.Test.csproj", "{3B01FCD9-9A43-4655-B6F8-D051E88E3FBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.Selenium.Analyzers.Vsix", "ApertureLabs.Selenium.Analyzers\ApertureLabs.Selenium.Analyzers.Vsix\ApertureLabs.Selenium.Analyzers.Vsix.csproj", "{082E9706-9DE8-4975-B43B-62734F232AC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +44,18 @@ Global
 		{2D9F0A54-AE77-4680-8EFA-F27D1640EB22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D9F0A54-AE77-4680-8EFA-F27D1640EB22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D9F0A54-AE77-4680-8EFA-F27D1640EB22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5F7BDC-35B2-43E7-91BB-EFC650B65267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5F7BDC-35B2-43E7-91BB-EFC650B65267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5F7BDC-35B2-43E7-91BB-EFC650B65267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5F7BDC-35B2-43E7-91BB-EFC650B65267}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B01FCD9-9A43-4655-B6F8-D051E88E3FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B01FCD9-9A43-4655-B6F8-D051E88E3FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B01FCD9-9A43-4655-B6F8-D051E88E3FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B01FCD9-9A43-4655-B6F8-D051E88E3FBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{082E9706-9DE8-4975-B43B-62734F232AC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{082E9706-9DE8-4975-B43B-62734F232AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{082E9706-9DE8-4975-B43B-62734F232AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{082E9706-9DE8-4975-B43B-62734F232AC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

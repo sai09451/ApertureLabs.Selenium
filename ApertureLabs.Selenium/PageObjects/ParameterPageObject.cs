@@ -1,9 +1,7 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Events;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
