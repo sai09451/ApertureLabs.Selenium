@@ -928,6 +928,18 @@
             <param name="row"></param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.GetNumberOfColumns">
+            <summary>
+            Gets the number of columns.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.GetNumberOfRows">
+            <summary>
+            Gets the number of rows.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions">
             <summary>
             Animation options for the KMultiSelectComponent.

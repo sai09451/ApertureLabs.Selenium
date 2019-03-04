@@ -41,31 +41,51 @@ namespace ApertureLabs.Selenium.Extensions
         }
 
         /// <summary>
+        /// This is a fix for trying to pass elements of the nested private
+        /// class EventFiringWebElement of
+        /// OpenQA.Selenium.Support.Events.EventFiringWebDriver.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static IWebElement UnWrapEventFiringWebElement(
+            this IWebElement element)
+        {
+            IWebElement el = element;
+
+            // EventFiringWebElements don't implemented IWrapsDriver but
+            // RemoteElements do, so just keep unwrapping until the
+            // RemoteWebElement is reached.
+            while (el is IWrapsElement
+                && !(el is IWrapsDriver)
+                && !(el is RemoteWebElement))
+            {
+                var e = el as IWrapsElement;
+                el = e.WrappedElement;
+            }
+
+            return el;
+        }
+
+        /// <summary>
         /// Retrieves the IWebDriver from an IWebElement.
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
         public static IWebDriver GetDriver(this IWebElement element)
         {
-            IWrapsDriver wrapsDriver = null;
+            var driver = default(IWebDriver);
+            var el = element.UnWrapEventFiringWebElement();
 
-            if (element is IWrapsDriver)
-            {
-                wrapsDriver = element as IWrapsDriver;
-            }
-            else if (element is IWrapsElement wrapsElement)
-            {
-                if (wrapsElement.WrappedElement is IWrapsDriver)
-                    wrapsDriver = wrapsElement.WrappedElement as IWrapsDriver;
-            }
-            else
+            driver = (el as IWrapsDriver)?.WrappedDriver;
+
+            if (driver == null)
             {
                 throw new NotImplementedException("Failed to cast the " +
                     "wrapped element to an IWrapsDriver or an IWrapsElement " +
                     "interface.");
             }
 
-            return wrapsDriver.WrappedDriver;
+            return driver;
         }
 
         /// <summary>

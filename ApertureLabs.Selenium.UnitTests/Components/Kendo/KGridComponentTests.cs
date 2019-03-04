@@ -170,6 +170,24 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 });
         }
 
+        [ServerRequired]
+        [TestMethod]
+        public void GetNumberOfColumnsTest()
+        {
+            var numberOfColumns = kGridComponent.GetNumberOfColumns();
+
+            Assert.IsTrue(numberOfColumns > 0);
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void GetNumberOfRowsTest()
+        {
+            var numberOfRows = kGridComponent.GetNumberOfRows();
+
+            Assert.IsTrue(numberOfRows > 0);
+        }
+
         #endregion
     }
 }

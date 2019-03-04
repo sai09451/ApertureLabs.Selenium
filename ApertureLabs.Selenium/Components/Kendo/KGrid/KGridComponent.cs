@@ -175,6 +175,24 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
             return GetCell(row, col);
         }
 
+        /// <summary>
+        /// Gets the number of columns.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfColumns()
+        {
+            return HeaderElements.Count;
+        }
+
+        /// <summary>
+        /// Gets the number of rows.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfRows()
+        {
+            return RowElements.Count;
+        }
+
         #endregion
     }
 }
