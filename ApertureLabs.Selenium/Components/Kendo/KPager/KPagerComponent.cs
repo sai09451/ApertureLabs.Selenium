@@ -71,7 +71,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
                 selector,
                 By.CssSelector(".k-pager-sizes .k-dropdown select"));
 
-            ItemsPerPageComponent =new KDropDownComponent<KPagerComponent<T>>(
+            ItemsPerPageComponent = new KDropDownComponent<KPagerComponent<T>>(
                 configuration,
                 ItemsPerPageSelector,
                 WrappedDriver,

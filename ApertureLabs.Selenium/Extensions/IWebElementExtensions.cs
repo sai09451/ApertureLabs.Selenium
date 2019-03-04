@@ -137,9 +137,11 @@ namespace ApertureLabs.Selenium.Extensions
         public static IWebElement GetParentElement(this IWebElement element)
         {
             string jsScript = "return arguments[0].parentElement;";
-            var result = element.GetDriver()
+            var el = element.UnWrapEventFiringWebElement();
+
+            var result = el.GetDriver()
                 .JavaScriptExecutor()
-                .ExecuteScript(jsScript, element);
+                .ExecuteScript(jsScript, el);
 
             return result as IWebElement;
         }
@@ -206,12 +208,14 @@ namespace ApertureLabs.Selenium.Extensions
             this IWebElement element,
             string eventName)
         {
+            var el = element.UnWrapEventFiringWebElement();
+
             if (String.IsNullOrEmpty(eventName))
                 throw new ArgumentNullException(nameof(eventName));
 
-            var waiter = new PromiseBody(element.GetDriver())
+            var waiter = new PromiseBody(el.GetDriver())
             {
-                Arguments = new[] { new JavaScriptValue(element) },
+                Arguments = new[] { new JavaScriptValue(el) },
                 Script =
                     "var el = {args}[0];" +
                     "var callback = {resolve};" +
@@ -222,7 +226,7 @@ namespace ApertureLabs.Selenium.Extensions
                         "});"
             };
 
-            waiter.Execute(element.GetDriver().JavaScriptExecutor());
+            waiter.Execute(el.GetDriver().JavaScriptExecutor());
 
             return waiter;
         }
@@ -234,6 +238,7 @@ namespace ApertureLabs.Selenium.Extensions
         /// <param name="eventName"></param>
         public static void WaitForEvent(this IWebElement element, string eventName)
         {
+            var el = element.UnWrapEventFiringWebElement();
             var js =
                 "var el = arguments[0];" +
                 "var callback = arguments[arguments.length - 1];" +
@@ -243,8 +248,8 @@ namespace ApertureLabs.Selenium.Extensions
                         "callback();" +
                     "});";
 
-            var d = element.GetDriver();
-            d.JavaScriptExecutor().ExecuteAsyncScript(js, element);
+            var d = el.GetDriver();
+            d.JavaScriptExecutor().ExecuteAsyncScript(js, el);
         }
 
         /// <summary>
@@ -257,6 +262,8 @@ namespace ApertureLabs.Selenium.Extensions
             IEnumerable<string> eventNames,
             TimeSpan? timeout = null)
         {
+            var el = element.UnWrapEventFiringWebElement();
+
             if (!eventNames?.Any() ?? true)
             {
                 throw new ArgumentException($"{nameof(eventNames)} was null " +
@@ -266,7 +273,7 @@ namespace ApertureLabs.Selenium.Extensions
             var tasks = eventNames.Select(e =>
             {
                 var evtName = e;
-                return new Task(() => element.WaitForEvent(evtName));
+                return new Task(() => el.WaitForEvent(evtName));
             });
 
             var result = Task.WhenAny(tasks)
@@ -286,6 +293,8 @@ namespace ApertureLabs.Selenium.Extensions
             IEnumerable<string> eventNames,
             TimeSpan? timeout = null)
         {
+            var el = element.UnWrapEventFiringWebElement();
+
             if (!eventNames?.Any() ?? true)
             {
                 throw new ArgumentException($"{nameof(eventNames)} was null " +
@@ -295,7 +304,7 @@ namespace ApertureLabs.Selenium.Extensions
             var tasks = eventNames.Select(e =>
             {
                 var evtName = e;
-                return new Task(() => element.WaitForEvent(evtName));
+                return new Task(() => el.WaitForEvent(evtName));
             });
 
             var result = Task.WhenAll(tasks)
@@ -321,8 +330,9 @@ namespace ApertureLabs.Selenium.Extensions
             string propertyName,
             string defaultValueIfNull = null)
         {
+            var el = element.UnWrapEventFiringWebElement();
             var value = default(string);
-            var driver = element.GetDriver();
+            var driver = el.GetDriver();
 
             var capabilities = driver.Capabilities();
             var isChrome = false;
@@ -347,7 +357,7 @@ namespace ApertureLabs.Selenium.Extensions
 
                 value = driver
                     .JavaScriptExecutor()
-                    .ExecuteScript(script, element)
+                    .ExecuteScript(script, el)
                     .ToString();
             }
             else
@@ -372,20 +382,22 @@ namespace ApertureLabs.Selenium.Extensions
                 throw new ArgumentNullException(nameof(element));
 
             const string script =
-                    "var element = arguments[0];" +
-                    "var parent = element.parentElement;" +
-                    "var i = 0;" +
-                    "for (var el of parent.children) {" +
-                        "if (el == element) {" +
-                        "   return i;" +
-                        "}" +
-                        "i++;" +
+                "var element = arguments[0];" +
+                "var parent = element.parentElement;" +
+                "var i = 0;" +
+                "for (var el of parent.children) {" +
+                    "if (el == element) {" +
+                    "   return i;" +
                     "}" +
-                    "return -1";
+                    "i++;" +
+                "}" +
+                "return -1";
 
-            var indexStr = element.GetDriver()
+            var el = element.UnWrapEventFiringWebElement();
+
+            var indexStr = el.GetDriver()
                 .JavaScriptExecutor()
-                .ExecuteScript(script, element)
+                .ExecuteScript(script, el)
                 .ToString();
 
             var index = Int32.Parse(indexStr, CultureInfo.CurrentCulture);
@@ -405,9 +417,15 @@ namespace ApertureLabs.Selenium.Extensions
         /// </returns>
         public static bool Is(this IWebElement element, By selector)
         {
-            var driver = element.GetDriver();
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
 
-            return driver.FindElements(selector).Any(e => e.Equals(element));
+            var el = element.UnWrapEventFiringWebElement();
+            var driver = el.GetDriver();
+
+            return driver
+                .FindElements(selector)
+                .Any(e => e.Equals(el));
         }
     }
 }
