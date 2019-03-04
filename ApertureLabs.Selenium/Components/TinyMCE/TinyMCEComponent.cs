@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using ApertureLabs.Selenium.Extensions;
+﻿using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.Js;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.Properties;
@@ -9,6 +6,9 @@ using ApertureLabs.Selenium.WebElements.IFrame;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Drawing;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.TinyMCE
 {
@@ -112,7 +112,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             var script = new JavaScript
             {
-                Arguments = new object[] { WrappedElement },
+                Arguments = new[] { new JavaScriptValue(WrappedElement) },
                 IsAsync = false,
                 Script = JavaScript.Clean(
                     JavaScript.RemoveComments(
@@ -122,8 +122,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                         "return editor == null ? null : editor.getContainer();"))
             };
 
-            TinyMCEContainerElement = script.ExecuteWithResult<IWebElement>(
-                WrappedDriver.JavaScriptExecutor());
+            TinyMCEContainerElement = script.Execute(
+                    WrappedDriver.JavaScriptExecutor())
+                .ToWebElement();
 
             if (TinyMCEContainerElement == null)
                 throw new NoSuchElementException();
@@ -269,39 +270,39 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Hightlights the range.
         /// </summary>
-        /// <param name="start">The start.</param>
-        /// <param name="end">The end.</param>
+        /// <param name="startPoint">The start.</param>
+        /// <param name="endPoint">The end.</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if the start point is before the end point.
         /// </exception>
-        public virtual void HightlightRange(Point start, Point end)
+        public virtual void HightlightRange(Point startPoint, Point endPoint)
         {
             // Validate arguments.
-            if (start == null)
-                throw new ArgumentNullException(nameof(start));
-            else if (end == null)
-                throw new ArgumentNullException(nameof(end));
+            if (startPoint == null)
+                throw new ArgumentNullException(nameof(startPoint));
+            else if (endPoint == null)
+                throw new ArgumentNullException(nameof(endPoint));
 
-            if (start.Y > end.Y)
-                throw new ArgumentOutOfRangeException(nameof(start));
-            else if (start.Y == end.Y && start.X > end.X)
-                throw new ArgumentOutOfRangeException(nameof(end));
+            if (startPoint.Y > endPoint.Y)
+                throw new ArgumentOutOfRangeException(nameof(startPoint));
+            else if (startPoint.Y == endPoint.Y && startPoint.X > endPoint.X)
+                throw new ArgumentOutOfRangeException(nameof(endPoint));
 
             // This is to set the start point & end point into view. Both
             // points are used to (if possible) get both points into view.
-            SetCursorPosition(start);
-            SetCursorPosition(end);
+            SetCursorPosition(startPoint);
+            SetCursorPosition(endPoint);
 
             var script =
                 AddTinyMCEUtilities() +
                 $"var el = arguments[0];" +
                 $"var editor = tinyMCEUtilities.getEditor(el);" +
                 $"tinyMCEUtilities.highlight(editor," +
-                    $"{start.X}," +
-                    $"{start.Y}," +
-                    $"{end.X}," +
-                    $"{end.Y});";
+                    $"{startPoint.X}," +
+                    $"{startPoint.Y}," +
+                    $"{endPoint.X}," +
+                    $"{endPoint.Y});";
 
             WrappedDriver
                 .JavaScriptExecutor()
@@ -314,17 +315,10 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <returns></returns>
         public virtual string GetHighlightedText()
         {
-            string text = null;
-
-            if (IntegrationMode == IntegrationMode.Classic)
-            {
-                text = iframeElement.InFrameFunction(
-                    () => WrappedDriver.GetHighlightedText());
-            }
-            else
-            {
-                text = WrappedDriver.GetHighlightedText();
-            }
+            string text = IntegrationMode == IntegrationMode.Classic
+                ? iframeElement.InFrameFunction(
+                    () => WrappedDriver.GetHighlightedText())
+                : WrappedDriver.GetHighlightedText();
 
             return text;
         }
@@ -480,7 +474,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             var waiter = new PromiseBody(WrappedDriver)
             {
-                Arguments = new object[] { WrappedElement },
+                Arguments = new[] { new JavaScriptValue(WrappedElement) },
                 Script = script
             };
 
@@ -492,7 +486,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             waiter.Wait(TimeSpan.FromSeconds(10));
         }
 
-        private string AddTinyMCEUtilities(string script = null)
+        private static string AddTinyMCEUtilities(string script = null)
         {
             return Resources.tinyMCEUtilities + (script ?? String.Empty);
         }

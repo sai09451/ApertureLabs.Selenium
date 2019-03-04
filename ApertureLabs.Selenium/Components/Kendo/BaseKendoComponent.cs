@@ -118,7 +118,10 @@ namespace ApertureLabs.Selenium.Components.Kendo
 
             var promise = new PromiseBody(WrappedDriver)
             {
-                Arguments = new object[] { WrappedElement },
+                Arguments = new JavaScriptValue[]
+                {
+                    new JavaScriptValue(WrappedElement)
+                },
                 Script = script
             };
 

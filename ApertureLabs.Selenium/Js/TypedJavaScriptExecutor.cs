@@ -7,6 +7,10 @@ using System.Text;
 
 namespace ApertureLabs.Selenium.Js
 {
+    /// <summary>
+    /// Provides a way to provide type-safe arguments to a script and return a
+    /// type safe value.
+    /// </summary>
     public class TypedJavaScriptExecutor
     {
         #region Fields
@@ -24,24 +28,54 @@ namespace ApertureLabs.Selenium.Js
 
         #endregion
 
-        #region Properties
-
-        #endregion
-
         #region Methods
 
-        public string ExecuteJavaScript(string script,
-            params JavaScriptArgument[] arguments)
+        /// <summary>
+        /// Executes the JavaScript.
+        /// </summary>
+        /// <param name="script">The script.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns></returns>
+        public virtual JavaScriptValue ExecuteJavaScript(string script,
+            params JavaScriptValue[] arguments)
         {
-            var convertedArgs = arguments.Select(a => a.GetArgument());
+            var convertedArgs = arguments
+                .Select(a => a.GetArgument())
+                .ToArray();
             var result = javaScriptExecutor.ExecuteScript(
                 script,
                 convertedArgs);
 
-            if (result is string castedResult)
-                return castedResult;
-            else
-                throw new InvalidCastException();
+            return new JavaScriptValue(result);
+        }
+
+        /// <summary>
+        /// Executes the asynchronous script.
+        /// </summary>
+        /// <param name="script">The script.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns></returns>
+        public virtual JavaScriptValue ExecuteAsyncScript(string script,
+            params JavaScriptValue[] arguments)
+        {
+            var convertedArgs = arguments
+                .Select(a => a.GetArgument())
+                .ToArray();
+            var result = javaScriptExecutor.ExecuteAsyncScript(
+                script,
+                convertedArgs);
+
+            return new JavaScriptValue(result);
+        }
+
+        /// <summary>
+        /// Executes the JavaScript.
+        /// </summary>
+        /// <param name="javaScript">The JavaScript.</param>
+        /// <returns></returns>
+        public virtual JavaScriptValue ExecuteJavaScript(JavaScript javaScript)
+        {
+            return javaScript.Execute(javaScriptExecutor);
         }
 
         #endregion

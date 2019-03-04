@@ -102,6 +102,8 @@ namespace ApertureLabs.Selenium.Extensions
         /// </remarks>
         public static V ContinueWithPage<T, V>(this T pageObject,
             Func<T, V> navigationActions)
+            where T : IPageObject
+            where V : IPageObject
         {
             return navigationActions(pageObject);
         }

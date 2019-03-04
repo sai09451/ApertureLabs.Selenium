@@ -42,7 +42,7 @@ namespace ApertureLabs.Selenium.Js
         /// <value>
         /// The arguments.
         /// </value>
-        public virtual object[] Arguments { get; set; }
+        public virtual JavaScriptValue[] Arguments { get; set; }
 
         /// <summary>
         /// The script to be executed.
@@ -74,112 +74,32 @@ namespace ApertureLabs.Selenium.Js
         /// Executes the script.
         /// </summary>
         /// <param name="executor">The executor.</param>
-        public virtual void Execute(IJavaScriptExecutor executor)
+        public virtual JavaScriptValue Execute(IJavaScriptExecutor executor)
         {
             var result = IsAsync
                 ? executor.ExecuteAsyncScript(Script, Arguments)
                 : executor.ExecuteScript(Script, Arguments);
-        }
 
-        /// <summary>
-        /// Executes the with result. Accepts the following type arguments:
-        /// <c>int</c>, <c>double</c>, <c>long</c>, <c>decimal</c>,
-        /// <c>string</c>, <c>bool</c>, and <c>IWebElement</c>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="executor">The executor.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException">
-        /// Thrown if a typeargument is passed in that's not supported.
-        /// </exception>
-        public virtual T ExecuteWithResult<T>(IJavaScriptExecutor executor)
-        {
-            var passedInType = typeof(T);
-
-            var specialParsingTypes = new[]
-            {
-                typeof(int),
-                typeof(double),
-                typeof(long),
-                typeof(decimal),
-            };
-
-            var otherAcceptedTypes = new[]
-            {
-                typeof(IWebElement),
-                typeof(string),
-                typeof(bool)
-            };
-
-            if (!otherAcceptedTypes.Contains(passedInType)
-                && !specialParsingTypes.Contains(passedInType))
-            {
-                throw new NotImplementedException("WebDriver doesn't " +
-                    "support that type yet.");
-            }
-
-            var result = IsAsync
-                ? executor.ExecuteAsyncScript(Script, Arguments)
-                : executor.ExecuteScript(Script, Arguments);
-
-            if (specialParsingTypes.Contains(passedInType))
-            {
-                // Since all of the int/decimal/long/number types of a static
-                // Parse method, we'll use that to get the result.
-                var parsedResult = passedInType.GetMethod("Parse").Invoke(
-                    null,
-                    new object[] { result.ToString() });
-
-                return (T)parsedResult;
-            }
-            else
-            {
-                return (T)result;
-            }
-        }
-
-        /// <summary>
-        /// Tries to execute with result.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="executor">The executor.</param>
-        /// <param name="result">The result.</param>
-        /// <param name="exception">The exception.</param>
-        /// <returns></returns>
-        public virtual bool TryExecuteWithResult<T>(
-            IJavaScriptExecutor executor,
-            out T result,
-            out Exception exception)
-        {
-            exception = null;
-            result = default;
-
-            try
-            {
-                result = ExecuteWithResult<T>(executor);
-                return true;
-            }
-            catch (Exception exc)
-            {
-                exception = exc;
-                return false;
-            }
+            return new JavaScriptValue(result);
         }
 
         /// <summary>
         /// Tries the execute.
         /// </summary>
         /// <param name="executor">The executor.</param>
+        /// <param name="result">The result.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public virtual bool TryExecute(IJavaScriptExecutor executor,
+            out JavaScriptValue result,
             out Exception exception)
         {
             exception = null;
+            result = null;
 
             try
             {
-                Execute(executor);
+                result = new JavaScriptValue(Execute(executor));
                 return true;
             }
             catch (Exception exc)
@@ -238,6 +158,20 @@ namespace ApertureLabs.Selenium.Js
                 RegexOptions.Singleline);
 
             return script;
+        }
+
+        /// <summary>
+        /// Appends the two scripts together and returns a new
+        /// <see cref="JavaScript"/> object.
+        /// </summary>
+        /// <param name="a">a.</param>
+        /// <param name="b">The b.</param>
+        /// <returns></returns>
+        public static JavaScript Add(JavaScript a, JavaScript b)
+        {
+            var scripts = a.Script + b.Script;
+
+            return new JavaScript(scripts);
         }
 
         #region Implicit Conversions

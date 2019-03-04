@@ -1644,8 +1644,8 @@
             <summary>
             Hightlights the range.
             </summary>
-            <param name="start">The start.</param>
-            <param name="end">The end.</param>
+            <param name="startPoint">The start.</param>
+            <param name="endPoint">The end.</param>
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentOutOfRangeException">
             Thrown if the start point is before the end point.
@@ -2602,6 +2602,15 @@
             <param name="element"></param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.UnWrapEventFiringWebElement(OpenQA.Selenium.IWebElement)">
+            <summary>
+            This is a fix for trying to pass elements of the nested private
+            class EventFiringWebElement of
+            OpenQA.Selenium.Support.Events.EventFiringWebDriver.
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.GetDriver(OpenQA.Selenium.IWebElement)">
             <summary>
             Retrieves the IWebDriver from an IWebElement.
@@ -2867,34 +2876,12 @@
             </summary>
             <param name="executor">The executor.</param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Js.JavaScript.ExecuteWithResult``1(OpenQA.Selenium.IJavaScriptExecutor)">
-            <summary>
-            Executes the with result. Accepts the following type arguments:
-            <c>int</c>, <c>double</c>, <c>long</c>, <c>decimal</c>,
-            <c>string</c>, <c>bool</c>, and <c>IWebElement</c>.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="executor">The executor.</param>
-            <returns></returns>
-            <exception cref="T:System.NotImplementedException">
-            Thrown if a typeargument is passed in that's not supported.
-            </exception>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Js.JavaScript.TryExecuteWithResult``1(OpenQA.Selenium.IJavaScriptExecutor,``0@,System.Exception@)">
-            <summary>
-            Tries to execute with result.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="executor">The executor.</param>
-            <param name="result">The result.</param>
-            <param name="exception">The exception.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Js.JavaScript.TryExecute(OpenQA.Selenium.IJavaScriptExecutor,System.Exception@)">
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.TryExecute(OpenQA.Selenium.IJavaScriptExecutor,ApertureLabs.Selenium.Js.JavaScriptValue@,System.Exception@)">
             <summary>
             Tries the execute.
             </summary>
             <param name="executor">The executor.</param>
+            <param name="result">The result.</param>
             <param name="exception">The exception.</param>
             <returns></returns>
         </member>
@@ -2921,6 +2908,15 @@
             <param name="script">The script.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScript.Add(ApertureLabs.Selenium.Js.JavaScript,ApertureLabs.Selenium.Js.JavaScript)">
+            <summary>
+            Appends the two scripts together and returns a new
+            <see cref="T:ApertureLabs.Selenium.Js.JavaScript"/> object.
+            </summary>
+            <param name="a">a.</param>
+            <param name="b">The b.</param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Js.JavaScript.op_Explicit(ApertureLabs.Selenium.Js.JavaScript)~System.String">
             <summary>
             Performs an explicit conversion from <see cref="T:ApertureLabs.Selenium.Js.JavaScript"/> to
@@ -2940,6 +2936,287 @@
             <param name="b">The b.</param>
             <returns>
             The result of the operator.
+            </returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:ApertureLabs.Selenium.Js.JavaScriptType" -->
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.Null">
+            <summary>
+            A null value.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.Boolean">
+            <summary>
+            A boolean. Cast to bool.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.BooleanArray">
+            <summary>
+            An array of booleans. Cast to IEnumerable{bool}.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.Number">
+            <summary>
+            A number (Int64/long). Cast to long.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.NumberArray">
+            <summary>
+            A number array (Int64/long). Cast to IEnumerable{long}.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.String">
+            <summary>
+            A string. Cast to string.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.StringArray">
+            <summary>
+            A string array. Cast to IEnumerable{string}.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.WebElement">
+            <summary>
+            An element. Cast to <see cref="T:OpenQA.Selenium.IWebElement"/>.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.WebElementArray">
+            <summary>
+            An array of web elements. Cast to IEnumerable{IWebElement}.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.MultiTypeArray">
+            <summary>
+            An array consisting of multiple types or all nulls.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Safely converts the argument into a type safe version for passing into
+            scripts.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Object,System.Nullable{ApertureLabs.Selenium.Js.JavaScriptType})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="argument">
+            The argument. An exception will be thrown if it the type is
+            supported
+            </param>
+            <param name="javaScriptType">
+            Type of the JavaScript value will be checked against the actual
+            type of argument and will throw an exception if they don't match.
+            </param>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="argument">The element.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Collections.Generic.IEnumerable{OpenQA.Selenium.IWebElement})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="arguments">The arguments.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="argument">The argument.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="arguments">The arguments.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="argument">The argument.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Collections.Generic.IEnumerable{System.Int64})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="arguments">The arguments.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="argument">if set to <c>true</c> [argument].</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Collections.Generic.IEnumerable{System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="arguments">The arguments.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.#ctor(System.Collections.Generic.IEnumerable{ApertureLabs.Selenium.Js.JavaScriptValue})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> class.
+            </summary>
+            <param name="arguments">The arguments.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.GetArgument">
+            <summary>
+            Gets the argument.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.GetArgumentType">
+            <summary>
+            Gets the type of the argument.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.IsNull">
+            <summary>
+            Determines whether the argument is null.
+            </summary>
+            <returns>
+              <c>true</c> if this instance is null; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToBool">
+            <summary>
+            Converts the argument to a bool.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToBoolArray">
+            <summary>
+            Converts the argument to an IEnumerable{bool}.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToNumber">
+            <summary>
+            Converts the argument to a number.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToNumberArray">
+            <summary>
+            Converts the argument to an IEnumerable{long}.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToString">
+            <summary>
+            Converts the argument to a string.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToStringArray">
+            <summary>
+            Converts the argument to a stringarray.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToWebElement">
+            <summary>
+            Converts the argument to a webelement.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToWebElementArray">
+            <summary>
+            Converts the argument to a webelementarray.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToMultiTypeArray">
+            <summary>
+            Converts the argument to a multi-type array.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(OpenQA.Selenium.Remote.RemoteWebElement)~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="T:OpenQA.Selenium.Remote.RemoteWebElement"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="argument">The argument.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(OpenQA.Selenium.Remote.RemoteWebElement[])~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="!:RemoteWebElement[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="arguments">The arguments.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.String)~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.String"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="argument">The argument.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.String[])~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="!:System.String[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="arguments">The arguments.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.Int64)~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Int64"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="argument">The argument.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.Int64[])~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="!:System.Int64[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="arguments">The arguments.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.Boolean)~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Boolean"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="argument">if set to <c>true</c> [argument].</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.Boolean[])~ApertureLabs.Selenium.Js.JavaScriptValue">
+            <summary>
+            Performs an implicit conversion from <see cref="!:System.Boolean[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            </summary>
+            <param name="arguments">The arguments.</param>
+            <returns>
+            The result of the conversion.
             </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Js.SeleniumJavaScriptPromiseStatus">
@@ -3063,16 +3340,28 @@
             <summary>
             Checks if the promise was resolved.
             </summary>
+            <value>
+              <c>true</c> if resolved; otherwise, <c>false</c>.
+            </value>
+            <exception cref="T:System.InvalidOperationException">Never created the promise.</exception>
         </member>
         <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Rejected">
             <summary>
             Checks if the promise was rejected.
             </summary>
+            <value>
+              <c>true</c> if rejected; otherwise, <c>false</c>.
+            </value>
+            <exception cref="T:System.InvalidOperationException">Never created the promise.</exception>
         </member>
         <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Finished">
             <summary>
             Checks if the promise was resolved or rejected.
             </summary>
+            <value>
+              <c>true</c> if finished; otherwise, <c>false</c>.
+            </value>
+            <exception cref="T:System.InvalidOperationException">Never created the promise.</exception>
         </member>
         <member name="P:ApertureLabs.Selenium.Js.PromiseBody.IsStale">
             <summary>
@@ -3154,6 +3443,35 @@
             <summary>
             Gets or sets the timeout.
             </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Js.TypedJavaScriptExecutor">
+            <summary>
+            Provides a way to provide type-safe arguments to a script and return a
+            type safe value.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.TypedJavaScriptExecutor.ExecuteJavaScript(System.String,ApertureLabs.Selenium.Js.JavaScriptValue[])">
+            <summary>
+            Executes the JavaScript.
+            </summary>
+            <param name="script">The script.</param>
+            <param name="arguments">The arguments.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.TypedJavaScriptExecutor.ExecuteAsyncScript(System.String,ApertureLabs.Selenium.Js.JavaScriptValue[])">
+            <summary>
+            Executes the asynchronous script.
+            </summary>
+            <param name="script">The script.</param>
+            <param name="arguments">The arguments.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.TypedJavaScriptExecutor.ExecuteJavaScript(ApertureLabs.Selenium.Js.JavaScript)">
+            <summary>
+            Executes the JavaScript.
+            </summary>
+            <param name="javaScript">The JavaScript.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.MajorWebDriver">
             <summary>

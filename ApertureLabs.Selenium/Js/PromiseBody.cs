@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
@@ -151,7 +152,7 @@ namespace ApertureLabs.Selenium.Js
         /// <value>
         /// The arguments.
         /// </value>
-        public override object[] Arguments => new object[0];
+        public override JavaScriptValue[] Arguments => Array.Empty<JavaScriptValue>();
 
         /// <summary>
         /// Name of the function to resolve the promise.
@@ -207,12 +208,16 @@ namespace ApertureLabs.Selenium.Js
         /// <summary>
         /// Checks if the promise was resolved.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if resolved; otherwise, <c>false</c>.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Never created the promise.</exception>
         public virtual bool Resolved
         {
             get
             {
                 if (!Created)
-                    throw new Exception("Never created the promise.");
+                    throw new InvalidOperationException("Never created the promise.");
 
                 return GetPromiseStatus() == SeleniumJavaScriptPromiseStatus.Resolved;
             }
@@ -221,12 +226,16 @@ namespace ApertureLabs.Selenium.Js
         /// <summary>
         /// Checks if the promise was rejected.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if rejected; otherwise, <c>false</c>.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Never created the promise.</exception>
         public virtual bool Rejected
         {
             get
             {
                 if (!Created)
-                    throw new Exception("Never created the promise.");
+                    throw new InvalidOperationException("Never created the promise.");
 
                 return GetPromiseStatus() == SeleniumJavaScriptPromiseStatus.Rejected;
             }
@@ -235,12 +244,16 @@ namespace ApertureLabs.Selenium.Js
         /// <summary>
         /// Checks if the promise was resolved or rejected.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if finished; otherwise, <c>false</c>.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Never created the promise.</exception>
         public virtual bool Finished
         {
             get
             {
                 if (!Created)
-                    throw new Exception("Never created the promise.");
+                    throw new InvalidOperationException("Never created the promise.");
 
                 return GetPromiseStatus() != SeleniumJavaScriptPromiseStatus.NotFinished;
             }
@@ -318,7 +331,7 @@ namespace ApertureLabs.Selenium.Js
                 .ExecuteAsyncScript(PromiseStatusScript)
                 .ToString();
 
-            var asInt = int.Parse(result);
+            var asInt = Int32.Parse(result, CultureInfo.CurrentCulture);
 
             return (SeleniumJavaScriptPromiseStatus)asInt;
         }
@@ -378,7 +391,7 @@ namespace ApertureLabs.Selenium.Js
         /// exception if the PromiseBody was never set.
         /// </summary>
         /// <param name="executor">The executor.</param>
-        public override void Execute(IJavaScriptExecutor executor)
+        public override JavaScriptValue Execute(IJavaScriptExecutor executor)
         {
             // Verify this wasn't called more than once.
             if (Created)
@@ -400,7 +413,8 @@ namespace ApertureLabs.Selenium.Js
                 .Replace(RejectToken, RejectScript)
                 .Replace(ArgsToken, ArgumentsScript);
 
-            createdScript = String.Format(PromiseWrapper,
+            createdScript = String.Format(CultureInfo.CurrentCulture,
+                PromiseWrapper,
                 ResolveScript,
                 RejectScript,
                 ArgumentsScript,
@@ -410,7 +424,9 @@ namespace ApertureLabs.Selenium.Js
                 .ExecuteScript(createdScript, Arguments)
                 .ToString();
 
-            promiseId = int.Parse(response.ToString());
+            promiseId = Int32.Parse(response, CultureInfo.CurrentCulture);
+
+            return new JavaScriptValue(response);
         }
 
         private void AssertJavaScriptPromiseArrayExists()

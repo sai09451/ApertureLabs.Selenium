@@ -1,11 +1,11 @@
 ﻿using ApertureLabs.Selenium.Js;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -211,7 +211,7 @@ namespace ApertureLabs.Selenium.Extensions
 
             var waiter = new PromiseBody(element.GetDriver())
             {
-                Arguments = new object[] { element },
+                Arguments = new[] { new JavaScriptValue(element) },
                 Script =
                     "var el = {args}[0];" +
                     "var callback = {resolve};" +
@@ -258,7 +258,10 @@ namespace ApertureLabs.Selenium.Extensions
             TimeSpan? timeout = null)
         {
             if (!eventNames?.Any() ?? true)
-                throw new ArgumentException(nameof(eventNames));
+            {
+                throw new ArgumentException($"{nameof(eventNames)} was null " +
+                    $"or empty.");
+            }
 
             var tasks = eventNames.Select(e =>
             {
@@ -284,7 +287,10 @@ namespace ApertureLabs.Selenium.Extensions
             TimeSpan? timeout = null)
         {
             if (!eventNames?.Any() ?? true)
-                throw new ArgumentException(nameof(eventNames));
+            {
+                throw new ArgumentException($"{nameof(eventNames)} was null " +
+                    $"or empty.");
+            }
 
             var tasks = eventNames.Select(e =>
             {
@@ -382,7 +388,7 @@ namespace ApertureLabs.Selenium.Extensions
                 .ExecuteScript(script, element)
                 .ToString();
 
-            var index = int.Parse(indexStr);
+            var index = Int32.Parse(indexStr, CultureInfo.CurrentCulture);
 
             return index;
         }
