@@ -193,6 +193,16 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
             return RowElements.Count;
         }
 
+        /// <summary>
+        /// Gets the row.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <returns></returns>
+        public IWebElement GetRow(int row)
+        {
+            return RowElements.ElementAt(row);
+        }
+
         #endregion
     }
 }

@@ -940,6 +940,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.GetRow(System.Int32)">
+            <summary>
+            Gets the row.
+            </summary>
+            <param name="row">The row.</param>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions">
             <summary>
             Animation options for the KMultiSelectComponent.
