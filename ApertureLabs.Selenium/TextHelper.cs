@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium
@@ -100,8 +99,8 @@ namespace ApertureLabs.Selenium
         /// <param name="element"></param>
         public TextHelper(IWebElement element)
         {
-            WrappedElement = element;
-            WrappedDriver = element.GetDriver();
+            WrappedElement = element.UnWrapEventFiringWebElement();
+            WrappedDriver = WrappedElement.GetDriver();
         }
 
         #endregion
@@ -272,12 +271,9 @@ namespace ApertureLabs.Selenium
         /// <returns></returns>
         public DateTime ExtractDateTime(string format = default)
         {
-            Regex regex = null;
-
-            if (format == null)
-                regex = new Regex(@"([\d]{1,2})\s?[(\/|\-)]\s?([(\d|\-)]{1,2})\s?[(\/|\-)]\s?([\d]{2,4}).?(\d{1,2}\:\d{1,2}\:?(\d{1,2})?\s?(AM|PM|A|P|am|pm|a|p))?", RegexOptions.ECMAScript | RegexOptions.IgnoreCase);
-            else
-                regex = BuildRegexFromStringFormat(format);
+            Regex regex = format == null
+                ? new Regex(@"([\d]{1,2})\s?[(\/|\-)]\s?([(\d|\-)]{1,2})\s?[(\/|\-)]\s?([\d]{2,4}).?(\d{1,2}\:\d{1,2}\:?(\d{1,2})?\s?(AM|PM|A|P|am|pm|a|p))?", RegexOptions.ECMAScript | RegexOptions.IgnoreCase)
+                : BuildRegexFromStringFormat(format);
 
             var matches = regex.Match(InnerText);
 
@@ -327,6 +323,49 @@ namespace ApertureLabs.Selenium
                 {
                     var @char = (char)reader.Read();
                     string subPattern = @char.ToString(CultureInfo.CurrentCulture);
+
+                    // Check if escape pattern.
+                    if (@char == '\\')
+                    {
+                        // Skip this and the next character.
+                        @char = (char)reader.Read();
+                        pattern += @char;
+                        continue;
+                    }
+                    else if (@char == '\'' || @char == '"')
+                    {
+                        // Skip to the next matching quote.
+                        var quoteChar = @char;
+                        var foundMatchingQuote = false;
+
+                        do
+                        {
+                            @char = (char)reader.Read();
+
+                            if (@char == quoteChar)
+                            {
+                                foundMatchingQuote = true;
+                                break;
+                            }
+                            else
+                            {
+                                pattern += @char;
+                            }
+
+                        } while (-1 != reader.Peek());
+
+                        if (!foundMatchingQuote)
+                        {
+                            throw new FormatException($"Invalid DateTime " +
+                                $"format string. Failed to find a matching " +
+                                $"quote for the {quoteChar} character. " +
+                                $"Either escape it or enter the " +
+                                $"corresponding {quoteChar}");
+                        }
+
+                        // Need to continue to avoid using the quote character.
+                        continue;
+                    }
 
                     if (FormatStrings.Any(fs => fs.Specifier == subPattern))
                     {

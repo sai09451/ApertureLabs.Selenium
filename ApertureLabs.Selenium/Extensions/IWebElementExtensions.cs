@@ -24,9 +24,9 @@ namespace ApertureLabs.Selenium.Extensions
         public static IList<IWebElement> Children(this IWebElement element)
         {
             string jsScript = "return arguments[0].children;";
-            return element.GetDriver().ExecuteJavaScript<IList<IWebElement>>(
-                jsScript,
-                element);
+            var el = element.UnWrapEventFiringWebElement();
+            return el.GetDriver()
+                .ExecuteJavaScript<IList<IWebElement>>(jsScript, el);
         }
 
         /// <summary>

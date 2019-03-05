@@ -34,7 +34,8 @@ namespace ApertureLabs.Selenium
         public void ExtractDoublesTest(string elementText,
             double[] expectedDoubles)
         {
-            var mockElement = new MockTextWebElement(text: elementText);
+            var mockElement = new MockTextWebElement(text: elementText,
+                scriptResult: elementText);
             var doubles = mockElement.TextHelper()
                 .ExtractDoubles()
                 .ToArray();
@@ -48,7 +49,8 @@ namespace ApertureLabs.Selenium
         public void ExtractIntegersTest(string elementText,
             int[] expectedInts)
         {
-            var mockElement = new MockTextWebElement(text: elementText);
+            var mockElement = new MockTextWebElement(text: elementText,
+                scriptResult: elementText);
             var ints = mockElement.TextHelper()
                 .ExtractIntegers()
                 .ToArray();
@@ -58,8 +60,9 @@ namespace ApertureLabs.Selenium
 
         [DataTestMethod]
         [DataRow("Todays year is 1994.", "yyyy")]
-        [DataRow("Todays year is Dec 3 of 1994.", "MMM d of yyyy")]
+        [DataRow("Todays year is Dec 3 of 1994.", @"MMM d o\f yyyy")]
         [DataRow("Todays year is 2/24/1994.", @"M/dd/yyyy")]
+        [DataRow("Todays year is Dec 3 of 1994.", @"MMM d 'of' yyyy")]
         public void ExtractDateTimeTest(string elementText, string dateTimeFormat)
         {
             var el = new MockTextWebElement(text: elementText,
