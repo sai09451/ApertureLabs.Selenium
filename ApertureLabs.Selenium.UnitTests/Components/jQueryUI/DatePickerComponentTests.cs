@@ -69,14 +69,14 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
             datepickerInline = pageObjectFactory.PrepareComponent(
                 new DatePickerComponent<WidgetPage>(
                     By.CssSelector("#datepicker1"),
-                    DatePickerComponentOptions.Default(),
+                    new DatePickerComponentOptions(),
                     driver,
                     widgetPage));
 
             datepickerPopUp = pageObjectFactory.PrepareComponent(
                 new DatePickerComponent<WidgetPage>(
                     By.CssSelector("#datepicker2"),
-                    DatePickerComponentOptions.Default(),
+                    new DatePickerComponentOptions(),
                     driver,
                     widgetPage));
         }

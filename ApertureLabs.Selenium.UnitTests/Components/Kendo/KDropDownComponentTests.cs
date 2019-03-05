@@ -79,7 +79,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 },
                 By.CssSelector("#dropdown"),
                 driver,
-                KDropDownAnimationOptions.Default(),
+                new KDropDownAnimationOptions(),
                 widgetPage);
         }
 

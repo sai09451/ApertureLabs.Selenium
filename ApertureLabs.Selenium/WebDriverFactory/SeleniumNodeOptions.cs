@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using OpenQA.Selenium.Remote;
+﻿using OpenQA.Selenium.Remote;
+using System.Collections.Generic;
 
 namespace ApertureLabs.Selenium
 {
@@ -8,6 +8,60 @@ namespace ApertureLabs.Selenium
     /// </summary>
     public class SeleniumNodeOptions : SeleniumServerStandaloneOptions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeleniumNodeOptions"/> class.
+        /// </summary>
+        public SeleniumNodeOptions()
+        {
+            var helper = new SeleniumServerStandAloneManager();
+
+            if (!helper.HasLocalStandaloneJarFile())
+            {
+                helper.InstallVersion();
+            }
+
+            Capabilities = new[]
+            {
+                new Dictionary<string, string>
+                {
+                    { CapabilityType.BrowserName, "chrome" },
+                    { "maxInstances", "5" },
+                    { "seleniumProtocol", "WebDriver" }
+                },
+                new Dictionary<string, string>
+                {
+                    { CapabilityType.BrowserName, "firefox" },
+                    { "maxInstances", "5" },
+                    { "seleniumProtocol", "WebDriver" },
+                    { "marionette", "true" }
+                },
+                new Dictionary<string, string>
+                {
+                    { CapabilityType.BrowserName, "internet_explorer" },
+                    { CapabilityType.Platform, "WINDOWS" },
+                    { "maxInstances", "5" },
+                    { "seleniumProtocol", "WebDriver" }
+                },
+                new Dictionary<string, string>
+                {
+                    { CapabilityType.BrowserName, "edge" },
+                    { CapabilityType.Platform, "WINDOWS" },
+                    { "maxInstances", "5" },
+                    { "seleniumProtocol", "WebDriver" }
+                },
+                new Dictionary<string, string>
+                {
+                    { CapabilityType.BrowserName, "safari" },
+                    { CapabilityType.Platform, "mac" },
+                    { "technologyPreview", "false" },
+                    { "maxInstances", "5" },
+                    { "seleniumProtocol", "WebDriver" }
+                }
+            };
+            Hub = "http://127.0.0.1:4444/grid/register";
+            JarFileName = helper.GetLocalFileNameOfVersion();
+        }
+
         /// <summary>
         /// In seconds : number of seconds a browser session is allowed to
         /// hang while a WebDriver command is running
@@ -25,7 +79,7 @@ namespace ApertureLabs.Selenium
         /// <example>
         /// Example: -capabilities
         /// browserName=firefox,platform=linux -capabilities
-        /// browserName = chrome, platform = linux 
+        /// browserName = chrome, platform = linux
         /// </example>
         /// <see cref="https://github.com/SeleniumHQ/selenium/blob/a61cc22fd053ea827cf39aa4065ae4912bb6af2a/java/server/src/org/openqa/grid/common/defaults/DefaultNodeWebDriver.json"/>
         public IEnumerable<IDictionary<string, string>> Capabilities { get; set; }
@@ -149,61 +203,5 @@ namespace ApertureLabs.Selenium
         /// re-register from the hub.
         /// </summary>
         public int? UnregisterIfStillDownAfter { get; set; }
-
-        /// <summary>
-        /// Defaults this instance.
-        /// </summary>
-        /// <returns></returns>
-        public static SeleniumNodeOptions Default()
-        {
-            var helper = new SeleniumServerStandAloneManager();
-
-            if (!helper.HasLocalStandaloneJarFile())
-                helper.InstallVersion();
-
-            return new SeleniumNodeOptions
-            {
-                Capabilities = new[]
-                {
-                    new Dictionary<string, string>
-                    {
-                        { CapabilityType.BrowserName, "chrome" },
-                        { "maxInstances", "5" },
-                        { "seleniumProtocol", "WebDriver" }
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { CapabilityType.BrowserName, "firefox" },
-                        { "maxInstances", "5" },
-                        { "seleniumProtocol", "WebDriver" },
-                        { "marionette", "true" }
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { CapabilityType.BrowserName, "internet_explorer" },
-                        { CapabilityType.Platform, "WINDOWS" },
-                        { "maxInstances", "5" },
-                        { "seleniumProtocol", "WebDriver" }
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { CapabilityType.BrowserName, "edge" },
-                        { CapabilityType.Platform, "WINDOWS" },
-                        { "maxInstances", "5" },
-                        { "seleniumProtocol", "WebDriver" }
-                    },
-                    new Dictionary<string, string>
-                    {
-                        { CapabilityType.BrowserName, "safari" },
-                        { CapabilityType.Platform, "mac" },
-                        { "technologyPreview", "false" },
-                        { "maxInstances", "5" },
-                        { "seleniumProtocol", "WebDriver" }
-                    }
-                },
-                Hub = "http://127.0.0.1:4444/grid/register",
-                JarFileName = helper.GetLocalFileNameOfVersion()
-            };
-        }
     }
 }

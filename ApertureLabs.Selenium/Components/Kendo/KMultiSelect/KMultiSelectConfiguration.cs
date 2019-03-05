@@ -7,6 +7,15 @@
     public class KMultiSelectConfiguration : BaseKendoConfiguration
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="KMultiSelectConfiguration"/> class.
+        /// </summary>
+        public KMultiSelectConfiguration()
+        {
+            AnimationOptions = new KMultiSelectAnimationOptions();
+            AutoClose = true;
+        }
+
+        /// <summary>
         /// Gets or sets the animation options.
         /// </summary>
         /// <value>
@@ -19,18 +28,5 @@
         /// automatically close after selecting an item.
         /// </summary>
         public bool AutoClose { get; set; }
-
-        /// <summary>
-        /// Defaults this instance.
-        /// </summary>
-        /// <returns></returns>
-        public KMultiSelectConfiguration Default()
-        {
-            return new KMultiSelectConfiguration
-            {
-                AnimationOptions = KMultiSelectAnimationOptions.Default(),
-                AutoClose = true
-            };
-        }
     }
 }

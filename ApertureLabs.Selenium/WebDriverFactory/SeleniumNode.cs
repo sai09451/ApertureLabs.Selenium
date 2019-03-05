@@ -31,7 +31,7 @@ namespace ApertureLabs.Selenium
         /// Initializes a new instance of the <see cref="SeleniumNode"/> class.
         /// </summary>
         public SeleniumNode()
-            : this(SeleniumNodeOptions.Default())
+            : this(new SeleniumNodeOptions())
         { }
 
         /// <summary>

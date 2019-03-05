@@ -62,7 +62,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
                 new NavsTabComponent<WidgetPage>(
                     By.CssSelector(".container.body-content"),
                     driver,
-                    NavsTabComponentConfiguration.Default(),
+                    new NavsTabComponentConfiguration(),
                     widgetPage));
         }
 

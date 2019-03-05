@@ -96,6 +96,22 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
         public void LoadTest()
         { }
 
+        [Description("Test was created in response to bug where the KGrid " +
+            "ctor threw an error if the toolbar or pager were disabled. " +
+            "This test verifies no errors are thrown when loading a " +
+            "'minimal' grid.")]
+        [ServerRequired]
+        [TestMethod]
+        public void LoadMinimumGridTest()
+        {
+            kGridComponent = new KGridComponent<WidgetPage>(
+                new BaseKendoConfiguration(),
+                By.CssSelector("#grid2"),
+                pageObjectFactory,
+                driver,
+                widgetPage);
+        }
+
         [ServerRequired]
         [TestMethod]
         public void GetColumnHeadersTest()

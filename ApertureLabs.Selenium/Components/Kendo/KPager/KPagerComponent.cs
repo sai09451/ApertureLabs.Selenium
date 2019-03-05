@@ -75,7 +75,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
                 configuration,
                 ItemsPerPageSelector,
                 WrappedDriver,
-                KDropDownAnimationOptions.Default(),
+                new KDropDownAnimationOptions(),
                 this);
         }
 

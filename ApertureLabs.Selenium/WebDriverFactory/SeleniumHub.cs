@@ -44,7 +44,7 @@ namespace ApertureLabs.Selenium
         /// Initializes a new instance of the <see cref="SeleniumHub"/> class.
         /// </summary>
         public SeleniumHub()
-            : this(SeleniumHubOptions.Default())
+            : this(new SeleniumHubOptions())
         { }
 
         /// <summary>

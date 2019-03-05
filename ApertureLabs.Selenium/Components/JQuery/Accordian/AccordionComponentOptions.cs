@@ -10,6 +10,19 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
     public class AccordionComponentOptions
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AccordionComponentOptions"/> class.
+        /// </summary>
+        public AccordionComponentOptions()
+        {
+            AccordianHeaderClass = By.CssSelector(".ui-corner-top");
+            AccordianHeaderCollapsedClass = By.CssSelector(".ui-corner-all");
+            AccordianContentClass = By.CssSelector(".ui-corner-bottom");
+            AnimationDuration = TimeSpan.FromSeconds(2);
+            Collaspable = false;
+            Event = "click";
+        }
+
+        /// <summary>
         /// Gets or sets the accordian header class.
         /// </summary>
         /// <value>
@@ -58,22 +71,5 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// The event.
         /// </value>
         public string Event { get; set; }
-
-        /// <summary>
-        /// Defaults this instance.
-        /// </summary>
-        /// <returns></returns>
-        public static AccordionComponentOptions Default()
-        {
-            return new AccordionComponentOptions
-            {
-                AccordianHeaderClass = By.CssSelector(".ui-corner-top"),
-                AccordianHeaderCollapsedClass = By.CssSelector(".ui-corner-all"),
-                AccordianContentClass = By.CssSelector(".ui-corner-bottom"),
-                AnimationDuration = TimeSpan.FromSeconds(2),
-                Collaspable = false,
-                Event = "click"
-            };
-        }
     }
 }

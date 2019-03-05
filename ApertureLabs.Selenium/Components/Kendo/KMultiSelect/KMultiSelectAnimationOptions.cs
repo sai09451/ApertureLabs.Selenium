@@ -7,23 +7,26 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
     /// </summary>
     public class KMultiSelectAnimationOptions
     {
-        /// <inheritDoc/>
-        public TimeSpan AnimationDuration { get; private set; }
-
-        /// <inheritDoc/>
-        public bool AnimationsEnabled { get; private set; }
+        public KMultiSelectAnimationOptions()
+        {
+            AnimationDuration = TimeSpan.FromMilliseconds(500);
+            AnimationsEnabled = true;
+        }
 
         /// <summary>
-        /// Default options for the KMultiSelectAnimationOptions.
+        /// Gets the duration of the animation.
         /// </summary>
-        /// <returns></returns>
-        public static KMultiSelectAnimationOptions Default()
-        {
-            return new KMultiSelectAnimationOptions
-            {
-                AnimationDuration = TimeSpan.FromMilliseconds(500),
-                AnimationsEnabled = true
-            };
-        }
+        /// <value>
+        /// The duration of the animation.
+        /// </value>
+        public TimeSpan AnimationDuration { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether [animations enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AnimationsEnabled { get; private set; }
     }
 }

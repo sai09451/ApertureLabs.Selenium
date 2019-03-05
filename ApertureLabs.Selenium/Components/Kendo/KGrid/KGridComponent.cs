@@ -24,8 +24,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         private readonly By RowsSelector = By.CssSelector(".k-grid-content *[role='row']");
         private readonly By CellsSelector = By.CssSelector("*[role='gridcell']");
         private readonly By HeadersSelector = By.CssSelector("*[role='columnheader']");
-        private By PagerSelector;
-        private By ToolbarSelector;
+        private By pagerSelector;
+        private By toolbarSelector;
 
         #endregion
 
@@ -96,29 +96,44 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         {
             base.Load();
 
-            PagerSelector = new ByChained(
+            pagerSelector = new ByChained(
                 new ByElement(WrappedElement),
                 By.CssSelector(".k-pager-wrap.k-grid-pager"));
 
-            ToolbarSelector = new ByChained(
+            toolbarSelector = new ByChained(
                 new ByElement(WrappedElement),
                 By.CssSelector(".k-toolbar"));
 
-            Pager = new KPagerComponent<KGridComponent<T>>(
-                configuration,
-                PagerSelector,
-                pageObjectFactory,
-                WrappedDriver,
-                this);
+            if (WrappedDriver.FindElements(toolbarSelector).Any())
+            {
+                Toolbar = new KToolbarComponent<KGridComponent<T>>(
+                    configuration,
+                    toolbarSelector,
+                    WrappedDriver,
+                    this);
 
-            Toolbar = new KToolbarComponent<KGridComponent<T>>(
-                configuration,
-                ToolbarSelector,
-                WrappedDriver,
-                this);
+                pageObjectFactory.PrepareComponent(Toolbar);
+            }
+            else
+            {
+                Toolbar = null;
+            }
 
-            pageObjectFactory.PrepareComponent(Pager);
-            pageObjectFactory.PrepareComponent(Toolbar);
+            if (WrappedDriver.FindElements(pagerSelector).Any())
+            {
+                Pager = new KPagerComponent<KGridComponent<T>>(
+                    configuration,
+                    pagerSelector,
+                    pageObjectFactory,
+                    WrappedDriver,
+                    this);
+
+                pageObjectFactory.PrepareComponent(Pager);
+            }
+            else
+            {
+                Pager = null;
+            }
 
             // Check for multi-column headers.
             var theadRows = WrappedElement

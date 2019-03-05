@@ -8,6 +8,15 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
     public class DatePickerComponentOptions
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DatePickerComponentOptions"/> class.
+        /// </summary>
+        public DatePickerComponentOptions()
+        {
+            AnimationDuration = TimeSpan.FromMilliseconds(500);
+            DateFormat = "MM/dd/yyyy";
+        }
+
+        /// <summary>
         /// Gets or sets the duration of the animation.
         /// </summary>
         /// <value>
@@ -22,18 +31,5 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         /// The date format.
         /// </value>
         public string DateFormat { get; set; }
-
-        /// <summary>
-        /// Defaults this instance.
-        /// </summary>
-        /// <returns></returns>
-        public static DatePickerComponentOptions Default()
-        {
-            return new DatePickerComponentOptions()
-            {
-                AnimationDuration = TimeSpan.FromMilliseconds(500),
-                DateFormat = "MM/dd/yyyy"
-            };
-        }
     }
 }

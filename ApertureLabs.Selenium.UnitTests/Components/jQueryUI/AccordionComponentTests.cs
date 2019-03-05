@@ -67,7 +67,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
 
             accordionComponent = pageObjectFactory.PrepareComponent(
                 new AccordionComponent<WidgetPage>(
-                    AccordionComponentOptions.Default(),
+                    new AccordionComponentOptions(),
                     By.CssSelector("#accordion"),
                     pageObjectFactory,
                     driver,
@@ -112,7 +112,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
         [TestMethod]
         public void ClosePanelTest()
         {
-            var options = AccordionComponentOptions.Default();
+            var options = new AccordionComponentOptions();
             options.Collaspable = true;
 
             accordionComponent = pageObjectFactory.PrepareComponent(

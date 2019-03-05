@@ -7,6 +7,22 @@ namespace ApertureLabs.Selenium
     /// </summary>
     public class SeleniumHubOptions : SeleniumServerStandaloneOptions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeleniumHubOptions"/> class.
+        /// </summary>
+        public SeleniumHubOptions()
+        {
+            var helper = new SeleniumServerStandAloneManager();
+
+            if (!helper.HasLocalStandaloneJarFile())
+                helper.InstallVersion();
+
+            AlwaysCreateHub = false;
+            JarFileName = helper.GetLocalFileNameOfVersion();
+            PortNumber = null;
+            UseLocalHubIfAlreadyRunning = true;
+            Servlets = new[] { "org.openqa.grid.web.servlet.LifecycleServlet" };
+        }
 
         /// <summary>
         /// Gets or sets the always create hub.
@@ -57,26 +73,5 @@ namespace ApertureLabs.Selenium
         /// The servlets.
         /// </value>
         public IEnumerable<string> Servlets { get; set; }
-
-        /// <summary>
-        /// Defaults this instance.
-        /// </summary>
-        /// <returns></returns>
-        public static SeleniumHubOptions Default()
-        {
-            var helper = new SeleniumServerStandAloneManager();
-
-            if (!helper.HasLocalStandaloneJarFile())
-                helper.InstallVersion();
-
-            return new SeleniumHubOptions
-            {
-                AlwaysCreateHub = false,
-                JarFileName = helper.GetLocalFileNameOfVersion(),
-                PortNumber = null,
-                UseLocalHubIfAlreadyRunning = true,
-                Servlets = new[] { "org.openqa.grid.web.servlet.LifecycleServlet" }
-            };
-        }
     }
 }

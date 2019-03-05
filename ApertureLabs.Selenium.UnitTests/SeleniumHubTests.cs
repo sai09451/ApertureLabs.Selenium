@@ -72,7 +72,7 @@ namespace ApertureLabs.Selenium
         public void RegisterNodeTest()
         {
             seleniumHub.Start();
-            seleniumHub.RegisterNode(SeleniumNodeOptions.Default());
+            seleniumHub.RegisterNode(new SeleniumNodeOptions());
 
             // Try and activate the ChromeDriver.
             var dm = new DriverManager();
