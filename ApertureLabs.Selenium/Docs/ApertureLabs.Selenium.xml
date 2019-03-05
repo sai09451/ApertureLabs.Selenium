@@ -953,6 +953,11 @@
             Animation options for the KMultiSelectComponent.
             </summary>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions"/> class.
+            </summary>
+        </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions.AnimationDuration">
             <summary>
             Gets the duration of the animation.
@@ -2511,6 +2516,13 @@
             <param name="driver"></param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.TypedJavaScriptExecutor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Returns a type-safe <see cref="T:OpenQA.Selenium.IJavaScriptExecutor"/>.
+            </summary>
+            <param name="driver">The driver.</param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.WaitForEvent(OpenQA.Selenium.IWebDriver,System.String)">
             <summary>
             Waits for a document level event matching the eventName to occur.
@@ -3458,6 +3470,12 @@
             Provides a way to provide type-safe arguments to a script and return a
             type safe value.
             </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.TypedJavaScriptExecutor.#ctor(OpenQA.Selenium.IJavaScriptExecutor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.TypedJavaScriptExecutor"/> class.
+            </summary>
+            <param name="javaScriptExecutor">The java script executor.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.Js.TypedJavaScriptExecutor.ExecuteJavaScript(System.String,ApertureLabs.Selenium.Js.JavaScriptValue[])">
             <summary>

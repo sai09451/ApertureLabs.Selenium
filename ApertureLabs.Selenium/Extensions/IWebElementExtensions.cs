@@ -23,8 +23,12 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static IList<IWebElement> Children(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             string jsScript = "return arguments[0].children;";
             var el = element.UnWrapEventFiringWebElement();
+
             return el.GetDriver()
                 .ExecuteJavaScript<IList<IWebElement>>(jsScript, el);
         }
@@ -36,6 +40,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static IEnumerable<string> Classes(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             return element.GetAttribute("class")?.Split(' ')
                 ?? Enumerable.Empty<string>();
         }
@@ -50,6 +57,9 @@ namespace ApertureLabs.Selenium.Extensions
         public static IWebElement UnWrapEventFiringWebElement(
             this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             IWebElement el = element;
 
             // EventFiringWebElements don't implemented IWrapsDriver but
@@ -73,6 +83,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static IWebDriver GetDriver(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             var driver = default(IWebDriver);
             var el = element.UnWrapEventFiringWebElement();
 
@@ -96,6 +109,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static bool TryScrollToCenter(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             try
             {
                 var driver = GetDriver(element);
@@ -126,6 +142,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static TextHelper TextHelper(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             return new TextHelper(element);
         }
 
@@ -136,6 +155,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static IWebElement GetParentElement(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             string jsScript = "return arguments[0].parentElement;";
             var el = element.UnWrapEventFiringWebElement();
 
@@ -154,6 +176,9 @@ namespace ApertureLabs.Selenium.Extensions
         public static IWebElement SelectRandom(
             IReadOnlyList<IWebElement> elements)
         {
+            if (elements == null)
+                throw new ArgumentNullException(nameof(elements));
+
             return SelectRandom(elements, out int index);
         }
 
@@ -167,6 +192,9 @@ namespace ApertureLabs.Selenium.Extensions
             IReadOnlyList<IWebElement> elements,
             out int index)
         {
+            if (elements == null)
+                throw new ArgumentNullException(nameof(elements));
+
             if (elements.Count == 0)
             {
                 throw new IndexOutOfRangeException("The collection must" +
@@ -184,6 +212,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <returns></returns>
         public static bool IsStale(this IWebElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             try
             {
                 element.GetAttribute("any");
@@ -208,6 +239,9 @@ namespace ApertureLabs.Selenium.Extensions
             this IWebElement element,
             string eventName)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             var el = element.UnWrapEventFiringWebElement();
 
             if (String.IsNullOrEmpty(eventName))
@@ -238,6 +272,9 @@ namespace ApertureLabs.Selenium.Extensions
         /// <param name="eventName"></param>
         public static void WaitForEvent(this IWebElement element, string eventName)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             var el = element.UnWrapEventFiringWebElement();
             var js =
                 "var el = arguments[0];" +
@@ -262,6 +299,9 @@ namespace ApertureLabs.Selenium.Extensions
             IEnumerable<string> eventNames,
             TimeSpan? timeout = null)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             var el = element.UnWrapEventFiringWebElement();
 
             if (!eventNames?.Any() ?? true)
@@ -293,6 +333,9 @@ namespace ApertureLabs.Selenium.Extensions
             IEnumerable<string> eventNames,
             TimeSpan? timeout = null)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             var el = element.UnWrapEventFiringWebElement();
 
             if (!eventNames?.Any() ?? true)
@@ -330,6 +373,9 @@ namespace ApertureLabs.Selenium.Extensions
             string propertyName,
             string defaultValueIfNull = null)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
+
             var el = element.UnWrapEventFiringWebElement();
             var value = default(string);
             var driver = el.GetDriver();

@@ -21,9 +21,9 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
 
         #region Selectors
 
-        private readonly By RowsSelector = By.CssSelector(".k-grid-content *[role='row']");
-        private readonly By CellsSelector = By.CssSelector("*[role='gridcell']");
-        private readonly By HeadersSelector = By.CssSelector("*[role='columnheader']");
+        private readonly By rowsSelector = By.CssSelector("tbody *[role='row']");
+        private readonly By cellsSelector = By.CssSelector("*[role='gridcell']");
+        private readonly By headersSelector = By.CssSelector("*[role='columnheader']");
         private By pagerSelector;
         private By toolbarSelector;
 
@@ -68,8 +68,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
 
         #region Elements
 
-        private IReadOnlyList<IWebElement> RowElements => WrappedElement.FindElements(RowsSelector);
-        private IReadOnlyList<IWebElement> HeaderElements => WrappedElement.FindElements(HeadersSelector);
+        private IReadOnlyList<IWebElement> RowElements => WrappedElement.FindElements(rowsSelector);
+        private IReadOnlyList<IWebElement> HeaderElements => WrappedElement.FindElements(headersSelector);
 
         /// <summary>
         /// The pager used to control the grid.
@@ -149,7 +149,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// Returns a list of all column names.
         /// </summary>
         /// <returns></returns>
-        public IList<string> GetColumnHeaders()
+        public virtual IList<string> GetColumnHeaders()
         {
             return HeaderElements
                 .Select(e => e.TextHelper().InnerText)
@@ -163,11 +163,11 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// <param name="row"></param>
         /// <param name="col"></param>
         /// <returns></returns>
-        public IWebElement GetCell(int row, int col)
+        public virtual IWebElement GetCell(int row, int col)
         {
             return RowElements
                 .ElementAt(row)
-                .FindElements(CellsSelector)
+                .FindElements(cellsSelector)
                 .ElementAt(col);
         }
 
@@ -177,7 +177,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// <param name="columnHeaderName"></param>
         /// <param name="row"></param>
         /// <returns></returns>
-        public IWebElement GetCell(string columnHeaderName, int row)
+        public virtual IWebElement GetCell(string columnHeaderName, int row)
         {
             if (IsMultiColumnHeader)
             {
@@ -194,7 +194,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// Gets the number of columns.
         /// </summary>
         /// <returns></returns>
-        public int GetNumberOfColumns()
+        public virtual int GetNumberOfColumns()
         {
             return HeaderElements.Count;
         }
@@ -203,7 +203,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// Gets the number of rows.
         /// </summary>
         /// <returns></returns>
-        public int GetNumberOfRows()
+        public virtual int GetNumberOfRows()
         {
             return RowElements.Count;
         }
