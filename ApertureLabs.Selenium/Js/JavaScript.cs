@@ -76,9 +76,13 @@ namespace ApertureLabs.Selenium.Js
         /// <param name="executor">The executor.</param>
         public virtual JavaScriptValue Execute(IJavaScriptExecutor executor)
         {
+            var convertedArgs = Arguments
+                .Select(a => a.GetArgument())
+                .ToArray();
+
             var result = IsAsync
-                ? executor.ExecuteAsyncScript(Script, Arguments)
-                : executor.ExecuteScript(Script, Arguments);
+                ? executor.ExecuteAsyncScript(Script, convertedArgs)
+                : executor.ExecuteScript(Script, convertedArgs);
 
             return new JavaScriptValue(result);
         }

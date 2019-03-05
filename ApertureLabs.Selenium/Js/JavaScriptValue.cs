@@ -55,7 +55,9 @@ namespace ApertureLabs.Selenium.Js
         /// </summary>
         /// <param name="argument">The element.</param>
         public JavaScriptValue(IWebElement argument)
-            : this((object)argument, JavaScriptType.WebElement)
+            : this(
+                  (object)argument.UnWrapEventFiringWebElement(),
+                  JavaScriptType.WebElement)
         { }
 
         /// <summary>
@@ -63,7 +65,9 @@ namespace ApertureLabs.Selenium.Js
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         public JavaScriptValue(IEnumerable<IWebElement> arguments)
-            : this((object)arguments, JavaScriptType.WebElementArray)
+            : this(
+                  (object)arguments.Select(e => e.UnWrapEventFiringWebElement()).ToArray(),
+                  JavaScriptType.WebElementArray)
         { }
 
         /// <summary>

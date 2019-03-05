@@ -4,11 +4,11 @@
     Layout = "~/Pages/kendo/2014.1.318/Shared/_Layout.cshtml";
 }
 <div id="container">
-    <div class="my-multiselect"></div>
+    <div id="my-multiselect"></div>
 </div>
 <script>
     $(function () {
-        $(".my-multiselect").kendoMultiSelect({
+        $("#my-multiselect").kendoMultiSelect({
             dataSource: [
                 { id: 1, name: "Apples" },
                 { id: 2, name: "Oranges" },

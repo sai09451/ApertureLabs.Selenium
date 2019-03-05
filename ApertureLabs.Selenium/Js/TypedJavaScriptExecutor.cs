@@ -21,6 +21,10 @@ namespace ApertureLabs.Selenium.Js
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypedJavaScriptExecutor"/> class.
+        /// </summary>
+        /// <param name="javaScriptExecutor">The java script executor.</param>
         public TypedJavaScriptExecutor(IJavaScriptExecutor javaScriptExecutor)
         {
             this.javaScriptExecutor = javaScriptExecutor;

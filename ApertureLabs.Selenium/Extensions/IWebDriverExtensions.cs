@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ApertureLabs.Selenium.Js;
 using ApertureLabs.Selenium.Properties;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Html5;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
@@ -171,6 +173,17 @@ namespace ApertureLabs.Selenium.Extensions
                 throw new NotImplementedException("The driver doesn't " +
                     "implement IJavaScriptExecutor.");
             }
+        }
+
+        /// <summary>
+        /// Returns a type-safe <see cref="IJavaScriptExecutor"/>.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <returns></returns>
+        public static TypedJavaScriptExecutor TypedJavaScriptExecutor(
+            this IWebDriver driver)
+        {
+            return new TypedJavaScriptExecutor(driver.JavaScriptExecutor());
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApertureLabs.Selenium.Extensions;
+using ApertureLabs.Selenium.Js;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 
@@ -20,9 +21,9 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
 
         #region Selectors
 
-        private readonly By OptionsSelector = By.CssSelector("ul > li");
-        private readonly By SelectedOptionsSelector = By.CssSelector(".k-multiselect-wrap li span:not('.k-icon')");
-        private readonly By DeleteSelector = By.CssSelector(".k-icon.k-delete");
+        private readonly By optionsSelector = By.CssSelector("ul > li");
+        private readonly By selectedOptionsSelector = By.CssSelector(".k-multiselect-wrap li span:not(.k-icon)");
+        private readonly By deleteSelector = By.CssSelector(".k-icon.k-delete");
 
         #endregion
 
@@ -47,6 +48,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
                   parent)
         {
             this.configuration = configuration;
+            this.animationData = configuration.AnimationOptions;
         }
 
         #endregion
@@ -60,20 +62,28 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         protected bool IsExpanded => ListContainerElement.Displayed;
 
         private IWebElement ContainerElement => WrappedElement.GetParentElement();
-        private IReadOnlyList<IWebElement> OptionElements => ListContainerElement.FindElements(OptionsSelector);
-        private IReadOnlyList<IWebElement> SelectedOptionElements => ContainerElement.FindElements(SelectedOptionsSelector);
+        private IReadOnlyList<IWebElement> OptionElements => ListContainerElement
+            .FindElements(optionsSelector);
+        private IReadOnlyList<IWebElement> SelectedOptionElements => ContainerElement
+            .FindElements(selectedOptionsSelector);
 
         private IWebElement ListContainerElement
         {
             get
             {
-                var script =
-                    "var $el = $(arguments[0]);" +
-                    "return $el.data().kendoMultiSelect.list[0];";
+                var script = new JavaScript
+                {
+                    Script = "var $el = $(arguments[0]);" +
+                        "if ($el.length === 0) {" +
+                            "throw new Error('Argument was null.');" +
+                        "}" +
+                        "return $el.data().kendoMultiSelect.list[0];",
+                    Arguments = new[] { new JavaScriptValue(WrappedElement) }
+                };
 
-                return WrappedDriver.ExecuteJavaScript<IWebElement>(
-                    script,
-                    WrappedElement);
+                return script
+                    .Execute(WrappedDriver.JavaScriptExecutor())
+                    .ToWebElement();
             }
         }
 
@@ -116,6 +126,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (isAlreadySelected)
                 return;
 
+            Expand();
+
             var el = OptionElements.FirstOrDefault(
                 e => String.Equals(
                     e.TextHelper().InnerText,
@@ -126,16 +138,26 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (el == null)
                 throw new NoSuchElementException();
 
-            Expand();
-
             // Use keyboard or mouse depending on config.
             if (base.configuration.ControlWithKeyboardInsteadOfMouse)
                 el.SendKeys(Keys.Enter);
             else
                 el.Click();
 
-            WrappedDriver.Wait(animationData.AnimationDuration)
-                .Until(d => !el.Displayed);
+            if (configuration.AutoClose)
+            {
+                // Wait until the dropdown is hidden.
+                WrappedDriver
+                    .Wait(animationData.AnimationDuration)
+                    .Until(d => !el.Displayed);
+            }
+
+            // Wait until the new item is present in the list.
+            WrappedDriver
+                .Wait(animationData.AnimationDuration)
+                .Until(
+                    d => GetSelectedOptions().Any(
+                        opt => String.Equals(opt, item, stringComparison)));
         }
 
         /// <summary>
@@ -155,8 +177,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (!isSelected)
                 return;
 
-            var elementToSelect = SelectedOptionElements
-                .FirstOrDefault(e => String.Equals(
+            var elementToSelect = SelectedOptionElements.FirstOrDefault(
+                e => String.Equals(
                     e.TextHelper().InnerText,
                     item,
                     stringComparison));
@@ -165,7 +187,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (elementToSelect == null)
                 throw new NoSuchElementException();
 
-            var deleteElement = elementToSelect.FindElement(DeleteSelector);
+            var deleteElement = elementToSelect
+                .GetParentElement()
+                .FindElement(deleteSelector);
+
             deleteElement.Click();
 
             // Wait until the element is fully removed.
@@ -205,7 +230,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (!data.AnimationsEnabled)
                 return;
 
-            WrappedDriver.Wait(data.AnimationDuration)
+            WrappedDriver
+                .Wait(data.AnimationDuration)
                 .Until(d => IsExpanded);
         }
 
