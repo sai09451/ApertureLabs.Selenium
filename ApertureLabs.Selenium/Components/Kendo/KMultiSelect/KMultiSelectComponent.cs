@@ -17,7 +17,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         #region Fields
 
         private readonly KMultiSelectAnimationOptions animationData;
-        private readonly new KMultiSelectConfiguration configuration;
+        private readonly KMultiSelectConfiguration configuration;
 
         #region Selectors
 
@@ -139,7 +139,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
                 throw new NoSuchElementException();
 
             // Use keyboard or mouse depending on config.
-            if (base.configuration.ControlWithKeyboardInsteadOfMouse)
+            if (configuration.ControlWithKeyboardInsteadOfMouse)
                 el.SendKeys(Keys.Enter);
             else
                 el.Click();
@@ -265,7 +265,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (!IsExpanded)
             {
                 // Use keyboard or mouse depending on config.
-                if (base.configuration.ControlWithKeyboardInsteadOfMouse)
+                if (configuration.ControlWithKeyboardInsteadOfMouse)
                     ContainerElement.SendKeys(Keys.ArrowDown);
                 else
                     ContainerElement.Click();
@@ -282,7 +282,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
             if (IsExpanded)
             {
                 // Use keyboard or mouse depending on config.
-                if (base.configuration.ControlWithKeyboardInsteadOfMouse)
+                if (configuration.ControlWithKeyboardInsteadOfMouse)
                     ContainerElement.SendKeys(Keys.Escape);
                 else
                     ContainerElement.Click();

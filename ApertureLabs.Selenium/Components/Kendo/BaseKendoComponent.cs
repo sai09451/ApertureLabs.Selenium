@@ -19,7 +19,7 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// <summary>
         /// The options that define how to interact with the component.
         /// </summary>
-        protected readonly BaseKendoConfiguration configuration;
+        private readonly BaseKendoConfiguration configuration;
 
         #endregion
 
@@ -34,7 +34,8 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// <param name="selector"></param>
         /// <param name="driver"></param>
         /// <param name="parent">The parent.</param>
-        public BaseKendoComponent(BaseKendoConfiguration configuration,
+        public BaseKendoComponent(
+            BaseKendoConfiguration configuration,
             By selector,
             IWebDriver driver,
             T parent)

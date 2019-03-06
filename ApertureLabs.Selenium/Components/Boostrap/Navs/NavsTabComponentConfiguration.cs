@@ -16,6 +16,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
             ActiveTabContentElementSelector = By.CssSelector(".tab-content .tab-pane.active");
             ActiveTabHeaderElementSelector = By.CssSelector(".nav-tabs .nav-link.active");
             ActiveTabHeaderNameSelector = By.CssSelector(".nav-tabs .nav-link.active");
+            TabContentElementsSelector = By.CssSelector(".tab-content .tab-pane");
             TabHeaderElementsSelector = By.CssSelector(".nav-tabs .nav-link");
             TabHeaderNamesSelector = By.CssSelector(".nav-tabs .nav-link");
         }
@@ -35,6 +36,14 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Navs
         /// The tab header names selector.
         /// </value>
         public By TabHeaderNamesSelector { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tab content elements selector.
+        /// </summary>
+        /// <value>
+        /// The tab content elements selector.
+        /// </value>
+        public By TabContentElementsSelector { get; set; }
 
         /// <summary>
         /// Gets or sets the active tab header element selector.

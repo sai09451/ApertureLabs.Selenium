@@ -17,6 +17,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         #region Fields
 
         private readonly KDropDownAnimationOptions animationData;
+        private readonly BaseKendoConfiguration configuration;
 
         #region Selectors
 
@@ -50,6 +51,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
                   driver,
                   parent)
         {
+            this.configuration = configuration;
             this.animationData = animationData;
         }
 
@@ -183,7 +185,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
             WaitForAnimationEnd();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Waits for animation start.
+        /// </summary>
+        /// <param name="animationData">The animation data.</param>
         protected virtual void WaitForAnimationStart(
             KDropDownAnimationOptions animationData = null)
         {
@@ -196,7 +201,10 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
                 .Wait(data.AnimationDuration);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Waits for animation end.
+        /// </summary>
+        /// <param name="animationData">The animation data.</param>
         protected virtual void WaitForAnimationEnd(
             KDropDownAnimationOptions animationData = null)
         {
@@ -207,13 +215,6 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 
             GetPromiseForKendoEvent(IsExpanded() ? "close" : "open")
                 .Wait(data.AnimationDuration);
-        }
-
-        /// <inheritdoc/>
-        protected virtual bool IsCurrentlyAnimating(
-            KDropDownAnimationOptions animationData = null)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

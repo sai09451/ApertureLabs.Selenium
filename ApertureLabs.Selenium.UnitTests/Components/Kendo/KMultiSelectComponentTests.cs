@@ -1,6 +1,4 @@
-﻿using ApertureLabs.Selenium.Components.Kendo;
-using ApertureLabs.Selenium.Components.Kendo.KGrid;
-using ApertureLabs.Selenium.Components.Kendo.KMultiSelect;
+﻿using ApertureLabs.Selenium.Components.Kendo.KMultiSelect;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
 using ApertureLabs.Selenium.UnitTests.TestAttributes;
@@ -11,14 +9,12 @@ using MockServer.PageObjects.Home;
 using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
 {
     [TestClass]
-    public class KMultiSelectTests
+    public class KMultiSelectComponentTests
     {
         #region Fields
 

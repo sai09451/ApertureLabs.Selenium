@@ -21,6 +21,9 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDatePicker
             ControlWithKeyboardInsteadOfMouse = false;
 
             // Current properties.
+            EnterValueAsText = false;
+            AnimationsEnabled = true;
+            AnimationDuration = TimeSpan.FromSeconds(1);
             Depth = Depth.Month;
             Min = null;
             Max = null;
@@ -29,6 +32,17 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDatePicker
             EnabledDates = Array.Empty<DateTime>();
             Culture = CultureInfo.CreateSpecificCulture("en-US");
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether interacting with the
+        /// element via the input element. If false then value will be
+        /// attempted to be set via the calendar modal.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if interacting with the element via the input
+        ///   element; otherwise, <c>false</c>.
+        /// </value>
+        bool EnterValueAsText { get; set; }
 
         /// <summary>
         /// Gets or sets the navigational depth. AKA which date range is
@@ -94,5 +108,21 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDatePicker
         /// The culture.
         /// </value>
         public CultureInfo Culture { get; set; }
+
+        /// <summary>
+        /// Gets or sets the duration of the animation.
+        /// </summary>
+        /// <value>
+        /// The duration of the animation.
+        /// </value>
+        public TimeSpan AnimationDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [animations enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AnimationsEnabled { get; set; }
     }
 }

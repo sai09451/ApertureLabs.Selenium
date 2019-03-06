@@ -66,11 +66,6 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 "2014.1.318",
                 "KDropDown");
 
-            //kDropDownComponent = new KDropDownComponent(
-            //    BaseKendoConfiguration.DefaultBaseKendoOptions(),
-            //    By.CssSelector("#dropdown"),
-            //    driver,
-            //    KDropDownAnimationOptions.Default());
             kDropDownComponent = new KDropDownComponent<WidgetPage>(
                 new BaseKendoConfiguration
                 {

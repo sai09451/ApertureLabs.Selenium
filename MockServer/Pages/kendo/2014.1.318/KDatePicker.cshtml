@@ -7,6 +7,8 @@
 <input id="datepicker" />
 <script>
     $(function () {
-        $("#datepicker").kendoDatePicker();
+        $("#datepicker").kendoDatePicker({
+            disableDates: [ new Date() ]
+        });
     });
 </script>

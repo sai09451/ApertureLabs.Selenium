@@ -29,6 +29,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
 
         #endregion
 
+        private readonly BaseKendoConfiguration configuration;
         private readonly IPageObjectFactory pageObjectFactory;
 
         #endregion
@@ -53,6 +54,8 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
                   driver,
                   parent)
         {
+            this.configuration = configuration
+                ?? throw new ArgumentNullException(nameof(configuration));
             this.pageObjectFactory = pageObjectFactory
                 ?? throw new ArgumentNullException(nameof(pageObjectFactory));
         }

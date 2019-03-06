@@ -25,7 +25,12 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
         /// </value>
         public TimeSpan AnimationDuration { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets or sets a value indicating whether [animations enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
+        /// </value>
         public bool AnimationsEnabled { get; set; }
     }
 }

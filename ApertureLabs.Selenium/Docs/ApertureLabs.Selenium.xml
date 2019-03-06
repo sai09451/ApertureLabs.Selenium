@@ -419,6 +419,48 @@
             The active tab content element selector.
             </value>
         </member>
+        <member name="T:ApertureLabs.Selenium.Components.ICollapsable">
+            <summary>
+            Provides methods to collapse a component. Meant to be used on a
+            <see cref="T:ApertureLabs.Selenium.PageObjects.PageComponent"/>.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ICollapsable.Collapse">
+            <summary>
+            Collapses the component. Does nothing if already collapsed.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.IExpandable">
+            <summary>
+            Used on <see cref="T:ApertureLabs.Selenium.PageObjects.PageComponent"/> that can be expanded.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.IExpandable.Expand">
+            <summary>
+            Expands the component if not already expanded.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.IHasModal`1">
+            <summary>
+            Used to declare a modal component is present. Because of how many
+            conditions
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.IHasModal`1.IsModalOpen">
+            <summary>
+            Determines whether the modal is open.
+            </summary>
+            <returns>
+              <c>true</c> if the modal is open; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.IHasModal`1.GetModal">
+            <summary>
+            Gets the modal.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent`1">
             <summary>
             AccordionComponent.
@@ -783,6 +825,179 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KDatePicker.Depth">
+            <summary>
+            The navigation depth of a <see cref="T:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1"/>.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Kendo.KDatePicker.Depth.Month">
+            <summary>
+            Shows the days of the month.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Kendo.KDatePicker.Depth.Year">
+            <summary>
+            Shows the months of the year.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Kendo.KDatePicker.Depth.Decade">
+            <summary>
+            Shows the years of the decade.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.Components.Kendo.KDatePicker.Depth.Century">
+            <summary>
+            Shows the decades of the century.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1">
+            <summary>
+            Represents the kendo datetime picker.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <seealso cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent`1" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1.#ctor(ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration,OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1"/> class.
+            </summary>
+            <param name="datePickerConfiguration">The date picker configuration.</param>
+            <param name="selector">The selector.</param>
+            <param name="driver">The driver.</param>
+            <param name="parent">The parent.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1.Load">
+            <summary>
+            If overloaded don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1.Collapse">
+            <summary>
+            Collapses the component. Does nothing if already collapsed.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1.Expand">
+            <summary>
+            Expands the component if not already expanded.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1.GetValue">
+            <summary>
+            Gets the value.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1.SetValue(System.Nullable{System.DateTime})">
+            <summary>
+            Sets the value.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration">
+            <summary>
+            Configuration for the <see cref="T:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1"/>.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.EnterValueAsText">
+            <summary>
+            Gets or sets a value indicating whether interacting with the
+            element via the input element. If false then value will be
+            attempted to be set via the calendar modal.
+            </summary>
+            <value>
+              <c>true</c> if interacting with the element via the input
+              element; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.Depth">
+            <summary>
+            Gets or sets the navigational depth. AKA which date range is
+            displayed.
+            </summary>
+            <value>
+            The depth.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.Start">
+            <summary>
+            Gets or sets the starting 'depth' view.
+            </summary>
+            <value>
+            The start.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.Min">
+            <summary>
+            How far back dates are displayed.
+            </summary>
+            <value>
+            The minimum day a user can select.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.Max">
+            <summary>
+            How far forwards dates are displayed.
+            </summary>
+            <value>
+            The maximum day a user can select.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.DateTimeFormats">
+            <summary>
+            Gets or sets the date time format.
+            </summary>
+            <value>
+            The date time format.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.DisabledDates">
+            <summary>
+            Gets or sets the disabled dates.
+            </summary>
+            <value>
+            The disabled dates.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.EnabledDates">
+            <summary>
+            Gets or sets the enabled dates.
+            </summary>
+            <value>
+            The enabled dates.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.Culture">
+            <summary>
+            Gets or sets the culture.
+            </summary>
+            <value>
+            The culture.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.AnimationDuration">
+            <summary>
+            Gets or sets the duration of the animation.
+            </summary>
+            <value>
+            The duration of the animation.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerConfiguration.AnimationsEnabled">
+            <summary>
+            Gets or sets a value indicating whether [animations enabled].
+            </summary>
+            <value>
+              <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions">
             <summary>
             Options that configures which classes to observer when determining if
@@ -803,7 +1018,12 @@
             </value>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions.AnimationsEnabled">
-            <inheritdoc/>
+            <summary>
+            Gets or sets a value indicating whether [animations enabled].
+            </summary>
+            <value>
+              <c>true</c> if [animations enabled]; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent`1">
             <summary>
@@ -851,13 +1071,16 @@
             <param name="stringComparison"></param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent`1.WaitForAnimationStart(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
-            <inheritdoc/>
+            <summary>
+            Waits for animation start.
+            </summary>
+            <param name="animationData">The animation data.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent`1.WaitForAnimationEnd(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
-            <inheritdoc/>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent`1.IsCurrentlyAnimating(ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownAnimationOptions)">
-            <inheritdoc/>
+            <summary>
+            Waits for animation end.
+            </summary>
+            <param name="animationData">The animation data.</param>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDropDown.KDropDownComponent`1.Expand">
             <summary>
