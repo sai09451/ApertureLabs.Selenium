@@ -302,28 +302,42 @@ namespace ApertureLabs.Selenium.Css
         private void ColorFromHex()
         {
             var arg = Value.Replace("#", "");
+            var culture = CultureInfo.GetCultureInfo("en-US");
 
             // Check if the hex str is abbreviated.
             if (arg.Length == 6)
             {
                 // Is six digits.
-
                 Color = Color.FromArgb(255,
-                    int.Parse(arg.Substring(0, 2), NumberStyles.HexNumber),
-                    int.Parse(arg.Substring(2, 2), NumberStyles.HexNumber),
-                    int.Parse(arg.Substring(4, 2), NumberStyles.HexNumber));
+                    Int32.Parse(
+                        arg.Substring(0, 2),
+                        NumberStyles.HexNumber,
+                        culture),
+                    Int32.Parse(
+                        arg.Substring(2, 2),
+                        NumberStyles.HexNumber,
+                        culture),
+                    Int32.Parse(arg.Substring(4, 2),
+                        NumberStyles.HexNumber,
+                        culture));
             }
             else
             {
                 // Is three digits.
-                var r = int.Parse(arg[0].ToString() + arg[0].ToString(),
-                    NumberStyles.HexNumber);
+                var r = Int32.Parse(
+                    arg[0].ToString(culture) + arg[0].ToString(culture),
+                    NumberStyles.HexNumber,
+                    culture);
 
-                var g = int.Parse(arg[1].ToString() + arg[1].ToString(),
-                    NumberStyles.HexNumber);
+                var g = Int32.Parse(
+                    arg[1].ToString(culture) + arg[1].ToString(culture),
+                    NumberStyles.HexNumber,
+                    culture);
 
-                var b = int.Parse(arg[2].ToString() + arg[2].ToString(),
-                    NumberStyles.HexNumber);
+                var b = Int32.Parse(
+                    arg[2].ToString(culture) + arg[2].ToString(culture),
+                    NumberStyles.HexNumber,
+                    culture);
 
                 Color = Color.FromArgb(255, r, g, b);
             }

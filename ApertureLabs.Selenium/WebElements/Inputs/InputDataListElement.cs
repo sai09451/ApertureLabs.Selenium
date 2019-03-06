@@ -76,12 +76,9 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         /// <param name="partialMatch"></param>
         public void SelectOptionByText(string text, bool partialMatch = false)
         {
-            IWebElement option = null;
-
-            if (partialMatch)
-                option = Options.First(opt => opt.Text.Contains(text));
-            else
-                option = Options.First(opt => opt.Text == text);
+            IWebElement option = partialMatch
+                ? Options.First(opt => opt.Text.Contains(text))
+                : Options.First(opt => opt.Text == text);
 
             var newVal = GetValueOfOption(option);
             SetValue(newVal);

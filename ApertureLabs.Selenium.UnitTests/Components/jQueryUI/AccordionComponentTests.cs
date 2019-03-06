@@ -112,12 +112,9 @@ namespace ApertureLabs.Selenium.UnitTests.Components.jQueryUI
         [TestMethod]
         public void ClosePanelTest()
         {
-            var options = new AccordionComponentOptions();
-            options.Collaspable = true;
-
             accordionComponent = pageObjectFactory.PrepareComponent(
                 new AccordionComponent<WidgetPage>(
-                    options,
+                    new AccordionComponentOptions { Collaspable = true },
                     By.CssSelector("#accordion"),
                     pageObjectFactory,
                     driver,

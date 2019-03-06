@@ -174,7 +174,7 @@ namespace ApertureLabs.Selenium.Js
                 if (data?.Any() ?? false)
                 {
                     var dataNames = data
-                        .Select(d => new { Name = d.GetType().Name, Value = d.ToString() })
+                        .Select(d => new { d.GetType().Name, Value = d.ToString() })
                         .Select(d => $"{d.Name}: {d.Value}")
                         .ToList();
 

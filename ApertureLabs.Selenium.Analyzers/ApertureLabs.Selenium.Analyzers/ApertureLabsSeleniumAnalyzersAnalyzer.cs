@@ -32,9 +32,7 @@ namespace ApertureLabs.Selenium.Analyzers
             nameof(Resources.AnalyzerDescription),
             Resources.ResourceManager,
             typeof(Resources));
-        private const string Category = "Usage";
-
-        private static DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
             DiagnosticId,
             Title,
             MessageFormat,
@@ -42,6 +40,8 @@ namespace ApertureLabs.Selenium.Analyzers
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: Description);
+
+        private const string Category = "Usage";
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {

@@ -53,6 +53,14 @@ namespace ApertureLabs.Selenium.PageObjects
             assignedEventListeners = false;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="PageObject"/> class.
+        /// </summary>
+        ~PageObject()
+        {
+            Dispose(false);
+        }
+
         #endregion
 
         #region Properties
@@ -107,10 +115,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <exception cref="ArgumentNullException">pageObject</exception>
         public bool Equals(IPageObject pageObject)
         {
-            if (pageObject == null)
-                throw new ArgumentNullException(nameof(pageObject));
-
-            return GetHashCode() == pageObject.GetHashCode();
+            return GetHashCode() == (pageObject?.GetHashCode() ?? 0);
         }
 
         /// <summary>
@@ -122,10 +127,9 @@ namespace ApertureLabs.Selenium.PageObjects
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj is PageObject pageObject)
-                return Equals(pageObject);
-            else
-                return base.Equals(obj);
+            return obj is PageObject pageObject
+                ? Equals(pageObject)
+                : base.Equals(obj);
         }
 
         /// <summary>
@@ -199,7 +203,7 @@ namespace ApertureLabs.Selenium.PageObjects
             // Check if the Route matches the current url.
             if (null == Route.Match(BaseUri, new Uri(WrappedDriver.Url)))
             {
-                new UriFormatException("The current url failed to match the " +
+                throw new UriFormatException("The current url failed to match the " +
                     "Route.");
             }
 
@@ -276,9 +280,10 @@ namespace ApertureLabs.Selenium.PageObjects
         /// Performs application-defined tasks associated with freeing,
         /// releasing, or resetting unmanaged resources.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

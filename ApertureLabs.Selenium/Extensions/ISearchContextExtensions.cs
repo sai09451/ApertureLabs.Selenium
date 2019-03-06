@@ -43,10 +43,9 @@ namespace ApertureLabs.Selenium.Extensions
                 var results = searchContext.FindElements(selector);
 
                 // Check if the element matches the one passed it.
-                if (results.Count == 1)
-                    return results[0].Equals(element);
-                else
-                    return false;
+                return results.Count == 1
+                    ? results[0].Equals(element)
+                    : false;
             }
 
             bool IsSelectorPartNeeded(int index)
@@ -69,12 +68,9 @@ namespace ApertureLabs.Selenium.Extensions
                 if (TryGetAttribute(currentEl, "id", out var idAttr))
                 {
                     // Use the id.
-                    string formattedId = null;
-
-                    if (idAttr.Contains(" "))
-                        formattedId = $"*[id='{idAttr}']";
-                    else
-                        formattedId = "#" + idAttr;
+                    var formattedId = idAttr.Contains(" ")
+                        ? $"*[id='{idAttr}']"
+                        : $"#{idAttr}";
 
                     shouldCheckSelector = true;
                     selectorParts.Insert(0, formattedId);
@@ -189,10 +185,7 @@ namespace ApertureLabs.Selenium.Extensions
         {
             value = element.GetAttribute(attribute);
 
-            if (String.IsNullOrEmpty(value))
-                return false;
-            else
-                return predicate(value);
+            return String.IsNullOrEmpty(value) ? false : predicate(value);
 
         }
     }

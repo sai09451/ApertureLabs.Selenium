@@ -105,7 +105,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
         public void GetActiveTabNameTest()
         {
             var firstActiveTabName = navsTabComponent.GetActiveTabName();
-            navsTabComponent.SetActiveTab("Profile");
+            navsTabComponent.SelectTab("Profile");
             var secondActiveTabName = navsTabComponent.GetActiveTabName();
 
             Assert.AreEqual(firstActiveTabName, "Home");
@@ -126,7 +126,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
         {
             var firstActiveBody = navsTabComponent.GetActiveTabBody();
             var copyOfFirstActiveBody = navsTabComponent.GetActiveTabBody();
-            navsTabComponent.SetActiveTab("Profile");
+            navsTabComponent.SelectTab("Profile");
             var secondActiveBody = navsTabComponent.GetActiveTabBody();
 
             Assert.AreNotEqual(firstActiveBody, secondActiveBody);

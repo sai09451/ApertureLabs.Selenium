@@ -24,10 +24,9 @@ namespace ApertureLabs.Selenium.Css
                 var numberStr = match.Groups[1].Value;
                 var unit = match.Groups[2].Value;
 
-                if (Double.TryParse(numberStr, out var number))
-                    Number = number;
-                else
-                    Number = Double.NaN;
+                Number = Double.TryParse(numberStr, out var number)
+                    ? number
+                    : Double.NaN;
 
                 UnitOfMeasurement = ParseUnit(unit);
             }

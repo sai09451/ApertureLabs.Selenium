@@ -665,10 +665,7 @@ namespace ApertureLabs.Selenium
             int rndYear;
             int rndDays = random.Next(0, 365);
 
-            if (adult)
-                rndYear = random.Next(18, 75);
-            else
-                rndYear = random.Next(5, 18);
+            rndYear = adult ? random.Next(18, 75) : random.Next(5, 18);
 
             var bday = DateTime.Today;
 

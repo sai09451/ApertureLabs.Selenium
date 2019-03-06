@@ -353,13 +353,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.SetActiveTab(System.String,System.StringComparison)">
-            <summary>
-            Sets the active tab.
-            </summary>
-            <param name="tabName">Name of the tab.</param>
-            <param name="stringComparison">The string comparison.</param>
-        </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.HasTab(System.String,System.StringComparison)">
             <summary>
             Determines whether the specified tab exists.
@@ -367,6 +360,23 @@
             <param name="tabName">Name of the tab.</param>
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.GetTabBody(System.String,System.StringComparison)">
+            <summary>
+            Gets the tab body of a tab.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.SelectTab(System.String,System.StringComparison)">
+            <summary>
+            Selects the tab.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <exception cref="T:System.ArgumentNullException">tabName</exception>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration">
             <summary>
@@ -393,6 +403,14 @@
             </summary>
             <value>
             The tab header names selector.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.TabContentElementsSelector">
+            <summary>
+            Gets or sets the tab content elements selector.
+            </summary>
+            <value>
+            The tab content elements selector.
             </value>
         </member>
         <member name="P:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration.ActiveTabHeaderElementSelector">
@@ -460,6 +478,63 @@
             Gets the modal.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.IModalWindow">
+            <summary>
+            Represents a closable modal.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.ITabbable">
+            <summary>
+            Represents a 'tabbable' component. To be used with
+            <see cref="T:OpenQA.Selenium.Support.UI.ILoadableComponent"/>
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.GetActiveTabName">
+            <summary>
+            Gets the name of the active tab.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.GetTabNames">
+            <summary>
+            Gets the tab names.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.GetActiveTabBody">
+            <summary>
+            Gets the active tab body. Null if no tabs are active.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.GetTabBody(System.String,System.StringComparison)">
+            <summary>
+            Gets the tab body of a tab.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:OpenQA.Selenium.NoSuchElementException">
+            Thrown if no tab body exists.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.SelectTab(System.String,System.StringComparison)">
+            <summary>
+            Selects the tab.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.HasTab(System.String,System.StringComparison)">
+            <summary>
+            Determines whether the specified tab name exists.
+            </summary>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+              <c>true</c> if the specified tab name exists; otherwise, <c>false</c>.
+            </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent`1">
             <summary>
@@ -4218,6 +4293,11 @@
             route
             or baseUri
             </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.PageObjects.PageObject.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.PageObject"/> class.
+            </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageObject.BaseUri">
             <summary>

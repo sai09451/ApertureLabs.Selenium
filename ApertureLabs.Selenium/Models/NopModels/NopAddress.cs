@@ -26,7 +26,7 @@ namespace ApertureLabs.Selenium.Models.NopModels
         /// <param name="address"></param>
         public NopAddress(string address)
         {
-            if (string.IsNullOrEmpty(address))
+            if (String.IsNullOrEmpty(address))
                 throw new ArgumentNullException(nameof(address));
 
             var parts = address.Split(',');
@@ -99,10 +99,9 @@ namespace ApertureLabs.Selenium.Models.NopModels
         /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            if (obj is INopAddress address)
-                return Equals(address);
-            else
-                return base.Equals(obj);
+            return obj is INopAddress address
+                ? Equals(address)
+                : base.Equals(obj);
         }
 
         #endregion
