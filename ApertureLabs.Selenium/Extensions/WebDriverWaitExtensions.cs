@@ -179,10 +179,7 @@ namespace ApertureLabs.Selenium.Extensions
             Func<IWebDriver, bool> condition)
         {
             if (condition == null)
-            {
-                throw new ArgumentNullException("condition",
-                    "condition cannot be null");
-            }
+                throw new ArgumentNullException(nameof(condition));
 
             return wait.Until(d => !condition(d));
         }
@@ -194,13 +191,11 @@ namespace ApertureLabs.Selenium.Extensions
         /// <param name="wait"></param>
         /// <param name="condition"></param>
         public static void While<TResult>(this IWait<IWebDriver> wait,
-            Func<IWebDriver, TResult> condition) where TResult : class
+            Func<IWebDriver, TResult> condition)
+            where TResult : class
         {
             if (condition == null)
-            {
-                throw new ArgumentNullException("condition",
-                    "condition cannot be null");
-            }
+                throw new ArgumentNullException(nameof(condition));
 
             wait.Until(d => condition(d) == null);
         }

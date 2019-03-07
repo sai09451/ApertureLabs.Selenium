@@ -18,7 +18,15 @@ namespace ApertureLabs.Selenium
     /// Represents a selenium browser session.
     /// </summary>
     public interface ISeleniumSession
-    { }
+    {
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        string Id { get; }
+    }
 
     /// <summary>
     /// SeleniumHub.
@@ -54,9 +62,9 @@ namespace ApertureLabs.Selenium
         public SeleniumHub(SeleniumHubOptions seleniumHubOptions)
             : base(seleniumHubOptions)
         {
-            this.signal = new AutoResetEvent(false);
-            this.hubLogs = new List<string>();
-            this.registeredNodes = new List<SeleniumNode>();
+            signal = new AutoResetEvent(false);
+            hubLogs = new List<string>();
+            registeredNodes = new List<SeleniumNode>();
 
             jsonSerializerSettings = new JsonSerializerSettings
             {
@@ -99,7 +107,7 @@ namespace ApertureLabs.Selenium
             if (e.ChangeType != WatcherChangeTypes.Changed)
                 return;
 
-            var fileInfo = new FileInfo(options.Log);
+            var fileInfo = new FileInfo(Options.Log);
 
             if (fileInfo.FullName != e.FullPath)
                 return;
@@ -118,7 +126,7 @@ namespace ApertureLabs.Selenium
             if (e.ChangeType != WatcherChangeTypes.Changed)
                 return;
 
-            var fileInfo = new FileInfo(options.Log);
+            var fileInfo = new FileInfo(Options.Log);
 
             if (fileInfo.FullName != e.FullPath)
                 return;
@@ -177,13 +185,13 @@ namespace ApertureLabs.Selenium
         {
             if (seleniumNodeOptions == null)
                 throw new ArgumentNullException(nameof(seleniumNodeOptions));
-            else if (wrappedProcess == null)
+            else if (WrappedProcess == null)
                 throw new Exception("Hub hasn't been started yet.");
 
             // Assign the register url to the hub property.
             seleniumNodeOptions.Hub = NodeRegisterUrl.ToString();
             var seleniumNode = new SeleniumNode(seleniumNodeOptions);
-            seleniumNode.Start();
+            seleniumNode.StartProcess();
             registeredNodes.Add(seleniumNode);
 
             return seleniumNode;
@@ -198,7 +206,7 @@ namespace ApertureLabs.Selenium
             if (!registeredNodes.Contains(seleniumNode))
                 return;
 
-            seleniumNode.Stop();
+            seleniumNode.StopProcess();
         }
 
         /// <summary>
@@ -246,17 +254,17 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Shuts down the hub and all registered nodes.
         /// </summary>
-        public override void Stop()
+        public override void StopProcess()
         {
             if (!IsRunning())
                 return;
 
             foreach (var node in registeredNodes)
-                node.Stop();
+                node.StopProcess();
 
             registeredNodes.Clear();
 
-            if (options.Servlets.Contains(DefaultServletNames.LifeCycleServlet))
+            if (Options.Servlets.Contains(DefaultServletNames.LifeCycleServlet))
             {
                 // Send shutdown request.
                 var shutDownUri = new Uri(Uri, "lifecycle-manager?action=shutdown");
@@ -268,34 +276,34 @@ namespace ApertureLabs.Selenium
                         .Wait(TimeSpan.FromSeconds(10));
                 }
 
-                wrappedProcess.WaitForExit(10000);
+                WrappedProcess.WaitForExit(10000);
             }
             else
             {
                 // Terminate the hub.
-                wrappedProcess.Kill();
-                wrappedProcess.WaitForExit(10000);
-                wrappedProcess.Dispose();
+                WrappedProcess.Kill();
+                WrappedProcess.WaitForExit(10000);
+                WrappedProcess.Dispose();
             }
 
-            wrappedProcess = null;
+            WrappedProcess = null;
         }
 
         /// <summary>
         /// Starts this instance.
         /// </summary>
         /// <exception cref="Exception">Failed to start the hub process.</exception>
-        public override void Start()
+        public override void StartProcess()
         {
             // Check if port is busy.
-            var port = options.PortNumber
-                ?? ExtractPort(options.Host)
+            var port = Options.PortNumber
+                ?? ExtractPort(Options.Host)
                 ?? 4444;
 
             if (IsLocalPortBusy(port, TimeSpan.FromSeconds(1)))
                 throw new Exception($"Port {port} wasn't available.");
 
-            var useLog = !String.IsNullOrEmpty(options.Log);
+            var useLog = !String.IsNullOrEmpty(Options.Log);
 
             var hubStartupInfo = new ProcessStartInfo
             {
@@ -307,12 +315,12 @@ namespace ApertureLabs.Selenium
             };
 
             // Start the process.
-            wrappedProcess = Process.Start(hubStartupInfo);
+            WrappedProcess = Process.Start(hubStartupInfo);
 
             if (useLog)
             {
                 // Stream file.
-                var fileInfo = new FileInfo(options.Log);
+                var fileInfo = new FileInfo(Options.Log);
                 logWatcher = new FileSystemWatcher
                 {
                     NotifyFilter = NotifyFilters.LastWrite
@@ -326,14 +334,14 @@ namespace ApertureLabs.Selenium
             else
             {
                 // Stream stderr/stdout.
-                wrappedProcess.ErrorDataReceived += HubProcess_OutputDataReceived;
+                WrappedProcess.ErrorDataReceived += HubProcess_OutputDataReceived;
             }
 
             // Always listen to stdout/stderr.
-            wrappedProcess.OutputDataReceived += HubProcess_Log;
-            wrappedProcess.ErrorDataReceived += HubProcess_Log;
-            wrappedProcess.BeginOutputReadLine();
-            wrappedProcess.BeginErrorReadLine();
+            WrappedProcess.OutputDataReceived += HubProcess_Log;
+            WrappedProcess.ErrorDataReceived += HubProcess_Log;
+            WrappedProcess.BeginOutputReadLine();
+            WrappedProcess.BeginErrorReadLine();
 
             // Wait for hub to start.
             signal.WaitOne(TimeSpan.FromSeconds(30));
@@ -346,9 +354,9 @@ namespace ApertureLabs.Selenium
             if (useLog)
                 logWatcher.Changed -= LogWatcher_OutputDataRecieved;
             else
-                wrappedProcess.ErrorDataReceived -= HubProcess_OutputDataReceived;
+                WrappedProcess.ErrorDataReceived -= HubProcess_OutputDataReceived;
 
-            if (wrappedProcess.HasExited)
+            if (WrappedProcess.HasExited)
             {
                 Dispose();
                 throw new Exception("Failed to start the hub process.");
@@ -363,13 +371,13 @@ namespace ApertureLabs.Selenium
         {
             var sb = new StringBuilder();
 
-            AddCommand(sb, "jar", options.JarFileName);
+            AddCommand(sb, "jar", Options.JarFileName);
             AddCommand(sb, "role", "hub");
             AddCommand(sb, opts => opts.Log);
             AddCommand(sb, opts => opts.Host);
             AddCommand(sb, opts => opts.PortNumber);
 
-            foreach (var servlet in options.Servlets)
+            foreach (var servlet in Options.Servlets)
                 AddCommand(sb, "servlets", servlet);
 
             return sb.ToString();
@@ -385,49 +393,6 @@ namespace ApertureLabs.Selenium
                 .Select(l => SeleniumLogEntry.ParseString(l))
                 .ToList();
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    Stop();
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
-            }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~SeleniumHub() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.        
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
 
         #endregion
     }

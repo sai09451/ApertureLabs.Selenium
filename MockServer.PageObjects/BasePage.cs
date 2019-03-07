@@ -5,7 +5,7 @@ using System;
 
 namespace MockServer.PageObjects
 {
-    public class BasePage : StaticPageObject
+    public class BasePage : BasePageObject, IBasePage
     {
         #region Fields
 
@@ -21,19 +21,15 @@ namespace MockServer.PageObjects
         #region Constructor
 
         public BasePage(IWebDriver driver,
-            PageOptions pageOptions,
             IPageObjectFactory pageObjectFactory)
-            : base(driver, new Uri(pageOptions.Url))
+            : base(driver)
         {
             if (driver == null)
                 throw new ArgumentNullException(nameof(driver));
-            else if (pageOptions == null)
-                throw new ArgumentNullException(nameof(pageOptions));
             else if (pageObjectFactory == null)
                 throw new ArgumentNullException(nameof(pageObjectFactory));
 
             this.pageObjectFactory = pageObjectFactory;
-            this.Uri = new Uri(pageOptions.Url);
         }
 
         #endregion

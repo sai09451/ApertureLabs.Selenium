@@ -7,7 +7,7 @@ namespace ApertureLabs.Selenium
     /// <summary>
     /// An entry outputted by the selenium-server-standalone.jar.
     /// </summary>
-    public struct SeleniumLogEntry
+    public struct SeleniumLogEntry : IEquatable<SeleniumLogEntry>
     {
         /// <summary>
         /// Gets or sets the action.
@@ -78,6 +78,77 @@ namespace ApertureLabs.Selenium
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return obj is SeleniumLogEntry log ? Equals(log) : false;
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap.
+            {
+                int hash = 17;
+                hash = hash * 23 + Action?.GetHashCode() ?? 0;
+                hash = hash * 23 + DateTime.GetHashCode();
+                hash = hash * 23 + IsException.GetHashCode();
+                hash = hash * 23 + LogType?.GetHashCode() ?? 0;
+                hash = hash * 23 + Message?.GetHashCode() ?? 0;
+
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator ==(SeleniumLogEntry left, SeleniumLogEntry right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator !=(SeleniumLogEntry left, SeleniumLogEntry right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other">other</paramref> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(SeleniumLogEntry other)
+        {
+            return GetHashCode() == other.GetHashCode();
         }
     }
 }

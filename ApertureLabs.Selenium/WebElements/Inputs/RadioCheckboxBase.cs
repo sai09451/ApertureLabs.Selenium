@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Globalization;
 
 namespace ApertureLabs.Selenium.WebElements.Inputs
 {
@@ -57,7 +58,7 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         [Obsolete("Use the method 'Checked' instead.")]
         public override void SetValue<T>(T value)
         {
-            var asBool = Convert.ToBoolean(value);
+            var asBool = Convert.ToBoolean(value, CultureInfo.CurrentCulture);
             Check(asBool);
         }
 

@@ -4,7 +4,7 @@
     /// Implementation of IHubStatus.
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.IHubStatus" />
-    internal class HubStatus : IHubStatus
+    public class HubStatus : IHubStatus
     {
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="IHubStatus" /> is ready.

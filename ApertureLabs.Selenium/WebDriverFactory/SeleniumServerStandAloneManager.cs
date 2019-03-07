@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -18,6 +19,7 @@ namespace ApertureLabs.Selenium
         #region Fields
 
         private readonly Uri onlineVersionList;
+        private readonly string workingDirectory;
 
         #endregion
 
@@ -29,6 +31,32 @@ namespace ApertureLabs.Selenium
         public SeleniumServerStandAloneManager()
         {
             onlineVersionList = new Uri("http://selenium-release.storage.googleapis.com/");
+            workingDirectory = Directory.GetCurrentDirectory();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeleniumServerStandAloneManager"/> class.
+        /// </summary>
+        /// <param name="onlineVersionList">The online version list.</param>
+        /// <param name="workingDirectory">The working directory.</param>
+        /// <exception cref="ArgumentNullException">
+        /// onlineVersionList
+        /// or
+        /// workingDirectory
+        /// </exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        public SeleniumServerStandAloneManager(Uri onlineVersionList,
+            string workingDirectory)
+        {
+            this.onlineVersionList = onlineVersionList
+                ?? throw new ArgumentNullException(nameof(onlineVersionList));
+
+            if (String.IsNullOrEmpty(workingDirectory))
+                throw new ArgumentNullException(nameof(workingDirectory));
+            else if (!Directory.Exists(workingDirectory))
+                throw new DirectoryNotFoundException(workingDirectory);
+            else
+                this.workingDirectory = workingDirectory;
         }
 
         #endregion
@@ -46,7 +74,7 @@ namespace ApertureLabs.Selenium
             {
                 var xmlStr = client.DownloadString(onlineVersionList);
                 var xml = XDocument.Parse(xmlStr);
-                var comparer = new KeyComparer(this);
+                var comparer = new KeyComparer();
 
                 var results = xml.Root.Elements(XName.Get(
                         "Contents",
@@ -91,12 +119,11 @@ namespace ApertureLabs.Selenium
         /// <returns></returns>
         public IEnumerable<(int x, int y, int z)> GetLocalVersions()
         {
-            var workingDirectory = Directory.GetCurrentDirectory();
             var files = Directory.GetFiles(
                 workingDirectory,
                 "selenium-server-standalone-*.jar");
 
-            var comparer = new KeyComparer(this);
+            var comparer = new KeyComparer();
 
             var localVersions = files
                 .Select(f => GetXYZVerion(f))
@@ -119,6 +146,7 @@ namespace ApertureLabs.Selenium
             var downloadUrl = new Uri(
                 onlineVersionList,
                 String.Format(
+                    CultureInfo.GetCultureInfo("en-US"),
                     "{0}.{1}/selenium-server-standalone-{0}.{1}.{2}.jar",
                     _version.x,
                     _version.y,
@@ -138,8 +166,7 @@ namespace ApertureLabs.Selenium
         /// <returns></returns>
         public (int x, int y, int z)? GetLatestLocalStandalone()
         {
-            var workingDirectory = Directory.GetCurrentDirectory();
-            var comparer = new KeyComparer(this);
+            var comparer = new KeyComparer();
 
             var files = Directory.GetFiles(
                 workingDirectory,
@@ -179,7 +206,6 @@ namespace ApertureLabs.Selenium
         /// </returns>
         public bool HasLocalStandaloneJarFile()
         {
-            var workingDirectory = Directory.GetCurrentDirectory();
             var files = Directory.GetFiles(
                 workingDirectory,
                 "selenium-server-standalone-*.jar");
@@ -187,12 +213,12 @@ namespace ApertureLabs.Selenium
             return files.Any();
         }
 
-        private string VersionToName((int x, int y, int z) version)
+        private static string VersionToName((int x, int y, int z) version)
         {
             return $"selenium-server-standalone-{version.x}.{version.y}.{version.z}.jar";
         }
 
-        private (int X, int Y, int Z) GetXYZVerion(string str)
+        private static (int X, int Y, int Z) GetXYZVerion(string str)
         {
             // Ignore beta releasese.
             var versionPart = Regex.Match(
@@ -203,9 +229,11 @@ namespace ApertureLabs.Selenium
             var yStr = versionPart.Groups["y"].Value;
             var zStr = versionPart.Groups["z"].Value;
 
-            var x = int.Parse(xStr);
-            var y = int.Parse(yStr);
-            var z = int.Parse(zStr);
+            var culture = CultureInfo.CurrentCulture;
+
+            var x = Int32.Parse(xStr, culture);
+            var y = Int32.Parse(yStr, culture);
+            var z = Int32.Parse(zStr, culture);
 
             return (x, y, z);
         }
@@ -217,13 +245,6 @@ namespace ApertureLabs.Selenium
         private class KeyComparer : IComparer<(int X, int Y, int Z)>,
             IComparer<string>
         {
-            private readonly SeleniumServerStandAloneManager parent;
-
-            public KeyComparer(SeleniumServerStandAloneManager parent)
-            {
-                this.parent = parent;
-            }
-
             public int Compare((int X, int Y, int Z) x, (int X, int Y, int Z) y)
             {
                 if (x.X == y.X && x.Y == y.Y && x.Z == y.Z)
@@ -244,8 +265,8 @@ namespace ApertureLabs.Selenium
                 if (x == y)
                     return 0;
 
-                var xVersion = parent.GetXYZVerion(x);
-                var yVersion = parent.GetXYZVerion(y);
+                var xVersion = GetXYZVerion(x);
+                var yVersion = GetXYZVerion(y);
 
                 return Compare(xVersion, yVersion);
             }

@@ -70,7 +70,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
                 new BaseKendoConfiguration
                 {
                     ControlWithKeyboardInsteadOfMouse = true,
-                    DataSource = DataSourceOptions.DefaultKendoOptions()
+                    DataSource = new DataSourceOptions()
                 },
                 By.CssSelector("#dropdown"),
                 driver,

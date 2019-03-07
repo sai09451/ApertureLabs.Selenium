@@ -97,7 +97,7 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
             SetValue(newVal);
         }
 
-        private string GetValueOfOption(IWebElement element)
+        private static string GetValueOfOption(IWebElement element)
         {
             var val = element.GetAttribute("value");
 

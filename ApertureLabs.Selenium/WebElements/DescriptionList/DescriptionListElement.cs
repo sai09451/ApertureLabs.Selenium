@@ -78,7 +78,7 @@ namespace ApertureLabs.Selenium.WebElements.DescriptionList
             return results;
         }
 
-        private bool HasTagName(string tagName, IWebElement element)
+        private static bool HasTagName(string tagName, IWebElement element)
         {
             return String.Equals(
                 tagName,

@@ -54,12 +54,14 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// <summary>
         /// The 'busy' or loading element displayed on the page.
         /// </summary>
-        protected virtual IWebElement PageLoadingIndicator => WrappedDriver.FindElement(configuration.DataSource.PageLoadingSelector);
+        protected virtual IWebElement PageLoadingIndicator => WrappedDriver
+            .FindElement(configuration.DataSource.PageLoadingSelector);
 
         /// <summary>
         /// The 'busy' or loading element displayed on the container.
         /// </summary>
-        protected virtual IWebElement ContainerLoadingIndicator => WrappedDriver.FindElement(configuration.DataSource.ContainerLoadingSelector);
+        protected virtual IWebElement ContainerLoadingIndicator => WrappedDriver
+            .FindElement(configuration.DataSource.ContainerLoadingSelector);
 
         #endregion
 
@@ -72,7 +74,7 @@ namespace ApertureLabs.Selenium.Components.Kendo
         /// or container).
         /// </summary>
         /// <returns></returns>
-        protected virtual bool IsBusy()
+        public virtual bool IsBusy()
         {
             return PageLoadingIndicator?.Displayed
                 ?? ContainerLoadingIndicator?.Displayed

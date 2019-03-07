@@ -1,9 +1,8 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Globalization;
 
 namespace ApertureLabs.Selenium.WebElements.Inputs
 {
@@ -68,7 +67,9 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
 
             try
             {
-                return (T)Convert.ChangeType(value, typeof(T));
+                return (T)Convert.ChangeType(value,
+                    typeof(T),
+                    CultureInfo.CurrentCulture);
             }
             catch
             {
@@ -107,7 +108,10 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         /// <param name="value"></param>
         public virtual void SetValue<T>(T value) where T:IConvertible
         {
-            var asString = (string)Convert.ChangeType(value, typeof(string));
+            var asString = (string)Convert.ChangeType(value,
+                typeof(string),
+                CultureInfo.CurrentCulture);
+
             WrappedElement.Clear();
 
             if (!String.IsNullOrEmpty(asString))

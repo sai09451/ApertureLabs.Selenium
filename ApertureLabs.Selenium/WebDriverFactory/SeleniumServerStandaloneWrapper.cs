@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -19,15 +20,7 @@ namespace ApertureLabs.Selenium
     {
         #region Fields
 
-        /// <summary>
-        /// The options.
-        /// </summary>
-        protected readonly U options;
-
-        /// <summary>
-        /// The wrapped process.
-        /// </summary>
-        protected Process wrappedProcess;
+        private bool disposedValue;
 
         #endregion
 
@@ -39,22 +32,40 @@ namespace ApertureLabs.Selenium
         /// <param name="options">The options.</param>
         public SeleniumServerStandaloneWrapper(U options)
         {
-            this.options = options
+            disposedValue = false;
+
+            Options = options
                 ?? throw new ArgumentNullException(nameof(options));
         }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="SeleniumServerStandaloneWrapper{U}"/> class.
+        /// </summary>
+        ~SeleniumServerStandaloneWrapper()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// The options.
+        /// </summary>
+        public U Options { get; protected set; }
+
+        /// <summary>
+        /// The wrapped process.
+        /// </summary>
+        public Process WrappedProcess { get; protected set; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Gets the options.
-        /// </summary>
-        /// <returns></returns>
-        public virtual U GetOptions()
-        {
-            return options;
-        }
+#pragma warning disable CS1584 // XML comment has syntactically incorrect cref attribute
+#pragma warning disable CS1658 // Warning is overriding an error
 
         /// <summary>
         /// Determines whether this instance is running.
@@ -64,7 +75,7 @@ namespace ApertureLabs.Selenium
         /// </returns>
         public virtual bool IsRunning()
         {
-            return !wrappedProcess?.HasExited ?? false;
+            return !WrappedProcess?.HasExited ?? false;
         }
 
         /// <summary>
@@ -74,19 +85,45 @@ namespace ApertureLabs.Selenium
         public abstract IList<SeleniumLogEntry> GetLogs();
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing,
+        /// releasing, or resetting unmanaged resources.
         /// </summary>
-        public abstract void Dispose();
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    StopProcess();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and
+                // override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
 
         /// <summary>
         /// Starts this instance.
         /// </summary>
-        public abstract void Start();
+        public abstract void StartProcess();
 
         /// <summary>
         /// Stops this instance.
         /// </summary>
-        public abstract void Stop();
+        public abstract void StopProcess();
 
         /// <summary>
         /// Creates the command line arguments.
@@ -127,13 +164,17 @@ namespace ApertureLabs.Selenium
             // Convert to camel case if needed.
             if (Char.IsUpper(commandName[0]))
             {
+                var culture = CultureInfo.GetCultureInfo("en-US");
                 var removedLetter = commandName[0];
                 commandName = commandName.Remove(0, 1);
-                commandName = commandName.Insert(0, Char.ToLower(removedLetter).ToString());
+                commandName = commandName.Insert(0,
+                    Char
+                        .ToLower(removedLetter, culture)
+                        .ToString(culture));
             }
 
             // Command value.
-            var result = property.Compile().Invoke(options);
+            var result = property.Compile().Invoke(Options);
 
             // Ignore if result is null.
             if (result == null)
@@ -251,7 +292,7 @@ namespace ApertureLabs.Selenium
         /// <returns></returns>
         protected string GetLastLine()
         {
-            var fileInfo = new FileInfo(options.Log);
+            var fileInfo = new FileInfo(Options.Log);
             var fs = WaitForFile(
                 fileInfo.FullName,
                 TimeSpan.FromMilliseconds(50),
@@ -306,6 +347,9 @@ namespace ApertureLabs.Selenium
 
             return fs;
         }
+
+#pragma warning restore CS1658 // Warning is overriding an error
+#pragma warning restore CS1584 // XML comment has syntactically incorrect cref attribute
 
         #endregion
     }

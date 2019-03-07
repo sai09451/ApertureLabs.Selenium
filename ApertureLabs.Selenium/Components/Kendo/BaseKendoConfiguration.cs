@@ -29,7 +29,7 @@
             return new BaseKendoConfiguration
             {
                 ControlWithKeyboardInsteadOfMouse = false,
-                DataSource = DataSourceOptions.DefaultKendoOptions()
+                DataSource = new DataSourceOptions()
             };
         }
     }

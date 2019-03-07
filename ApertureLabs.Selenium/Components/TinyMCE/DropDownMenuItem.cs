@@ -106,11 +106,27 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             var selector = ByElement.FromElement(menuItemEl);
 
-            return pageObjectFactory.PrepareComponent(
+            return PageObjectFactory.PrepareComponent(
                 new MenuItem(
                     selector,
-                    pageObjectFactory,
+                    PageObjectFactory,
                     WrappedDriver));
+        }
+
+        /// <summary>
+        /// Selects the option and attempts to cast to the type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="option">The option.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        public virtual T SelectOption<T>(string option,
+            StringComparison stringComparison = StringComparison.Ordinal)
+            where T : MenuItem
+        {
+            var item = SelectOption(option, stringComparison);
+
+            return item.ConvertTo<T>();
         }
 
         /// <summary>

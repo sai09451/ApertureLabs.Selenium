@@ -21,7 +21,6 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         #region Fields
 
         private readonly DatePickerComponentOptions datePickerComponentOptions;
-        private const string JQueryRequiredClass = "ui-datepicker";
 
         #region Selectors
 

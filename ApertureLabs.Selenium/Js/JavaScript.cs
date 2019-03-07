@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium;
@@ -42,7 +43,7 @@ namespace ApertureLabs.Selenium.Js
         /// <value>
         /// The arguments.
         /// </value>
-        public virtual JavaScriptValue[] Arguments { get; set; }
+        public virtual ICollection<JavaScriptValue> Arguments { get; set; }
 
         /// <summary>
         /// The script to be executed.

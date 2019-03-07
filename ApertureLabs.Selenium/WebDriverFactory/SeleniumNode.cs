@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -59,7 +60,7 @@ namespace ApertureLabs.Selenium
                 return;
 
             // Check if the correct file was modified.
-            var fileInfo = new FileInfo(options.Log);
+            var fileInfo = new FileInfo(Options.Log);
 
             if (fileInfo.FullName != e.FullPath)
                 return;
@@ -97,7 +98,7 @@ namespace ApertureLabs.Selenium
 
             // ReadLines uses a stream. Won't load the entire file into memory.
             // See - https://stackoverflow.com/a/11625667
-            var lastLine = File.ReadLines(options.Log).Last();
+            var lastLine = File.ReadLines(Options.Log).Last();
             nodeLogs.Add(lastLine);
         }
 
@@ -133,18 +134,18 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Starts the node process.
         /// </summary>
-        public override void Start()
+        public override void StartProcess()
         {
             // Check if port is busy.
-            var port = options.Port
-                ?? ExtractPort(options.Host)
+            var port = Options.Port
+                ?? ExtractPort(Options.Host)
                 ?? 0;
 
             if (IsLocalPortBusy(port, TimeSpan.FromSeconds(1)))
                 throw new Exception("");
 
             signal = new AutoResetEvent(false);
-            var useLog = !String.IsNullOrEmpty(options.Log);
+            var useLog = !String.IsNullOrEmpty(Options.Log);
             var startInfo = new ProcessStartInfo
             {
                 Arguments = GetCommandLineArguments(),
@@ -155,13 +156,13 @@ namespace ApertureLabs.Selenium
             };
 
             // Start the process.
-            wrappedProcess = Process.Start(startInfo);
+            WrappedProcess = Process.Start(startInfo);
 
             // Wait for file to exists.
             if (useLog)
             {
                 // Stream file.
-                var fileInfo = new FileInfo(options.Log);
+                var fileInfo = new FileInfo(Options.Log);
                 logWatcher = new FileSystemWatcher
                 {
                     NotifyFilter = NotifyFilters.LastWrite
@@ -175,14 +176,14 @@ namespace ApertureLabs.Selenium
             else
             {
                 // Stream stderr/stdout.
-                wrappedProcess.ErrorDataReceived += LocalNodeProcess_StdOutOutputDataReceived;
+                WrappedProcess.ErrorDataReceived += LocalNodeProcess_StdOutOutputDataReceived;
             }
 
             // Always listen to stdout/stderr.
-            wrappedProcess.OutputDataReceived += NodeProcess_StdOutLog;
-            wrappedProcess.ErrorDataReceived += NodeProcess_StdOutLog;
-            wrappedProcess.BeginOutputReadLine();
-            wrappedProcess.BeginErrorReadLine();
+            WrappedProcess.OutputDataReceived += NodeProcess_StdOutLog;
+            WrappedProcess.ErrorDataReceived += NodeProcess_StdOutLog;
+            WrappedProcess.BeginOutputReadLine();
+            WrappedProcess.BeginErrorReadLine();
 
             // Wait for the node to start.
             signal.WaitOne(TimeSpan.FromSeconds(30));
@@ -191,9 +192,9 @@ namespace ApertureLabs.Selenium
             if (useLog)
                 logWatcher.Changed -= LogWatcher_FileDataRecieved;
             else
-                wrappedProcess.ErrorDataReceived -= LocalNodeProcess_StdOutOutputDataReceived;
+                WrappedProcess.ErrorDataReceived -= LocalNodeProcess_StdOutOutputDataReceived;
 
-            if (wrappedProcess.HasExited)
+            if (WrappedProcess.HasExited)
             {
                 Dispose();
                 throw new Exception("Failed to start the node process.");
@@ -205,7 +206,7 @@ namespace ApertureLabs.Selenium
         /// <summary>
         /// Stops this instance.
         /// </summary>
-        public override void Stop()
+        public override void StopProcess()
         {
             // Remove event listeners.
             if (logWatcher != null)
@@ -215,8 +216,8 @@ namespace ApertureLabs.Selenium
                 logWatcher = null;
             }
 
-            wrappedProcess?.Kill();
-            wrappedProcess = null;
+            WrappedProcess?.Kill();
+            WrappedProcess = null;
         }
 
         /// <summary>
@@ -237,14 +238,15 @@ namespace ApertureLabs.Selenium
         /// <returns></returns>
         protected override string GetCommandLineArguments()
         {
+            var culture = CultureInfo.GetCultureInfo("en-US");
             var sb = new StringBuilder();
 
-            AddCommand(sb, "jar", options.JarFileName);
+            AddCommand(sb, "jar", Options.JarFileName);
             AddCommand(sb, "role", "node");
 
-            if (options.Capabilities.Any())
+            if (Options.Capabilities.Any())
             {
-                foreach (var capabilityDict in options.Capabilities)
+                foreach (var capabilityDict in Options.Capabilities)
                 {
                     var capabilities = new List<string>();
 
@@ -266,7 +268,7 @@ namespace ApertureLabs.Selenium
 
             AddCommand(sb,
                 opts => opts.EnablePlatformVerification,
-                r => r.GetValueOrDefault().ToString().ToLower());
+                r => r.GetValueOrDefault().ToString(culture).ToLower(culture));
 
             AddCommand(sb, opts => opts.Host);
             AddCommand(sb, opts => opts.Hub);
@@ -292,39 +294,6 @@ namespace ApertureLabs.Selenium
 
             return sb.ToString();
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    Stop();
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
-            }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            Dispose(true);
-        }
-
-        #endregion
 
         #endregion
     }

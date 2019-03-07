@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using ApertureLabs.Selenium.Extensions;
@@ -152,7 +153,7 @@ namespace ApertureLabs.Selenium.Js
         /// <value>
         /// The arguments.
         /// </value>
-        public override JavaScriptValue[] Arguments => Array.Empty<JavaScriptValue>();
+        public override ICollection<JavaScriptValue> Arguments => Array.Empty<JavaScriptValue>();
 
         /// <summary>
         /// Name of the function to resolve the promise.

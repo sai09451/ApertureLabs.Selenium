@@ -12,13 +12,15 @@ namespace ApertureLabs.Selenium.Css
         #region Constructor
 
         /// <summary>
-        /// Ctor.
+        /// Initializes a new instance of the <see cref="CssColor"/> class.
         /// </summary>
         /// <param name="value"></param>
+        /// <exception cref="ArgumentException">value</exception>
+        /// <exception cref="NotImplementedException"></exception>
         public CssColor(string value) : base(value)
         {
             if (String.IsNullOrEmpty(value))
-                throw new ArgumentException(nameof(value));
+                throw new ArgumentNullException(nameof(value));
 
             var colorFormat = ColorFormat();
 
@@ -90,7 +92,7 @@ namespace ApertureLabs.Selenium.Css
                         return CssColorFormat.Unknown;
                 }
             }
-            else if (Value.StartsWith("#"))
+            else if (Value.StartsWith("#", StringComparison.Ordinal))
             {
                 // Is a hex format.
                 return CssColorFormat.Hexadecimal;
@@ -110,11 +112,15 @@ namespace ApertureLabs.Selenium.Css
             }
         }
 
+#pragma warning disable CS1658 // Warning is overriding an error
+#pragma warning disable CS1584 // XML comment has syntactically incorrect cref attribute
         /// <summary>
         /// Assigns Color from value interperted as an hsl function.
         /// </summary>
         /// <returns></returns>
-        /// <seealso cref="https://www.w3.org/TR/css-color-3/#hsl-color"/>
+        /// <seealso cref="https://www.w3.org/TR/css-color-3/#hsl-color"></seealso>
+#pragma warning restore CS1584 // XML comment has syntactically incorrect cref attribute
+#pragma warning restore CS1658 // Warning is overriding an error
         private void ColorFromHsl()
         {
             var function = new CssFunction(Value);
@@ -352,7 +358,7 @@ namespace ApertureLabs.Selenium.Css
         /// <param name="desiredMin">Defaults to zero.</param>
         /// <param name="desiredMax">Defaults to one.</param>
         /// <returns></returns>
-        private double Normalize(double value,
+        private static double Normalize(double value,
             double actualMin = Double.NegativeInfinity,
             double actualMax = Double.PositiveInfinity,
             double desiredMin = 0,

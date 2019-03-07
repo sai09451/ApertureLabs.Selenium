@@ -50,28 +50,28 @@ namespace ApertureLabs.Selenium
         [TestMethod]
         public void StartTest1()
         {
-            seleniumHub.Start();
+            seleniumHub.StartProcess();
         }
 
         [TestMethod]
         public void StartTest2()
         {
-            var opts = seleniumHub.GetOptions();
+            var opts = seleniumHub.Options;
             opts.Log = null;
-            seleniumHub.Start();
+            seleniumHub.StartProcess();
         }
 
         [TestMethod]
         public void StopTest()
         {
-            seleniumHub.Start();
-            seleniumHub.Stop();
+            seleniumHub.StartProcess();
+            seleniumHub.StopProcess();
         }
 
         [TestMethod]
         public void RegisterNodeTest()
         {
-            seleniumHub.Start();
+            seleniumHub.StartProcess();
             seleniumHub.RegisterNode(new SeleniumNodeOptions());
 
             // Try and activate the ChromeDriver.
@@ -92,7 +92,7 @@ namespace ApertureLabs.Selenium
         [DataRow(2, DisplayName = "Second run")]
         public void UnregisterNodeTest(int run)
         {
-            var opts = seleniumHub.GetOptions();
+            var opts = seleniumHub.Options;
             opts.Log = null;
             RegisterNodeTest();
             var node = seleniumHub.GetRegisteredNodes().First();

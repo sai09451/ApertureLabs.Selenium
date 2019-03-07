@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ApertureLabs.Selenium.Models.NopModels
 {
@@ -108,7 +109,15 @@ namespace ApertureLabs.Selenium.Models.NopModels
 
         #region Methods
 
-        /// <inheritdoc/>
+#pragma warning disable CS1584 // XML comment has syntactically incorrect cref attribute
+#pragma warning disable CS1658 // Warning is overriding an error
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         /// <seealso cref="https://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode/263416#263416"/>
         public override int GetHashCode()
         {
@@ -128,6 +137,9 @@ namespace ApertureLabs.Selenium.Models.NopModels
                 return hash;
             }
         }
+
+#pragma warning restore CS1584 // XML comment has syntactically incorrect cref attribute
+#pragma warning restore CS1658 // Warning is overriding an error
 
         /// <summary>
         /// Checks if the addresses are the same.
@@ -179,7 +191,8 @@ namespace ApertureLabs.Selenium.Models.NopModels
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("{0} {1}, {2}, {3}, {4} {5}, {6}",
+            return String.Format(CultureInfo.CurrentCulture,
+                "{0} {1}, {2}, {3}, {4} {5}, {6}",
                 FirstName,
                 LastName,
                 Address1,

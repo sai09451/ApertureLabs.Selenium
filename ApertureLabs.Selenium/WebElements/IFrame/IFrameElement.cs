@@ -1,6 +1,7 @@
-﻿using System;
+﻿using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace ApertureLabs.Selenium.WebElements.IFrame
 {
@@ -20,22 +21,30 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
         #region Constructor
 
         /// <summary>
-        /// Ctor
+        /// Initializes a new instance of the <see cref="IFrameElement"/> class.
         /// </summary>
-        /// <param name="element"></param>
-        /// <param name="driver"></param>
+        /// <param name="element">The element.</param>
+        /// <param name="driver">The driver.</param>
         /// <exception cref="UnexpectedTagNameException">
-        /// Thrown if the element isn't an iframe.
+        /// Thrown if the tagname of the element isn't 'iframe'
+        /// (case-insensitive).
         /// </exception>
+        /// <exception cref="ArgumentNullException">driver</exception>
         public IFrameElement(IWebElement element, IWebDriver driver)
             : base(element)
         {
-            if (!String.Equals(element.TagName, "iframe", StringComparison.OrdinalIgnoreCase))
+            var validTagName = String.Equals(element.TagName,
+               "iframe",
+               StringComparison.OrdinalIgnoreCase);
+
+            if (!validTagName)
             {
-                throw new UnexpectedTagNameException("Expected the tagname to be iframe.");
+                throw new UnexpectedTagNameException("Expected tagname " +
+                    $"to be iframe but got {element.TagName} instead.");
             }
 
-            this.driver = driver;
+            this.driver = driver
+                ?? throw new ArgumentNullException(nameof(driver));
         }
 
         #endregion
@@ -76,7 +85,9 @@ namespace ApertureLabs.Selenium.WebElements.IFrame
         {
             if (enteredIFrameCount == 0)
             {
-                driver.SwitchTo().Frame(WrappedElement);
+                driver
+                    .SwitchTo()
+                    .Frame(WrappedElement.UnWrapEventFiringWebElement());
             }
 
             enteredIFrameCount++;

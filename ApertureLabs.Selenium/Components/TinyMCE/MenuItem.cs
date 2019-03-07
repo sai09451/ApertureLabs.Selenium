@@ -14,11 +14,6 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
     {
         #region Fields
 
-        /// <summary>
-        /// Page object factory.
-        /// </summary>
-        protected IPageObjectFactory pageObjectFactory;
-
         #region Selectors
 
         private readonly By iconSelector = By.CssSelector(".mce-ico");
@@ -44,12 +39,17 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             IWebDriver driver)
             : base(selector, driver)
         {
-            this.pageObjectFactory = pageObjectFactory;
+            PageObjectFactory = pageObjectFactory;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Page object factory.
+        /// </summary>
+        protected IPageObjectFactory PageObjectFactory { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is drop down.
@@ -139,10 +139,10 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             {
                 if (IsDropDown)
                 {
-                    result = pageObjectFactory.PrepareComponent(
+                    result = PageObjectFactory.PrepareComponent(
                         new DropDownMenuItem(
                             By,
-                            pageObjectFactory,
+                            PageObjectFactory,
                             WrappedDriver)) as T;
                 }
             }
@@ -150,10 +150,10 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             {
                 if (IsButtonGroup)
                 {
-                    result = pageObjectFactory.PrepareComponent(
+                    result = PageObjectFactory.PrepareComponent(
                         new ButtonGroupMenuItem(
                             By,
-                            pageObjectFactory,
+                            PageObjectFactory,
                             WrappedDriver)) as T;
                 }
             }
@@ -162,7 +162,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                 throw new NotImplementedException();
             }
 
-            return result;
+            return PageObjectFactory.PrepareComponent(result);
         }
 
         /// <summary>

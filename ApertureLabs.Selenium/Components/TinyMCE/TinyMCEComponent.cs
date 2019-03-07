@@ -134,7 +134,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             if (IntegrationMode == IntegrationMode.Classic)
             {
                 iframeElement = new IFrameElement(
-                    TinyMCEContainerElement.FindElement(By.TagName("iframe")),
+                    TinyMCEContainerElement
+                        .FindElement(By.TagName("iframe"))
+                        .UnWrapEventFiringWebElement(),
                     WrappedDriver);
             }
 
@@ -341,8 +343,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="content">The content.</param>
         public virtual void WriteLine(string content)
         {
-            Write(content);
-            Write(Keys.Enter);
+            Write(content + Keys.Enter);
         }
 
         /// <summary>

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ApertureLabs.Selenium.Extensions;
+﻿using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 {
@@ -21,7 +21,6 @@ namespace ApertureLabs.Selenium.Components.Kendo.KDropDown
 
         #region Selectors
 
-        private readonly By WrappedDropdownSelector = By.CssSelector("select");
         private readonly By OptionsSelector = By.CssSelector("li");
         private readonly By SelectedOptionSelector = By.CssSelector(".k-state-selected");
         private readonly By OpenAnimationFinishedSelector = By.CssSelector(".k-state-active");

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ApertureLabs.Selenium;
-using ApertureLabs.Selenium.PageObjects;
+﻿using ApertureLabs.Selenium.PageObjects;
 using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MockServer.PageObjects.Home
 {
-    public class HomePage : BasePage
+    public class HomePage : StaticPageObject, IBasePage
     {
         #region Fields
-
-        private readonly IPageObjectFactory pageObjectFactory;
 
         #region Selectors
 
@@ -24,15 +21,20 @@ namespace MockServer.PageObjects.Home
 
         #endregion
 
+        private readonly IBasePage basePage;
+        private readonly IPageObjectFactory pageObjectFactory;
+
         #endregion
 
         #region Constructor
 
-        public HomePage(IWebDriver driver,
-            PageOptions pageOptions,
-            IPageObjectFactory pageObjectFactory)
-            : base(driver, pageOptions, pageObjectFactory)
+        public HomePage(IBasePage basePage,
+            IPageObjectFactory pageObjectFactory,
+            IWebDriver driver,
+            PageOptions pageOptions)
+            : base(driver, new Uri(pageOptions.Url))
         {
+            this.basePage = basePage;
             this.pageObjectFactory = pageObjectFactory;
         }
 
@@ -42,7 +44,13 @@ namespace MockServer.PageObjects.Home
 
         #region Elements
 
-        private IReadOnlyList<IWebElement> FrameworkElements => WrappedDriver.FindElements(FrameWorkSelector);
+        private IReadOnlyList<IWebElement> FrameworkElements => WrappedDriver
+            .FindElements(FrameWorkSelector);
+
+        public HomePage GoToHomePage()
+        {
+            return basePage.GoToHomePage();
+        }
 
         #endregion
 
@@ -95,10 +103,10 @@ namespace MockServer.PageObjects.Home
 
         public override ILoadableComponent Load()
         {
-            if (!WrappedDriver.Url.StartsWith("http"))
-                WrappedDriver.Navigate().GoToUrl(Uri.ToString());
+            base.Load();
+            basePage.Load();
 
-            return base.Load();
+            return this;
         }
 
         #endregion

@@ -25,7 +25,6 @@ namespace ApertureLabs.Selenium
         private readonly bool isStandalone;
         private readonly DriverManager driverManager;
         private readonly IList<IWebDriver> trackedDrivers;
-        private readonly SeleniumServerStandAloneManager seleniumServerStandAloneHelper;
         private readonly SeleniumHub seleniumHub;
 
         private bool disposedValue = false;
@@ -81,7 +80,7 @@ namespace ApertureLabs.Selenium
             trackedDrivers = new List<IWebDriver>();
             seleniumHub = new SeleniumHub(seleniumHubOptions);
 
-            seleniumHub.Start();
+            seleniumHub.StartProcess();
             seleniumHub.RegisterNode(seleniumNodeOptions);
         }
 
@@ -186,7 +185,7 @@ namespace ApertureLabs.Selenium
             driver.Manage().Window.Size = windowSize;
 
             // Wrap with EventFiringWebDriver.
-            driver = new EventFiringWebDriver(driver);
+            //driver = new EventFiringWebDriver(driver);
 
             if (track)
                 trackedDrivers.Add(driver);

@@ -25,18 +25,6 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
         private readonly string EventShowCollapse = "show.bs.collapse";
 
         /// <summary>
-        /// This event is fired when a collapse element has been made visible
-        /// to the user (will wait for CSS transitions to complete).
-        /// </summary>
-        private readonly string EventShownCollapse = "shown.bs.collapse";
-
-        /// <summary>
-        /// This event is fired immediately when the hide method has been
-        /// called.
-        /// </summary>
-        private readonly string EventHideCollapse = "hide.bs.collapse";
-
-        /// <summary>
         /// This event is fired when a collapse element has been hidden from
         /// the user (will wait for CSS transitions to complete).
         /// </summary>
@@ -66,9 +54,9 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
             else if (animationData == null)
                 throw new ArgumentNullException(nameof(animationData));
             else if (!animationData.AnimationsEnabled && !animationData.AnimationSelectors.Any())
-                throw new ArgumentNullException(nameof(animationData.AnimationSelectors));
+                throw new ArgumentException("If animations are enabled animation selectors cannot be null/empty.", nameof(animationData));
             else if (animationData.IsOpenSelector == null)
-                throw new ArgumentNullException(nameof(animationData.IsOpenSelector));
+                throw new ArgumentException("The IsOpenSelector property is required.", nameof(animationData));
 
             this.animationData = animationData;
         }
@@ -79,15 +67,15 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
 
         #region Elements
 
-        private IReadOnlyList<IWebElement> OpenElements => animationData.OpenSelectors
+        private IReadOnlyCollection<IWebElement> OpenElements => animationData.OpenSelectors
             .SelectMany(s => WrappedDriver.FindElements(s))
             .ToList();
 
-        private IReadOnlyList<IWebElement> CloseElements => animationData.CloseSelectors
+        private IReadOnlyCollection<IWebElement> CloseElements => animationData.CloseSelectors
             .SelectMany(s => WrappedDriver.FindElements(s))
             .ToList();
 
-        private IReadOnlyList<IWebElement> ToggleElements => animationData.ToggleSelectors
+        private IReadOnlyCollection<IWebElement> ToggleElements => animationData.ToggleSelectors
             .SelectMany(s => WrappedDriver.FindElements(s))
             .ToList();
 

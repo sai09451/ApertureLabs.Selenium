@@ -1,6 +1,9 @@
-﻿using System;
+﻿using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.TinyMCE
 {
@@ -8,7 +11,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
     /// GroupedMenuItem.
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
-    public class ButtonGroupMenuItem : MenuItem
+    public class ButtonGroupMenuItem : MenuItem, IGetMenuItem
     {
         #region Fields
 
@@ -17,6 +20,8 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         private readonly By subItemSelector = By.CssSelector("*[role='button']");
 
         #endregion
+
+        private readonly IPageObjectFactory pageObjectFactory;
 
         #endregion
 
@@ -32,13 +37,19 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver)
             : base(selector, pageObjectFactory, driver)
-        { }
+        {
+            this.pageObjectFactory = pageObjectFactory
+                ?? throw new ArgumentNullException(nameof(pageObjectFactory));
+        }
 
         #endregion
 
         #region Properties
 
         #region Elements
+
+        private IReadOnlyCollection<IWebElement> SubItemElements => WrappedElement
+            .FindElements(subItemSelector);
 
         #endregion
 
@@ -47,36 +58,142 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         #region Methods
 
         /// <summary>
-        /// Gets the sub item by text.
+        /// Gets the menu item at the index.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public MenuItem GetMenuItemAt(int index)
+        {
+            var menuItemEl = SubItemElements.ElementAt(index);
+            var selector = WrappedDriver.GetCssSelector(menuItemEl);
+
+            return pageObjectFactory.PrepareComponent(
+                new MenuItem(
+                    selector,
+                    pageObjectFactory,
+                    WrappedDriver));
+        }
+
+        /// <summary>
+        /// Gets the menu items.
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyCollection<MenuItem> GetMenuItems()
+        {
+            return SubItemElements.Select(
+                    item => pageObjectFactory.PrepareComponent(
+                        new MenuItem(
+                            WrappedDriver.GetCssSelector(item),
+                            pageObjectFactory,
+                            WrappedDriver)))
+                .ToList()
+                .AsReadOnly();
+        }
+
+        /// <summary>
+        /// Gets the item by text.
         /// </summary>
         /// <param name="itemName">Name of the item.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public MenuItem GetSubItemByText(string itemName,
+        /// <exception cref="NoSuchElementException"></exception>
+        public MenuItem GetItemByText(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
-            //var bttnEl = WrappedElement.FindElements(subItemSelector)
-            //    .FirstOrDefault(el =>
-            //    {
-            //        var btns = el.FindElements();
-            //        return false;
-            //    });
+            var bttnEl = SubItemElements.FirstOrDefault(el =>
+            {
+                return String.Equals(
+                    itemName,
+                    el.TextHelper().InnerText,
+                    stringComparison);
+            });
 
-            throw new NotImplementedException();
+            if (bttnEl == null)
+                throw new NoSuchElementException();
+
+            return pageObjectFactory.PrepareComponent(
+                new MenuItem(
+                    new ByElement(bttnEl),
+                    pageObjectFactory,
+                    WrappedDriver));
         }
 
         /// <summary>
-        /// Gets the sub item by icon.
+        /// Gets the item by text and attempts to convert it to the type
+        /// paramater.
         /// </summary>
-        /// <param name="iconClass">The icon class.</param>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="itemName">Name of the item.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public MenuItem GetSubItemByIcon(string iconClass,
+        public T GetItemByText<T>(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
+            where T : MenuItem
         {
-            throw new NotImplementedException();
+            var item = GetItemByText(itemName, stringComparison);
+
+            return item.ConvertTo<T>();
+        }
+
+        /// <summary>
+        /// Gets the item by class.
+        /// </summary>
+        /// <param name="className">Name of the class.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        /// <exception cref="NoSuchElementException"></exception>
+        public MenuItem GetItemByClass(string className, StringComparison stringComparison = StringComparison.Ordinal)
+        {
+            var bttnEl = SubItemElements.FirstOrDefault(bttn =>
+            {
+                // Try and the icon element.
+                var iconEls = bttn.FindElements(By.CssSelector(".mce-ico"));
+
+                foreach (var iconEl in iconEls)
+                {
+                    var iconClasses = iconEl.Classes();
+
+                    foreach (var @class in iconClasses)
+                    {
+                        var hasIcon = String.Equals(
+                            className,
+                            @class,
+                            stringComparison);
+
+                        if (hasIcon)
+                            return true;
+                    }
+                }
+
+                // Failed to find the sub item.
+                return false;
+            });
+
+            if (bttnEl == null)
+                throw new NoSuchElementException();
+
+            return pageObjectFactory.PrepareComponent(
+                new MenuItem(
+                    new ByElement(bttnEl),
+                    pageObjectFactory,
+                    WrappedDriver));
+        }
+
+        /// <summary>
+        /// Gets the item by class and attempts to convert it to the type
+        /// parameter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="className">Name of the class.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        public T GetItemByClass<T>(string className,
+            StringComparison stringComparison = StringComparison.Ordinal)
+            where T : MenuItem
+        {
+            var item = GetItemByClass(className, stringComparison);
+
+            return item.ConvertTo<T>();
         }
 
         #endregion

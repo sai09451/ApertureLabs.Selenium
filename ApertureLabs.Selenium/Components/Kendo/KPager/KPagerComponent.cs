@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ApertureLabs.Selenium.Components.Kendo.KDropDown;
 using ApertureLabs.Selenium.Extensions;
@@ -275,7 +276,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         public virtual IList<int> GetAvailableItemsPerPage()
         {
             var itemsPerPage = ItemsPerPageComponent.GetItems()
-                .Select(str => int.Parse(str))
+                .Select(str => Int32.Parse(str, CultureInfo.CurrentCulture))
                 .ToList();
 
             return itemsPerPage;
@@ -287,7 +288,9 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// <returns></returns>
         public virtual int GetItemsPerPage()
         {
-            var selectedOpt = int.Parse(ItemsPerPageComponent.GetSelectedItem());
+            var selectedOpt = Int32.Parse(
+                ItemsPerPageComponent.GetSelectedItem(),
+                CultureInfo.CurrentCulture);
 
             return selectedOpt;
         }
@@ -298,12 +301,14 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// <param name="itemsPerPage"></param>
         public virtual void SetItemsPerPage(int itemsPerPage)
         {
-            var value = itemsPerPage.ToString();
+            var value = itemsPerPage.ToString(CultureInfo.CurrentCulture);
             var currentValue = ItemsPerPageComponent.GetSelectedItem();
 
             if (!String.Equals(value, currentValue, StringComparison.Ordinal))
             {
-                ItemsPerPageComponent.SetSelectedItem(itemsPerPage.ToString());
+                ItemsPerPageComponent.SetSelectedItem(
+                    itemsPerPage.ToString(
+                        CultureInfo.CurrentCulture));
             }
         }
 
