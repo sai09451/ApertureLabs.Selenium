@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
+using ApertureLabs.Selenium.Css;
 using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
@@ -18,7 +20,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
         #region Selectors
 
-        private readonly By allMenuDropDownsSelector = By.CssSelector(".mce-panel.mce-floatpanel.mce-menu.mce-animate.mce-menu-has-icons.mce-menu-align");
+        private readonly By allMenuDropDownsSelector = By.CssSelector(".mce-panel.mce-floatpanel.mce-menu.mce-menu-align");
         private readonly By dropDownItemsSelector = By.CssSelector("*[role='menuitem']");
         private readonly By textSelector = By.CssSelector(".mce-text");
 
@@ -76,10 +78,11 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 
             // Move below the WrappedElement.
             WrappedDriver.CreateActions()
-                .MoveToElement(WrappedElement,
-                    Y,
-                    X,
-                    MoveToElementOffsetOrigin.Center)
+                .MoveToElement(
+                    toElement: WrappedElement,
+                    offsetX: X,
+                    offsetY: Y,
+                    offsetOrigin: MoveToElementOffsetOrigin.Center)
                 .Perform();
 
             // Get the container element under the mouse.
@@ -117,14 +120,14 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// Selects the option and attempts to cast to the type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="option">The option.</param>
+        /// <param name="itemText">The item text.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        public virtual T SelectOption<T>(string option,
+        public virtual T SelectOption<T>(string itemText,
             StringComparison stringComparison = StringComparison.Ordinal)
             where T : MenuItem
         {
-            var item = SelectOption(option, stringComparison);
+            var item = SelectOption(itemText, stringComparison);
 
             return item.ConvertTo<T>();
         }
@@ -138,19 +141,27 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         {
             var vector = (X: 0, Y: 0);
 
-            if (WrappedElement.Classes().Contains("mce-button"))
+            var caretElement = WrappedElement.FindElement(
+                By.CssSelector(".mce-caret"));
+
+            var css = new CssColor(
+                caretElement.GetCssValue(
+                    "border-left-color"));
+
+            // If the border-left-color is transparent, then it opens down.
+            if (css.Color.ToArgb() == 0)
+            {
+                // Opens below.
+                vector.X = 0;
+                vector.Y = WrappedElement.Size.Height * -1;
+            }
+            else
             {
                 // Opens to the right if enough space. Need to check if there
                 // is enough space. TODO: identify way to check the offset of
                 // the container due to lack of space.
                 vector.X = WrappedElement.Size.Width;
                 vector.Y = 0;
-            }
-            else
-            {
-                // Opens below.
-                vector.X = 0;
-                vector.Y = WrappedElement.Size.Height * -1;
             }
 
             return vector;

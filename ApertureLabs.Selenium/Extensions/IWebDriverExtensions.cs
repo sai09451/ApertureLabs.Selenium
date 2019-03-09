@@ -215,7 +215,7 @@ namespace ApertureLabs.Selenium.Extensions
             TimeSpan? timeout = null)
         {
             if (!eventNames?.Any() ?? true)
-                throw new ArgumentException(nameof(eventNames));
+                throw new ArgumentNullException(nameof(eventNames));
 
             var script =
                 "var callback = arguments[arguments.length - 1];" +
@@ -257,7 +257,7 @@ namespace ApertureLabs.Selenium.Extensions
             TimeSpan? timeout = null)
         {
             if (!eventNames?.Any() ?? true)
-                throw new ArgumentException(nameof(eventNames));
+                throw new ArgumentNullException(nameof(eventNames));
 
             var script =
                 "var callback = arguments[arguments.length - 1];" +

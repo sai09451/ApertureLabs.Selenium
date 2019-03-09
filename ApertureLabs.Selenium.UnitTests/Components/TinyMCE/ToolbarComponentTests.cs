@@ -103,7 +103,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                 .GetItemByClass(className)
                 .ConvertTo<ButtonGroupMenuItem>();
 
-            var btn = bttnGroup.GetSubItemByIcon(className);
+            var btn = bttnGroup.GetItemByClass(className);
             btn.WrappedElement.Click();
 
             Assert.IsTrue(btn.WrappedElement.Classes().Contains("mce-active"));
@@ -120,10 +120,11 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                 .GetItemByText("Formats")
                 .ConvertTo<DropDownMenuItem>();
 
-            var headings = formatBttn
-                .SelectOption<DropDownMenuItem>("Headings");
-
-            headings.SelectOption("Heading 1").
+            formatBttn
+                .SelectOption<DropDownMenuItem>("Headings")
+                .SelectOption("Heading 1")
+                .AsElement()
+                .Click();
 
 
             Assert.IsNotNull(formatBttn);

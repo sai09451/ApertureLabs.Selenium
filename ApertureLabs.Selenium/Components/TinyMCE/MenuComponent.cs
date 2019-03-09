@@ -82,6 +82,15 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             }
         }
 
+        public T GetItemByText<T>(string itemName,
+            StringComparison stringComparison = StringComparison.Ordinal)
+            where T : MenuItem
+        {
+            var item = GetItemByText(itemName, stringComparison);
+
+            return item.ConvertTo<T>();
+        }
+
         /// <summary>
         /// Gets the item.
         /// </summary>
@@ -105,6 +114,15 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                         pageObjectFactory,
                         WrappedDriver));
             }
+        }
+
+        public T GetItemByClass<T>(string className,
+            StringComparison stringComparison = StringComparison.Ordinal)
+            where T : MenuItem
+        {
+            var item = GetItemByClass(className, stringComparison);
+
+            return item.ConvertTo<T>();
         }
 
         /// <summary>
@@ -186,7 +204,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// Gets all menu items.
         /// </summary>
         /// <returns></returns>
-        public IReadOnlyList<MenuItem> GetMenuItems()
+        public IReadOnlyCollection<MenuItem> GetMenuItems()
         {
             var items = ItemElements.Select(e => pageObjectFactory.PrepareComponent(
                     new MenuItem(

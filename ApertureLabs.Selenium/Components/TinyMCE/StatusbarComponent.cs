@@ -55,9 +55,27 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="className">Name of the class.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        public MenuItem GetItemByClass(string className, StringComparison stringComparison = StringComparison.Ordinal)
+        public MenuItem GetItemByClass(string className,
+            StringComparison stringComparison = StringComparison.Ordinal)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the item by class and attempts to convert it to the type
+        /// parameter.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="className">Name of the class.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        public T GetItemByClass<T>(string className,
+            StringComparison stringComparison = StringComparison.Ordinal)
+            where T : MenuItem
+        {
+            var item = GetItemByClass(className);
+
+            return item.ConvertTo<T>();
         }
 
         /// <summary>
@@ -67,9 +85,27 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public MenuItem GetItemByText(string itemName, StringComparison stringComparison = StringComparison.Ordinal)
+        public MenuItem GetItemByText(string itemName,
+            StringComparison stringComparison = StringComparison.Ordinal)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the item by text and attempts to convert it to the type
+        /// paramater.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="itemName">Name of the item.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        public T GetItemByText<T>(string itemName,
+            StringComparison stringComparison = StringComparison.Ordinal)
+            where T : MenuItem
+        {
+            var item = GetItemByText(itemName, stringComparison);
+
+            return item.ConvertTo<T>();
         }
 
         /// <summary>
@@ -88,7 +124,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IReadOnlyList<MenuItem> GetMenuItems()
+        public IReadOnlyCollection<MenuItem> GetMenuItems()
         {
             throw new NotImplementedException();
         }
