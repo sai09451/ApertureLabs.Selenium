@@ -71,6 +71,28 @@ namespace ApertureLabs.Selenium.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to function handler(evt) {
+        ///    document.removeEventListener(&apos;mousemove&apos;, handler);
+        ///    var el = document.createElement(&apos;div&apos;);
+        ///    el.style.width = &apos;50px&apos;;
+        ///    el.style.height = &apos;50px&apos;;
+        ///    el.style.border = &apos;5px solid red&apos;;
+        ///    el.style.borderRadius = &apos;50%&apos;;
+        ///    el.style.position = &apos;absolute&apos;;
+        ///    el.style.left = evt.pageX - 25 + &apos;px&apos;;
+        ///    el.style.top = evt.pageY - 25 + &apos;px&apos;;
+        ///    document
+        ///        .getElementsByTagName(&apos;body&apos;)[0]
+        ///        .appendChild(el);
+        ///    {resolve}(JSON.stringify({ X: evt.pag [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string createPointAtCurrentMousePosition {
+            get {
+                return ResourceManager.GetString("createPointAtCurrentMousePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to function jsonFormatter (key, value) {
         ///
         ///    // Ignore null/undefined values.

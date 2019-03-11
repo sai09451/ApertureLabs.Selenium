@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ApertureLabs.Selenium.Attributes;
 using ApertureLabs.Selenium.Js;
 using ApertureLabs.Selenium.Properties;
 using Newtonsoft.Json.Linq;
@@ -384,7 +385,6 @@ namespace ApertureLabs.Selenium.Extensions
             return capabilitesDriver?.Capabilities;
         }
 
-
         /// <summary>
         /// Returns null if the driver doesn't implement IFileDetector.
         /// </summary>
@@ -424,6 +424,32 @@ namespace ApertureLabs.Selenium.Extensions
             driver
                 .JavaScriptExecutor()
                 .ExecuteAsyncScript(script);
+        }
+
+        /// <summary>
+        /// Displays a circle around the mouse cursors current position. This
+        /// should only be used in designing tests, NOT for use in the actual
+        /// tests.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        [AvoidUsing(reason: "Primary use of this is to determine where the " +
+            "mouse cursor is after an Actions or similar operation. Don't " +
+            "use this otherwise.")]
+        public static void CreatePointAtCurrentMousePosition(this IWebDriver driver)
+        {
+            var js = new PromiseBody(driver)
+            {
+                Script = Resources.createPointAtCurrentMousePosition
+            };
+
+            js.Execute(driver.JavaScriptExecutor());
+
+            driver.CreateActions()
+                .MoveByOffset(1, 1)
+                .MoveByOffset(-1, -1)
+                .Perform();
+
+            js.Wait(TimeSpan.FromSeconds(2));
         }
     }
 }

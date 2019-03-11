@@ -153,7 +153,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             {
                 // Opens below.
                 vector.X = 0;
-                vector.Y = WrappedElement.Size.Height * -1;
+                vector.Y = WrappedElement.Size.Height;
             }
             else
             {

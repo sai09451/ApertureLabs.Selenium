@@ -4,6 +4,24 @@
         <name>ApertureLabs.Selenium</name>
     </assembly>
     <members>
+        <member name="T:ApertureLabs.Selenium.Attributes.AvoidUsingAttribute">
+            <summary>
+            Avoid using any classes/methods/fields marked with this attribute in
+            your code.
+            </summary>
+            <seealso cref="T:System.Attribute" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Attributes.AvoidUsingAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Attributes.AvoidUsingAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Attributes.AvoidUsingAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Attributes.AvoidUsingAttribute"/> class.
+            </summary>
+            <param name="reason">The reason.</param>
+        </member>
         <member name="T:ApertureLabs.Selenium.ByAll">
             <summary>
             A version of by that selects element(s) that match all of the
@@ -1510,23 +1528,56 @@
             <param name="pageObjectFactory"></param>
             <param name="driver">The driver.</param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetSubItemByText(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetMenuItemAt(System.Int32)">
             <summary>
-            Gets the sub item by text.
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetMenuItems">
+            <summary>
+            Gets the menu items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text.
             </summary>
             <param name="itemName">Name of the item.</param>
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
-            <exception cref="T:System.NotImplementedException"></exception>
+            <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetSubItemByIcon(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByText``1(System.String,System.StringComparison)">
             <summary>
-            Gets the sub item by icon.
+            Gets the item by text and attempts to convert it to the type
+            paramater.
             </summary>
-            <param name="iconClass">The icon class.</param>
+            <typeparam name="T"></typeparam>
+            <param name="itemName">Name of the item.</param>
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
-            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByClass``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class and attempts to convert it to the type
+            parameter.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem">
             <summary>
@@ -1551,6 +1602,15 @@
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.SelectOption``1(System.String,System.StringComparison)">
+            <summary>
+            Selects the option and attempts to cast to the type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="itemText">The item text.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.GetDirectionFloatMenuWillOpen">
             <summary>
             Gets the direction float menu will open relative to the CENTER of
@@ -1562,35 +1622,6 @@
             <summary>
             Defines methods for retrieving items.
             </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetMenuItems">
-            <summary>
-            Gets all menu items.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetMenuItemAt(System.Int32)">
-            <summary>
-            Gets the menu item at the index.
-            </summary>
-            <param name="index">The index.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByText(System.String,System.StringComparison)">
-            <summary>
-            Gets the item by text.
-            </summary>
-            <param name="itemName">Name of the item.</param>
-            <param name="stringComparison">The string comparison.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.GetItemByClass(System.String,System.StringComparison)">
-            <summary>
-            Gets the item by class.
-            </summary>
-            <param name="className">Name of the class.</param>
-            <param name="stringComparison">The string comparison.</param>
-            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IBaseToolbar.HasItemWithText(System.String,System.StringComparison)">
             <summary>
@@ -1611,6 +1642,62 @@
             <returns>
               <c>true</c> if [has item by class] [the specified class name]; otherwise, <c>false</c>.
             </returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem">
+            <summary>
+            Common interface for TinyMCE components that have nested
+            <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/>s.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem.GetMenuItemAt(System.Int32)">
+            <summary>
+            Gets the menu item at the index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+            <exception cref="T:System.IndexOutOfRangeException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem.GetMenuItems">
+            <summary>
+            Gets the menu items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem.GetItemByText(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text.
+            </summary>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem.GetItemByText``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text and attempts to convert it to the type
+            paramater.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem.GetItemByClass(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class.
+            </summary>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem.GetItemByClass``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class and attempts to convert it to the type
+            parameter.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IntegrationMode">
             <summary>
@@ -1820,6 +1907,16 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetItemByClass``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class and attempts to convert it to the type
+            parameter.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetItemByText(System.String,System.StringComparison)">
             <summary>
             Gets the item by text.
@@ -1828,6 +1925,16 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetItemByText``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text and attempts to convert it to the type
+            paramater.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.StatusbarComponent.GetMenuItemAt(System.Int32)">
             <summary>
@@ -2033,6 +2140,16 @@
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByClass``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class and attempts to convert it to the type
+            parameter.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByText(System.String,System.StringComparison)">
             <summary>
             Gets the item by text.
@@ -2041,6 +2158,16 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetItemByText``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text and attempts to convert it to the type
+            paramater.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ToolbarComponent.GetMenuItemAt(System.Int32)">
             <summary>
@@ -2838,6 +2965,14 @@
             </summary>
             <param name="driver">The driver.</param>
         </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebDriverExtensions.CreatePointAtCurrentMousePosition(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Displays a circle around the mouse cursors current position. This
+            should only be used in designing tests, NOT for use in the actual
+            tests.
+            </summary>
+            <param name="driver">The driver.</param>
+        </member>
         <member name="T:ApertureLabs.Selenium.Extensions.IWebElementExtensions">
             <summary>
             Extensions for IWebElement.
@@ -2985,6 +3120,16 @@
               <c>true</c> if the element matches the specified selector;
               otherwise, <c>false</c>.
             </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Extensions.IWebElementExtensions.SetCssProperty(OpenQA.Selenium.IWebElement,System.String,System.String)">
+            <summary>
+            Sets the CSS property of the element. Should only be used when
+            designing the tests but should NOT be used in the actual test.
+            </summary>
+            <param name="element">The element.</param>
+            <param name="cssPropName">Name of the CSS property.</param>
+            <param name="cssPropValue">The CSS property value.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Extensions.WebDriverWaitExtensions">
             <summary>
@@ -3501,15 +3646,17 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Js.PromiseBody.#ctor(OpenQA.Selenium.IWebDriver)">
             <summary>
-            Ctor.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.PromiseBody"/> class.
             </summary>
+            <param name="driver">The driver.</param>
+            <exception cref="T:System.ArgumentNullException">driver</exception>
         </member>
         <member name="M:ApertureLabs.Selenium.Js.PromiseBody.#ctor(OpenQA.Selenium.IWebDriver,System.String)">
             <summary>
-            Ctor. Sets the PromiseBody.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Js.PromiseBody"/> class.
             </summary>
-            <param name="driver"></param>
-            <param name="promiseBody"></param>
+            <param name="driver">The driver.</param>
+            <param name="promiseBody">The promise body.</param>
         </member>
         <member name="P:ApertureLabs.Selenium.Js.PromiseBody.Created">
             <summary>
@@ -4595,6 +4742,24 @@
         <member name="P:ApertureLabs.Selenium.Properties.Resources.aperturelabslogoonly">
             <summary>
               Looks up a localized resource of type System.Byte[].
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Properties.Resources.createPointAtCurrentMousePosition">
+            <summary>
+              Looks up a localized string similar to function handler(evt) {
+               document.removeEventListener(&apos;mousemove&apos;, handler);
+               var el = document.createElement(&apos;div&apos;);
+               el.style.width = &apos;50px&apos;;
+               el.style.height = &apos;50px&apos;;
+               el.style.border = &apos;5px solid red&apos;;
+               el.style.borderRadius = &apos;50%&apos;;
+               el.style.position = &apos;absolute&apos;;
+               el.style.left = evt.pageX - 25 + &apos;px&apos;;
+               el.style.top = evt.pageY - 25 + &apos;px&apos;;
+               document
+                   .getElementsByTagName(&apos;body&apos;)[0]
+                   .appendChild(el);
+               {resolve}(JSON.stringify({ X: evt.pag [rest of string was truncated]&quot;;.
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.Properties.Resources.jsonFormatterCallback">
@@ -5846,13 +6011,15 @@
         </member>
         <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.#ctor(OpenQA.Selenium.IWebElement,OpenQA.Selenium.IWebDriver)">
             <summary>
-            Ctor
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement"/> class.
             </summary>
-            <param name="element"></param>
-            <param name="driver"></param>
+            <param name="element">The element.</param>
+            <param name="driver">The driver.</param>
             <exception cref="T:OpenQA.Selenium.Support.UI.UnexpectedTagNameException">
-            Thrown if the element isn't an iframe.
+            Thrown if the tagname of the element isn't 'iframe'
+            (case-insensitive).
             </exception>
+            <exception cref="T:System.ArgumentNullException">driver</exception>
         </member>
         <member name="M:ApertureLabs.Selenium.WebElements.IFrame.IFrameElement.InFrameAction(System.Action)">
             <summary>

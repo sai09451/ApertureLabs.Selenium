@@ -9,9 +9,7 @@ using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
 using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 {
@@ -21,10 +19,10 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
         #region Fields
 
         private static WebDriverFactory WebDriverFactory;
-
-        private IPageObjectFactory pageObjectFactory;
-        private IWebDriver driver;
+        private static IPageObjectFactory pageObjectFactory;
+        private static IWebDriver driver;
         private TinyMCEComponent tinyMCE;
+
         private ToolbarComponent toolbar;
 
         #endregion
@@ -35,17 +33,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
         public static void Setup(TestContext testContext)
         {
             WebDriverFactory = new WebDriverFactory();
-        }
 
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            WebDriverFactory.Dispose();
-        }
-
-        [TestInitialize]
-        public void TestStartup()
-        {
             driver = WebDriverFactory.CreateDriver(
                 MajorWebDriver.Chrome,
                 WindowSize.DefaultDesktop);
@@ -65,7 +53,17 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
                     "TinyMCE",
                     "4.0",
                     "TinyMCE");
+        }
 
+        [ClassCleanup]
+        public static void Cleanup()
+        {
+            WebDriverFactory.Dispose();
+        }
+
+        [TestInitialize]
+        public void TestStartup()
+        {
             tinyMCE = pageObjectFactory.PrepareComponent(
                 new TinyMCEComponent(
                     By.CssSelector("textarea"),
@@ -76,9 +74,10 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
             toolbar = tinyMCE.Toolbar;
         }
 
+        [TestCleanup]
         public void TestCleanup()
         {
-            driver?.Dispose();
+            driver.Navigate().Refresh();
         }
 
         #endregion
@@ -128,6 +127,57 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 
 
             Assert.IsNotNull(formatBttn);
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void GetMenuItemAtTest()
+        {
+            // Use Write here so that clicking
+            tinyMCE.Write("Testing 'GetMenuItemAtTest()'.");
+
+            // Should click the undo button.
+            toolbar
+                .GetMenuItemAt(0)
+                .ConvertTo<ButtonGroupMenuItem>()
+                .GetMenuItemAt(0)
+                .AsElement()
+                .Click();
+
+            var content = tinyMCE.GetContent();
+
+            Assert.IsTrue(String.IsNullOrEmpty(content));
+        }
+
+        [ServerRequired]
+        [TestMethod]
+        public void GetMenuItemsTest()
+        {
+            var menuItems = toolbar.GetMenuItems();
+
+            Assert.IsTrue(menuItems.Any());
+        }
+
+        [DataTestMethod]
+        [DataRow("mce-i-alignleft", true)]
+        [DataRow("fake-class", false)]
+        [ServerRequired]
+        public void HasItemWithClass(string className, bool expected)
+        {
+            var hasItem = toolbar.HasItemWithClass(className);
+
+            Assert.AreEqual(expected, hasItem);
+        }
+
+        [DataTestMethod]
+        [DataRow("Formats", true)]
+        [DataRow("Fake", false)]
+        [ServerRequired]
+        public void HasItemWithText(string text, bool expected)
+        {
+            var hasItem = toolbar.HasItemWithText(text);
+
+            Assert.AreEqual(expected, hasItem);
         }
 
         #endregion

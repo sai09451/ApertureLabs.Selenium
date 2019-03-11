@@ -61,8 +61,10 @@ namespace ApertureLabs.Selenium.Js
         #region Constructor
 
         /// <summary>
-        /// Ctor.
+        /// Initializes a new instance of the <see cref="PromiseBody"/> class.
         /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <exception cref="ArgumentNullException">driver</exception>
         public PromiseBody(IWebDriver driver)
         {
             this.driver = driver
@@ -75,10 +77,10 @@ namespace ApertureLabs.Selenium.Js
         }
 
         /// <summary>
-        /// Ctor. Sets the PromiseBody.
+        /// Initializes a new instance of the <see cref="PromiseBody"/> class.
         /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="promiseBody"></param>
+        /// <param name="driver">The driver.</param>
+        /// <param name="promiseBody">The promise body.</param>
         public PromiseBody(IWebDriver driver, string promiseBody) : this(driver)
         {
             Script = promiseBody;
@@ -98,6 +100,18 @@ namespace ApertureLabs.Selenium.Js
             "});" +
             "setTimeout(function () {" +
                 "callback(0);" +
+            "}, 10);";
+
+        private string PromiseValueScript =>
+            "var callback = arguments[arguments.length - 1];" +
+            $"var promise = {FullPromiseObjectName}[{PromiseId}].promise;" +
+            "promise.then(function (res) {" +
+                "callback(res);" +
+            "}).catch(function (err) {" +
+                "callback(err);" +
+            "});" +
+            "setTimeout(function () {" +
+                "callback();" +
             "}, 10);";
 
         /// <summary>
@@ -428,6 +442,17 @@ namespace ApertureLabs.Selenium.Js
             promiseId = Int32.Parse(response, CultureInfo.CurrentCulture);
 
             return new JavaScriptValue(response);
+        }
+
+        public JavaScriptValue PromiseResult()
+        {
+            if (!Finished)
+                return new JavaScriptValue(default(object));
+
+            var val = javaScriptExecutor
+                .ExecuteAsyncScript(PromiseValueScript);
+
+            return new JavaScriptValue(val);
         }
 
         private void AssertJavaScriptPromiseArrayExists()

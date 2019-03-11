@@ -1,4 +1,5 @@
-﻿using ApertureLabs.Selenium.Js;
+﻿using ApertureLabs.Selenium.Attributes;
+using ApertureLabs.Selenium.Js;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Remote;
@@ -472,6 +473,33 @@ namespace ApertureLabs.Selenium.Extensions
             return driver
                 .FindElements(selector)
                 .Any(e => e.Equals(el));
+        }
+
+        /// <summary>
+        /// Sets the CSS property of the element. Should only be used when
+        /// designing the tests but should NOT be used in the actual test.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="cssPropName">Name of the CSS property.</param>
+        /// <param name="cssPropValue">The CSS property value.</param>
+        /// <returns></returns>
+        [AvoidUsing(reason: "Should only be used for designing tests, not for" +
+            "use in actual tests.")]
+        public static IWebElement SetCssProperty(this IWebElement element,
+            string cssPropName,
+            string cssPropValue)
+        {
+            var js = new JavaScript
+            {
+                Script =
+                    $"var el = arguments[0];" +
+                    $"el.style['{cssPropName}'] = '{cssPropValue}';",
+                Arguments = new[] { new JavaScriptValue(element) }
+            };
+
+            js.Execute(element.GetDriver().JavaScriptExecutor());
+
+            return element;
         }
     }
 }
