@@ -71,7 +71,7 @@ namespace ApertureLabs.Selenium.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The public member &apos;{0}&apos; isn&apos;t virtual..
+        ///   Looks up a localized string similar to The public members of IPageObjects should be virtual..
         /// </summary>
         internal static string AnalyzerMessageFormat {
             get {

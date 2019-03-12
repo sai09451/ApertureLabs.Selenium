@@ -64,15 +64,25 @@ namespace ApertureLabs.Selenium.Analyzers
         {
             var classSymbol = (INamedTypeSymbol)context.Symbol;
 
+            //var pageObjectInterfaceType = context.Compilation
+            //    .GetTypeByMetadataName("ApertureLabs.PageObjects.IPageObject");
+
+            //if (pageObjectInterfaceType == null)
+            //    return;
+
+            //var isPageObject = classSymbol
+            //    .AllInterfaces.Any(i => i.Equals(pageObjectInterfaceType));
+
             var isPageObject = classSymbol
                 .AllInterfaces.Any(i => i.Name == "IPageObject");
 
             if (!isPageObject)
                 return;
 
-            // Get all public members.
+            // Get all public members (except constructors).
             var publicSymbols = classSymbol
                 .GetMembers()
+                .Except(classSymbol.Constructors)
                 .Where(member =>
                     member.DeclaredAccessibility == Accessibility.Public)
                 .ToList();
@@ -91,7 +101,8 @@ namespace ApertureLabs.Selenium.Analyzers
             {
                 var ignore = methodSymbol.IsVirtual
                     || methodSymbol.IsOverride
-                    || methodSymbol.IsSealed;
+                    || methodSymbol.IsSealed
+                    || methodSymbol.IsStatic;
 
                 if (ignore)
                     continue;
@@ -108,7 +119,8 @@ namespace ApertureLabs.Selenium.Analyzers
             {
                 var ignore = propertySymbol.IsVirtual
                     || propertySymbol.IsSealed
-                    || propertySymbol.IsOverride;
+                    || propertySymbol.IsOverride
+                    || propertySymbol.IsStatic;
 
                 if (ignore)
                     continue;
