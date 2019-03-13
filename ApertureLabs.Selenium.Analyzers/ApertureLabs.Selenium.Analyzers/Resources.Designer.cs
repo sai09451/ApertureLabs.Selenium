@@ -62,29 +62,83 @@ namespace ApertureLabs.Selenium.Analyzers {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Classes should implement IPageObject OR IPageComponent, not both..
+        /// </summary>
+        internal static string AnalyzerDescriptionImpl {
+            get {
+                return ResourceManager.GetString("AnalyzerDescriptionImpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classes implementing IPageObject or IPageComponent should be suffixed with &apos;Page&apos; and &apos;Component&apos; respectivley..
+        /// </summary>
+        internal static string AnalyzerDescriptionSuffix {
+            get {
+                return ResourceManager.GetString("AnalyzerDescriptionSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Public members of IPageObjects should be virtual..
         /// </summary>
-        internal static string AnalyzerDescription {
+        internal static string AnalyzerDescriptionVirtual {
             get {
-                return ResourceManager.GetString("AnalyzerDescription", resourceCulture);
+                return ResourceManager.GetString("AnalyzerDescriptionVirtual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classes should implement IPageObject OR IPageComponent, not both..
+        /// </summary>
+        internal static string AnalyzerMessageFormatImpl {
+            get {
+                return ResourceManager.GetString("AnalyzerMessageFormatImpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classes implementing IPageObject or IPageComponent should be suffixed with &apos;Page&apos; and &apos;Component&apos; respectivley..
+        /// </summary>
+        internal static string AnalyzerMessageFormatSuffix {
+            get {
+                return ResourceManager.GetString("AnalyzerMessageFormatSuffix", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The public members of IPageObjects should be virtual..
         /// </summary>
-        internal static string AnalyzerMessageFormat {
+        internal static string AnalyzerMessageFormatVirtual {
             get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
+                return ResourceManager.GetString("AnalyzerMessageFormatVirtual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classes should implement IPageObject OR IPageComponent, not both..
+        /// </summary>
+        internal static string AnalyzerTitleImpl {
+            get {
+                return ResourceManager.GetString("AnalyzerTitleImpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class name isn&apos;t suffixed with &apos;Page&apos; or &apos;Component&apos;..
+        /// </summary>
+        internal static string AnalyzerTitleSuffix {
+            get {
+                return ResourceManager.GetString("AnalyzerTitleSuffix", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Public member isn&apos;t virtual.
         /// </summary>
-        internal static string AnalyzerTitle {
+        internal static string AnalyzerTitleVirtual {
             get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("AnalyzerTitleVirtual", resourceCulture);
             }
         }
     }

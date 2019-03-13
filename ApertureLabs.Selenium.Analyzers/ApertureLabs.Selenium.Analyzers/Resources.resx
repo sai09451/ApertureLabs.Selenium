@@ -117,15 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzerDescription" xml:space="preserve">
+  <data name="AnalyzerDescriptionImpl" xml:space="preserve">
+    <value>Classes should implement IPageObject OR IPageComponent, not both.</value>
+    <comment>An optional longer localizable description of the diagnostic.</comment>
+  </data>
+  <data name="AnalyzerDescriptionSuffix" xml:space="preserve">
+    <value>Classes implementing IPageObject or IPageComponent should be suffixed with 'Page' and 'Component' respectivley.</value>
+    <comment>An optional longer localizable description of the diagnostic.</comment>
+  </data>
+  <data name="AnalyzerDescriptionVirtual" xml:space="preserve">
     <value>Public members of IPageObjects should be virtual.</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
-  <data name="AnalyzerMessageFormat" xml:space="preserve">
+  <data name="AnalyzerMessageFormatImpl" xml:space="preserve">
+    <value>Classes should implement IPageObject OR IPageComponent, not both.</value>
+    <comment>The format-able message the diagnostic displays.</comment>
+  </data>
+  <data name="AnalyzerMessageFormatSuffix" xml:space="preserve">
+    <value>Classes implementing IPageObject or IPageComponent should be suffixed with 'Page' and 'Component' respectivley.</value>
+    <comment>The format-able message the diagnostic displays.</comment>
+  </data>
+  <data name="AnalyzerMessageFormatVirtual" xml:space="preserve">
     <value>The public members of IPageObjects should be virtual.</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
-  <data name="AnalyzerTitle" xml:space="preserve">
+  <data name="AnalyzerTitleImpl" xml:space="preserve">
+    <value>Classes should implement IPageObject OR IPageComponent, not both.</value>
+    <comment>The title of the diagnostic.</comment>
+  </data>
+  <data name="AnalyzerTitleSuffix" xml:space="preserve">
+    <value>Class name isn't suffixed with 'Page' or 'Component'.</value>
+    <comment>The title of the diagnostic.</comment>
+  </data>
+  <data name="AnalyzerTitleVirtual" xml:space="preserve">
     <value>Public member isn't virtual</value>
     <comment>The title of the diagnostic.</comment>
   </data>
