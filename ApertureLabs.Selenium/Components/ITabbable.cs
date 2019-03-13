@@ -59,5 +59,23 @@ namespace ApertureLabs.Selenium.Components
         /// </returns>
         bool HasTab(string tabName,
             StringComparison stringComparison = StringComparison.Ordinal);
+
+        /// <summary>
+        /// Selects the tab.
+        /// </summary>
+        /// <typeparam name="T">The type of the tab body component.</typeparam>
+        /// <param name="tabName">Name of the tab.</param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        T SelectTab<T>(string tabName,
+            StringComparison stringComparison = StringComparison.Ordinal)
+            where T : class, ILoadableComponent;
+
+        /// <summary>
+        /// Gets the valid tab body types for use with
+        /// <see cref="SelectTab{T}(string, StringComparison)"/>.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Type> GetValidTabBodyTypes();
     }
 }

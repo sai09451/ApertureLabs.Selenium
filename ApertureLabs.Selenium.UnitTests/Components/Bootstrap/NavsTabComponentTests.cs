@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ApertureLabs.Selenium.Components.Boostrap.Navs;
 using ApertureLabs.Selenium.PageObjects;
 using ApertureLabs.Selenium.UnitTests.Infrastructure;
@@ -9,6 +10,7 @@ using MockServer.PageObjects;
 using MockServer.PageObjects.Home;
 using MockServer.PageObjects.Widget;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
 {
@@ -61,6 +63,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Bootstrap
             navsTabComponent = pageObjectFactory.PrepareComponent(
                 new NavsTabComponent<WidgetPage>(
                     By.CssSelector(".container.body-content"),
+                    Array.Empty<ILoadableComponent>(),
                     driver,
                     new NavsTabComponentConfiguration(),
                     widgetPage));

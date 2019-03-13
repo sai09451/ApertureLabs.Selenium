@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageTags>ApertureLabs, Selenium</PackageTags>
-    <Version>1.0.88</Version>
+    <Version>1.0.89</Version>
     <AssemblyVersion>1.0.88.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>7.1</LangVersion>
