@@ -9,17 +9,19 @@
   <PropertyGroup>
     <PackageId>ApertureLabs.Selenium.Analyzers</PackageId>
     <PackageVersion>1.0.0.0</PackageVersion>
-    <Authors>alexc</Authors>
-    <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
-    <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>
-    <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
-    <RepositoryUrl>http://REPOSITORY_URL_HERE_OR_DELETE_THIS_LINE</RepositoryUrl>
+    <Authors>Alex Hayes</Authors>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>ApertureLabs.Selenium.Analyzers</Description>
-    <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
-    <Copyright>Copyright</Copyright>
+    <Description>Provides anaylzers and code fixes for working with the ApertureLabs.Selenium package.</Description>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <Copyright></Copyright>
     <PackageTags>ApertureLabs.Selenium.Analyzers, analyzers</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <Version>1.0.0</Version>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

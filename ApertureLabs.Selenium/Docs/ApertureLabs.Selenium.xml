@@ -325,14 +325,23 @@
             <typeparam name="T"></typeparam>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.FluidPageComponent`1" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration,`0)">
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.#ctor(OpenQA.Selenium.By,System.Collections.Generic.IEnumerable{OpenQA.Selenium.Support.UI.ILoadableComponent},OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration,`0)">
             <summary>
             Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1"/> class.
             </summary>
             <param name="selector">The selector.</param>
+            <param name="tabBodies">The tab bodies.</param>
             <param name="driver">The driver.</param>
-            <param name="configuration"></param>
+            <param name="configuration">The configuration.</param>
             <param name="parent">The parent.</param>
+            <exception cref="T:System.ArgumentNullException">
+            configuration
+            or
+            tabBodies
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            tabBodies cannot be empty.
+            </exception>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.GetTabNames">
             <summary>
@@ -383,6 +392,23 @@
             <param name="tabName">Name of the tab.</param>
             <param name="stringComparison">The string comparison.</param>
             <exception cref="T:System.ArgumentNullException">tabName</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.SelectTab``1(System.String,System.StringComparison)">
+            <summary>
+            Selects the tab.
+            </summary>
+            <typeparam name="V"></typeparam>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.GetValidTabBodyTypes">
+            <summary>
+            Gets the valid tab body types for use with
+            <see cref="M:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponent`1.SelectTab``1(System.String,System.StringComparison)" />.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Boostrap.Navs.NavsTabComponentConfiguration">
             <summary>
@@ -541,6 +567,22 @@
             <returns>
               <c>true</c> if the specified tab name exists; otherwise, <c>false</c>.
             </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.SelectTab``1(System.String,System.StringComparison)">
+            <summary>
+            Selects the tab.
+            </summary>
+            <typeparam name="T">The type of the tab body component.</typeparam>
+            <param name="tabName">Name of the tab.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.ITabbable.GetValidTabBodyTypes">
+            <summary>
+            Gets the valid tab body types for use with
+            <see cref="M:ApertureLabs.Selenium.Components.ITabbable.SelectTab``1(System.String,System.StringComparison)"/>.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent`1">
             <summary>

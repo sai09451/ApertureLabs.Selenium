@@ -64,7 +64,7 @@ namespace ApertureLabs.Selenium.PageObjects
         }
 
         /// <summary>
-        /// If overloaded don't forget to call base.Load() or make sure to
+        /// If overriding don't forget to call base.Load() or make sure to
         /// assign the WrappedElement.
         /// </summary>
         /// <returns></returns>

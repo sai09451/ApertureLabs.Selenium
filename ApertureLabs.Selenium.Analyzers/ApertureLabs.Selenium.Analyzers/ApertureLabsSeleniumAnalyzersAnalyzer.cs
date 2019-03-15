@@ -117,10 +117,10 @@ namespace ApertureLabs.Selenium.Analyzers
             SymbolAnalysisContext context)
         {
             var pageObjectInterfaceType = context.Compilation
-                .GetTypeByMetadataName("ApertureLabs.PageObjects.IPageObject");
+                .GetTypeByMetadataName("ApertureLabs.Selenium.PageObjects.IPageObject");
 
             var pageComponentInterfaceType = context.Compilation
-                .GetTypeByMetadataName("ApertureLabs.PageObjects.IPageComponent");
+                .GetTypeByMetadataName("ApertureLabs.Selenium.PageObjects.IPageComponent");
 
             return (pageObjectInterfaceType, pageComponentInterfaceType);
 
@@ -204,19 +204,16 @@ namespace ApertureLabs.Selenium.Analyzers
         {
             var classSymbol = (INamedTypeSymbol)context.Symbol;
 
-            //var (pageObjDecl, pageComDecl) = GetInterfaceTypeDefs(context);
+            var (pageObjDecl, pageComDecl) = GetInterfaceTypeDefs(context);
 
-            //if (pageObjDecl == null || pageComDecl == null)
-            //    return;
-
-            //var isPageObject = classSymbol
-            //    .AllInterfaces.Any(i => i.Equals(pageObjectInterfaceType));
+            if (pageObjDecl == null || pageComDecl == null)
+                return;
 
             var isPageObject = classSymbol
-                .AllInterfaces.Any(i => i.Name == "IPageObject");
+                .AllInterfaces.Any(i => i.Equals(pageObjDecl));
 
             var isPageComponent = classSymbol
-                .AllInterfaces.Any(i => i.Name == "IPageComponent");
+                .AllInterfaces.Any(i => i.Equals(pageComDecl));
 
             // Ignore if both IPageObject and IPageComponent.
             if (isPageObject && isPageComponent)
