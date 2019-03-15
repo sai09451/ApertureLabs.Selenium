@@ -12,7 +12,10 @@
         /// <value>
         ///   <c>true</c> if ready; otherwise, <c>false</c>.
         /// </value>
-        /// <see cref="https://www.w3.org/TR/webdriver/#dfn-readiness-state" />
+        /// <remarks>
+        /// See https://www.w3.org/TR/webdriver/#dfn-readiness-state for
+        /// additional details.
+        /// </remarks>
         public bool Ready { get; set; }
 
         /// <summary>

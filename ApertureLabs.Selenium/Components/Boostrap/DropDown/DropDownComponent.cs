@@ -97,7 +97,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.DropDown
         /// Expands the dropdown if not already expanded.
         /// </summary>
         /// <returns></returns>
-        public DropDownComponent Expand()
+        public virtual DropDownComponent Expand()
         {
             if (!IsExpanded())
                 ToggleDropDownElement.Click();
@@ -109,7 +109,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.DropDown
         /// Collapses the dropdown if not already collapsed.
         /// </summary>
         /// <returns></returns>
-        public DropDownComponent Collapse()
+        public virtual DropDownComponent Collapse()
         {
             if (IsExpanded())
                 ToggleDropDownElement.Click();
@@ -121,7 +121,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.DropDown
         /// Gets trimmed inner text of the main button.
         /// </summary>
         /// <returns></returns>
-        public string GetName()
+        public virtual string GetName()
         {
             return WrappedElement
                 .Children()
@@ -134,7 +134,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.DropDown
         /// Returns the enabled drop down elements (doesn't include dividers).
         /// </summary>
         /// <returns></returns>
-        public IReadOnlyCollection<IWebElement> GetEnabledItems()
+        public virtual IReadOnlyCollection<IWebElement> GetEnabledItems()
         {
             return EnabledItemElements;
         }
@@ -143,7 +143,7 @@ namespace ApertureLabs.Selenium.Components.Boostrap.DropDown
         /// Returns all item elements (doesn't include dividers).
         /// </summary>
         /// <returns></returns>
-        public IReadOnlyCollection<IWebElement> GetAllItems()
+        public virtual IReadOnlyCollection<IWebElement> GetAllItems()
         {
             return AllItems;
         }

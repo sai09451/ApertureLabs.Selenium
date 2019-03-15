@@ -16,6 +16,10 @@ namespace ApertureLabs.Selenium.PageObjects
     {
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasePageObject"/> class.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
         public BasePageObject(IWebDriver driver)
             : base(driver,
                   new Uri(".", UriKind.Relative),
@@ -28,7 +32,7 @@ namespace ApertureLabs.Selenium.PageObjects
 
         /// <summary>
         /// Overridden so it will always be null.
-        /// </value>
+        /// </summary>
         public override Uri BaseUri
         {
             get => null;
@@ -51,8 +55,8 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <summary>
         /// Loads the component. Overridden so it doesn't validate the
         /// <see cref="BasePageObject.Route"/>. Calling this will set the
-        /// <see cref="BasePageObject.Uri"/> and
-        /// <see cref="BasePageObject.WindowHandle"/> properties.
+        /// <see cref="IPageObject.Uri"/> and
+        /// <see cref="IPageObject.WindowHandle"/> properties.
         /// </summary>
         /// <returns>
         /// A reference to this

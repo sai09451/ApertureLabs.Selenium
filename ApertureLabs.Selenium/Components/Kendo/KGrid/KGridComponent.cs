@@ -77,12 +77,12 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// <summary>
         /// The pager used to control the grid.
         /// </summary>
-        public KPagerComponent<KGridComponent<T>> Pager { get; private set; }
+        public virtual KPagerComponent<KGridComponent<T>> Pager { get; private set; }
 
         /// <summary>
         /// Toolbar component.
         /// </summary>
-        public KToolbarComponent<KGridComponent<T>> Toolbar { get; private set; }
+        public virtual KToolbarComponent<KGridComponent<T>> Toolbar { get; private set; }
 
         #endregion
 
@@ -216,7 +216,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// </summary>
         /// <param name="row">The row.</param>
         /// <returns></returns>
-        public IWebElement GetRow(int row)
+        public virtual IWebElement GetRow(int row)
         {
             return RowElements.ElementAt(row);
         }

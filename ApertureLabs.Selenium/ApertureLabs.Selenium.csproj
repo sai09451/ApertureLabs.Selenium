@@ -9,12 +9,12 @@
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageTags>ApertureLabs, Selenium</PackageTags>
-    <Version>1.0.89</Version>
-    <AssemblyVersion>1.0.88.0</AssemblyVersion>
+    <Version>1.0.91</Version>
+    <AssemblyVersion>1.0.91.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>7.1</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>1.0.88.0</FileVersion>
+    <FileVersion>1.0.91.0</FileVersion>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <NeutralLanguage />
     <PackageReleaseNotes></PackageReleaseNotes>
@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ApertureLabs.Selenium.Analyzers" Version="1.0.0" />
+    <PackageReference Include="ApertureLabs.Selenium.Analyzers" Version="1.0.1.9" />
     <PackageReference Include="Autofac" Version="4.9.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.0" />

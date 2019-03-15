@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ApertureLabs.Selenium.Extensions;
+﻿using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ApertureLabs.Selenium.Components.JQuery.Accordian
 {
@@ -12,8 +12,8 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
     /// AccordionComponent.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="JQueryWidgetBase{T}" />
-    public class AccordionComponent<T> : JQueryWidgetBase<T>
+    /// <seealso cref="JQueryWidgetBaseComponent{T}" />
+    public class AccordionComponent<T> : JQueryWidgetBaseComponent<T>
     {
         #region Fields
 
@@ -98,7 +98,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// Gets all of the panel names.
         /// </summary>
         /// <returns></returns>
-        public IReadOnlyList<string> GetPanelNames()
+        public virtual IReadOnlyList<string> GetPanelNames()
         {
             return PanelElements
                 .Select(e => e.TextHelper().InnerText)
@@ -111,7 +111,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// <param name="panelName">Name of the panel.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        public IWebElement SelectPanel(string panelName,
+        public virtual IWebElement SelectPanel(string panelName,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
             var isOpen = String.Equals(
@@ -155,7 +155,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// <summary>
         /// Closes the active panel.
         /// </summary>
-        public void ClosePanel()
+        public virtual void ClosePanel()
         {
             if (!accordianComponentOptions.Collaspable)
             {
@@ -191,7 +191,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// <returns>
         ///   <c>true</c> if [has open panel]; otherwise, <c>false</c>.
         /// </returns>
-        public bool HasOpenPanel()
+        public virtual bool HasOpenPanel()
         {
             return ActivePanelElement != null;
         }
@@ -200,7 +200,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// Gets the name of the active panel.
         /// </summary>
         /// <returns></returns>
-        public string GetActivePanelName()
+        public virtual string GetActivePanelName()
         {
             return ActivePanelElement.TextHelper().InnerText;
         }
@@ -209,7 +209,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.Accordian
         /// Gets the active panels content element.
         /// </summary>
         /// <returns></returns>
-        public IWebElement GetActivePanelContentElement()
+        public virtual IWebElement GetActivePanelContentElement()
         {
             return !HasOpenPanel() ? null : ActiveContentElement;
         }

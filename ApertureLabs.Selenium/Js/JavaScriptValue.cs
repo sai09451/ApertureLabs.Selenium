@@ -341,7 +341,7 @@ namespace ApertureLabs.Selenium.Js
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="RemoteWebElement[]"/> to <see cref="JavaScriptValue"/>.
+        /// Performs an implicit conversion from RemoteWebElement[] to <see cref="JavaScriptValue"/>.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>
@@ -365,7 +365,7 @@ namespace ApertureLabs.Selenium.Js
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String[]"/> to <see cref="JavaScriptValue"/>.
+        /// Performs an implicit conversion from string[] to <see cref="JavaScriptValue"/>.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>
@@ -389,7 +389,7 @@ namespace ApertureLabs.Selenium.Js
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.Int64[]"/> to <see cref="JavaScriptValue"/>.
+        /// Performs an implicit conversion from long[] to <see cref="JavaScriptValue"/>.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>
@@ -413,7 +413,7 @@ namespace ApertureLabs.Selenium.Js
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.Boolean[]"/> to <see cref="JavaScriptValue"/>.
+        /// Performs an implicit conversion from a bool[] to <see cref="JavaScriptValue"/>.
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <returns>
@@ -422,6 +422,20 @@ namespace ApertureLabs.Selenium.Js
         public static implicit operator JavaScriptValue(bool[] arguments)
         {
             return new JavaScriptValue(arguments);
+        }
+
+        /// <summary>
+        /// Converts to javascriptvalue. Exists solely to provide 
+        /// a static method as an alternative to the implicit conversions. Use
+        /// the <see cref="JavaScriptValue"/> constructor instead.
+        /// </summary>
+        /// <param name="argument">The argument.</param>
+        /// <returns></returns>
+        [Obsolete("Use the ctor instead of this. Exists solely to provide " +
+            "a static method as an alternative to the implicit conversions.")]
+        public static JavaScriptValue ToJavaScriptValue(object argument)
+        {
+            return new JavaScriptValue(argument);
         }
 
         #endregion

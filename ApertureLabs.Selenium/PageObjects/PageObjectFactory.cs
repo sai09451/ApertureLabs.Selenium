@@ -278,8 +278,8 @@ namespace ApertureLabs.Selenium.PageObjects
 
         private IOrderedModule InstantiateModule(Type type)
         {
-            var ctor = type.GetMatchingConstructor(new Type[0]);
-            var instance = ctor.Invoke(new object[0]);
+            var ctor = type.GetMatchingConstructor(Array.Empty<Type>());
+            var instance = ctor.Invoke(Array.Empty<object>());
 
             if (instance is IOrderedModule orderedModule)
             {

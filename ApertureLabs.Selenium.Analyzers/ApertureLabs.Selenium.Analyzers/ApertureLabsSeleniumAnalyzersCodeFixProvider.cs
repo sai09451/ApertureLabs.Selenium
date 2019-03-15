@@ -20,6 +20,7 @@ namespace ApertureLabs.Selenium.Analyzers
     {
         private const string virtualTitle = "Make member virtual";
         private const string suffixTitle = "Append suffix to class name";
+        private const string explicitSuffixTitle = "Append explicit suffix to class name";
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -49,7 +50,8 @@ namespace ApertureLabs.Selenium.Analyzers
             switch (diagnostic.Id)
             {
                 case ApertureLabsSeleniumAnalyzersAnalyzer.DiagnosticIdSuffixRule:
-                    RegisterSuffixCodeFix(context, root, diagnostic, diagnosticSpan);
+                    RegisterSuffixCodeFix(context, root, diagnostic, diagnosticSpan, false);
+                    RegisterSuffixCodeFix(context, root, diagnostic, diagnosticSpan, true);
                     break;
                 case ApertureLabsSeleniumAnalyzersAnalyzer.DiagnosticIdVirtualRule:
                     RegisterVirtualCodeFix(context, root, diagnostic, diagnosticSpan);
@@ -97,7 +99,8 @@ namespace ApertureLabs.Selenium.Analyzers
         private void RegisterSuffixCodeFix(CodeFixContext context,
             SyntaxNode root,
             Diagnostic diagnostic,
-            TextSpan diagnosticSpan)
+            TextSpan diagnosticSpan,
+            bool useExplicitSuffix)
         {
             var declaration = root.FindToken(diagnosticSpan.Start)
                 .Parent
@@ -108,28 +111,42 @@ namespace ApertureLabs.Selenium.Analyzers
             if (declaration == null)
                 return;
 
+            var title = useExplicitSuffix ? explicitSuffixTitle : suffixTitle;
             context.RegisterCodeFix(
                 CodeAction.Create(
-                    title: suffixTitle,
+                    title: title,
                     createChangedSolution: c => AppendSuffixAsync(
                         diagnostic,
                         context.Document,
                         declaration,
+                        useExplicitSuffix,
                         c),
-                    equivalenceKey: suffixTitle),
+                    equivalenceKey: title),
                 diagnostic);
         }
 
         private async Task<Solution> AppendSuffixAsync(Diagnostic diagnostic,
             Document document,
             TypeDeclarationSyntax typeDecl,
+            bool useExplicitSuffix,
             CancellationToken cancellationToken)
         {
             // Compute new name.
             var identifierToken = typeDecl.Identifier;
-            var newName = diagnostic.Properties.ContainsKey("suffix")
-                ? identifierToken.Text + diagnostic.Properties["suffix"]
-                : identifierToken.Text + "Component";
+            var newName = default(string);
+
+            if (useExplicitSuffix)
+            {
+                newName = diagnostic.Properties.ContainsKey("explicitSuffix")
+                    ? identifierToken.Text + diagnostic.Properties["explicitSuffix"]
+                    : identifierToken.Text + "Component";
+            }
+            else
+            {
+                newName = diagnostic.Properties.ContainsKey("suffix")
+                    ? identifierToken.Text + diagnostic.Properties["suffix"]
+                    : identifierToken.Text + "PageComponent";
+            }
 
             // Get the symbol representing the type to be renamed.
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken);

@@ -90,7 +90,8 @@ namespace ApertureLabs.Selenium.Analyzers
         {
             get
             {
-                return ImmutableArray.Create(VirtualRule,
+                return ImmutableArray.Create(
+                    VirtualRule,
                     SuffixRule,
                     ImplRule);
             }
@@ -113,17 +114,41 @@ namespace ApertureLabs.Selenium.Analyzers
                 SymbolKind.NamedType);
         }
 
-        private static (INamedTypeSymbol, INamedTypeSymbol) GetInterfaceTypeDefs(
-            SymbolAnalysisContext context)
+        private static bool GetInterfaceTypeDefs(
+            INamedTypeSymbol classSymbol,
+            SymbolAnalysisContext context,
+            out bool isPageObject,
+            out bool isPageComponent)
         {
-            var pageObjectInterfaceType = context.Compilation
+            isPageObject = false;
+            isPageComponent = false;
+
+            var pageObjectInterfaceType = context
+                .Compilation
                 .GetTypeByMetadataName("ApertureLabs.Selenium.PageObjects.IPageObject");
 
-            var pageComponentInterfaceType = context.Compilation
+            var pageComponentInterfaceType = context
+                .Compilation
                 .GetTypeByMetadataName("ApertureLabs.Selenium.PageObjects.IPageComponent");
 
-            return (pageObjectInterfaceType, pageComponentInterfaceType);
+            if (pageObjectInterfaceType == null || pageComponentInterfaceType == null)
+                return false;
 
+            if (pageObjectInterfaceType != null)
+            {
+                isPageObject = classSymbol
+                    .AllInterfaces
+                    .Any(i => i.Equals(pageObjectInterfaceType));
+            }
+
+            if (pageComponentInterfaceType != null)
+            {
+                isPageComponent = classSymbol
+                    .AllInterfaces
+                    .Any(i => i.Equals(pageComponentInterfaceType));
+            }
+
+            return true;
         }
 
         private static void AnalyzePublicMembers(
@@ -131,18 +156,24 @@ namespace ApertureLabs.Selenium.Analyzers
         {
             var classSymbol = (INamedTypeSymbol)context.Symbol;
 
-            //var (pageObjDecl, pageComDecl) = GetInterfaceTypeDefs(context);
+            // Ignore if it's not a class or not a public class.
+            if (classSymbol.TypeKind != TypeKind.Class
+                || classSymbol.DeclaredAccessibility != Accessibility.Public)
+            {
+                return;
+            }
 
-            //if (pageObjDecl == null || pageComDecl == null)
-            //    return;
+            var usingPageObjectLib =  GetInterfaceTypeDefs(
+                classSymbol,
+                context,
+                out var isPageObj,
+                out var isPageCom);
 
-            //var isPageObject = classSymbol
-            //    .AllInterfaces.Any(i => i.Equals(pageObjectInterfaceType));
+            if (!usingPageObjectLib)
+                return;
 
-            var isPageObject = classSymbol
-                .AllInterfaces.Any(i => i.Name == "IPageObject");
-
-            if (!isPageObject)
+            // Ignore if not an IPageObject or IPageComponent.
+            if (!isPageObj && !isPageCom)
                 return;
 
             // Get all public members (except constructors).
@@ -163,12 +194,25 @@ namespace ApertureLabs.Selenium.Analyzers
                 .Where(member => member is IPropertySymbol)
                 .Cast<IPropertySymbol>();
 
+            // Ignore the IDisposable.Dispose methods. That should be sealed.
+            var disposeDecl = context.Compilation
+                .GetTypeByMetadataName("System.IDisposable");
+
+            var disposeMethodDecl = disposeDecl
+                .GetMembers("Dispose")
+                .Cast<IMethodSymbol>()
+                .First();
+
+            var disposeMethodImpl = classSymbol
+                .FindImplementationForInterfaceMember(disposeMethodDecl);
+
             foreach (var methodSymbol in methodSymbols)
             {
                 var ignore = methodSymbol.IsVirtual
                     || methodSymbol.IsOverride
                     || methodSymbol.IsSealed
-                    || methodSymbol.IsStatic;
+                    || methodSymbol.IsStatic
+                    || methodSymbol.Equals(disposeMethodImpl);
 
                 if (ignore)
                     continue;
@@ -203,25 +247,22 @@ namespace ApertureLabs.Selenium.Analyzers
         private static void AnalyzeNameSuffixes(SymbolAnalysisContext context)
         {
             var classSymbol = (INamedTypeSymbol)context.Symbol;
+            var usingPageObjectLib = GetInterfaceTypeDefs(
+                classSymbol,
+                context,
+                out var isPageObj,
+                out var isPageCom);
 
-            var (pageObjDecl, pageComDecl) = GetInterfaceTypeDefs(context);
-
-            if (pageObjDecl == null || pageComDecl == null)
+            if (!usingPageObjectLib)
                 return;
-
-            var isPageObject = classSymbol
-                .AllInterfaces.Any(i => i.Equals(pageObjDecl));
-
-            var isPageComponent = classSymbol
-                .AllInterfaces.Any(i => i.Equals(pageComDecl));
 
             // Ignore if both IPageObject and IPageComponent.
-            if (isPageObject && isPageComponent)
+            if (isPageObj && isPageCom)
                 return;
 
-            if (isPageObject)
+            if (isPageObj)
             {
-                if (!classSymbol.Name.EndsWith("Page"))
+                if (!classSymbol.Name.EndsWith("Page") && !classSymbol.Name.EndsWith("PageObject"))
                 {
                     var diagnostic = Diagnostic.Create(
                         descriptor: SuffixRule,
@@ -229,16 +270,17 @@ namespace ApertureLabs.Selenium.Analyzers
                         properties: ImmutableDictionary.CreateRange(
                             new[]
                             {
-                                new KeyValuePair<string, string>("suffix", "Page")
+                                new KeyValuePair<string, string>("suffix", "Page"),
+                                new KeyValuePair<string, string>("explicitSuffix", "PageObject")
                             }),
                         messageArgs: classSymbol.Name);
 
                     context.ReportDiagnostic(diagnostic);
                 }
             }
-            else if (isPageComponent)
+            else if (isPageCom)
             {
-                if (!classSymbol.Name.EndsWith("Component"))
+                if (!classSymbol.Name.EndsWith("Component") && !classSymbol.Name.EndsWith("PageComponent"))
                 {
                     var diagnostic = Diagnostic.Create(
                         descriptor: SuffixRule,
@@ -246,7 +288,8 @@ namespace ApertureLabs.Selenium.Analyzers
                         properties: ImmutableDictionary.CreateRange(
                             new[]
                             {
-                                new KeyValuePair<string, string>("suffix", "Component")
+                                new KeyValuePair<string, string>("suffix", "Component"),
+                                new KeyValuePair<string, string>("explicitSuffix", "PageComponent")
                             }),
                         messageArgs: classSymbol.Name);
 
@@ -257,22 +300,17 @@ namespace ApertureLabs.Selenium.Analyzers
 
         private static void AnalyzeInterfaceImpls(SymbolAnalysisContext context)
         {
-            //var (pageObjDecl, pageComDecl) = GetInterfaceTypeDefs(context);
-
-            //if (pageObjDecl == null || pageComDecl == null)
-            //    return;
-
-            //var isPageObject = classSymbol
-            //    .AllInterfaces.Any(i => i.Equals(pageObjectInterfaceType));
-
             var classSymbol = (INamedTypeSymbol)context.Symbol;
-            var isPageObject = classSymbol
-                .AllInterfaces.Any(i => i.Name == "IPageObject");
+            var usingPageObjectLib = GetInterfaceTypeDefs(
+                classSymbol,
+                context,
+                out var isPageObj,
+                out var isPageCom);
 
-            var isPageComponent = classSymbol
-                .AllInterfaces.Any(i => i.Name == "IPageComponent");
+            if (!usingPageObjectLib)
+                return;
 
-            if (isPageObject && isPageComponent)
+            if (isPageObj && isPageCom)
             {
                 var diagnostic = Diagnostic.Create(
                 ImplRule,

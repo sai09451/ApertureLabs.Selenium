@@ -113,7 +113,7 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <param name="pageObject">The page object.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">pageObject</exception>
-        public bool Equals(IPageObject pageObject)
+        public virtual bool Equals(IPageObject pageObject)
         {
             return GetHashCode() == (pageObject?.GetHashCode() ?? 0);
         }

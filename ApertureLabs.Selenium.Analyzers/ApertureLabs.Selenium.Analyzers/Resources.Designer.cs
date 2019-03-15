@@ -71,7 +71,7 @@ namespace ApertureLabs.Selenium.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Classes implementing IPageObject or IPageComponent should be suffixed with &apos;Page&apos; and &apos;Component&apos; respectivley..
+        ///   Looks up a localized string similar to Classes implementing IPageObject or IPageComponent should be suffixed with &apos;Page&apos; and &apos;Component&apos; respectively..
         /// </summary>
         internal static string AnalyzerDescriptionSuffix {
             get {
@@ -80,7 +80,7 @@ namespace ApertureLabs.Selenium.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Public members of IPageObjects should be virtual..
+        ///   Looks up a localized string similar to Public members of IPageObjects and IPageComponents should be virtual..
         /// </summary>
         internal static string AnalyzerDescriptionVirtual {
             get {
@@ -98,7 +98,7 @@ namespace ApertureLabs.Selenium.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Classes implementing IPageObject or IPageComponent should be suffixed with &apos;Page&apos; and &apos;Component&apos; respectivley..
+        ///   Looks up a localized string similar to Classes implementing IPageObject or IPageComponent should be suffixed with &apos;Page&apos; and &apos;Component&apos; respectively..
         /// </summary>
         internal static string AnalyzerMessageFormatSuffix {
             get {
@@ -107,7 +107,7 @@ namespace ApertureLabs.Selenium.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The public members of IPageObjects should be virtual..
+        ///   Looks up a localized string similar to The public members of IPageObjects and IPageComponents should be virtual..
         /// </summary>
         internal static string AnalyzerMessageFormatVirtual {
             get {

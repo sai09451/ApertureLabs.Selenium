@@ -17,10 +17,10 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
             AnimationsEnabled = true;
             AnimationSelectors = new[] { By.CssSelector(".collapsing") };
             CollapsableContainerSelector = null;
-            CloseSelectors = new By[0];
+            CloseSelectors = Array.Empty<By>();
             IsOpenSelector = By.CssSelector(".collapse.show");
-            OpenSelectors = new By[0];
-            ToggleSelectors = new By[0];
+            OpenSelectors = Array.Empty<By>();
+            ToggleSelectors = Array.Empty<By>();
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace ApertureLabs.Selenium.Components.Boostrap.Collapsable
             ToggleSelectors = toggleSelectors
                 ?? throw new ArgumentNullException(nameof(toggleSelectors));
 
-            OpenSelectors = new By[0];
-            CloseSelectors = new By[0];
+            OpenSelectors = Array.Empty<By>();
+            CloseSelectors = Array.Empty<By>();
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ namespace MockServer.PageObjects.Home
         private IReadOnlyList<IWebElement> FrameworkElements => WrappedDriver
             .FindElements(FrameWorkSelector);
 
-        public HomePage GoToHomePage()
+        public virtual HomePage GoToHomePage()
         {
             return basePage.GoToHomePage();
         }
@@ -58,7 +58,7 @@ namespace MockServer.PageObjects.Home
 
         #region Methods
 
-        public WidgetPage GoToWidget(string frameworkName,
+        public virtual WidgetPage GoToWidget(string frameworkName,
             string version,
             string widget)
         {

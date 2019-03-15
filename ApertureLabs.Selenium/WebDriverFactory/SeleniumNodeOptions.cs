@@ -81,7 +81,10 @@ namespace ApertureLabs.Selenium
         /// browserName=firefox,platform=linux -capabilities
         /// browserName = chrome, platform = linux
         /// </example>
-        /// <see cref="https://github.com/SeleniumHQ/selenium/blob/a61cc22fd053ea827cf39aa4065ae4912bb6af2a/java/server/src/org/openqa/grid/common/defaults/DefaultNodeWebDriver.json"/>
+        /// <remarks>
+        /// See https://github.com/SeleniumHQ/selenium/blob/a61cc22fd053ea827cf39aa4065ae4912bb6af2a/java/server/src/org/openqa/grid/common/defaults/DefaultNodeWebDriver.json
+        /// for more details.
+        /// </remarks>
         public IEnumerable<IDictionary<string, string>> Capabilities { get; set; }
 
         /// <summary>

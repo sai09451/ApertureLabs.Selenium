@@ -65,7 +65,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public MenuItem GetItemByClass(string className,
+        public virtual MenuItemComponent GetItemByClass(string className,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
             var menuItemEl = ItemElements.FirstOrDefault(el =>
@@ -86,7 +86,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             var cssSelector = WrappedDriver.GetCssSelector(menuItemEl);
 
             return pageObjectFactory.PrepareComponent(
-                new MenuItem(
+                new MenuItemComponent(
                     cssSelector,
                     pageObjectFactory,
                     WrappedDriver));
@@ -100,9 +100,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="className">Name of the class.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        public T GetItemByClass<T>(string className,
+        public virtual T GetItemByClass<T>(string className,
             StringComparison stringComparison = StringComparison.Ordinal)
-            where T : MenuItem
+            where T : MenuItemComponent
         {
             var item = GetItemByClass(className, stringComparison);
 
@@ -116,7 +116,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public MenuItem GetItemByText(string itemName,
+        public virtual MenuItemComponent GetItemByText(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
             var menuItemEl = ItemElements.FirstOrDefault(el =>
@@ -134,7 +134,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             var cssSelector = WrappedDriver.GetCssSelector(menuItemEl);
 
             return pageObjectFactory.PrepareComponent(
-                new MenuItem(
+                new MenuItemComponent(
                     cssSelector,
                     pageObjectFactory,
                     WrappedDriver));
@@ -148,9 +148,9 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="itemName">Name of the item.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        public T GetItemByText<T>(string itemName,
+        public virtual T GetItemByText<T>(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
-            where T : MenuItem
+            where T : MenuItemComponent
         {
             var item = GetItemByText(itemName, stringComparison);
 
@@ -163,14 +163,14 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="index">The index.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public MenuItem GetMenuItemAt(int index)
+        public virtual MenuItemComponent GetMenuItemAt(int index)
         {
             var cssSelector = WrappedDriver.GetCssSelector(
                 ItemElements.ElementAt(
                     index));
 
             var menuItem = pageObjectFactory.PrepareComponent(
-                new MenuItem(
+                new MenuItemComponent(
                     cssSelector,
                     pageObjectFactory,
                     WrappedDriver));
@@ -183,11 +183,11 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IReadOnlyCollection<MenuItem> GetMenuItems()
+        public virtual IReadOnlyCollection<MenuItemComponent> GetMenuItems()
         {
             var menuItems = ItemElements
                 .Select(e => pageObjectFactory.PrepareComponent(
-                    new MenuItem(
+                    new MenuItemComponent(
                         WrappedDriver.GetCssSelector(e),
                         pageObjectFactory,
                         WrappedDriver)))
@@ -205,7 +205,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <returns>
         /// <c>true</c> if [has item by class] [the specified class name]; otherwise, <c>false</c>.
         /// </returns>
-        public bool HasItemWithClass(string className,
+        public virtual bool HasItemWithClass(string className,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
             var menuItemEl = ItemElements.FirstOrDefault(el =>
@@ -232,7 +232,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <c>true</c> if the specified item name has item; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="NotImplementedException"></exception>
-        public bool HasItemWithText(string itemName,
+        public virtual bool HasItemWithText(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
             var menuItemEl = ItemElements.FirstOrDefault(el =>

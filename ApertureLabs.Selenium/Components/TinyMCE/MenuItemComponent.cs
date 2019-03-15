@@ -10,7 +10,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
     /// Menu item of a TinyMCEComponent.
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.PageComponent" />
-    public class MenuItem : PageComponent
+    public class MenuItemComponent : PageComponent
     {
         #region Fields
 
@@ -28,12 +28,12 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MenuItem"/> class.
+        /// Initializes a new instance of the <see cref="MenuItemComponent"/> class.
         /// </summary>
         /// <param name="selector">The selector.</param>
         /// <param name="pageObjectFactory">The page object factory.</param>
         /// <param name="driver">The driver.</param>
-        public MenuItem(
+        public MenuItemComponent(
             By selector,
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver)
@@ -57,7 +57,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <value>
         ///   <c>true</c> if this instance is drop down; otherwise, <c>false</c>.
         /// </value>
-        public bool IsDropDown => CaretElement != null;
+        public virtual bool IsDropDown => CaretElement != null;
 
         /// <summary>
         /// Gets a value indicating whether this instance is button group.
@@ -65,7 +65,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <value>
         ///   <c>true</c> if this instance is button group; otherwise, <c>false</c>.
         /// </value>
-        public bool IsButtonGroup => WrappedElement.Classes().Contains("mce-btn-group");
+        public virtual bool IsButtonGroup => WrappedElement.Classes().Contains("mce-btn-group");
 
         /// <summary>
         /// Gets a value indicating whether this instance has title.
@@ -73,7 +73,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <value>
         ///   <c>true</c> if this instance has title; otherwise, <c>false</c>.
         /// </value>
-        public bool HasTitle => TextElement?.Displayed ?? false;
+        public virtual bool HasTitle => TextElement?.Displayed ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance has icon.
@@ -81,7 +81,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <value>
         ///   <c>true</c> if this instance has icon; otherwise, <c>false</c>.
         /// </value>
-        public bool HasIcon => !IconElement?.Classes().Contains("mce-none") ?? false;
+        public virtual bool HasIcon => !IconElement?.Classes().Contains("mce-none") ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance has shortcut.
@@ -89,7 +89,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <value>
         ///   <c>true</c> if this instance has shortcut; otherwise, <c>false</c>.
         /// </value>
-        public bool HasShortcut => ShortCutElement?.Displayed ?? false;
+        public virtual bool HasShortcut => ShortCutElement?.Displayed ?? false;
 
         #region Elements
 
@@ -130,28 +130,28 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual T ConvertTo<T>() where T : MenuItem
+        public virtual T ConvertTo<T>() where T : MenuItemComponent
         {
             var convertToType = typeof(T);
             var result = default(T);
 
-            if (convertToType == typeof(DropDownMenuItem))
+            if (convertToType == typeof(DropDownMenuItemComponent))
             {
                 if (IsDropDown)
                 {
                     result = PageObjectFactory.PrepareComponent(
-                        new DropDownMenuItem(
+                        new DropDownMenuItemComponent(
                             By,
                             PageObjectFactory,
                             WrappedDriver)) as T;
                 }
             }
-            else if (convertToType == typeof(ButtonGroupMenuItem))
+            else if (convertToType == typeof(ButtonGroupMenuItemComponent))
             {
                 if (IsButtonGroup)
                 {
                     result = PageObjectFactory.PrepareComponent(
-                        new ButtonGroupMenuItem(
+                        new ButtonGroupMenuItemComponent(
                             By,
                             PageObjectFactory,
                             WrappedDriver)) as T;
@@ -168,7 +168,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Determines whether this instance is displayed.
         /// </summary>
-        public bool IsDisplayed()
+        public virtual bool IsDisplayed()
         {
             return WrappedElement.Displayed;
         }
@@ -177,7 +177,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// Returns the WrappedElement.
         /// </summary>
         /// <returns></returns>
-        public IWebElement AsElement()
+        public virtual IWebElement AsElement()
         {
             return WrappedElement;
         }

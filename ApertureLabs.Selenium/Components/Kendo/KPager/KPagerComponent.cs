@@ -87,35 +87,35 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// <summary>
         /// Returns true if on the first page button is disabled.
         /// </summary>
-        public bool IsOnFirstPage => FirstPageElement
+        public virtual bool IsOnFirstPage => FirstPageElement
             .Classes()
             .Contains("k-state-disabled");
 
         /// <summary>
         /// Returns false if the previous page button is disabled.
         /// </summary>
-        public bool HasPreviousPage => !PrevPageElement
+        public virtual bool HasPreviousPage => !PrevPageElement
             .Classes()
             .Contains("k-state-disabled");
 
         /// <summary>
         /// Returns false if the next page button is disabled.
         /// </summary>
-        public bool HasNextPage => !NextPageElement
+        public virtual bool HasNextPage => !NextPageElement
             .Classes()
             .Contains("k-state-disabled");
 
         /// <summary>
         /// Returns true if the last page button is disabled.
         /// </summary>
-        public bool IsOnLastPage => LastPageElement
+        public virtual bool IsOnLastPage => LastPageElement
             .Classes()
             .Contains("k-state-disabled");
 
         /// <summary>
         /// Used to determine if the current page range total items are displayed.
         /// </summary>
-        public bool HasPageInfo => WrappedElement
+        public virtual bool HasPageInfo => WrappedElement
             .FindElements(PagerInfoSelector)
             .Any();
 
@@ -209,7 +209,7 @@ namespace ApertureLabs.Selenium.Components.Kendo.KPager
         /// Goes to the first page if available.
         /// </summary>
         /// <returns></returns>
-        public KPagerComponent<T> FirstPage()
+        public virtual KPagerComponent<T> FirstPage()
         {
             if (!IsOnFirstPage)
             {

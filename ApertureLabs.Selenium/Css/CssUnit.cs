@@ -3,7 +3,9 @@
     /// <summary>
     /// Represents a css unit of measurement.
     /// </summary>
-    /// <seealso cref="https://drafts.csswg.org/css-values-4"/>
+    /// <remarks>
+    /// View https://drafts.csswg.org/css-values-4 for more details.
+    /// </remarks>
     public enum CssUnit
     {
         /// <summary>

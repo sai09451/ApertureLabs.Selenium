@@ -19,7 +19,10 @@ namespace ApertureLabs.Selenium.WebElements.Inputs
         public RadioElementSet(IEnumerable<IWebElement> radioButtons)
         {
             if (!radioButtons.Any())
-                throw new ArgumentOutOfRangeException("Argument 'radioButtons' contained no elements.");
+            {
+                throw new ArgumentException($"{nameof(radioButtons)} " +
+                    $"contained no elements.");
+            }
 
             // Cast to input elements.
             var asRadioElements = radioButtons.Select(r => new RadioElement(r));

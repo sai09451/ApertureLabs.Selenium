@@ -64,7 +64,7 @@ namespace ApertureLabs.Selenium
         {
             var handleCount = GetTabHandles().Count;
             WrappedDriver.CreateActions()
-                .SendKeys(WrappedDriver.Select("body").First(), Keys.LeftControl + "t")
+                .SendKeys(WrappedDriver.Select("body")[0], Keys.LeftControl + "t")
                 .Build()
                 .Perform();
 
@@ -89,7 +89,7 @@ namespace ApertureLabs.Selenium
         {
             WrappedDriver.CreateActions()
                 .SendKeys(
-                    WrappedDriver.Select("body").First(),
+                    WrappedDriver.Select("body")[0],
                     Keys.LeftControl + Keys.Tab)
                 .Build()
                 .Perform();
@@ -102,7 +102,7 @@ namespace ApertureLabs.Selenium
         {
             WrappedDriver.CreateActions()
                 .SendKeys(
-                    WrappedDriver.Select("body").First(),
+                    WrappedDriver.Select("body")[0],
                     Keys.LeftControl + Keys.LeftShift + Keys.Tab)
                 .Build()
                 .Perform();

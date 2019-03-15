@@ -62,22 +62,22 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Gets the integration mode.
         /// </summary>
-        public IntegrationMode IntegrationMode { get; private set; }
+        public virtual IntegrationMode IntegrationMode { get; private set; }
 
         /// <summary>
         /// Used to manipulate the menu area. Null if no menu bar.
         /// </summary>
-        public MenuComponent Menu { get; protected set; }
+        public virtual MenuComponent Menu { get; protected set; }
 
         /// <summary>
         /// Used to manipulate the toolbar. Null if no toolbar.
         /// </summary>
-        public ToolbarComponent Toolbar { get; protected set; }
+        public virtual ToolbarComponent Toolbar { get; protected set; }
 
         /// <summary>
         /// Used to manipulate the statusbar. Null if no status bar.
         /// </summary>
-        public StatusbarComponent Statusbar { get; protected set; }
+        public virtual StatusbarComponent Statusbar { get; protected set; }
 
         #region Elements
 

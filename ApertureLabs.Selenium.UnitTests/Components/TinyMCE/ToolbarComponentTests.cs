@@ -100,7 +100,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 
             var bttnGroup = toolbar
                 .GetItemByClass(className)
-                .ConvertTo<ButtonGroupMenuItem>();
+                .ConvertTo<ButtonGroupMenuItemComponent>();
 
             var btn = bttnGroup.GetItemByClass(className);
             btn.WrappedElement.Click();
@@ -117,10 +117,10 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 
             var formatBttn = toolbar
                 .GetItemByText("Formats")
-                .ConvertTo<DropDownMenuItem>();
+                .ConvertTo<DropDownMenuItemComponent>();
 
             formatBttn
-                .SelectOption<DropDownMenuItem>("Headings")
+                .SelectOption<DropDownMenuItemComponent>("Headings")
                 .SelectOption("Heading 1")
                 .AsElement()
                 .Click();
@@ -139,7 +139,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
             // Should click the undo button.
             toolbar
                 .GetMenuItemAt(0)
-                .ConvertTo<ButtonGroupMenuItem>()
+                .ConvertTo<ButtonGroupMenuItemComponent>()
                 .GetMenuItemAt(0)
                 .AsElement()
                 .Click();

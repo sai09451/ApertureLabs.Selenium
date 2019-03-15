@@ -10,7 +10,7 @@ namespace ApertureLabs.Selenium.Components.JQuery
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="FluidPageComponent{T}"/>
-    public abstract class JQueryWidgetBase<T> : FluidPageComponent<T>
+    public abstract class JQueryWidgetBaseComponent<T> : FluidPageComponent<T>
     {
         #region Fields
 
@@ -19,13 +19,13 @@ namespace ApertureLabs.Selenium.Components.JQuery
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JQueryWidgetBase{T}"/>
+        /// Initializes a new instance of the <see cref="JQueryWidgetBaseComponent{T}"/>
         /// class.
         /// </summary>
         /// <param name="driver">The driver.</param>
         /// <param name="selector">The selector.</param>
         /// <param name="parent"></param>
-        public JQueryWidgetBase(
+        public JQueryWidgetBaseComponent(
             By selector,
             IWebDriver driver,
             T parent)

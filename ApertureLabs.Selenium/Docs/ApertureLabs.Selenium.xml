@@ -22,6 +22,14 @@
             </summary>
             <param name="reason">The reason.</param>
         </member>
+        <member name="P:ApertureLabs.Selenium.Attributes.AvoidUsingAttribute.Reason">
+            <summary>
+            Gets the reason.
+            </summary>
+            <value>
+            The reason.
+            </value>
+        </member>
         <member name="T:ApertureLabs.Selenium.ByAll">
             <summary>
             A version of by that selects element(s) that match all of the
@@ -281,7 +289,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Boostrap.DropDown.DropDownComponent.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -589,7 +597,7 @@
             AccordionComponent.
             </summary>
             <typeparam name="T"></typeparam>
-            <seealso cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase`1" />
+            <seealso cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent`1" />
         </member>
         <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent`1.#ctor(ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponentOptions,OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver,`0)">
             <summary>
@@ -603,7 +611,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.JQuery.Accordian.AccordionComponent`1.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -713,7 +721,7 @@
             DatePickerComponent.
             </summary>
             <typeparam name="T"></typeparam>
-            <seealso cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase`1" />
+            <seealso cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent`1" />
         </member>
         <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent`1.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponentOptions,OpenQA.Selenium.IWebDriver,`0)">
             <summary>
@@ -739,7 +747,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.JQuery.DatePicker.DatePickerComponent`1.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -814,23 +822,23 @@
             The date format.
             </value>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase`1">
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent`1">
             <summary>
             Base class for JQuery Widgets.
             </summary>
             <typeparam name="T"></typeparam>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.FluidPageComponent`1"/>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase`1.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,`0)">
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent`1.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,`0)">
             <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase`1"/>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent`1"/>
             class.
             </summary>
             <param name="driver">The driver.</param>
             <param name="selector">The selector.</param>
             <param name="parent"></param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase`1.WaitForInitialization(System.String,System.TimeSpan)">
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent`1.WaitForInitialization(System.String,System.TimeSpan)">
             <summary>
             Waits for the <c>dataName</c> to be defined on the
             $(WrappedElement).data() object. Assumes that <c>WrappedElement</c>
@@ -840,6 +848,96 @@
             Name of the property on the data object.
             </param>
             <param name="timeout">The timeout.</param>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1">
+            <summary>
+            Represents the jQuery tagEditor widget.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <remarks>
+            See https://goodies.pixabay.com/jquery/tag-editor/demo.html for more
+            information.
+            </remarks>
+            <seealso cref="T:ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent`1" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,`0,ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1"/> class.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="driver">The driver.</param>
+            <param name="parent">The parent.</param>
+            <param name="tagEditorConfiguration">The tag editor configuration.</param>
+            <exception cref="T:System.ArgumentNullException">tagEditorConfiguration</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1.Load">
+            <summary>
+            If overriding don't forget to call base.Load() or make sure to
+            assign the WrappedElement.
+            </summary>
+            <returns></returns>
+            <exception cref="T:OpenQA.Selenium.InvalidElementStateException">
+            Element is missing the id attribute.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1.GetAllAutoCompleteOptions">
+            <summary>
+            Gets all availble tags that can be created via autocomplete.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1.GetSelectedTags">
+            <summary>
+            Gets the selected tags.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1.IsTagSelected(System.String,System.StringComparison)">
+            <summary>
+            Determines whether any selected tags matches the specified tag text.
+            </summary>
+            <param name="tagText">The tag text.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns>
+              <c>true</c> if any selected tags matches the specified tag text;
+              otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1.SelectTag(System.String)">
+            <summary>
+            Selects the tag.
+            </summary>
+            <param name="tagText">The tag text.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1.DeselectTag(System.String,System.StringComparison)">
+            <summary>
+            Deselects the tag.
+            </summary>
+            <param name="tagText">The tag text.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorConfiguration">
+            <summary>
+            Configuration class for the <see cref="T:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorComponent`1"/> class.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorConfiguration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.JQuery.TagEditor.TagEditorConfiguration.UseKeyboardInsteadOfMouseWhenInteracting">
+            <summary>
+            Gets or sets a value indicating whether to use keyboard instead of
+            mouse when interacting with the component.
+            </summary>
+            <value>
+              <c>true</c> if to use keyboard instead of mouse when interacting
+              with the component; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent`1">
             <summary>
@@ -993,7 +1091,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KDatePicker.KDatePickerComponent`1.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -1250,7 +1348,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -1457,7 +1555,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KPager.KPagerComponent`1.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -1556,34 +1654,34 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem">
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent">
             <summary>
             GroupedMenuItem.
             </summary>
-            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
+            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem"/> class.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent"/> class.
             </summary>
             <param name="selector">The selector.</param>
             <param name="pageObjectFactory"></param>
             <param name="driver">The driver.</param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetMenuItemAt(System.Int32)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent.GetMenuItemAt(System.Int32)">
             <summary>
             Gets the menu item at the index.
             </summary>
             <param name="index">The index.</param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetMenuItems">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent.GetMenuItems">
             <summary>
             Gets the menu items.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByText(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent.GetItemByText(System.String,System.StringComparison)">
             <summary>
             Gets the item by text.
             </summary>
@@ -1592,7 +1690,7 @@
             <returns></returns>
             <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByText``1(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent.GetItemByText``1(System.String,System.StringComparison)">
             <summary>
             Gets the item by text and attempts to convert it to the type
             paramater.
@@ -1602,7 +1700,7 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByClass(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent.GetItemByClass(System.String,System.StringComparison)">
             <summary>
             Gets the item by class.
             </summary>
@@ -1611,7 +1709,7 @@
             <returns></returns>
             <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItem.GetItemByClass``1(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.ButtonGroupMenuItemComponent.GetItemByClass``1(System.String,System.StringComparison)">
             <summary>
             Gets the item by class and attempts to convert it to the type
             parameter.
@@ -1621,30 +1719,30 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem">
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItemComponent">
             <summary>
             Represents a drop down style menu item.
             </summary>
-            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
+            <seealso cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItemComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem"/> class.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItemComponent"/> class.
             </summary>
             <param name="selector">The selector.</param>
             <param name="pageObjectFactory">The page object factory.</param>
             <param name="driver">The driver.</param>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.SelectOption(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItemComponent.SelectOption(System.String,System.StringComparison)">
             <summary>
             Opens the drop down and returns the option.
             </summary>
-            <param name="option">The option.</param>
+            <param name="optionText">The option.</param>
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
-            <exception cref="T:System.NotImplementedException"></exception>
+            <exception cref="T:OpenQA.Selenium.NoSuchElementException"></exception>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.SelectOption``1(System.String,System.StringComparison)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItemComponent.SelectOption``1(System.String,System.StringComparison)">
             <summary>
             Selects the option and attempts to cast to the type.
             </summary>
@@ -1653,7 +1751,7 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItem.GetDirectionFloatMenuWillOpen">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.DropDownMenuItemComponent.GetDirectionFloatMenuWillOpen">
             <summary>
             Gets the direction float menu will open relative to the CENTER of
             this WrappedElement.
@@ -1688,7 +1786,7 @@
         <member name="T:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem">
             <summary>
             Common interface for TinyMCE components that have nested
-            <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/>s.
+            <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent"/>s.
             </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.IGetMenuItem.GetMenuItemAt(System.Int32)">
@@ -1784,12 +1882,32 @@
             <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetItemByText``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by text and attempts to convert it to the type
+            paramater.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="itemName">Name of the item.</param>
+            <param name="stringComparison">The string comparison.</param>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetItemByClass(System.String,System.StringComparison)">
             <summary>
             Gets the item.
             </summary>
             <param name="className"></param>
             <param name="stringComparison"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.GetItemByClass``1(System.String,System.StringComparison)">
+            <summary>
+            Gets the item by class and attempts to convert it to the type
+            parameter.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="className">Name of the class.</param>
+            <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuComponent.HasItemWithText(System.String,System.StringComparison)">
@@ -1824,26 +1942,26 @@
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
-        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem">
+        <member name="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent">
             <summary>
             Menu item of a TinyMCEComponent.
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageComponent" />
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.#ctor(OpenQA.Selenium.By,ApertureLabs.Selenium.PageObjects.IPageObjectFactory,OpenQA.Selenium.IWebDriver)">
             <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItem"/> class.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent"/> class.
             </summary>
             <param name="selector">The selector.</param>
             <param name="pageObjectFactory">The page object factory.</param>
             <param name="driver">The driver.</param>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.PageObjectFactory">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.PageObjectFactory">
             <summary>
             Page object factory.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDropDown">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.IsDropDown">
             <summary>
             Gets a value indicating whether this instance is drop down.
             </summary>
@@ -1851,7 +1969,7 @@
               <c>true</c> if this instance is drop down; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsButtonGroup">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.IsButtonGroup">
             <summary>
             Gets a value indicating whether this instance is button group.
             </summary>
@@ -1859,7 +1977,7 @@
               <c>true</c> if this instance is button group; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasTitle">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.HasTitle">
             <summary>
             Gets a value indicating whether this instance has title.
             </summary>
@@ -1867,7 +1985,7 @@
               <c>true</c> if this instance has title; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasIcon">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.HasIcon">
             <summary>
             Gets a value indicating whether this instance has icon.
             </summary>
@@ -1875,7 +1993,7 @@
               <c>true</c> if this instance has icon; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.HasShortcut">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.HasShortcut">
             <summary>
             Gets a value indicating whether this instance has shortcut.
             </summary>
@@ -1883,31 +2001,31 @@
               <c>true</c> if this instance has shortcut; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IconElement">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.IconElement">
             <summary>
             Gets the icon element. Won't throw an error if the element doens't
             exist.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.TextElement">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.TextElement">
             <summary>
             Gets the text element. Won't throw an error if the element doens't
             exist.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.ShortCutElement">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.ShortCutElement">
             <summary>
             Gets the shortcut element. Won't throw an error if the element
             doens't exist.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.CaretElement">
+        <member name="P:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.CaretElement">
             <summary>
             Gets the caret element. Won't throw an error if the element doens't
             exist.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.ConvertTo``1">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.ConvertTo``1">
             <summary>
             Converts the item to a the derived MenuItem. Will return null if
             it fails to convert this instance.
@@ -1916,12 +2034,12 @@
             <returns></returns>
             <exception cref="T:System.NotImplementedException"></exception>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.IsDisplayed">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.IsDisplayed">
             <summary>
             Determines whether this instance is displayed.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItem.AsElement">
+        <member name="M:ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent.AsElement">
             <summary>
             Returns the WrappedElement.
             </summary>
@@ -2057,7 +2175,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Components.TinyMCE.TinyMCEComponent.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -2398,7 +2516,9 @@
             <summary>
             Represents a css unit of measurement.
             </summary>
-            <seealso cref="!:https://drafts.csswg.org/css-values-4"/>
+            <remarks>
+            View https://drafts.csswg.org/css-values-4 for more details.
+            </remarks>
         </member>
         <member name="F:ApertureLabs.Selenium.Css.CssUnit.None">
             <summary>
@@ -2585,9 +2705,10 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Css.CssValue.#ctor(System.String)">
             <summary>
-            Ctor.
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Css.CssValue"/> class.
             </summary>
-            <param name="value"></param>
+            <param name="value">The value.</param>
+            <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="P:ApertureLabs.Selenium.Css.CssValue.Value">
             <summary>
@@ -3380,7 +3501,12 @@
             The result of the operator.
             </returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:ApertureLabs.Selenium.Js.JavaScriptType" -->
+        <member name="T:ApertureLabs.Selenium.Js.JavaScriptType">
+            <summary>
+            The Selenium supported JavaScript type for passing in and returning
+            from a <see cref="T:OpenQA.Selenium.IJavaScriptExecutor" />.
+            </summary>
+        </member>
         <member name="F:ApertureLabs.Selenium.Js.JavaScriptType.Null">
             <summary>
             A null value.
@@ -3600,7 +3726,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(OpenQA.Selenium.Remote.RemoteWebElement[])~ApertureLabs.Selenium.Js.JavaScriptValue">
             <summary>
-            Performs an implicit conversion from <see cref="!:RemoteWebElement[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            Performs an implicit conversion from RemoteWebElement[] to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
             </summary>
             <param name="arguments">The arguments.</param>
             <returns>
@@ -3618,7 +3744,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.String[])~ApertureLabs.Selenium.Js.JavaScriptValue">
             <summary>
-            Performs an implicit conversion from <see cref="!:System.String[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            Performs an implicit conversion from string[] to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
             </summary>
             <param name="arguments">The arguments.</param>
             <returns>
@@ -3636,7 +3762,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.Int64[])~ApertureLabs.Selenium.Js.JavaScriptValue">
             <summary>
-            Performs an implicit conversion from <see cref="!:System.Int64[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            Performs an implicit conversion from long[] to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
             </summary>
             <param name="arguments">The arguments.</param>
             <returns>
@@ -3654,12 +3780,21 @@
         </member>
         <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.op_Implicit(System.Boolean[])~ApertureLabs.Selenium.Js.JavaScriptValue">
             <summary>
-            Performs an implicit conversion from <see cref="!:System.Boolean[]"/> to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
+            Performs an implicit conversion from a bool[] to <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/>.
             </summary>
             <param name="arguments">The arguments.</param>
             <returns>
             The result of the conversion.
             </returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.JavaScriptValue.ToJavaScriptValue(System.Object)">
+            <summary>
+            Converts to javascriptvalue. Exists solely to provide 
+            a static method as an alternative to the implicit conversions. Use
+            the <see cref="T:ApertureLabs.Selenium.Js.JavaScriptValue"/> constructor instead.
+            </summary>
+            <param name="argument">The argument.</param>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Js.SeleniumJavaScriptPromiseStatus">
             <summary>
@@ -3862,6 +3997,12 @@
             exception if the PromiseBody was never set.
             </summary>
             <param name="executor">The executor.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Js.PromiseBody.PromiseResult">
+            <summary>
+            Returns the value from the promise.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Js.SetTimeout">
             <summary>
@@ -4107,7 +4248,17 @@
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.PageObject" />
             <seealso cref="T:ApertureLabs.Selenium.PageObjects.IPageObject" />
         </member>
-        <!-- Badly formed XML comment ignored for member "P:ApertureLabs.Selenium.PageObjects.BasePageObject.BaseUri" -->
+        <member name="M:ApertureLabs.Selenium.PageObjects.BasePageObject.#ctor(OpenQA.Selenium.IWebDriver)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.BasePageObject"/> class.
+            </summary>
+            <param name="driver">The driver.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.PageObjects.BasePageObject.BaseUri">
+            <summary>
+            Overridden so it will always be null.
+            </summary>
+        </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.BasePageObject.Route">
             <summary>
             Overridden so it will always be null.
@@ -4117,8 +4268,8 @@
             <summary>
             Loads the component. Overridden so it doesn't validate the
             <see cref="P:ApertureLabs.Selenium.PageObjects.BasePageObject.Route"/>. Calling this will set the
-            <see cref="!:BasePageObject.Uri"/> and
-            <see cref="!:BasePageObject.WindowHandle"/> properties.
+            <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.Uri"/> and
+            <see cref="P:ApertureLabs.Selenium.PageObjects.IPageObject.WindowHandle"/> properties.
             </summary>
             <returns>
             A reference to this
@@ -4388,7 +4539,9 @@
             </summary>
         </member>
         <member name="P:ApertureLabs.Selenium.PageObjects.PageComponent.By">
-            <inheritdoc/>
+            <summary>
+            The selector for the parent node for this component.
+            </summary>
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageComponent.IsStale">
             <summary>
@@ -4398,7 +4551,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.PageObjects.PageComponent.Load">
             <summary>
-            If overloaded don't forget to call base.Load() or make sure to
+            If overriding don't forget to call base.Load() or make sure to
             assign the WrappedElement.
             </summary>
             <returns></returns>
@@ -4683,45 +4836,6 @@
             Thrown if the <see cref="T:System.Collections.Generic.IDictionary`2"/> argument is
             null.
             </exception>
-        </member>
-        <member name="T:ApertureLabs.Selenium.PageObjects.RouteParameter">
-            <summary>
-            Represents a route parameter. Format should adhere to the
-            RouteAttribute format.
-            </summary>
-        </member>
-        <member name="M:ApertureLabs.Selenium.PageObjects.RouteParameter.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.PageObjects.RouteParameter"/> class.
-            </summary>
-            <param name="parameter">The parameter.</param>
-            <exception cref="T:System.ArgumentException">
-            Failed to identify the name of the parameter.
-            </exception>
-        </member>
-        <member name="P:ApertureLabs.Selenium.PageObjects.RouteParameter.IsOptional">
-            <summary>
-            Gets a value indicating whether this instance is optional.
-            </summary>
-            <value>
-              <c>true</c> if this instance is optional; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.PageObjects.RouteParameter.Type">
-            <summary>
-            Gets the type.
-            </summary>
-            <value>
-            The type.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.PageObjects.RouteParameter.Name">
-            <summary>
-            Gets the name.
-            </summary>
-            <value>
-            The name.
-            </value>
         </member>
         <member name="T:ApertureLabs.Selenium.PageObjects.StaticPageObject">
             <summary>
@@ -5028,7 +5142,10 @@
             <value>
               <c>true</c> if ready; otherwise, <c>false</c>.
             </value>
-            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state" />
+            <remarks>
+            See https://www.w3.org/TR/webdriver/#dfn-readiness-state for
+            additional details.
+            </remarks>
         </member>
         <member name="P:ApertureLabs.Selenium.HubStatus.Message">
             <summary>
@@ -5041,9 +5158,12 @@
         <member name="T:ApertureLabs.Selenium.IHubStatus">
             <summary>
             Status returns information about whether a remote end is in a state
-            in which it can create new sessions, but may additionally include arbitrary meta information that is specific to the implementation.
+            in which it can create new sessions, but may additionally include
+            arbitrary meta information that is specific to the implementation.
             </summary>
-            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-status"/>
+            <remarks>
+            See https://www.w3.org/TR/webdriver/#dfn-status for additional details.
+            </remarks>
         </member>
         <member name="P:ApertureLabs.Selenium.IHubStatus.Ready">
             <summary>
@@ -5052,7 +5172,10 @@
             <value>
               <c>true</c> if ready; otherwise, <c>false</c>.
             </value>
-            <see cref="!:https://www.w3.org/TR/webdriver/#dfn-readiness-state"/>
+            <remarks>
+            See https://www.w3.org/TR/webdriver/#dfn-readiness-state for
+            additional details.
+            </remarks>
         </member>
         <member name="P:ApertureLabs.Selenium.IHubStatus.Message">
             <summary>
@@ -5393,7 +5516,10 @@
             browserName=firefox,platform=linux -capabilities
             browserName = chrome, platform = linux
             </example>
-            <see cref="!:https://github.com/SeleniumHQ/selenium/blob/a61cc22fd053ea827cf39aa4065ae4912bb6af2a/java/server/src/org/openqa/grid/common/defaults/DefaultNodeWebDriver.json"/>
+            <remarks>
+            See https://github.com/SeleniumHQ/selenium/blob/a61cc22fd053ea827cf39aa4065ae4912bb6af2a/java/server/src/org/openqa/grid/common/defaults/DefaultNodeWebDriver.json
+            for more details.
+            </remarks>
         </member>
         <member name="P:ApertureLabs.Selenium.SeleniumNodeOptions.CleanUpCycle">
             <summary>

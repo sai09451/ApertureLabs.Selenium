@@ -5,7 +5,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
 {
     /// <summary>
     /// Common interface for TinyMCE components that have nested
-    /// <see cref="MenuItem"/>s.
+    /// <see cref="MenuItemComponent"/>s.
     /// </summary>
     public interface IGetMenuItem
     {
@@ -15,13 +15,13 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="index">The index.</param>
         /// <returns></returns>
         /// <exception cref="IndexOutOfRangeException"></exception>
-        MenuItem GetMenuItemAt(int index);
+        MenuItemComponent GetMenuItemAt(int index);
 
         /// <summary>
         /// Gets the menu items.
         /// </summary>
         /// <returns></returns>
-        IReadOnlyCollection<MenuItem> GetMenuItems();
+        IReadOnlyCollection<MenuItemComponent> GetMenuItems();
 
         /// <summary>
         /// Gets the item by text.
@@ -29,7 +29,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="itemName">Name of the item.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        MenuItem GetItemByText(string itemName,
+        MenuItemComponent GetItemByText(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal);
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <returns></returns>
         T GetItemByText<T>(string itemName,
             StringComparison stringComparison = StringComparison.Ordinal)
-            where T : MenuItem;
+            where T : MenuItemComponent;
 
         /// <summary>
         /// Gets the item by class.
@@ -50,7 +50,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <param name="className">Name of the class.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        MenuItem GetItemByClass(string className,
+        MenuItemComponent GetItemByClass(string className,
             StringComparison stringComparison = StringComparison.Ordinal);
 
         /// <summary>
@@ -63,6 +63,6 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <returns></returns>
         T GetItemByClass<T>(string className,
             StringComparison stringComparison = StringComparison.Ordinal)
-            where T : MenuItem;
+            where T : MenuItemComponent;
     }
 }

@@ -14,13 +14,17 @@ namespace ApertureLabs.Selenium.Css
         #region Constructor
 
         /// <summary>
-        /// Ctor.
+        /// Initializes a new instance of the <see cref="CssValue"/> class.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentException"></exception>
         public CssValue(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException(nameof(value));
+            if (String.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException($"{nameof(value)} cannot be " +
+                    $"null nor empty.");
+            }
 
             Value = value;
             IsAuto = String.Equals(value, "auto", StringComparison.Ordinal);

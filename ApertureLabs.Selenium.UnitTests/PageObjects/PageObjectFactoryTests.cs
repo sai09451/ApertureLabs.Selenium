@@ -13,45 +13,45 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
 {
     #region PageObjects
 
-    public interface IMockA : IStaticPageObject
+    public interface IMockAPage : IStaticPageObject
     { }
 
-    public class MockA : StaticPageObject, IMockA
+    public class MockAPage : StaticPageObject, IMockAPage
     {
-        public MockA(IWebDriver driver)
+        public MockAPage(IWebDriver driver)
             : base(driver, new Uri("https://www.google.com"))
         { }
     }
 
-    public interface IMockB : IMockA
+    public interface IMockBPage : IMockAPage
     { }
 
-    public class MockB : StaticPageObject, IMockB
+    public class MockBPage : StaticPageObject, IMockBPage
     {
-        public MockB(IMockA mockA, IWebDriver driver)
+        public MockBPage(IMockAPage mockA, IWebDriver driver)
             : base(driver, new Uri("https://www.google.com"))
         { }
     }
 
-    public interface IMockC : IPageObject
+    public interface IMockCPage : IPageObject
     { }
 
-    public abstract class MockC : ParameterPageObject, IMockC
+    public abstract class MockCPage : ParameterPageObject, IMockCPage
     {
-        public MockC(IMockA mockA, IWebDriver driver, UriTemplate template)
+        public MockCPage(IMockAPage mockA, IWebDriver driver, UriTemplate template)
             : base(driver,
                   new Uri("www.google.com"),
                   template)
         { }
     }
 
-    public interface IMockD : IMockC
+    public interface IMockDPage : IMockCPage
     { }
 
-    public class MockD : ParameterPageObject, IMockD
+    public class MockDPage : ParameterPageObject, IMockDPage
     {
-        public MockD(IMockA mockA,
-            IMockB mockB,
+        public MockDPage(IMockAPage mockA,
+            IMockBPage mockB,
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver)
             : base(driver,
@@ -71,8 +71,8 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
         protected override void Load(ContainerBuilder builder)
         {
             builder
-                .RegisterType<MockA>()
-                .As<IMockA>()
+                .RegisterType<MockAPage>()
+                .As<IMockAPage>()
                 .SingleInstance();
 
             base.Load(builder);
@@ -86,13 +86,13 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
         protected override void Load(ContainerBuilder builder)
         {
             builder
-                .RegisterType<MockB>()
-                .As<IMockB>()
+                .RegisterType<MockBPage>()
+                .As<IMockBPage>()
                 .SingleInstance();
 
             builder
-                .RegisterType<MockD>()
-                .As<IMockD>()
+                .RegisterType<MockDPage>()
+                .As<IMockDPage>()
                 .SingleInstance();
 
             base.Load(builder);
@@ -154,9 +154,9 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
             var driver = new MockWebDriver();
             pageObjectFactory = new PageObjectFactory(driver);
 
-            var pageA = pageObjectFactory.PreparePage<IMockA>();
-            var pageB = pageObjectFactory.PreparePage<IMockB>();
-            var pageD = pageObjectFactory.PreparePage<IMockD>();
+            var pageA = pageObjectFactory.PreparePage<IMockAPage>();
+            var pageB = pageObjectFactory.PreparePage<IMockBPage>();
+            var pageD = pageObjectFactory.PreparePage<IMockDPage>();
 
             Assert.IsNotNull(pageA);
             Assert.IsNotNull(pageB);
@@ -177,8 +177,8 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
             using (driver)
             {
                 pageObjectFactory
-                    .StartWithPage<IMockA>()
-                    .ContinueWithPage<IMockA, IMockB>(
+                    .StartWithPage<IMockAPage>()
+                    .ContinueWithPage<IMockAPage, IMockBPage>(
                         pageA =>
                         {
                             var searchBar = new InputElement(
@@ -188,16 +188,16 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
                             searchBar.SetValue("Testing 1 2 3");
                             searchBar.SendKeys(Keys.Enter);
                         },
-                        pageA => pageObjectFactory.PreparePage<IMockB>())
-                    .ContinueWithPage<IMockB, IMockD>(
+                        pageA => pageObjectFactory.PreparePage<IMockBPage>())
+                    .ContinueWithPage<IMockBPage, IMockDPage>(
                         pageB =>
                         {
                             Console.WriteLine("Testing with IMockB.");
                         },
                         pageB =>
                         {
-                            var pageA = pageObjectFactory.PreparePage<IMockA>();
-                            var pageD = new MockD(pageA,
+                            var pageA = pageObjectFactory.PreparePage<IMockAPage>();
+                            var pageD = new MockDPage(pageA,
                                 pageB,
                                 pageObjectFactory,
                                 pageB.WrappedDriver);
@@ -210,7 +210,7 @@ namespace ApertureLabs.Selenium.UnitTests.PageObjects
 
                             return pageD;
                         })
-                    .ContinueWithPage<IMockD>(
+                    .ContinueWithPage<IMockDPage>(
                         pageC =>
                         {
                             Console.WriteLine("Testing with IMockC.");

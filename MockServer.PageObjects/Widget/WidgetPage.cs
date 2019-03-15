@@ -29,7 +29,7 @@ namespace MockServer.PageObjects.Widget
 
         #region Methods
 
-        public HomePage GoToHomePage()
+        public virtual HomePage GoToHomePage()
         {
             return basePage.GoToHomePage();
         }

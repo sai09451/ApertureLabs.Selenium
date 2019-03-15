@@ -13,8 +13,8 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
     /// <summary>
     /// Represents a drop down style menu item.
     /// </summary>
-    /// <seealso cref="ApertureLabs.Selenium.Components.TinyMCE.MenuItem" />
-    public class DropDownMenuItem : MenuItem
+    /// <seealso cref="ApertureLabs.Selenium.Components.TinyMCE.MenuItemComponent" />
+    public class DropDownMenuItemComponent : MenuItemComponent
     {
         #region Fields
 
@@ -31,12 +31,12 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DropDownMenuItem"/> class.
+        /// Initializes a new instance of the <see cref="DropDownMenuItemComponent"/> class.
         /// </summary>
         /// <param name="selector">The selector.</param>
         /// <param name="pageObjectFactory">The page object factory.</param>
         /// <param name="driver">The driver.</param>
-        public DropDownMenuItem(By selector,
+        public DropDownMenuItemComponent(By selector,
             IPageObjectFactory pageObjectFactory,
             IWebDriver driver)
             : base(selector, pageObjectFactory, driver)
@@ -57,11 +57,11 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <summary>
         /// Opens the drop down and returns the option.
         /// </summary>
-        /// <param name="option">The option.</param>
+        /// <param name="optionText">The option.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public MenuItem SelectOption(string option,
+        /// <exception cref="NoSuchElementException"></exception>
+        public virtual MenuItemComponent SelectOption(string optionText,
             StringComparison stringComparison = StringComparison.Ordinal)
         {
             // This isn't ideal but since the dropdown menu items are 
@@ -100,7 +100,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
                         ? false
                         : String.Equals(
                             textEl.TextHelper().InnerText,
-                            option,
+                            optionText,
                             stringComparison);
                 });
 
@@ -110,7 +110,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
             var selector = ByElement.FromElement(menuItemEl);
 
             return PageObjectFactory.PrepareComponent(
-                new MenuItem(
+                new MenuItemComponent(
                     selector,
                     PageObjectFactory,
                     WrappedDriver));
@@ -125,7 +125,7 @@ namespace ApertureLabs.Selenium.Components.TinyMCE
         /// <returns></returns>
         public virtual T SelectOption<T>(string itemText,
             StringComparison stringComparison = StringComparison.Ordinal)
-            where T : MenuItem
+            where T : MenuItemComponent
         {
             var item = SelectOption(itemText, stringComparison);
 

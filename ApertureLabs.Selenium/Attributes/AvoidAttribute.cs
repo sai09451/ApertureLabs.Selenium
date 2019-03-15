@@ -29,6 +29,12 @@ namespace ApertureLabs.Selenium.Attributes
             Reason = reason;
         }
 
+        /// <summary>
+        /// Gets the reason.
+        /// </summary>
+        /// <value>
+        /// The reason.
+        /// </value>
         public string Reason { get; }
     }
 }

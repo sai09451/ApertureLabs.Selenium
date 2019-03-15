@@ -1,6 +1,5 @@
 ﻿using ApertureLabs.Selenium.Extensions;
 using ApertureLabs.Selenium.Js;
-using ApertureLabs.Selenium.PageObjects;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -17,8 +16,8 @@ namespace ApertureLabs.Selenium.Components.JQuery.TagEditor
     /// See https://goodies.pixabay.com/jquery/tag-editor/demo.html for more
     /// information.
     /// </remarks>
-    /// <seealso cref="ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBase{T}" />
-    public class TagEditorComponent<T> : JQueryWidgetBase<T>
+    /// <seealso cref="ApertureLabs.Selenium.Components.JQuery.JQueryWidgetBaseComponent{T}" />
+    public class TagEditorComponent<T> : JQueryWidgetBaseComponent<T>
     {
         #region Fields
 
@@ -91,8 +90,11 @@ namespace ApertureLabs.Selenium.Components.JQuery.TagEditor
                     "the id attribute.");
             }
 
-            TagEditorContainerElement = WrappedElement.FindElement(
-                By.CssSelector($"*[data-valmsg-for='{id}']"));
+            var indexOfWrappedEl = WrappedElement.GetIndexRelativeToSiblings();
+            TagEditorContainerElement = WrappedElement
+                .GetParentElement()
+                .Children()
+                .ElementAt(indexOfWrappedEl + 1);
 
             return this;
         }
@@ -101,7 +103,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.TagEditor
         /// Gets all availble tags that can be created via autocomplete.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<string> GetAllTags()
+        public virtual IEnumerable<string> GetAllAutoCompleteOptions()
         {
             var js = new JavaScript
             {
@@ -120,11 +122,14 @@ namespace ApertureLabs.Selenium.Components.JQuery.TagEditor
         /// Gets the selected tags.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<string> GetSelectedTags()
+        public virtual IEnumerable<string> GetSelectedTags()
         {
             foreach (var tagEl in SelectedTagElements)
             {
                 var text = tagEl.TextHelper().InnerText;
+
+                if (String.IsNullOrEmpty(text))
+                    continue;
 
                 yield return text;
             }
@@ -139,7 +144,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.TagEditor
         ///   <c>true</c> if any selected tags matches the specified tag text;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        public bool IsTagSelected(string tagText,
+        public virtual bool IsTagSelected(string tagText,
                     StringComparison stringComparison = StringComparison.Ordinal)
         {
             return GetSelectedTags()
@@ -151,8 +156,15 @@ namespace ApertureLabs.Selenium.Components.JQuery.TagEditor
         /// </summary>
         /// <param name="tagText">The tag text.</param>
         /// <returns></returns>
-        public TagEditorComponent<T> SelectTag(string tagText)
+        /// <exception cref="ArgumentException"></exception>
+        public virtual TagEditorComponent<T> SelectTag(string tagText)
         {
+            if (String.IsNullOrEmpty(tagText))
+            {
+                throw new ArgumentException($"{nameof(tagText)} cannot be " +
+                    $"null or empty.");
+            }
+
             var selectedTags = SelectedTagElements;
 
             if (selectedTags.Any())
@@ -185,9 +197,15 @@ namespace ApertureLabs.Selenium.Components.JQuery.TagEditor
         /// <param name="tagText">The tag text.</param>
         /// <param name="stringComparison">The string comparison.</param>
         /// <returns></returns>
-        public TagEditorComponent<T> DeselectTag(string tagText,
+        public virtual TagEditorComponent<T> DeselectTag(string tagText,
                     StringComparison stringComparison = StringComparison.Ordinal)
         {
+            if (String.IsNullOrEmpty(tagText))
+            {
+                throw new ArgumentException($"{nameof(tagText)} cannot be " +
+                    $"null or empty.");
+            }
+
             var tagEl = SelectedTagElements.FirstOrDefault(
                 e => String.Equals(
                     e.TextHelper().InnerText,

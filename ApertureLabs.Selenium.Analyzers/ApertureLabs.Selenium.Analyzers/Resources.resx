@@ -122,11 +122,11 @@
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
   <data name="AnalyzerDescriptionSuffix" xml:space="preserve">
-    <value>Classes implementing IPageObject or IPageComponent should be suffixed with 'Page' and 'Component' respectivley.</value>
+    <value>Classes implementing IPageObject or IPageComponent should be suffixed with 'Page' and 'Component' respectively.</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
   <data name="AnalyzerDescriptionVirtual" xml:space="preserve">
-    <value>Public members of IPageObjects should be virtual.</value>
+    <value>Public members of IPageObjects and IPageComponents should be virtual.</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
   <data name="AnalyzerMessageFormatImpl" xml:space="preserve">
@@ -134,11 +134,11 @@
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="AnalyzerMessageFormatSuffix" xml:space="preserve">
-    <value>Classes implementing IPageObject or IPageComponent should be suffixed with 'Page' and 'Component' respectivley.</value>
+    <value>Classes implementing IPageObject or IPageComponent should be suffixed with 'Page' and 'Component' respectively.</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="AnalyzerMessageFormatVirtual" xml:space="preserve">
-    <value>The public members of IPageObjects should be virtual.</value>
+    <value>The public members of IPageObjects and IPageComponents should be virtual.</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="AnalyzerTitleImpl" xml:space="preserve">

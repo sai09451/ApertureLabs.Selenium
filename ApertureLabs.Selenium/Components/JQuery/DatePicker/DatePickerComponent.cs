@@ -15,8 +15,8 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
     /// DatePickerComponent.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="JQueryWidgetBase{T}" />
-    public class DatePickerComponent<T> : JQueryWidgetBase<T>
+    /// <seealso cref="JQueryWidgetBaseComponent{T}" />
+    public class DatePickerComponent<T> : JQueryWidgetBaseComponent<T>
     {
         #region Fields
 
@@ -25,16 +25,16 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         #region Selectors
 
         private readonly By calendarContainerSelector = By.CssSelector(".ui-datepicker");
-        private readonly By titleSelector = By.CssSelector(".ui-datepicker-title");
+        //private readonly By titleSelector = By.CssSelector(".ui-datepicker-title");
         private readonly By monthTitleSelector = By.CssSelector(".ui-datepicker-month");
         private readonly By yearTitleSelector = By.CssSelector(".ui-datepicker-year");
         private readonly By allDaysSelector = By.CssSelector(".ui-datepicker-calendar tbody td a");
-        private readonly By availabledaysSelector = By.CssSelector(".ui-datepicker-calendar tbody td:not(.ui-datepicker-unselectable) a");
+        //private readonly By availabledaysSelector = By.CssSelector(".ui-datepicker-calendar tbody td:not(.ui-datepicker-unselectable) a");
         private readonly By activeDaySelector = By.CssSelector(".ui-datepicker-current-day a");
         private readonly By calendarNextMonthSelector = By.CssSelector(".ui-datepicker-next");
         private readonly By calendarPrevMonthSelector = By.CssSelector(".ui-datepicker-prev");
         private readonly By calendarDaysSelectors = By.CssSelector(".ui-state-default");
-        private readonly By calendarEnabledDaysSelector = By.CssSelector("td:not(.ui-state-disabled) > .ui-state-default");
+        //private readonly By calendarEnabledDaysSelector = By.CssSelector("td:not(.ui-state-disabled) > .ui-state-default");
 
         #endregion
 
@@ -135,7 +135,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         /// Gets the date.
         /// </summary>
         /// <returns></returns>
-        public DateTime? GetDate()
+        public virtual DateTime? GetDate()
         {
             if (IsPopup)
             {
@@ -166,7 +166,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         /// Sets the date.
         /// </summary>
         /// <param name="dateTime">The date time.</param>
-        public void SetDate(DateTime dateTime)
+        public virtual void SetDate(DateTime dateTime)
         {
             // Display the calendar if popup.
             DisplayCalendar();
@@ -207,7 +207,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         /// <returns>
         ///   <c>true</c> if this instance is disabled; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsDisabled()
+        public virtual bool IsDisabled()
         {
             throw new NotImplementedException();
         }
@@ -216,7 +216,7 @@ namespace ApertureLabs.Selenium.Components.JQuery.DatePicker
         /// Gets the min and max date times.
         /// </summary>
         /// <returns></returns>
-        public (DateTime? minDate, DateTime? maxDate) GetMinAndMaxDates()
+        public virtual (DateTime? minDate, DateTime? maxDate) GetMinAndMaxDates()
         {
             var options = GetOptions();
 

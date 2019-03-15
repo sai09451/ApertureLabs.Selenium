@@ -2,7 +2,7 @@ namespace ApertureLabs.Selenium.Js
 {
     /// <summary>
     /// The Selenium supported JavaScript type for passing in and returning
-    /// from a <see cref="OpenQA.Selenium.IJavaScriptExecutor">.
+    /// from a <see cref="OpenQA.Selenium.IJavaScriptExecutor" />.
     /// </summary>
     public enum JavaScriptType
     {

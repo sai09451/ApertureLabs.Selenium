@@ -444,6 +444,10 @@ namespace ApertureLabs.Selenium.Js
             return new JavaScriptValue(response);
         }
 
+        /// <summary>
+        /// Returns the value from the promise.
+        /// </summary>
+        /// <returns></returns>
         public JavaScriptValue PromiseResult()
         {
             if (!Finished)

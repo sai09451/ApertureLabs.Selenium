@@ -1,0 +1,29 @@
+﻿@page
+@model MockServer.Pages.jQueryUI._1._12.TagEditorModel
+@{
+    Layout = "~/Pages/jQueryUI/1.12/Shared/_Layout.cshtml";
+}
+<input id="tageditor" />
+
+<script>
+    $(function () {
+        $("#tageditor").tagEditor({
+            autocomplete: {
+                delay: 0,
+                position: { collision: "flip" },
+                source: [
+                    'Apple',
+                    'Banana',
+                    'Orange',
+                    'Pineapple',
+                    'Kiwi',
+                    'Star-fruit',
+                    'Tangerine',
+                    'Mango'
+                ]
+            },
+            forceLowercase: false,
+            placeholder: "Enter tags...",
+        });
+    });
+</script>

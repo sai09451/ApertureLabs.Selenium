@@ -40,15 +40,17 @@ namespace ApertureLabs.Selenium.PageObjects
         /// <summary>
         /// The IWebDriver of a component.
         /// </summary>
-        public IWebDriver WrappedDriver { get; protected set; }
+        public virtual IWebDriver WrappedDriver { get; protected set; }
 
         /// <summary>
         /// The element representing the component.
         /// </summary>
-        public IWebElement WrappedElement { get; protected set; }
+        public virtual IWebElement WrappedElement { get; protected set; }
 
-        /// <inheritdoc/>
-        public By By { get; private set; }
+        /// <summary>
+        /// The selector for the parent node for this component.
+        /// </summary>
+        public virtual By By { get; private set; }
 
         #endregion
 

@@ -101,7 +101,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
             tinyMCE.Write(beforeCut);
             tinyMCE.HightlightRange(new Point(7, 0), new Point(12, 0));
             menu.GetItemByText("Edit")
-                .ConvertTo<DropDownMenuItem>()
+                .ConvertTo<DropDownMenuItemComponent>()
                 .SelectOption("Cut")
                 .AsElement()
                 .Click();
@@ -146,7 +146,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.TinyMCE
 
             CollectionAssert.AllItemsAreInstancesOfType(
                 menuItems,
-                typeof(MenuItem));
+                typeof(MenuItemComponent));
 
             CollectionAssert.AllItemsAreNotNull(menuItems);
 
