@@ -110,6 +110,48 @@ namespace ApertureLabs.Selenium.Components.Kendo.KMultiSelect
         }
 
         /// <summary>
+        /// Selects the options.
+        /// </summary>
+        /// <param name="options">
+        /// The options to select. Set to null to deselect all items.
+        /// </param>
+        /// <param name="removeOtherOptions">
+        /// if set to <c>true</c> deselect the other options.
+        /// </param>
+        /// <param name="stringComparison">The string comparison.</param>
+        /// <returns></returns>
+        public virtual KMultiSelectComponent<T> SelectOptions(
+            IEnumerable<string> options,
+            bool removeOtherOptions = true,
+            StringComparison stringComparison = StringComparison.Ordinal)
+        {
+            var selectedItems = GetSelectedOptions();
+
+            if (options == null)
+            {
+                foreach (var item in selectedItems)
+                    DeselectItem(item, stringComparison);
+
+                return this;
+            }
+
+            if (removeOtherOptions)
+            {
+                var itemsToDeselect = selectedItems.Except(options);
+
+                foreach (var item in itemsToDeselect)
+                    DeselectItem(item, stringComparison);
+            }
+
+            var itemsToSelect = options.Except(selectedItems);
+
+            foreach (var item in itemsToSelect)
+                SelectItem(item, stringComparison);
+
+            return this;
+        }
+
+        /// <summary>
         /// Selects an item if not already selected.
         /// </summary>
         /// <param name="item"></param>
