@@ -14,14 +14,10 @@ namespace ApertureLabs.Selenium.Components.Kendo
     {
         #region Fields
 
-        #region Selectors
-
         /// <summary>
         /// The options that define how to interact with the component.
         /// </summary>
         private readonly BaseKendoConfiguration configuration;
-
-        #endregion
 
         #endregion
 

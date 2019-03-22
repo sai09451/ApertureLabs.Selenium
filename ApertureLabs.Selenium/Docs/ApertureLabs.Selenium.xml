@@ -995,6 +995,11 @@
             Options for the KDropDownComponent.
             </summary>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration"/> class.
+            </summary>
+        </member>
         <member name="P:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration.ControlWithKeyboardInsteadOfMouse">
             <summary>
             Gets or sets a value indicating whether to use the mouse or the
@@ -1009,12 +1014,6 @@
             <value>
             The data source.
             </value>
-        </member>
-        <member name="M:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration.DefaultBaseKendoOptions">
-            <summary>
-            Returns a new instance of the default BaseKendoOptions object.
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.DataSourceOptions">
             <summary>
@@ -1451,6 +1450,19 @@
             <summary>
             Returns a list of all selected items.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent`1.SelectOptions(System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.StringComparison)">
+            <summary>
+            Selects the options.
+            </summary>
+            <param name="options">
+            The options to select. Set to null to deselect all items.
+            </param>
+            <param name="removeOtherOptions">
+            if set to <c>true</c> deselect the other options.
+            </param>
+            <param name="stringComparison">The string comparison.</param>
             <returns></returns>
         </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectComponent`1.SelectItem(System.String,System.StringComparison)">

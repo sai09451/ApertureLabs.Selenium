@@ -84,6 +84,33 @@ namespace ApertureLabs.Selenium.Components.Kendo.KGrid
         /// </summary>
         public virtual KToolbarComponent<KGridComponent<T>> Toolbar { get; private set; }
 
+        /// <summary>
+        /// Enumerates over all rows. This will first navigate to the first
+        /// page then being yielding rows. Unless the enumerator is stopped, it
+        /// will end on the last page.
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<IWebElement> EnumerateOverAllRows()
+        {
+            // Go to the first page.
+            Pager.FirstPage();
+
+            do
+            {
+                var numberOfRows = GetNumberOfRows();
+
+                for (var i = 0; i < numberOfRows; i++)
+                {
+                    var row = GetRow(i);
+
+                    yield return row;
+                }
+
+                Pager.NextPage();
+
+            } while (Pager.HasNextPage);
+        }
+
         #endregion
 
         #endregion

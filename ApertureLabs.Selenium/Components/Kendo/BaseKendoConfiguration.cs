@@ -6,6 +6,15 @@
     public class BaseKendoConfiguration
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="BaseKendoConfiguration"/> class.
+        /// </summary>
+        public BaseKendoConfiguration()
+        {
+            ControlWithKeyboardInsteadOfMouse = false;
+            DataSource = new DataSourceOptions();
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to use the mouse or the
         /// keyboard to interact with the element. The mouse may still be used
         /// to for some interactions where the keyboard will not suffice.
@@ -19,18 +28,5 @@
         /// The data source.
         /// </value>
         public DataSourceOptions DataSource { get; set; }
-
-        /// <summary>
-        /// Returns a new instance of the default BaseKendoOptions object.
-        /// </summary>
-        /// <returns></returns>
-        public static BaseKendoConfiguration DefaultBaseKendoOptions()
-        {
-            return new BaseKendoConfiguration
-            {
-                ControlWithKeyboardInsteadOfMouse = false,
-                DataSource = new DataSourceOptions()
-            };
-        }
     }
 }
