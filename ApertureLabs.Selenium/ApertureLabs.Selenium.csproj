@@ -16,7 +16,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <FileVersion>1.0.94.0</FileVersion>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <NeutralLanguage />
+    <NeutralLanguage>en</NeutralLanguage>
     <PackageReleaseNotes>Added the TableElement class for working with simple tables.</PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>

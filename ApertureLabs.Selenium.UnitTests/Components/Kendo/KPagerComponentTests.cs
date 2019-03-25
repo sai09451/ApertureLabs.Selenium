@@ -73,7 +73,7 @@ namespace ApertureLabs.Selenium.UnitTests.Components.Kendo
 
                 var pagerComponent = PageObjectFactory.PrepareComponent(
                     new KPagerComponent<WidgetPage>(
-                        BaseKendoConfiguration.DefaultBaseKendoOptions(),
+                        new BaseKendoConfiguration(),
                         By.CssSelector("#pager"),
                         PageObjectFactory,
                         driver,

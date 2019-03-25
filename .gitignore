@@ -8,3 +8,4 @@
 **/Debug/**
 /MockServer/wwwroot/lib/bootstrap
 /MockServer/wwwroot/lib
+/packages

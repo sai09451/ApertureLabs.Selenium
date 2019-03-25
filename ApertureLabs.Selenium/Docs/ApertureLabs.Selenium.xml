@@ -1345,6 +1345,14 @@
             Toolbar component.
             </summary>
         </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.EnumerateOverAllRows">
+            <summary>
+            Enumerates over all rows. This will first navigate to the first
+            page then being yielding rows. Unless the enumerator is stopped, it
+            will end on the last page.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ApertureLabs.Selenium.Components.Kendo.KGrid.KGridComponent`1.Load">
             <summary>
             If overriding don't forget to call base.Load() or make sure to
@@ -1392,6 +1400,59 @@
             </summary>
             <param name="row">The row.</param>
             <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewComponent`1">
+            <summary>
+            Represents the k-list component.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <seealso cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoComponent`1" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewComponent`1.#ctor(OpenQA.Selenium.By,OpenQA.Selenium.IWebDriver,ApertureLabs.Selenium.Components.Kendo.KListView.KListViewConfiguration,`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewComponent`1"/> class.
+            </summary>
+            <param name="selector"></param>
+            <param name="driver"></param>
+            <param name="configuration"></param>
+            <param name="parent">The parent.</param>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewComponent`1.EnumerateOverAllRows">
+            <summary>
+            Enumerates the over all rows.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewComponent`1.GetCell(System.Int32,System.Int32)">
+            <summary>
+            Gets the cell.
+            </summary>
+            <param name="row">The row.</param>
+            <param name="col">The col.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewConfiguration">
+            <summary>
+            Configuration class for <see cref="T:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewComponent`1"/>.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.Components.Kendo.BaseKendoConfiguration"/>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewConfiguration.RowsSelector">
+            <summary>
+            Gets or sets the rows selector.
+            </summary>
+            <value>
+            The row selector.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.Components.Kendo.KListView.KListViewConfiguration.ColsSelector">
+            <summary>
+            Gets or sets the cols selector. This should be relative to the row
+            element.
+            </summary>
+            <value>
+            The col selector.
+            </value>
         </member>
         <member name="T:ApertureLabs.Selenium.Components.Kendo.KMultiSelect.KMultiSelectAnimationOptions">
             <summary>
@@ -6701,6 +6762,61 @@
             <summary>
             Returns the value via attribute or if not present returns the text.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.WebElements.Table.TableElement">
+            <summary>
+            Represents a table element.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.WebElements.BaseElement" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Table.TableElement.#ctor(OpenQA.Selenium.IWebElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ApertureLabs.Selenium.WebElements.Table.TableElement"/> class.
+            </summary>
+            <param name="element">The element.</param>
+            <exception cref="T:OpenQA.Selenium.Support.UI.UnexpectedTagNameException">table</exception>
+            <exception cref="T:System.NotImplementedException">
+            Thrown if there are nested tables.
+            </exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Table.TableElement.GetCaption">
+            <summary>
+            Gets the caption. Returns null if there isn't a caption.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Table.TableElement.GetTableBodyRows">
+            <summary>
+            Gets the table body rows.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Table.TableElement.GetTableHeaderRows">
+            <summary>
+            Gets the table header rows.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Table.TableElement.GetTableFooterRows">
+            <summary>
+            Gets the table footer rows.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Table.TableElement.GetAllRows">
+            <summary>
+            Gets all rows.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.WebElements.Table.TableElement.GetCell(System.Int32,System.Int32)">
+            <summary>
+            Gets the cell. The row number is zero-based and should be based off
+            of ALL rows. Same with the col number.
+            </summary>
+            <param name="row">The row.</param>
+            <param name="col">The col.</param>
             <returns></returns>
         </member>
         <member name="T:ApertureLabs.Selenium.WindowSize">
