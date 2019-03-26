@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ApertureLabs.VisualStudio.SDK.Extensions")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Contains extensions that simplify retrieving project and document info when working with the VS SDK.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Aperture Labs")]
 [assembly: AssemblyProduct("ApertureLabs.VisualStudio.SDK.Extensions")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]

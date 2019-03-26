@@ -112,8 +112,6 @@ namespace ApertureLabs.Selenium.Analyzers
             context.RegisterSymbolAction(
                 AnalyzeInterfaceImpls,
                 SymbolKind.NamedType);
-
-            context.RegisterSyntaxTreeAction(a => a.Tree.)
         }
 
         private static bool GetInterfaceTypeDefs(
