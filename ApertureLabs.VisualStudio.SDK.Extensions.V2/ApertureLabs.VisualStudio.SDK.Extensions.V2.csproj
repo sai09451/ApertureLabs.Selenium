@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Contains extension methods which make querying the solution for projects and projects for documents easier.</Description>
+    <PackageProjectUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/alexHayes08/ApertureLabs.Selenium/blob/master/ApertureLabs.Selenium/Resources/aperturelabslogoonly.ico?raw=true</PackageIconUrl>
+    <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Aperture Labs, Visual Studio SDK</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EnvDTE100" Version="10.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.CoreUtility" Version="16.0.467" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="15.9.28307" />
+  </ItemGroup>
+
+</Project>

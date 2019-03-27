@@ -102,6 +102,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ApertureLabs.VisualStudio.SDK.Extensions.V2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ApertureLabs.VisualStudio.SDK.Extensions.V2.1.0.0\lib\net472\ApertureLabs.VisualStudio.SDK.Extensions.V2.dll</HintPath>
+    </Reference>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\EnvDTE.8.0.2\lib\net10\EnvDTE.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>

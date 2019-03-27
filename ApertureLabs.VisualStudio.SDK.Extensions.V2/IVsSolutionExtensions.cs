@@ -12,6 +12,11 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
     /// </summary>
     public static class IVsSolutionExtensions
     {
+        /// <summary>
+        /// Gets the projects of the solution.
+        /// </summary>
+        /// <param name="solution">The solution.</param>
+        /// <returns></returns>
         public static IEnumerable<EnvDTE.Project> GetProjects(this IVsSolution solution)
         {
             foreach (IVsHierarchy hier in GetProjectsInSolution(solution))
@@ -29,7 +34,9 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
             return GetProjectsInSolution(solution, __VSENUMPROJFLAGS.EPF_LOADEDINSOLUTION);
         }
 
-        private static IEnumerable<IVsHierarchy> GetProjectsInSolution(IVsSolution solution, __VSENUMPROJFLAGS flags)
+        private static IEnumerable<IVsHierarchy> GetProjectsInSolution(
+            IVsSolution solution,
+            __VSENUMPROJFLAGS flags)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -58,10 +65,20 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
             if (hierarchy == null)
                 throw new ArgumentNullException("hierarchy");
 
-            hierarchy.GetProperty((uint)VSConstants.VSITEMID.Root, (int)__VSHPROPID.VSHPROPID_ExtObject, out object obj);
+            hierarchy.GetProperty(
+                (uint)VSConstants.VSITEMID.Root,
+                (int)__VSHPROPID.VSHPROPID_ExtObject, out object obj);
+
             return obj as EnvDTE.Project;
         }
 
+        /// <summary>
+        /// Determines whether the solution is loaded.
+        /// </summary>
+        /// <param name="solution">The solution.</param>
+        /// <returns>
+        ///   <c>true</c> if the solution is loaded; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsSolutionLoaded(this IVsSolution solution)
         {
             return (solution.GetProjects().Count() > 0);

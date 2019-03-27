@@ -7,8 +7,16 @@ using static Microsoft.VisualStudio.VSConstants;
 
 namespace ApertureLabs.VisualStudio.SDK.Extensions
 {
+    /// <summary>
+    /// Contains extension methods for working with <see href="IVsHierarchy" />.
+    /// </summary>
     public static class IVsHierarchyExtensions
     {
+        /// <summary>
+        /// Retrieves the full path of the project.
+        /// </summary>
+        /// <param name="hierarchy">The hierarchy.</param>
+        /// <returns></returns>
         public static string GetProjectDirectory(this IVsHierarchy hierarchy)
         {
             string fullPath = null;
@@ -25,6 +33,12 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
             return fullPath;
         }
 
+        /// <summary>
+        /// Converts an <see href="IVsHierarchy" /> to an
+        /// <see href="EnvDTE.Project" />.
+        /// </summary>
+        /// <param name="hierarchy"></param>
+        /// <returns></returns>
         public static EnvDTE.Project ToEnvProject(this IVsHierarchy hierarchy)
         {
             EnvDTE.Project project = null;
@@ -56,7 +70,7 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
         /// <summary>
         /// Returns a list of files associated with the current node.
         /// </summary>
-        /// <param name="hier"></param>
+        /// <param name="pscp2"></param>
         /// <param name="itemId"></param>
         /// <returns></returns>
         private static IList<string> GetNodeFiles(this IVsSccProject2 pscp2, uint itemId)

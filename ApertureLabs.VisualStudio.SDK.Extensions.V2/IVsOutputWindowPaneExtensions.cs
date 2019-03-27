@@ -4,6 +4,9 @@ using System;
 
 namespace ApertureLabs.VisualStudio.SDK.Extensions
 {
+    /// <summary>
+    /// Extensions for <see cref="IVsOutputWindow"/>.
+    /// </summary>
     public static class IVsOutputWindowExtensions
     {
         /// <summary>
@@ -23,7 +26,6 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
             bool clearWithSolution)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            IVsOutputWindowPane pane;
 
             // Create a new pane.
             output.CreatePane(
@@ -33,8 +35,7 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
                 Convert.ToInt32(clearWithSolution));
 
             // Retrieve the new pane.
-            output.GetPane(ref paneGuid, out pane);
-
+            output.GetPane(ref paneGuid, out IVsOutputWindowPane pane);
             pane.OutputString($"Initialized {title} \n");
 
             return pane;

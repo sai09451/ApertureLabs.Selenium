@@ -131,8 +131,8 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            //if (!(ProjectHelpers.GetSelectedItem() is Project project))
-            //    return;
+            if (!(ProjectHelpers.GetSelectedItem() is Project project))
+                return;
 
             string message = String.Format(
                 CultureInfo.CurrentCulture,
