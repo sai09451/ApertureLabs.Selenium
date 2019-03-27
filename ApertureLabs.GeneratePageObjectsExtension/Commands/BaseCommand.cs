@@ -2,6 +2,7 @@
 using Microsoft;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
             ServiceProvider = serviceProvider
                 ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            SetupCommandsAsync();
+            ThreadHelper.JoinableTaskFactory.Run(SetupCommandsAsync);
         }
 
         /// <summary>
@@ -43,7 +44,11 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
             EventHandler beforeQueryHandler)
         {
             if (invokeHandler == null)
-                throw new ArgumentNullException("invokeHandler", "Missing action to perform");
+            {
+                throw new ArgumentNullException(
+                    nameof(invokeHandler),
+                    "Missing action to perform");
+            }
 
             OleMenuCommandService commandService =
                 await GetServiceAsync<OleMenuCommandService, IMenuCommandService>();

@@ -2,11 +2,17 @@
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ApertureLabs.GeneratePageObjectsExtension.CodeGeneration;
 using ApertureLabs.GeneratePageObjectsExtension.Helpers;
+using ApertureLabs.GeneratePageObjectsExtension.Models;
+using ApertureLabs.VisualStudio.SDK.Extensions;
+using ApertureLabs.VisualStudio.SDK.Extensions.V2;
 using EnvDTE;
 using Microsoft;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -35,27 +41,36 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
         /// </summary>
         private readonly AsyncPackage package;
 
+        private readonly DTE dte;
+        private readonly IVsSolution2 solutionService;
+        private readonly IVsOutputWindow outputWindowService;
+
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="GeneratePageObjectsCommand"/> class. Adds our command
         /// handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private GeneratePageObjectsCommand(AsyncPackage package)
+        private GeneratePageObjectsCommand(AsyncPackage package,
+            DTE dte,
+            IVsSolution2 solutionService,
+            IVsOutputWindow outputWindowService)
             : base(package)
         {
             this.package = package
                 ?? throw new ArgumentNullException(nameof(package));
+            this.dte = dte
+                ?? throw new ArgumentNullException(nameof(dte));
+            this.solutionService = solutionService
+                ?? throw new ArgumentNullException(nameof(solutionService));
+            this.outputWindowService = outputWindowService
+                ?? throw new ArgumentNullException(nameof(outputWindowService));
         }
 
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static GeneratePageObjectsCommand Instance
-        {
-            get;
-            private set;
-        }
+        public static GeneratePageObjectsCommand Instance { get; private set; }
 
         /// <summary>
         /// Initializes the singleton instance of the command.
@@ -68,32 +83,25 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
             await ThreadHelper.JoinableTaskFactory
                 .SwitchToMainThreadAsync(package.DisposalToken);
 
-            //var commandService = await package
-            //    .GetServiceAsync(typeof(IMenuCommandService))
-            //    as OleMenuCommandService;
-            //Assumes.Present(commandService);
+            var dte = await package
+                .GetServiceAsync(typeof(DTE))
+                as DTE;
+            Assumes.Present(dte);
 
-            //var dteService = await package
-            //    .GetServiceAsync(typeof(DTE))
-            //    as DTE;
-            //Assumes.Present(dteService);
+            var solutionService = await package
+                .GetServiceAsync(typeof(SVsSolution))
+                as IVsSolution2;
+            Assumes.Present(solutionService);
 
-            //var solutionService = await package
-            //    .GetServiceAsync(typeof(SVsSolution))
-            //    as IVsSolution2;
-            //Assumes.Present(solutionService);
+            var outputWindowService = await package
+                .GetServiceAsync(typeof(SVsOutputWindow))
+                as IVsOutputWindow;
+            Assumes.Present(outputWindowService);
 
-            //var outputPaneService = await package
-            //    .GetServiceAsync(typeof(SVsOutputWindow))
-            //    as IVsOutputWindow;
-            //Assumes.Present(outputPaneService);
-
-            //var shellService = await package
-            //    .GetServiceAsync(typeof(SVsUIShell))
-            //    as IVsUIShell;
-            //Assumes.Present(shellService);
-
-            Instance = new GeneratePageObjectsCommand(package);
+            Instance = new GeneratePageObjectsCommand(package,
+                dte,
+                solutionService,
+                outputWindowService);
         }
 
         /// <summary>
@@ -134,6 +142,65 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
             if (!(ProjectHelpers.GetSelectedItem() is Project project))
                 return;
 
+            var model = new SynchronizePageObjectsModel();
+            var pathToProject = new FileInfo(project.FullName).Directory.FullName;
+            var defaultProjectName = $"{project.Name}.PageObjects";
+            model.PathToNewProject = Path.Combine(
+                pathToProject,
+                defaultProjectName);
+            var projects = solutionService.GetProjects();
+
+            foreach (var p in projects)
+            {
+                model.AddAvailableProject(new AvailableProjectModel
+                {
+                    DisplayName = p.Name,
+                    UniqueName = p.UniqueName,
+                    IsNew = false
+                });
+            }
+
+            // Check if a default project already exists.
+            model.SelectedProjectIndex = model
+                .AvailableProjects
+                .Select((m, i) => new { Model = m, Index = i })
+                .FirstOrDefault(m => m.Model.DisplayName == defaultProjectName)
+                ?.Index
+                ?? 0;
+
+            // Now locate all razor files in the selected project.
+            foreach (var item in project.GetAllProjectItems())
+            {
+                var isRazorFile = Path.GetExtension(item.Name).Equals(
+                    "cshtml",
+                    StringComparison.Ordinal);
+
+                if (!isRazorFile)
+                    continue;
+
+                var fullPath = item.Properties
+                    ?.Item("FullPath")
+                    ?.Value
+                    ?.ToString();
+
+                var mappedFile = new MappedFileModel
+                {
+                    IsIgnored = false,
+                    IsNewFile = false,
+                    IsPageComponent = false,
+                    NewPath = String.Empty,
+                    OriginalPath = fullPath
+                };
+
+                model.AddMappedFile(mappedFile);
+            }
+
+            var modalWindow = new SynchronizePageObjectsDialog
+            {
+                DataContext = model
+            };
+            modalWindow.ShowModal();
+
             string message = String.Format(
                 CultureInfo.CurrentCulture,
                 "Inside {0}.MenuItemCallback()",
@@ -142,13 +209,28 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
             string title = "GeneratePageObjectsCommand";
 
             // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
+            var result = VsShellUtilities.ShowMessageBox(
                 package,
                 message,
                 title,
                 OLEMSGICON.OLEMSGICON_INFO,
                 OLEMSGBUTTON.OLEMSGBUTTON_OK,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+            if (result != VSConstants.S_OK)
+            {
+
+            }
+        }
+
+        private void GeneratePageObject(object model)
+        {
+            var template = new PageComponentTemplate(model);
+        }
+
+        private void GeneratePageComponent(object model)
+        {
+            var template = new PageObjectTemplate(model);
         }
     }
 }

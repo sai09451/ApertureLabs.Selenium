@@ -9,7 +9,6 @@
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Aperture Labs, Visual Studio SDK</PackageTags>
-    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

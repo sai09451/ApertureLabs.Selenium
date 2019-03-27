@@ -1,13 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio 15
+# Visual Studio 15
 VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50C75E3C-E247-435D-90D5-928396B79F31}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Selenium", "ApertureLabs.Selenium\ApertureLabs.Selenium.csproj", "{DBEBF7D3-E6FB-4068-B246-7E6B659D256C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Selenium.UnitTests", "ApertureLabs.Selenium.UnitTests\ApertureLabs.Selenium.UnitTests.csproj", "{66BB8B83-9E45-40F8-9AA0-E0E66C8A5FE2}"
@@ -15,6 +10,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockServer", "MockServer\MockServer.csproj", "{CE97A1EE-C487-4FBE-83BD-86C7BFD005B6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockServer.PageObjects", "MockServer.PageObjects\MockServer.PageObjects.csproj", "{2D9F0A54-AE77-4680-8EFA-F27D1640EB22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50C75E3C-E247-435D-90D5-928396B79F31}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Selenium.Analyzers", "ApertureLabs.Selenium.Analyzers\ApertureLabs.Selenium.Analyzers\ApertureLabs.Selenium.Analyzers.csproj", "{7C5F7BDC-35B2-43E7-91BB-EFC650B65267}"
 EndProject
@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.Selenium.Analy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.GeneratePageObjectsExtension", "ApertureLabs.GeneratePageObjectsExtension\ApertureLabs.GeneratePageObjectsExtension.csproj", "{C30CC004-77AB-404E-8E82-9FB1304BCDE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.VisualStudio.SDK.Extensions.V2", "ApertureLabs.VisualStudio.SDK.Extensions.V2\ApertureLabs.VisualStudio.SDK.Extensions.V2.csproj", "{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.VisualStudio.SDK.Extensions.V2", "ApertureLabs.VisualStudio.SDK.Extensions.V2\ApertureLabs.VisualStudio.SDK.Extensions.V2.csproj", "{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

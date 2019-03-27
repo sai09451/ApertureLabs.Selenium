@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using ApertureLabs.GeneratePageObjectsExtension.Commands;
 using EnvDTE;
 using Microsoft;
 using Microsoft.VisualStudio;
@@ -39,6 +40,13 @@ namespace ApertureLabs.GeneratePageObjectsExtension
     /// </para>
     /// </remarks>
     [Guid(GeneratePageObjectsPackage.PackageGuidString)]
+    //[CodeGeneratorRegistration(
+    //    generatorType: typeof(Nullable),
+    //    generatorName: "",
+    //    contextGuid: "",
+    //    GeneratesDesignTimeSource = true,
+    //    GeneratesSharedDesignTimeSource = true,
+    //    GeneratorRegKeyName = "")]
     [PackageRegistration(
         UseManagedResourcesOnly = true,
         AllowsBackgroundLoading = true)]
@@ -102,31 +110,8 @@ namespace ApertureLabs.GeneratePageObjectsExtension
             // background thread at this point. Do any initialization that
             // requires the UI thread after switching to the UI thread.
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-
             await base.InitializeAsync(cancellationToken, progress);
-
-            var mcs = await GetServiceAsync(typeof(OleMenuCommandService))
-                as OleMenuCommandService;
-            Assumes.Present(mcs);
-
-            var dteService = await GetServiceAsync(typeof(DTE))
-                as DTE;
-            Assumes.Present(dteService);
-
-            var solutionService = await GetServiceAsync(typeof(SVsSolution))
-                as IVsSolution2;
-            Assumes.Present(solutionService);
-
-            var projectTypeGuid = new Guid();
-            var idProjectGuid = new Guid();
-            solutionService.CreateProject(
-                rguidProjectType: ref projectTypeGuid,
-                lpszMoniker: "",
-                lpszLocation: "",
-                lpszName: "",
-                grfCreateFlags: 0,
-                iidProject: ref idProjectGuid,
-                ppProject: out IntPtr ppProject);
+            await GeneratePageObjectsCommand.InitializeAsync(this);
         }
 
         #endregion

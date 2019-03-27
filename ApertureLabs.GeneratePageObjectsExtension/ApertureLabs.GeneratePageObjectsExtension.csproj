@@ -63,22 +63,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\PageComponentTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PageComponentTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CodeGeneration\PageObjectTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PageObjectTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CodeGeneration\PartialPageComponentTemplate.cs" />
+    <Compile Include="CodeGeneration\PartialPageObjectTemplate.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\GeneratePageObjectsCommand.cs" />
     <Compile Include="GeneratePageObjectsPackage.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\ProjectHelpers.cs" />
+    <Compile Include="Models\AvailableProjectModel.cs" />
+    <Compile Include="Models\BaseTemplateModel.cs" />
+    <Compile Include="Models\MappedFileModel.cs" />
+    <Compile Include="Models\SynchronizePageObjectsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextTemplate.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TextTemplate.tt</DependentUpon>
+    <Compile Include="SynchronizePageObjectsDialog.xaml.cs">
+      <DependentUpon>SynchronizePageObjectsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VSCommandTable.vsct</DependentUpon>
     </Compile>
+    <Compile Include="WpfConverters\WpConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -88,13 +103,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CodeGeneration\PageComponentTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageComponentTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\PageObjectTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageObjectTemplate.cs</LastGenOutput>
+      <CustomToolNamespace>ApertureLabs.GeneratePageObjectsExtension.CodeGeneration</CustomToolNamespace>
+    </Content>
     <Content Include="Images\aperturelabslogoonly.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="TextTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TextTemplate.cs</LastGenOutput>
     </Content>
     <Content Include="VSCommandTable.vsct">
       <Generator>VsctGenerator</Generator>
@@ -102,8 +122,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ApertureLabs.VisualStudio.SDK.Extensions.V2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ApertureLabs.VisualStudio.SDK.Extensions.V2.1.0.0\lib\net472\ApertureLabs.VisualStudio.SDK.Extensions.V2.dll</HintPath>
+    <Reference Include="ApertureLabs.VisualStudio.SDK.Extensions.V2, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ApertureLabs.VisualStudio.SDK.Extensions.V2.1.0.1\lib\net472\ApertureLabs.VisualStudio.SDK.Extensions.V2.dll</HintPath>
     </Reference>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\EnvDTE.8.0.2\lib\net10\EnvDTE.dll</HintPath>
@@ -296,7 +316,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CodeGeneration\" />
+    <Page Include="SynchronizePageObjectsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
