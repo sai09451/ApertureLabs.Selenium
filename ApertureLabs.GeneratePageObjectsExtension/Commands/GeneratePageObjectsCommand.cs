@@ -189,7 +189,8 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
                     IsNewFile = false,
                     IsPageComponent = false,
                     NewPath = String.Empty,
-                    OriginalPath = fullPath
+                    OriginalPath = fullPath,
+                    ProjectItemReference = item
                 };
 
                 model.AddMappedFile(mappedFile);
@@ -199,28 +200,43 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
             {
                 DataContext = model
             };
+
             modalWindow.ShowModal();
 
-            string message = String.Format(
-                CultureInfo.CurrentCulture,
-                "Inside {0}.MenuItemCallback()",
-                GetType().FullName);
+            //string message = String.Format(
+            //    CultureInfo.CurrentCulture,
+            //    "Inside {0}.MenuItemCallback()",
+            //    GetType().FullName);
 
-            string title = "GeneratePageObjectsCommand";
+            //string title = "GeneratePageObjectsCommand";
 
-            // Show a message box to prove we were here
-            var result = VsShellUtilities.ShowMessageBox(
-                package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            //// Show a message box to prove we were here
+            //VsShellUtilities.ShowMessageBox(
+            //    package,
+            //    message,
+            //    title,
+            //    OLEMSGICON.OLEMSGICON_INFO,
+            //    OLEMSGBUTTON.OLEMSGBUTTON_OK,
+            //    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
 
-            if (result != VSConstants.S_OK)
-            {
+        private void SynchronizePageObjects(SynchronizePageObjectsModel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
 
-            }
+            var task = new SyncPageObjectsTask(model);
+
+            // Join main thread.
+            ThreadHelper.JoinableTaskFactory.RunAsyncAsVsTask(
+                    VsTaskRunContext.UIThreadNormalPriority,
+                    SyncPageObjectsTask)
+                .ContinueWith(0, task);
+        }
+
+        private Task<object> SyncPageObjectsTask(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask.ContinueWith(t => (object)43);
         }
 
         private void GeneratePageObject(object model)
@@ -231,6 +247,24 @@ namespace ApertureLabs.GeneratePageObjectsExtension.Commands
         private void GeneratePageComponent(object model)
         {
             var template = new PageObjectTemplate(model);
+        }
+
+        private class SyncPageObjectsTask : IVsTaskBody
+        {
+            private readonly SynchronizePageObjectsModel model;
+
+            public SyncPageObjectsTask(SynchronizePageObjectsModel model)
+            {
+                this.model = model;
+            }
+
+            public void DoWork(IVsTask pTask,
+                uint dwCount,
+                IVsTask[] pParentTasks,
+                out object pResult)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
