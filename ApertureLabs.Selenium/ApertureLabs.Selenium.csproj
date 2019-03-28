@@ -80,8 +80,4 @@
     </None>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetDir)..\*.nupkg&quot; &quot;%USERPROFILE%\Local Nuget Repo\&quot; /y" />
-  </Target>
-
 </Project>

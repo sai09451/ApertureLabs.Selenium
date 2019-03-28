@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable
+	xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidGeneratePageObjectsPackage">
+    <Groups>
+      <Group guid="guidGeneratePageObjectsCmdSet" id="GenerateSyncPageObjectsGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_WEBPROJECT"/>
+      </Group>
+    </Groups>
+    <Buttons>
+      <Button guid="guidGeneratePageObjectsCmdSet" id="cmdidGeneratePageObjectsCommand" priority="0x0101" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_UNLOADRELOAD" />
+        <!--<CommandFlag>DynamicVisibility</CommandFlag>-->
+        <!--<CommandFlag>DefaultInvisible</CommandFlag>-->
+        <Strings>
+          <ButtonText>Generate or sync page objects</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <CommandPlacements>
+    <CommandPlacement guid="guidGeneratePageObjectsCmdSet" id="cmdidGeneratePageObjectsCommand" priority="0x0150">
+      <Parent guid="guidGeneratePageObjectsCmdSet" id="GenerateSyncPageObjectsGroup" />
+    </CommandPlacement>
+  </CommandPlacements>
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidGeneratePageObjectsPackage" value="{624bd8e2-29c6-4e86-a4c3-16f0af710f04}" />
+
+    <GuidSymbol name="guidGeneratePageObjectsCmdSet" value="{28086d5f-a1ae-49c8-b3b9-e854c4ee13fa}">
+      <IDSymbol name="GenerateSyncPageObjectsGroup" value="0x1020" />
+      <IDSymbol name="cmdidGeneratePageObjectsCommand" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

@@ -1,4 +1,5 @@
 ﻿using EnvDTE;
+using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio;
 using System;
 using System.Collections.Generic;
@@ -15,27 +16,29 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
         /// Gets all project items.
         /// </summary>
         /// <param name="project">The project.</param>
-        /// <param name="includeFolders">if set to <c>true</c> [include folders].</param>
+        /// <param name="filesOnly">if set to <c>true</c> [files only].</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">project</exception>
+        /// <exception cref="System.ArgumentNullException">project</exception>
         public static IEnumerable<ProjectItem> GetAllProjectItems(
             this Project project,
-            bool includeFolders = false)
+            bool filesOnly = true)
         {
             if (project == null)
                 throw new ArgumentNullException(nameof(project));
 
             foreach (ProjectItem projectItem in project.ProjectItems)
             {
+                //HierarchyUtilities.IsPhysicalFile(projectItem.ExtenderCATID);
+
                 if (projectItem.IsFolder())
                 {
-                    if (includeFolders)
+                    if (!filesOnly)
                         yield return projectItem;
 
-                    foreach (var item in GetAllProjectItems(projectItem))
+                    foreach (var item in GetAllProjectItems(projectItem, filesOnly))
                         yield return item;
                 }
-                else
+                else if (projectItem.IsFile())
                 {
                     yield return projectItem;
                 }
@@ -46,27 +49,27 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
         /// Gets all project items.
         /// </summary>
         /// <param name="projectItem">The project item.</param>
-        /// <param name="includeFolders">if set to <c>true</c> [include folders].</param>
+        /// <param name="filesOnly">if set to <c>true</c> [files only].</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">projectItem</exception>
+        /// <exception cref="System.ArgumentNullException">projectItem</exception>
         public static IEnumerable<ProjectItem> GetAllProjectItems(
             this ProjectItem projectItem,
-            bool includeFolders = false)
+            bool filesOnly = true)
         {
             if (projectItem == null)
                 throw new ArgumentNullException(nameof(projectItem));
 
             foreach (ProjectItem p in projectItem.ProjectItems)
             {
-                if (p.IsFolder())
+                if (projectItem.IsFolder())
                 {
-                    if (includeFolders)
-                        yield return p;
+                    if (!filesOnly)
+                        yield return projectItem;
 
-                    foreach (var item in GetAllProjectItems(projectItem))
+                    foreach (var item in GetAllProjectItems(projectItem, filesOnly))
                         yield return item;
                 }
-                else
+                else if (projectItem.IsFile())
                 {
                     yield return projectItem;
                 }
@@ -90,6 +93,20 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
             {
                 case VSConstants.ItemTypeGuid.PhysicalFolder_string:
                 case VSConstants.ItemTypeGuid.VirtualFolder_string:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsFile(this ProjectItem projectItem)
+        {
+            if (projectItem == null)
+                throw new ArgumentNullException(nameof(projectItem));
+
+            switch (projectItem.Kind)
+            {
+                case VSConstants.ItemTypeGuid.PhysicalFile_string:
                     return true;
                 default:
                     return false;

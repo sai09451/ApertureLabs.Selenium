@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio 15
+# Visual Studio 15
 VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50C75E3C-E247-435D-90D5-928396B79F31}"
@@ -22,9 +22,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Selenium.Analy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.Selenium.Analyzers.Vsix", "ApertureLabs.Selenium.Analyzers\ApertureLabs.Selenium.Analyzers.Vsix\ApertureLabs.Selenium.Analyzers.Vsix.csproj", "{082E9706-9DE8-4975-B43B-62734F232AC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.GeneratePageObjectsExtension", "ApertureLabs.GeneratePageObjectsExtension\ApertureLabs.GeneratePageObjectsExtension.csproj", "{C30CC004-77AB-404E-8E82-9FB1304BCDE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.VisualStudio.SDK.Extensions.V2", "ApertureLabs.VisualStudio.SDK.Extensions.V2\ApertureLabs.VisualStudio.SDK.Extensions.V2.csproj", "{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.VisualStudio.SDK.Extensions.V2", "ApertureLabs.VisualStudio.SDK.Extensions.V2\ApertureLabs.VisualStudio.SDK.Extensions.V2.csproj", "{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoVSIXProject", "DemoVSIXProject\DemoVSIXProject.csproj", "{CA19B98F-C279-47F0-A190-90F912507A31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.VisualStudio.GeneratePageObjectsExtension", "ApertureLabs.VisualStudio.GeneratePageObjectsExtension\ApertureLabs.VisualStudio.GeneratePageObjectsExtension.csproj", "{C2533C95-35B2-47D0-B8A6-06F50EE20EF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,14 +62,18 @@ Global
 		{082E9706-9DE8-4975-B43B-62734F232AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{082E9706-9DE8-4975-B43B-62734F232AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{082E9706-9DE8-4975-B43B-62734F232AC3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C30CC004-77AB-404E-8E82-9FB1304BCDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C30CC004-77AB-404E-8E82-9FB1304BCDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C30CC004-77AB-404E-8E82-9FB1304BCDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C30CC004-77AB-404E-8E82-9FB1304BCDE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08F0B6F9-67B5-46FE-B62E-B4ED07A0B4B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA19B98F-C279-47F0-A190-90F912507A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA19B98F-C279-47F0-A190-90F912507A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA19B98F-C279-47F0-A190-90F912507A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA19B98F-C279-47F0-A190-90F912507A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2533C95-35B2-47D0-B8A6-06F50EE20EF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2533C95-35B2-47D0-B8A6-06F50EE20EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2533C95-35B2-47D0-B8A6-06F50EE20EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2533C95-35B2-47D0-B8A6-06F50EE20EF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
