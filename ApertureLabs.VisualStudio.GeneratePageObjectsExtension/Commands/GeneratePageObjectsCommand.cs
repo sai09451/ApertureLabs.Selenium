@@ -1,5 +1,6 @@
 ﻿using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.CodeGeneration;
 using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models;
+using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services;
 using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Xaml;
 using ApertureLabs.VisualStudio.SDK.Extensions;
 using ApertureLabs.VisualStudio.SDK.Extensions.V2;
@@ -45,6 +46,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
         private readonly IVsOutputWindow outputWindowService;
         private readonly IVsThreadedWaitDialogFactory threadedWaitDialogFactory;
         private readonly IVsMonitorSelection monitorSelectionService;
+        private readonly IGeneratePageObjectsService generatePageObjectsService;
         private SynchronizePageObjectsDialog dialog;
 
         /// <summary>
@@ -58,13 +60,14 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
         /// <param name="outputWindowService">The output window service.</param>
         /// <param name="threadedWaitDialogFactory">The threaded wait dialog factory.</param>
         /// <param name="monitorSelectionService">The montior selection service.</param>
+        /// <param name="generatePageObjectsService">The generate page objects service.</param>
         private GeneratePageObjectsCommand(AsyncPackage package,
             DTE dte,
             IVsSolution2 solutionService,
             IVsOutputWindow outputWindowService,
             IVsThreadedWaitDialogFactory threadedWaitDialogFactory,
             IVsMonitorSelection monitorSelectionService,
-            IVsPackageInstallerServices installerServices)
+            IGeneratePageObjectsService generatePageObjectsService)
             : base(package)
         {
             this.package = package
@@ -79,6 +82,8 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
                 ?? throw new ArgumentNullException(nameof(threadedWaitDialogFactory));
             this.monitorSelectionService = monitorSelectionService
                 ?? throw new ArgumentNullException(nameof(monitorSelectionService));
+            this.generatePageObjectsService = generatePageObjectsService
+                ?? throw new ArgumentNullException(nameof(generatePageObjectsService));
         }
 
         /// <summary>
@@ -124,9 +129,9 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
                 .GetServiceAsync(typeof(SVsComponentModelHost))
                 as IVsComponentModelHost;
 
-            var packageInstallerService = await package
-                .GetServiceAsync(typeof(IVsPackageInstallerServices))
-                as IVsPackageInstallerServices;
+            var generatePageObjectsService = await package
+                .GetServiceAsync(typeof(SGeneratePageObjectsService))
+                as IGeneratePageObjectsService;
 
             Instance = new GeneratePageObjectsCommand(package,
                 dte,
@@ -134,7 +139,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
                 outputWindowService,
                 threadedWaitDialogFactory,
                 monitorSelectionService,
-                packageInstallerService);
+                generatePageObjectsService);
         }
 
         /// <summary>
@@ -175,69 +180,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
             if (!(monitorSelectionService.GetSelectedItem() is Project project))
                 return;
 
-            var model = new SynchronizePageObjectsModel();
-            var pathToProject = new FileInfo(project.FullName).Directory.FullName;
-            var defaultProjectName = $"{project.Name}.PageObjects";
-            var newProject = model.AvailableProjects[0];
-            model.DefaultNamespace = defaultProjectName;
-
-            newProject.FullPath = Path.Combine(
-                pathToProject,
-                defaultProjectName);
-
-            model.OriginalProjectName = project.Name;
-
-            var projects = solutionService.GetProjects();
-
-            foreach (var p in projects)
-            {
-                model.AddAvailableProject(new AvailableProjectModel
-                {
-                    DisplayName = p.Name,
-                    FullPath = p.FullName,
-                    IsNew = false,
-                    UniqueName = p.UniqueName,
-                });
-            }
-
-            // Check if a default project already exists.
-            model.SelectedProjectIndex = model
-                .AvailableProjects
-                .Select((m, i) => new { Model = m, Index = i })
-                .FirstOrDefault(m => m.Model.DisplayName == defaultProjectName)
-                ?.Index
-                ?? 0;
-
-            // Now locate all razor files in the selected project.
-            foreach (var item in project.GetAllProjectItems())
-            {
-                var name = item.Name;
-
-                var extension = Path.GetExtension(item.Name);
-                var isRazorFile = extension.Equals(
-                    ".cshtml",
-                    StringComparison.Ordinal);
-
-                if (!isRazorFile)
-                    continue;
-
-                var fullPath = item.Properties
-                    ?.Item("FullPath")
-                    ?.Value
-                    ?.ToString();
-
-                var mappedFile = new MappedFileModel
-                {
-                    IsIgnored = false,
-                    IsNewFile = false,
-                    InheritFrom = "IPageComponent",
-                    NewPath = String.Empty,
-                    OriginalPath = fullPath,
-                    ProjectItemReference = item
-                };
-
-                model.AddMappedFile(mappedFile);
-            }
+            var model = generatePageObjectsService.GetSyncModel(project);
 
             dialog = new SynchronizePageObjectsDialog
             {

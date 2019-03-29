@@ -10,32 +10,29 @@
                          Width="500"
                          Height="500">
     <platformUi:DialogWindow.Resources>
-        <!--<model:SynchronizePageObjectsModel x:Key="Model"/>-->
+        <model:SynchronizePageObjectsModel x:Key="Model" />
         <BooleanToVisibilityConverter x:Key="boolToVis" />
-        <DataTemplate x:Key="originalMappedFileTemplate">
-            <StackPanel Orientation="Horizontal">
-                <CheckBox />
-                <Label Content="{Binding Path=OriginalPath}" />
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="newMappedFileTemplate">
-            <StackPanel Orientation="Horizontal">
-                <ComboBox SelectedIndex="0">
-                    <ComboBoxItem Content="IPageObject" />
-                    <ComboBoxItem Content="IPageComponent" />
-                    <ComboBoxItem Content="BasePageObject" />
-                    <ComboBoxItem Content="IFluidPageObject" />
-                    <ComboBoxItem Content="FluidPageObject" />
-                    <ComboBoxItem Content="StaticPageObject" />
-                    <ComboBoxItem Content="ParameterPageObject" />
-                </ComboBox>
-                <Label Content="{Binding Path=NewPath}" />
-            </StackPanel>
-        </DataTemplate>
+        <Style TargetType="ListViewItem">
+            <Setter Property="Focusable" Value="false" />
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="LightBlue" />
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="5" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="5" />
+        </Style>
     </platformUi:DialogWindow.Resources>
-    <!--<platformUi:DialogWindow.DataContext>
+    <platformUi:DialogWindow.DataContext>
         <Binding Source="{StaticResource Model}"/>
-    </platformUi:DialogWindow.DataContext>-->
+    </platformUi:DialogWindow.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -94,12 +91,11 @@
                               IsSynchronizedWithCurrentItem="True"
                               DisplayMemberPath="DisplayName" />
                 </StackPanel>
-                <StackPanel Name="NewProjectPath" Orientation="Vertical">
+                <StackPanel Name="NewProject_StackPanel" Orientation="Vertical">
                     <StackPanel.Visibility>
-                        <Binding Converter="{StaticResource boolToVis}">
-                            <Binding.Path>SelectedProject.IsNew</Binding.Path>
-                            <Binding.FallbackValue>Collapsed</Binding.FallbackValue>
-                        </Binding>
+                        <Binding Converter="{StaticResource boolToVis}"
+                                 Path="SelectedProject.IsNew"
+                                 FallbackValue="Collapsed" />
                     </StackPanel.Visibility>
                     <StackPanel Orientation="Vertical">
                         <Label Content="Project Name" />
@@ -112,8 +108,8 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Text="{Binding Path=FullPath}" />
-                            <Button Grid.Column="1">Choose Folder</Button>
+                            <TextBox Grid.Column="0" Text="{Binding Path=SelectedProject.FullPath}" />
+                            <Button Name="ChooseFolder_Button" Grid.Column="1" Click="ChooseFolder_Button_Click">Choose Folder</Button>
                         </Grid>
                         <StackPanel Orientation="Vertical">
                             <Label Content="Default Namespace">
@@ -129,26 +125,55 @@
         </Border>
         <Border Grid.Row="1" Background="#FFE1E1E1" Padding="5">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
-                        <GroupBox Grid.Column="0" Header="Original Files">
-                            <ListView Name="OriginalFiles_ListView"
-                                      ItemTemplate="{StaticResource originalMappedFileTemplate}"
-                                      ItemsSource="{Binding Path=FileMap}" />
-                        </GroupBox>
-                    </ScrollViewer>
-                    <GroupBox Grid.Column="1" Header="Mapped Files">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
-                            <ListView Name="NewFiles_ListView"
-                                      ItemTemplate="{StaticResource newMappedFileTemplate}"
-                                      ItemsSource="{Binding Path=FileMap}" />
-                        </ScrollViewer>
-                    </GroupBox>
-                </Grid>
+                <GroupBox Grid.Column="0" Header="File Map">
+                    <ListView Name="OriginalFiles_ListView" ItemsSource="{Binding Path=FileMap}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="Auto">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Ignore">Ignore</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Ignore}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Original file path">Original file path</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding Path=OriginalPathRelativeToProject}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Type">Type</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Path=AvailableComponentTypeNames}"
+                                                      SelectedIndex="{Binding Path=SelectedInheritFromIndex}"  />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="New file path">New file path</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Path=NewPath}" Padding="5" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
             </ScrollViewer>
         </Border>
         <Border Grid.Row="2" Background="#FFE1E1E1" Padding="5">

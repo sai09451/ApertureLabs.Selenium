@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands;
+using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services;
 using EnvDTE;
 using Microsoft;
 using Microsoft.VisualStudio;
@@ -14,6 +15,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
 namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension
@@ -61,6 +63,9 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension
     [ProvideMenuResource(
         resourceID: "Menus.ctmenu",
         version: 1)]
+    [ProvideService(
+        serviceType: typeof(SGeneratePageObjectsService),
+        IsAsyncQueryable = true)]
     [SuppressMessage(
         category: "StyleCop.CSharp.DocumentationRules",
         checkId: "SA1650:ElementDocumentationMustBeSpelledCorrectly",
@@ -111,7 +116,26 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension
             // requires the UI thread after switching to the UI thread.
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await base.InitializeAsync(cancellationToken, progress);
+
+            AddService(
+                typeof(SGeneratePageObjectsService),
+                CreateServiceGeneratePageObjectsServiceAsync);
+
             await GeneratePageObjectsCommand.InitializeAsync(this);
+        }
+
+        private async Task<object> CreateServiceGeneratePageObjectsServiceAsync(
+            IAsyncServiceContainer container,
+            CancellationToken cancellationToken,
+            Type serviceType)
+        {
+            if (typeof(SGeneratePageObjectsService) != serviceType)
+                return null;
+
+            var service = new GeneratePageObjectsService();
+            await service.InitializeServiceAsync(cancellationToken);
+
+            return service;
         }
 
         #endregion

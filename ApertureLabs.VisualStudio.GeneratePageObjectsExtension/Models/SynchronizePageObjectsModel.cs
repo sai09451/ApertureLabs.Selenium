@@ -17,6 +17,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
         private readonly List<AvailableProjectModel> availableProjects;
         private readonly List<MappedFileModel> fileMap;
 
+        private List<string> availableComponentTypeNames;
         private string pageObjectLibraryName;
         private bool useAreas;
         private int selectedProjectIndex;
@@ -29,6 +30,13 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 
         public SynchronizePageObjectsModel()
         {
+            availableComponentTypeNames = new List<string>
+            {
+                "PageObject",
+                "IPageObject",
+                "PageComponent",
+                "IPageComponent"
+            };
             availableProjects = new List<AvailableProjectModel>
             {
                 new AvailableProjectModel
@@ -93,8 +101,24 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
                 if (selectedProjectIndex == value)
                     return;
 
+                var selectedProj = SelectedProject;
+
+                // Updated all file mappings.
+                foreach (var fileMap in FileMap)
+                {
+                    var newPath = Path.GetFullPath(
+                        Path.Combine(
+                            selectedProj.FullPath,
+                            fileMap.OriginalPathRelativeToProject,
+                            fileMap.FileName));
+
+                    fileMap.NewPath = newPath;
+                }
+
                 selectedProjectIndex = value;
                 RaisePropertyChange();
+                RaisePropertyChange(nameof(FileMap));
+                RaisePropertyChange(nameof(SelectedProject));
             }
         }
 
@@ -123,6 +147,16 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
         }
 
         public EnvDTE.DTE DTE { get; set; }
+
+        public IReadOnlyList<string> AvailableComponentTypeNames
+        {
+            get => availableComponentTypeNames;
+            set
+            {
+                availableComponentTypeNames = (value ?? new List<string>()).ToList();
+                RaisePropertyChange();
+            }
+        }
 
         #endregion
 
@@ -201,7 +235,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
         {
             return fileMap.FirstOrDefault(
                 m => String.Equals(
-                    m.OriginalPath,
+                    m.OriginalPathRelativeToProject,
                     originalFilePath,
                     StringComparison.Ordinal));
         }

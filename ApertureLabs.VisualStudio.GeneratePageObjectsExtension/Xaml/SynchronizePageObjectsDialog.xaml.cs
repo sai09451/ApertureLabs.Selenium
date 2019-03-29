@@ -59,5 +59,10 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Xaml
         {
             Close();
         }
+
+        private void ChooseFolder_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Open file dialog.
+        }
     }
 }
