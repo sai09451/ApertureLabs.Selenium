@@ -15,12 +15,21 @@
         <DataTemplate x:Key="originalMappedFileTemplate">
             <StackPanel Orientation="Horizontal">
                 <CheckBox />
-                <Label Content="Path/To/File" />
+                <Label Content="{Binding Path=OriginalPath}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="newMappedFileTemplate">
             <StackPanel Orientation="Horizontal">
-                <Label Content="New/Path/To/File" />
+                <ComboBox SelectedIndex="0">
+                    <ComboBoxItem Content="IPageObject" />
+                    <ComboBoxItem Content="IPageComponent" />
+                    <ComboBoxItem Content="BasePageObject" />
+                    <ComboBoxItem Content="IFluidPageObject" />
+                    <ComboBoxItem Content="FluidPageObject" />
+                    <ComboBoxItem Content="StaticPageObject" />
+                    <ComboBoxItem Content="ParameterPageObject" />
+                </ComboBox>
+                <Label Content="{Binding Path=NewPath}" />
             </StackPanel>
         </DataTemplate>
     </platformUi:DialogWindow.Resources>
@@ -128,13 +137,15 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                         <GroupBox Grid.Column="0" Header="Original Files">
                             <ListView Name="OriginalFiles_ListView"
-                                      ItemTemplate="{StaticResource originalMappedFileTemplate}"/>
+                                      ItemTemplate="{StaticResource originalMappedFileTemplate}"
+                                      ItemsSource="{Binding Path=FileMap}" />
                         </GroupBox>
                     </ScrollViewer>
                     <GroupBox Grid.Column="1" Header="Mapped Files">
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                             <ListView Name="NewFiles_ListView"
-                                      ItemTemplate="{StaticResource newMappedFileTemplate}"/>
+                                      ItemTemplate="{StaticResource newMappedFileTemplate}"
+                                      ItemsSource="{Binding Path=FileMap}" />
                         </ScrollViewer>
                     </GroupBox>
                 </Grid>

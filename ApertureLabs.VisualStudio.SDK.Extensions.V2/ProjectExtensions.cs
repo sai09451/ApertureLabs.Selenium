@@ -28,9 +28,7 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
 
             foreach (ProjectItem projectItem in project.ProjectItems)
             {
-                //HierarchyUtilities.IsPhysicalFile(projectItem.ExtenderCATID);
-
-                if (projectItem.IsFolder())
+                if (projectItem.IsFolder() || projectItem.Kind == null)
                 {
                     if (!filesOnly)
                         yield return projectItem;
@@ -61,17 +59,17 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
 
             foreach (ProjectItem p in projectItem.ProjectItems)
             {
-                if (projectItem.IsFolder())
+                if (p.IsFolder())
                 {
                     if (!filesOnly)
-                        yield return projectItem;
+                        yield return p;
 
-                    foreach (var item in GetAllProjectItems(projectItem, filesOnly))
+                    foreach (var item in GetAllProjectItems(p, filesOnly))
                         yield return item;
                 }
-                else if (projectItem.IsFile())
+                else if (p.IsFile())
                 {
-                    yield return projectItem;
+                    yield return p;
                 }
             }
         }

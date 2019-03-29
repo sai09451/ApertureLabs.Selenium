@@ -8,6 +8,7 @@ using Microsoft;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using NuGet.VisualStudio;
 using System;
 using System.IO;
 using System.Linq;
@@ -62,7 +63,8 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
             IVsSolution2 solutionService,
             IVsOutputWindow outputWindowService,
             IVsThreadedWaitDialogFactory threadedWaitDialogFactory,
-            IVsMonitorSelection monitorSelectionService)
+            IVsMonitorSelection monitorSelectionService,
+            IVsPackageInstallerServices installerServices)
             : base(package)
         {
             this.package = package
@@ -118,12 +120,21 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
                 .GetServiceAsync(typeof(SVsShellMonitorSelection))
                 as IVsMonitorSelection;
 
+            var componentModel = await package
+                .GetServiceAsync(typeof(SVsComponentModelHost))
+                as IVsComponentModelHost;
+
+            var packageInstallerService = await package
+                .GetServiceAsync(typeof(IVsPackageInstallerServices))
+                as IVsPackageInstallerServices;
+
             Instance = new GeneratePageObjectsCommand(package,
                 dte,
                 solutionService,
                 outputWindowService,
                 threadedWaitDialogFactory,
-                monitorSelectionService);
+                monitorSelectionService,
+                packageInstallerService);
         }
 
         /// <summary>
@@ -168,6 +179,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
             var pathToProject = new FileInfo(project.FullName).Directory.FullName;
             var defaultProjectName = $"{project.Name}.PageObjects";
             var newProject = model.AvailableProjects[0];
+            model.DefaultNamespace = defaultProjectName;
 
             newProject.FullPath = Path.Combine(
                 pathToProject,
@@ -201,8 +213,9 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
             {
                 var name = item.Name;
 
-                var isRazorFile = Path.GetExtension(item.Name).Equals(
-                    "cshtml",
+                var extension = Path.GetExtension(item.Name);
+                var isRazorFile = extension.Equals(
+                    ".cshtml",
                     StringComparison.Ordinal);
 
                 if (!isRazorFile)
@@ -217,7 +230,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
                 {
                     IsIgnored = false,
                     IsNewFile = false,
-                    IsPageComponent = false,
+                    InheritFrom = "IPageComponent",
                     NewPath = String.Empty,
                     OriginalPath = fullPath,
                     ProjectItemReference = item
