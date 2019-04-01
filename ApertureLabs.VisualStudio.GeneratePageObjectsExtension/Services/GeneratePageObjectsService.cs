@@ -71,112 +71,115 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
             Assumes.Present(monitorSelectionService);
         }
 
-        public SynchronizePageObjectsModel GetSyncModel(Project project)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
+        //public SynchronizePageObjectsModel GetSyncModel(Project project)
+        //{
+        //    ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (project == null)
-                throw new ArgumentNullException(nameof(project));
+        //    if (project == null)
+        //        throw new ArgumentNullException(nameof(project));
 
-            var model = new SynchronizePageObjectsModel();
+        //    var model = new SynchronizePageObjectsModel(project,
+        //        dte,
+        //        availableComponentTypeNames,
+        //        solutionService);
 
-            // Get the solution folder.
-            var solutionDir = new FileInfo(dte.Solution.FullName)
-                .Directory
-                .FullName;
+        //    // Get the solution folder.
+        //    var solutionDir = new FileInfo(dte.Solution.FullName)
+        //        .Directory
+        //        .FullName;
 
-            var defaultProjectName = $"{project.Name}.PageObjects";
-            model.DefaultNamespace = defaultProjectName;
-            model.OriginalProjectName = project.Name;
-            var newProject = model.AvailableProjects[0];
-            model.AvailableComponentTypeNames = AvailableComponentTypeNames();
+        //    var defaultProjectName = $"{project.Name}.PageObjects";
+        //    model.DefaultNamespace = defaultProjectName;
+        //    model.OriginalProjectName = project.Name;
+        //    var newProject = model.AvailableProjects[0];
+        //    model.AvailableComponentTypeNames = AvailableComponentTypeNames();
 
-            newProject.FullPath = Path.Combine(
-                solutionDir,
-                defaultProjectName);
+        //    newProject.FullPath = Path.Combine(
+        //        solutionDir,
+        //        defaultProjectName);
 
-            var projects = solutionService.GetProjects();
+        //    var projects = solutionService.GetProjects();
 
-            foreach (var p in projects)
-            {
-                model.AddAvailableProject(new AvailableProjectModel
-                {
-                    DisplayName = p.Name,
-                    FullPath = p.FullName,
-                    IsNew = false,
-                    UniqueName = p.UniqueName,
-                });
-            }
+        //    foreach (var p in projects)
+        //    {
+        //        model.AddAvailableProject(new AvailableProjectModel
+        //        {
+        //            DisplayName = p.Name,
+        //            FullPath = p.FullName,
+        //            IsNew = false,
+        //            UniqueName = p.UniqueName,
+        //        });
+        //    }
 
-            // Check if a default project already exists.
-            model.SelectedProjectIndex = model
-                .AvailableProjects
-                .Select((m, i) => new { Model = m, Index = i })
-                .FirstOrDefault(m => m.Model.DisplayName == defaultProjectName)
-                ?.Index
-                ?? 0;
+        //    // Check if a default project already exists.
+        //    model.SelectedProjectIndex = model
+        //        .AvailableProjects
+        //        .Select((m, i) => new { Model = m, Index = i })
+        //        .FirstOrDefault(m => m.Model.DisplayName == defaultProjectName)
+        //        ?.Index
+        //        ?? 0;
 
-            // Retrieve the project folder path.
-            var projectPath = new Uri(
-                new FileInfo(project.FullName).Directory.FullName);
+        //    // Retrieve the project folder path.
+        //    var projectPath = new Uri(
+        //        new FileInfo(project.FullName).Directory.FullName);
 
-            var selectedProjectPath = model.SelectedProject.FullPath;
+        //    var selectedProjectPath = model.SelectedProject.FullPath;
 
-            // Now locate all razor files in the selected project.
-            foreach (var item in project.GetAllProjectItems())
-            {
-                var name = item.Name;
+        //    // Now locate all razor files in the selected project.
+        //    foreach (var item in project.GetAllProjectItems())
+        //    {
+        //        var name = item.Name;
 
-                var extension = Path.GetExtension(item.Name);
-                var isRazorFile = extension.Equals(
-                    ".cshtml",
-                    StringComparison.Ordinal);
+        //        var extension = Path.GetExtension(item.Name);
+        //        var isRazorFile = extension.Equals(
+        //            ".cshtml",
+        //            StringComparison.Ordinal);
 
-                if (!isRazorFile)
-                    continue;
+        //        if (!isRazorFile)
+        //            continue;
 
-                var fullPath = new Uri(item.Properties
-                    ?.Item("FullPath")
-                    ?.Value
-                    ?.ToString());
+        //        var fullPath = new Uri(item.Properties
+        //            ?.Item("FullPath")
+        //            ?.Value
+        //            ?.ToString());
 
-                var relativePath = projectPath
-                    .MakeRelativeUri(fullPath)
-                    .ToString();
+        //        var relativePath = projectPath
+        //            .MakeRelativeUri(fullPath)
+        //            .ToString();
 
-                var seperator = Path.DirectorySeparatorChar;
+        //        var seperator = Path.DirectorySeparatorChar;
 
-                if (!relativePath.Contains(seperator))
-                    seperator = Path.AltDirectorySeparatorChar;
+        //        if (!relativePath.Contains(seperator))
+        //            seperator = Path.AltDirectorySeparatorChar;
 
-                // This is to remove the 'base' dir of the relative path.
-                relativePath = relativePath.Remove(
-                    0,
-                    relativePath.IndexOf(seperator) + 1);
+        //        // This is to remove the 'base' dir of the relative path.
+        //        relativePath = relativePath.Remove(
+        //            0,
+        //            relativePath.IndexOf(seperator) + 1);
 
-                // Calling Path.GetFullPath will normalize the path.
-                var newFullPath = Path.GetFullPath(
-                    Path.Combine(
-                        selectedProjectPath,
-                        relativePath));
+        //        // Calling Path.GetFullPath will normalize the path.
+        //        var newFullPath = Path.GetFullPath(
+        //            Path.Combine(
+        //                selectedProjectPath,
+        //                relativePath));
 
-                var mappedFile = new MappedFileModel
-                {
-                    IsIgnored = false,
-                    IsNewFile = false,
-                    SelectedInheritFromIndex = 0,
-                    NewPath = newFullPath,
-                    OriginalPathRelativeToProject = relativePath,
-                    FileName = item.Name,
-                    ProjectItemReference = item,
-                    AvailableComponentTypeNames = model.AvailableComponentTypeNames
-                };
+        //        var mappedFile = new MappedFileModel
+        //        {
+        //            IsIgnored = false,
+        //            IsNewFile = false,
+        //            SelectedComponentTypeNameIndex = 0,
+        //            NewPath = newFullPath,
+        //            OriginalPathRelativeToProject = relativePath,
+        //            FileName = item.Name,
+        //            ProjectItemReference = item,
+        //            AvailableComponentTypeNames = model.AvailableComponentTypeNames
+        //        };
 
-                model.AddMappedFile(mappedFile);
-            }
+        //        model.AddMappedFile(mappedFile);
+        //    }
 
-            return model;
-        }
+        //    return model;
+        //}
 
         public string DetermineComponentType(ProjectItem projectItem)
         {

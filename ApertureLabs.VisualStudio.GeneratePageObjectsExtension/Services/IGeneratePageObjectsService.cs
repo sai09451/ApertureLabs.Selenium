@@ -8,13 +8,6 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
     public interface IGeneratePageObjectsService
     {
         /// <summary>
-        /// Gets the synchronize model.
-        /// </summary>
-        /// <param name="project">The project.</param>
-        /// <returns></returns>
-        SynchronizePageObjectsModel GetSyncModel(Project project);
-
-        /// <summary>
         /// Initializes the service asynchronous.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>

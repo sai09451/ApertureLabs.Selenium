@@ -156,7 +156,7 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <ComboBox ItemsSource="{Binding Path=AvailableComponentTypeNames}"
-                                                      SelectedIndex="{Binding Path=SelectedInheritFromIndex}"  />
+                                                      SelectedIndex="{Binding Path=SelectedComponentTypeNameIndex}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

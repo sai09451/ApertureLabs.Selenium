@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.VisualStudio;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -180,7 +181,16 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
             if (!(monitorSelectionService.GetSelectedItem() is Project project))
                 return;
 
-            var model = generatePageObjectsService.GetSyncModel(project);
+            var availableComponentTypeNames = new List<string>
+            {
+                "PageObject",
+                "PageComponent"
+            };
+
+            var model = new SynchronizePageObjectsModel(project,
+                dte,
+                availableComponentTypeNames,
+                solutionService);
 
             dialog = new SynchronizePageObjectsDialog
             {

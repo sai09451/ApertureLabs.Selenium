@@ -1,4 +1,8 @@
-﻿using System;
+﻿using ApertureLabs.VisualStudio.SDK.Extensions;
+using ApertureLabs.VisualStudio.SDK.Extensions.V2;
+using EnvDTE;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -28,8 +32,23 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 
         #region Constructor
 
-        public SynchronizePageObjectsModel()
+        public SynchronizePageObjectsModel(
+            Project project,
+            DTE dte,
+            IReadOnlyList<string> availableComponentTypeNames,
+            IVsSolution2 solutionService)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (project == null)
+                throw new ArgumentNullException(nameof(project));
+            else if (dte == null)
+                throw new ArgumentNullException(nameof(dte));
+            else if (availableComponentTypeNames == null)
+                throw new ArgumentNullException(nameof(availableComponentTypeNames));
+            else if (solutionService == null)
+                throw new ArgumentNullException(nameof(solutionService));
+
             availableComponentTypeNames = new List<string>
             {
                 "PageObject",
@@ -49,6 +68,59 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
             };
             fileMap = new List<MappedFileModel>();
             useAreas = true;
+
+            // Get the solution folder.
+            var solutionDir = new FileInfo(dte.Solution.FullName)
+                .Directory
+                .FullName;
+
+            var defaultProjectName = $"{project.Name}.PageObjects";
+            DefaultNamespace = defaultProjectName;
+            OriginalProjectName = project.Name;
+
+            var newProject = AvailableProjects[0];
+            AvailableComponentTypeNames = availableComponentTypeNames;
+
+            newProject.FullPath = Path.Combine(
+                solutionDir,
+                defaultProjectName);
+
+            var projects = solutionService.GetProjects();
+
+            foreach (var p in projects)
+            {
+                AddAvailableProject(new AvailableProjectModel
+                {
+                    DisplayName = p.Name,
+                    FullPath = p.FullName,
+                    IsNew = false,
+                    UniqueName = p.UniqueName,
+                });
+            }
+
+            // Check if a default project already exists.
+            SelectedProjectIndex = AvailableProjects
+                .Select((m, i) => new { Model = m, Index = i })
+                .FirstOrDefault(m => m.Model.DisplayName == defaultProjectName)
+                ?.Index
+                ?? 0;
+
+            // Retrieve the project folder path.
+            var projectPath = new Uri(
+                new FileInfo(project.FullName).Directory.FullName);
+
+            var selectedProjectPath = SelectedProject.FullPath;
+
+            // Now locate all razor files in the selected project.
+            foreach (var item in project.GetAllProjectItems())
+            {
+                var mappedFile = new MappedFileModel(item,
+                    projectPath,
+                    selectedProjectPath,
+                    availableComponentTypeNames);
+
+                AddMappedFile(mappedFile);
+            }
         }
 
         #endregion
