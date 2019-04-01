@@ -1,11 +1,10 @@
-﻿using ApertureLabs.Selenium.Extensions;
+﻿using ApertureLabs.Selenium.Attributes;
+using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Events;
-using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
@@ -14,6 +13,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.IPageObject" />
     /// <seealso cref="System.IDisposable" />
+    [CodeGeneration]
     public abstract class PageObject : IPageObject, IDisposable
     {
         #region Fields

@@ -1,8 +1,11 @@
 ﻿using EnvDTE;
-using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
 {
@@ -12,6 +15,34 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
     /// </summary>
     public static class ProjectExtensions
     {
+        static public string GetProjectFilePath(this IVsProject project)
+        {
+            string path = string.Empty;
+            int hr = project.GetMkDocument((uint)VSConstants.VSITEMID.Root, out path);
+            Debug.Assert(hr == VSConstants.S_OK || hr == VSConstants.E_NOTIMPL, "GetMkDocument failed for project.");
+
+            return path;
+        }
+
+        /// <summary>
+        /// Gets the project folder.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">project</exception>
+        public static Uri GetProjectFolder(this Project project)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (project == null)
+                throw new ArgumentNullException(nameof(project));
+
+            var projectPath = new Uri(
+                new FileInfo(project.FullName).Directory.FullName);
+
+            return projectPath;
+        }
+
         /// <summary>
         /// Gets all project items.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using ApertureLabs.Selenium.Attributes;
 using ApertureLabs.Selenium.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -8,6 +9,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <summary>
     /// Default implementation of IPageComponent.
     /// </summary>
+    [CodeGeneration]
     public abstract class PageComponent : IPageComponent
     {
         #region Constructor

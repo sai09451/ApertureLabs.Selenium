@@ -188,13 +188,14 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
             };
 
             var model = new SynchronizePageObjectsModel(project,
-                dte,
                 availableComponentTypeNames,
+                dte,
                 solutionService);
 
             dialog = new SynchronizePageObjectsDialog
             {
-                DataContext = model
+                DataContext = model,
+                GeneratePageObjectsService = generatePageObjectsService
             };
 
             dialog.ShowModal();

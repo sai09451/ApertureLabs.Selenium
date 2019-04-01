@@ -19,5 +19,12 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
         /// </summary>
         /// <param name="project">The project.</param>
         void InstallApertureLibrariesInProject(Project project);
+
+        /// <summary>
+        /// Generates the page objects.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns></returns>
+        Task GeneratePageObjectsAsync(SynchronizePageObjectsModel model);
     }
 }

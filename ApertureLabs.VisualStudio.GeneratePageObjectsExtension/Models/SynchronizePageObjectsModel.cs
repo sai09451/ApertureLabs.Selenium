@@ -1,16 +1,15 @@
 ﻿using ApertureLabs.VisualStudio.SDK.Extensions;
 using ApertureLabs.VisualStudio.SDK.Extensions.V2;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 {
@@ -34,20 +33,26 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 
         public SynchronizePageObjectsModel(
             Project project,
-            DTE dte,
             IReadOnlyList<string> availableComponentTypeNames,
+            DTE dte,
             IVsSolution2 solutionService)
         {
-            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             if (project == null)
                 throw new ArgumentNullException(nameof(project));
-            else if (dte == null)
-                throw new ArgumentNullException(nameof(dte));
             else if (availableComponentTypeNames == null)
                 throw new ArgumentNullException(nameof(availableComponentTypeNames));
+            else if (dte == null)
+                throw new ArgumentNullException(nameof(dte));
             else if (solutionService == null)
                 throw new ArgumentNullException(nameof(solutionService));
+
+            fileMap = new List<MappedFileModel>();
+            UseAreas = true;
+            var defaultProjectName = $"{project.Name}.PageObjects";
+            DefaultNamespace = defaultProjectName;
+            OriginalProjectName = project.Name;
 
             availableComponentTypeNames = new List<string>
             {
@@ -56,44 +61,47 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
                 "PageComponent",
                 "IPageComponent"
             };
-            availableProjects = new List<AvailableProjectModel>
-            {
-                new AvailableProjectModel
-                {
-                    IsNew = true,
-                    DisplayName = "New",
-                    FullPath = String.Empty,
-                    UniqueName = String.Empty
-                }
-            };
-            fileMap = new List<MappedFileModel>();
-            useAreas = true;
 
             // Get the solution folder.
             var solutionDir = new FileInfo(dte.Solution.FullName)
                 .Directory
                 .FullName;
 
-            var defaultProjectName = $"{project.Name}.PageObjects";
-            DefaultNamespace = defaultProjectName;
-            OriginalProjectName = project.Name;
+            availableProjects = new List<AvailableProjectModel>
+            {
+                new AvailableProjectModel
+                {
+                    IsNew = true,
+                    DisplayName = "New",
+                    Name = defaultProjectName,
+                    PathToProjectFolder = Path.Combine(
+                        solutionDir,
+                        defaultProjectName),
+                    FullPath = Path.Combine(
+                        solutionDir,
+                        defaultProjectName,
+                        defaultProjectName + ".csproj"),
+                    UniqueName = String.Empty
+                }
+            };
 
             var newProject = AvailableProjects[0];
             AvailableComponentTypeNames = availableComponentTypeNames;
-
-            newProject.FullPath = Path.Combine(
-                solutionDir,
-                defaultProjectName);
 
             var projects = solutionService.GetProjects();
 
             foreach (var p in projects)
             {
+                if (String.IsNullOrEmpty(p?.FullName))
+                    continue;
+
                 AddAvailableProject(new AvailableProjectModel
                 {
                     DisplayName = p.Name,
-                    FullPath = p.FullName,
+                    FullPath = p.FileName,
                     IsNew = false,
+                    Name = p.Name,
+                    PathToProjectFolder = new FileInfo(p.FullName).Directory.FullName,
                     UniqueName = p.UniqueName,
                 });
             }
@@ -105,19 +113,22 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
                 ?.Index
                 ?? 0;
 
-            // Retrieve the project folder path.
-            var projectPath = new Uri(
-                new FileInfo(project.FullName).Directory.FullName);
-
-            var selectedProjectPath = SelectedProject.FullPath;
+            var selectedProjectPath = SelectedProject.PathToProjectFolder;
 
             // Now locate all razor files in the selected project.
             foreach (var item in project.GetAllProjectItems())
             {
-                var mappedFile = new MappedFileModel(item,
-                    projectPath,
-                    selectedProjectPath,
-                    availableComponentTypeNames);
+                var extension = Path.GetExtension(item.Name);
+                var isRazorFile = extension.Equals(
+                    ".cshtml",
+                    StringComparison.Ordinal);
+
+                if (!isRazorFile)
+                    continue;
+
+                var mappedFile = new MappedFileModel(project,
+                    item,
+                    selectedProjectPath);
 
                 AddMappedFile(mappedFile);
             }
@@ -177,15 +188,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 
                 // Updated all file mappings.
                 foreach (var fileMap in FileMap)
-                {
-                    var newPath = Path.GetFullPath(
-                        Path.Combine(
-                            selectedProj.FullPath,
-                            fileMap.OriginalPathRelativeToProject,
-                            fileMap.FileName));
-
-                    fileMap.NewPath = newPath;
-                }
+                    fileMap.UpdateProjectPath(selectedProj);
 
                 selectedProjectIndex = value;
                 RaisePropertyChange();
@@ -307,7 +310,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
         {
             return fileMap.FirstOrDefault(
                 m => String.Equals(
-                    m.OriginalPathRelativeToProject,
+                    m.RelativePathToFileFromProject,
                     originalFilePath,
                     StringComparison.Ordinal));
         }

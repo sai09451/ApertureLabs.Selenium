@@ -57,9 +57,15 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension
         productDetails: "#112",
         productId: "1.0",
         IconResourceID = 400)] // Info on this package for Help/About
-    [ProvideAutoLoad(
-        cmdUiContextGuid: UIContextGuids80.SolutionExists,
-        flags: PackageAutoLoadFlags.BackgroundLoad)]
+    //[ProvideAutoLoad(
+    //    cmdUiContextGuid: UIContextGuids80.SolutionExists,
+    //    flags: PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideUIContextRule(
+        contextGuid: PackageGuids.guidGeneratePageObjectsPackageString,
+        name: "Supported Files",
+        expression: "CSharp",
+        termNames: new[] { "CSharp" },
+        termValues: new[] { "HierSingleSelectionName:.cs$" })]
     [ProvideMenuResource(
         resourceID: "Menus.ctmenu",
         version: 1)]

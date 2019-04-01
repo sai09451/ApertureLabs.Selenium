@@ -3,6 +3,7 @@ using ApertureLabs.VisualStudio.SDK.Extensions;
 using ApertureLabs.VisualStudio.SDK.Extensions.V2;
 using EnvDTE;
 using Microsoft;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.VisualStudio;
@@ -29,11 +30,13 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
         [Import]
         private IVsPackageInstaller packageInstaller;
 
-        private DTE dte;
+        private EnvDTE80.DTE2 dte;
         private IVsSolution2 solutionService;
         private IVsOutputWindow outputWindowService;
         private IVsThreadedWaitDialogFactory threadedWaitDialogFactory;
         private IVsMonitorSelection monitorSelectionService;
+        private IVsUIShell shellService;
+        private IVsPreviewChangesService previewChangesService;
 
         #endregion
 
@@ -51,7 +54,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             dte = ServiceProvider.GlobalProvider
-                .GetService(typeof(DTE)) as DTE;
+                .GetService(typeof(SDTE)) as EnvDTE80.DTE2;
             Assumes.Present(dte);
 
             solutionService = ServiceProvider.GlobalProvider
@@ -69,117 +72,16 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
             monitorSelectionService = ServiceProvider.GlobalProvider
                 .GetService(typeof(SVsShellMonitorSelection)) as IVsMonitorSelection;
             Assumes.Present(monitorSelectionService);
+
+            shellService = ServiceProvider.GlobalProvider
+                .GetService(typeof(SVsUIShell)) as IVsUIShell;
+            Assumes.Present(shellService);
+
+            previewChangesService = ServiceProvider.GlobalProvider
+                .GetService(typeof(SVsPreviewChangesService))
+                as IVsPreviewChangesService;
+            Assumes.Present(previewChangesService);
         }
-
-        //public SynchronizePageObjectsModel GetSyncModel(Project project)
-        //{
-        //    ThreadHelper.ThrowIfNotOnUIThread();
-
-        //    if (project == null)
-        //        throw new ArgumentNullException(nameof(project));
-
-        //    var model = new SynchronizePageObjectsModel(project,
-        //        dte,
-        //        availableComponentTypeNames,
-        //        solutionService);
-
-        //    // Get the solution folder.
-        //    var solutionDir = new FileInfo(dte.Solution.FullName)
-        //        .Directory
-        //        .FullName;
-
-        //    var defaultProjectName = $"{project.Name}.PageObjects";
-        //    model.DefaultNamespace = defaultProjectName;
-        //    model.OriginalProjectName = project.Name;
-        //    var newProject = model.AvailableProjects[0];
-        //    model.AvailableComponentTypeNames = AvailableComponentTypeNames();
-
-        //    newProject.FullPath = Path.Combine(
-        //        solutionDir,
-        //        defaultProjectName);
-
-        //    var projects = solutionService.GetProjects();
-
-        //    foreach (var p in projects)
-        //    {
-        //        model.AddAvailableProject(new AvailableProjectModel
-        //        {
-        //            DisplayName = p.Name,
-        //            FullPath = p.FullName,
-        //            IsNew = false,
-        //            UniqueName = p.UniqueName,
-        //        });
-        //    }
-
-        //    // Check if a default project already exists.
-        //    model.SelectedProjectIndex = model
-        //        .AvailableProjects
-        //        .Select((m, i) => new { Model = m, Index = i })
-        //        .FirstOrDefault(m => m.Model.DisplayName == defaultProjectName)
-        //        ?.Index
-        //        ?? 0;
-
-        //    // Retrieve the project folder path.
-        //    var projectPath = new Uri(
-        //        new FileInfo(project.FullName).Directory.FullName);
-
-        //    var selectedProjectPath = model.SelectedProject.FullPath;
-
-        //    // Now locate all razor files in the selected project.
-        //    foreach (var item in project.GetAllProjectItems())
-        //    {
-        //        var name = item.Name;
-
-        //        var extension = Path.GetExtension(item.Name);
-        //        var isRazorFile = extension.Equals(
-        //            ".cshtml",
-        //            StringComparison.Ordinal);
-
-        //        if (!isRazorFile)
-        //            continue;
-
-        //        var fullPath = new Uri(item.Properties
-        //            ?.Item("FullPath")
-        //            ?.Value
-        //            ?.ToString());
-
-        //        var relativePath = projectPath
-        //            .MakeRelativeUri(fullPath)
-        //            .ToString();
-
-        //        var seperator = Path.DirectorySeparatorChar;
-
-        //        if (!relativePath.Contains(seperator))
-        //            seperator = Path.AltDirectorySeparatorChar;
-
-        //        // This is to remove the 'base' dir of the relative path.
-        //        relativePath = relativePath.Remove(
-        //            0,
-        //            relativePath.IndexOf(seperator) + 1);
-
-        //        // Calling Path.GetFullPath will normalize the path.
-        //        var newFullPath = Path.GetFullPath(
-        //            Path.Combine(
-        //                selectedProjectPath,
-        //                relativePath));
-
-        //        var mappedFile = new MappedFileModel
-        //        {
-        //            IsIgnored = false,
-        //            IsNewFile = false,
-        //            SelectedComponentTypeNameIndex = 0,
-        //            NewPath = newFullPath,
-        //            OriginalPathRelativeToProject = relativePath,
-        //            FileName = item.Name,
-        //            ProjectItemReference = item,
-        //            AvailableComponentTypeNames = model.AvailableComponentTypeNames
-        //        };
-
-        //        model.AddMappedFile(mappedFile);
-        //    }
-
-        //    return model;
-        //}
 
         public string DetermineComponentType(ProjectItem projectItem)
         {
@@ -210,6 +112,163 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
                 packageId: "ApertureLabs.Selenium",
                 version: default(Version),
                 ignoreDependencies: false);
+        }
+
+        public async Task GeneratePageObjectsAsync(SynchronizePageObjectsModel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            var cancellationToken = CancellationToken.None;
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            if (model.SelectedProject.IsNew)
+            {
+                //var projectType = new Guid("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
+                var projectType = new Guid("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
+                var idProject = Guid.NewGuid();
+                var projectTemplatePath = dte.Solution.ProjectItemsTemplatePath("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
+
+                //solutionService.CreateNewProjectViaDlg(
+                //    pszExpand: String.Empty,
+                //    pszSelect: String.Empty,
+                //    dwReserved: 0);
+
+                solutionService.CanCreateNewProjectAtLocation(
+                    fCreateNewSolution: Convert.ToInt32(false),
+                    pszFullProjectFilePath: model.SelectedProject.FullPath,
+                    pfCanCreate: out int canCreate);
+
+                if (!Convert.ToBoolean(canCreate))
+                {
+                    // Cannot create the project.
+                    VsShellUtilities.ShowMessageBox(
+                        ServiceProvider.GlobalProvider,
+                        "Project already exists with that name.",
+                        "Failed to create the new project",
+                        OLEMSGICON.OLEMSGICON_CRITICAL,
+                        OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                        OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+                    return;
+                }
+
+                // Create project.
+                var projectCreateResult = solutionService.CreateProject(
+                    rguidProjectType: ref projectType,
+                    lpszMoniker: projectTemplatePath,
+                    lpszLocation: model.SelectedProject.PathToProjectFolder,
+                    lpszName: model.SelectedProject.Name,
+                    grfCreateFlags: (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE,
+                    iidProject: ref idProject,
+                    ppProject: out IntPtr projectPtr);
+
+                if (ErrorHandler.Failed(projectCreateResult))
+                {
+                    if (ErrorHandler.Failed(shellService.GetErrorInfo(out var errorText)))
+                        errorText = "Failed to create the new project.";
+
+                    VsShellUtilities.ShowMessageBox(
+                        ServiceProvider.GlobalProvider,
+                        errorText,
+                        String.Empty,
+                        OLEMSGICON.OLEMSGICON_CRITICAL,
+                        OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                        OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+                    return;
+                }
+            }
+
+            // Retrieve the project.
+            var project = solutionService
+                    .GetProjects()
+                    .FirstOrDefault(
+                        p => p.Name.Equals(
+                            model.SelectedProject.Name,
+                            StringComparison.OrdinalIgnoreCase));
+
+            var vsProject = solutionService.GetProjectByFileName(project.FileName);
+
+            if (project == null)
+            {
+                VsShellUtilities.ShowMessageBox(
+                    ServiceProvider.GlobalProvider,
+                    "Failed to locate the project.",
+                    String.Empty,
+                    OLEMSGICON.OLEMSGICON_CRITICAL,
+                    OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+                return;
+            }
+
+            // Create and display a wait dialog.
+            var dialog = threadedWaitDialogFactory.StartWaitDialog(
+                waitCaption: "Starting",
+                initialProgress: new ThreadedWaitDialogProgressData(
+                    waitMessage: "Starting",
+                    progressText: String.Empty,
+                    statusBarText: String.Empty,
+                    isCancelable: true,
+                    currentStep: 0,
+                    totalSteps: model.FileMap.Count),
+                delayToShowDialog: TimeSpan.Zero);
+
+            using (dialog)
+            {
+                // Iterate over all file maps in the model.
+                for (var currentStep = 0; currentStep < model.FileMap.Count; currentStep++)
+                {
+                    // Exit loop if canceled.
+                    if (dialog.UserCancellationToken.IsCancellationRequested)
+                        break;
+
+                    var fileMap = model.FileMap[currentStep];
+                    //var projectItem = default(ProjectItem);
+
+                    // Check if file exists.
+                    if (fileMap.IsNewFile)
+                    {
+                        // Create file.
+                        var fileInfo = new FileInfo(fileMap.NewPath);
+                        Directory.CreateDirectory(fileInfo.Directory.FullName);
+                        File.Create(fileMap.NewPath);
+
+                        // Add file to the project.
+                        //if (vsProject != null)
+                        //{
+                        //    var result = new VSADDRESULT[1];
+
+                        //    vsProject.AddItem(
+                        //        itemidLoc: (uint)VSConstants.VSITEMID.Root,
+                        //        dwAddItemOperation: VSADDITEMOPERATION.VSADDITEMOP_LINKTOFILE,
+                        //        pszItemName: fileMap.NewPath,
+                        //        cFilesToOpen: 0,
+                        //        rgpszFilesToOpen: new[] { fileMap.NewPath },
+                        //        hwndDlgOwner: IntPtr.Zero,
+                        //        pResult: result);
+
+                        //    if (result[0].Equals(VSADDRESULT.ADDRESULT_Failure))
+                        //    {
+                        //        Console.WriteLine();
+                        //    }
+                        //}
+                    }
+
+                    // Generate code for file.
+                    // projectItem.FileCodeModel
+
+                    // Update wait dialog.
+                    dialog.Progress.Report(new ThreadedWaitDialogProgressData(
+                        waitMessage: String.Empty,
+                        progressText: String.Empty,
+                        statusBarText: String.Empty,
+                        isCancelable: true,
+                        currentStep: currentStep,
+                        totalSteps: model.FileMap.Count));
+                }
+            }
         }
 
         private IReadOnlyList<string> AvailableComponentTypeNames()

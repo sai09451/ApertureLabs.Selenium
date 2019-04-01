@@ -32,6 +32,10 @@
       <Parent guid="guidGeneratePageObjectsCmdSet" id="GenerateSyncPageObjectsGroup" />
     </CommandPlacement>
   </CommandPlacements>
+  
+  <VisibilityConstraints>
+    <VisibilityItem guid="guidGeneratePageObjectsCmdSet" id="cmdidGeneratePageObjectsCommand" context="guidGeneratePageObjectsPackage" />
+  </VisibilityConstraints>
 
   <Symbols>
     <!-- This is the package guid. -->

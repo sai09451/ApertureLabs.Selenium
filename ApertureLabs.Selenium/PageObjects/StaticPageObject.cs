@@ -1,9 +1,8 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Events;
+﻿using ApertureLabs.Selenium.Attributes;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
@@ -13,6 +12,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <see cref="ParameterPageObject" /> class for page objects whose urls
     /// do have parameters.
     /// </summary>
+    [CodeGeneration]
     public abstract class StaticPageObject : PageObject, IStaticPageObject
     {
         #region Constructor

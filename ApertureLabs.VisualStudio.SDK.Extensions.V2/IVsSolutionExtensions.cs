@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio;
+﻿using ApertureLabs.VisualStudio.SDK.Extensions.V2;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -12,6 +13,40 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions
     /// </summary>
     public static class IVsSolutionExtensions
     {
+        public static IEnumerable<IVsProject> GetProjectsOfCurrentSolution(
+            this IVsSolution solutionService)
+        {
+            if (solutionService == null)
+                throw new ArgumentNullException(nameof(solutionService));
+
+            IEnumHierarchies enumerator = null;
+            Guid guid = Guid.Empty;
+            solutionService.GetProjectEnum(
+                (uint)__VSENUMPROJFLAGS.EPF_LOADEDINSOLUTION,
+                ref guid,
+                out enumerator);
+            IVsHierarchy[] hierarchy = new IVsHierarchy[1] { null };
+            uint fetched = 0;
+
+            for (enumerator.Reset();
+                enumerator.Next(1, hierarchy, out fetched) == VSConstants.S_OK && fetched == 1;
+                /*nothing*/)
+            {
+                yield return (IVsProject)hierarchy[0];
+            }
+        }
+
+        static public IVsProject GetProjectByFileName(
+            this IVsSolution solutionService,
+            string projectFile)
+        {
+            return GetProjectsOfCurrentSolution(solutionService).FirstOrDefault(
+                p => String.Compare(
+                    projectFile,
+                    p.GetProjectFilePath(),
+                    StringComparison.OrdinalIgnoreCase) == 0);
+        }
+
         /// <summary>
         /// Gets the projects of the solution.
         /// </summary>

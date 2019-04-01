@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.Attributes;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.IParameterPageObject" />
     /// <seealso cref="System.IDisposable" />
+    [CodeGeneration]
     public abstract class ParameterPageObject : PageObject, IParameterPageObject
     {
         #region Constructor

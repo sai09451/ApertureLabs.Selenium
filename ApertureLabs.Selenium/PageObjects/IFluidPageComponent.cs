@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApertureLabs.Selenium.Attributes;
+using System;
 
 namespace ApertureLabs.Selenium.PageObjects
 {
@@ -8,6 +9,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.IPageComponent" />
+    [CodeGeneration(Implementation = typeof(FluidPageComponent<>))]
     public interface IFluidPageComponent<T> : IPageComponent
     {
         /// <summary>

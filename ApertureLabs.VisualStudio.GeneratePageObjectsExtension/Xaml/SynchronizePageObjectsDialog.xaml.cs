@@ -1,5 +1,7 @@
 ﻿using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models;
+using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services;
 using Microsoft.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.Win32;
 using System;
 using System.Windows;
@@ -19,6 +21,12 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Xaml
             HasMinimizeButton = true;
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Properties
+
+        public IGeneratePageObjectsService GeneratePageObjectsService { get; set; }
 
         #endregion
 
@@ -63,6 +71,17 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Xaml
         private void ChooseFolder_Button_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Open file dialog.
+            //var dialog = new OpenFileDialog();
+        }
+
+        private void Synchronize_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // Close the modal.
+            Close();
+
+            // Start the task.
+            GeneratePageObjectsService.GeneratePageObjectsAsync(
+                DataContext as SynchronizePageObjectsModel);
         }
     }
 }

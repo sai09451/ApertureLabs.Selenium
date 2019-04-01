@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using ApertureLabs.Selenium.Attributes;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
 
@@ -10,6 +11,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <seealso cref="OpenQA.Selenium.Support.UI.ILoadableComponent" />
     /// <seealso cref="OpenQA.Selenium.Internal.IWrapsDriver" />
     /// <seealso cref="OpenQA.Selenium.Internal.IWrapsElement" />
+    [CodeGeneration(Implementation = typeof(PageComponent))]
     public interface IPageComponent : ILoadableComponent,
         IWrapsDriver,
         IWrapsElement

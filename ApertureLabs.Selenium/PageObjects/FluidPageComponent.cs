@@ -1,4 +1,5 @@
 ﻿using System;
+using ApertureLabs.Selenium.Attributes;
 using OpenQA.Selenium;
 
 namespace ApertureLabs.Selenium.PageObjects
@@ -9,6 +10,7 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.PageComponent" />
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.IFluidPageComponent{T}" />
+    [CodeGeneration]
     public class FluidPageComponent<T> : PageComponent, IFluidPageComponent<T>
     {
         #region Fields

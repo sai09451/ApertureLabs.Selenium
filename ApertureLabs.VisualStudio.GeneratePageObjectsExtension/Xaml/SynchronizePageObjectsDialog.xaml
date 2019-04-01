@@ -10,7 +10,7 @@
                          Width="500"
                          Height="500">
     <platformUi:DialogWindow.Resources>
-        <model:SynchronizePageObjectsModel x:Key="Model" />
+        <!--<model:SynchronizePageObjectsModel x:Key="Model" />-->
         <BooleanToVisibilityConverter x:Key="boolToVis" />
         <Style TargetType="ListViewItem">
             <Setter Property="Focusable" Value="false" />
@@ -30,9 +30,9 @@
             <Setter Property="Padding" Value="5" />
         </Style>
     </platformUi:DialogWindow.Resources>
-    <platformUi:DialogWindow.DataContext>
+    <!--<platformUi:DialogWindow.DataContext>
         <Binding Source="{StaticResource Model}"/>
-    </platformUi:DialogWindow.DataContext>
+    </platformUi:DialogWindow.DataContext>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -99,7 +99,7 @@
                     </StackPanel.Visibility>
                     <StackPanel Orientation="Vertical">
                         <Label Content="Project Name" />
-                        <TextBox Name="NewProjectName_TextBox" Text="{Binding Path=SelectedProject.DisplayName}" />
+                        <TextBox Name="NewProjectName_TextBox" Text="{Binding Path=SelectedProject.Name}" />
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <Label Content="New Project Path" />
@@ -131,11 +131,11 @@
                             <GridView>
                                 <GridViewColumn Width="Auto">
                                     <GridViewColumn.Header>
-                                        <GridViewColumnHeader Tag="Ignore">Ignore</GridViewColumnHeader>
+                                        <GridViewColumnHeader Tag="Ignored">Ignored</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Path=Ignore}" />
+                                            <CheckBox IsChecked="{Binding Path=IsIgnored}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -145,7 +145,7 @@
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Label Content="{Binding Path=OriginalPathRelativeToProject}" />
+                                            <Label Content="{Binding Path=RelativePathToFileFromProject}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -155,7 +155,7 @@
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding Path=AvailableComponentTypeNames}"
+                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type platformUi:DialogWindow}}, Path=DataContext.AvailableComponentTypeNames}"
                                                       SelectedIndex="{Binding Path=SelectedComponentTypeNameIndex}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
@@ -178,7 +178,7 @@
         </Border>
         <Border Grid.Row="2" Background="#FFE1E1E1" Padding="5">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Name="Synchronize_Button" Margin="5">Synchronize</Button>
+                <Button Name="Synchronize_Button" Margin="5" Click="Synchronize_Button_Click">Synchronize</Button>
                 <Button Name="Cancel_Button" Margin="5" Click="Cancel_Button_Click">Cancel</Button>
             </StackPanel>
         </Border>
