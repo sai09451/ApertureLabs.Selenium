@@ -1,5 +1,4 @@
-﻿using ApertureLabs.Selenium.Attributes;
-using OpenQA.Selenium.Internal;
+﻿using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
 using System;
 
@@ -8,7 +7,6 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <summary>
     /// Represents a web-page which has a url with parameters.
     /// </summary>
-    [CodeGeneration(Implementation = typeof(PageObject))]
     public interface IPageObject : IWrapsDriver,
         ILoadableComponent,
         IDisposable,

@@ -4,6 +4,7 @@ using ApertureLabs.VisualStudio.SDK.Extensions.V2;
 using EnvDTE;
 using Microsoft;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.VisualStudio;
@@ -24,12 +25,12 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
     {
         #region Fields
 
-        [Import]
+        private const string PACKAGE_APT_SELENIUM = "ApertureLabs.Selenium";
+        private const string PACKAGE_APT_SELENIUM_CODE_GENERATION = "ApertureLabs.Selenium.CodeGeneration";
+
         private IVsPackageInstallerServices packageInstallerService;
-
-        [Import]
         private IVsPackageInstaller packageInstaller;
-
+        private IVsPackageRestorer packageRestorer;
         private EnvDTE80.DTE2 dte;
         private IVsSolution2 solutionService;
         private IVsOutputWindow outputWindowService;
@@ -81,6 +82,19 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
                 .GetService(typeof(SVsPreviewChangesService))
                 as IVsPreviewChangesService;
             Assumes.Present(previewChangesService);
+
+            var componentModel = ServiceProvider.GlobalProvider
+                .GetService(typeof(SComponentModel))
+                as IComponentModel;
+            Assumes.Present(componentModel);
+
+            packageInstallerService = componentModel
+                .GetService<IVsPackageInstallerServices>();
+            Assumes.Present(packageInstallerService);
+
+            packageInstaller = componentModel
+                .GetService<IVsPackageInstaller>();
+            Assumes.Present(packageInstaller);
         }
 
         public string DetermineComponentType(ProjectItem projectItem)
@@ -128,11 +142,6 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
                 var projectType = new Guid("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
                 var idProject = Guid.NewGuid();
                 var projectTemplatePath = dte.Solution.ProjectItemsTemplatePath("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
-
-                //solutionService.CreateNewProjectViaDlg(
-                //    pszExpand: String.Empty,
-                //    pszSelect: String.Empty,
-                //    dwReserved: 0);
 
                 solutionService.CanCreateNewProjectAtLocation(
                     fCreateNewSolution: Convert.ToInt32(false),
@@ -203,6 +212,53 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
                 return;
             }
 
+            // Verify the project has the necessary files installed.
+            var isCodeGenPackageInstalled = packageInstallerService
+                .IsPackageInstalled(
+                    project,
+                    PACKAGE_APT_SELENIUM_CODE_GENERATION);
+
+            if (!AreCodeGenerationPackagesInstalled(project))
+            {
+                try
+                {
+                    packageInstaller.InstallPackage(
+                        source: null,
+                        project: project,
+                        packageId: PACKAGE_APT_SELENIUM_CODE_GENERATION,
+                        version: default(string),
+                        ignoreDependencies: false);
+                }
+                catch (Exception e)
+                {
+                    VsShellUtilities.ShowMessageBox(
+                        ServiceProvider.GlobalProvider,
+                        e.ToString(),
+                        String.Empty,
+                        OLEMSGICON.OLEMSGICON_CRITICAL,
+                        OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                        OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+                    return;
+                }
+            }
+
+            // Retrieve all CodeGenerators.
+            var codeGenerators = GetAllCodeGenerators(project);
+
+            if (!codeGenerators.Any())
+            {
+                VsShellUtilities.ShowMessageBox(
+                    ServiceProvider.GlobalProvider,
+                    "Failed to locate any code generators in the project.",
+                    String.Empty,
+                    OLEMSGICON.OLEMSGICON_CRITICAL,
+                    OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+                return;
+            }
+
             // Create and display a wait dialog.
             var dialog = threadedWaitDialogFactory.StartWaitDialog(
                 waitCaption: "Starting",
@@ -236,28 +292,36 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
                         File.Create(fileMap.NewPath);
 
                         // Add file to the project.
-                        //if (vsProject != null)
-                        //{
-                        //    var result = new VSADDRESULT[1];
+                        if (project.Kind != "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                            && vsProject != null)
+                        {
+                            var result = new VSADDRESULT[1];
 
-                        //    vsProject.AddItem(
-                        //        itemidLoc: (uint)VSConstants.VSITEMID.Root,
-                        //        dwAddItemOperation: VSADDITEMOPERATION.VSADDITEMOP_LINKTOFILE,
-                        //        pszItemName: fileMap.NewPath,
-                        //        cFilesToOpen: 0,
-                        //        rgpszFilesToOpen: new[] { fileMap.NewPath },
-                        //        hwndDlgOwner: IntPtr.Zero,
-                        //        pResult: result);
+                            vsProject.AddItem(
+                                itemidLoc: (uint)VSConstants.VSITEMID.Root,
+                                dwAddItemOperation: VSADDITEMOPERATION.VSADDITEMOP_LINKTOFILE,
+                                pszItemName: fileMap.NewPath,
+                                cFilesToOpen: 0,
+                                rgpszFilesToOpen: new[] { fileMap.NewPath },
+                                hwndDlgOwner: IntPtr.Zero,
+                                pResult: result);
 
-                        //    if (result[0].Equals(VSADDRESULT.ADDRESULT_Failure))
-                        //    {
-                        //        Console.WriteLine();
-                        //    }
-                        //}
+                            if (result[0].Equals(VSADDRESULT.ADDRESULT_Failure))
+                            {
+                                VsShellUtilities.ShowMessageBox(
+                                    ServiceProvider.GlobalProvider,
+                                    "Failed to add the item to the project.",
+                                    String.Empty,
+                                    OLEMSGICON.OLEMSGICON_CRITICAL,
+                                    OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+                                return;
+                            }
+                        }
                     }
 
-                    // Generate code for file.
-                    // projectItem.FileCodeModel
+                    // TODO: Generate code for file.
 
                     // Update wait dialog.
                     dialog.Progress.Report(new ThreadedWaitDialogProgressData(
@@ -271,8 +335,19 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
             }
         }
 
+        private bool AreCodeGenerationPackagesInstalled(Project project)
+        {
+            var isCodeGenPackageInstalled = packageInstallerService
+                .IsPackageInstalled(
+                    project,
+                    PACKAGE_APT_SELENIUM_CODE_GENERATION);
+
+            return isCodeGenPackageInstalled;
+        }
+
         private IReadOnlyList<string> AvailableComponentTypeNames()
         {
+            // TODO: Retrieve component type names from the project.
             return new List<string>()
             {
                 "PageObject",
@@ -283,6 +358,12 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
                 "BasePageObject",
                 "ParameterPageObject"
             };
+        }
+
+        private IEnumerable<object> GetAllCodeGenerators(Project project)
+        {
+            // TODO: Implemented method.
+            return Enumerable.Empty<object>();
         }
 
         private void ImplementedInterface(Type interfaceType,

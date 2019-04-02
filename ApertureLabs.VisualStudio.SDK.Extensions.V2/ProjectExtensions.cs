@@ -15,9 +15,14 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
     /// </summary>
     public static class ProjectExtensions
     {
+        /// <summary>
+        /// Gets the project file path.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns></returns>
         static public string GetProjectFilePath(this IVsProject project)
         {
-            string path = string.Empty;
+            string path = String.Empty;
             int hr = project.GetMkDocument((uint)VSConstants.VSITEMID.Root, out path);
             Debug.Assert(hr == VSConstants.S_OK || hr == VSConstants.E_NOTIMPL, "GetMkDocument failed for project.");
 
@@ -128,6 +133,14 @@ namespace ApertureLabs.VisualStudio.SDK.Extensions.V2
             }
         }
 
+        /// <summary>
+        /// Determines whether this instance is file.
+        /// </summary>
+        /// <param name="projectItem">The project item.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified project item is file; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">projectItem</exception>
         public static bool IsFile(this ProjectItem projectItem)
         {
             if (projectItem == null)

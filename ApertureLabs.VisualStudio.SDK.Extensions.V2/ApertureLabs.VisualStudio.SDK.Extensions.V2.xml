@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApertureLabs.VisualStudio.SDK.Extensions.V2</name>
+    </assembly>
+    <members>
+        <member name="T:ApertureLabs.VisualStudio.SDK.Extensions.V2.IVsMonitorSelectionExtensions">
+            <summary>
+            Contains extension methods for <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsMonitorSelection"/>
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.V2.IVsMonitorSelectionExtensions.GetSelectedItem(Microsoft.VisualStudio.Shell.Interop.IVsMonitorSelection)">
+            <summary>
+            Gets the selected item of the <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsMonitorSelection"/>.
+            </summary>
+            <param name="monitorSelection">The monitor selection.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">monitorSelection</exception>
+        </member>
+        <member name="T:ApertureLabs.VisualStudio.SDK.Extensions.V2.ProjectExtensions">
+            <summary>
+            Extension methods for working with <see cref="T:EnvDTE.Project"/> and
+            <see cref="T:EnvDTE.ProjectItem"/> objects.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.V2.ProjectExtensions.GetProjectFilePath(Microsoft.VisualStudio.Shell.Interop.IVsProject)">
+            <summary>
+            Gets the project file path.
+            </summary>
+            <param name="project">The project.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.V2.ProjectExtensions.GetProjectFolder(EnvDTE.Project)">
+            <summary>
+            Gets the project folder.
+            </summary>
+            <param name="project">The project.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">project</exception>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.V2.ProjectExtensions.GetAllProjectItems(EnvDTE.Project,System.Boolean)">
+            <summary>
+            Gets all project items.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="filesOnly">if set to <c>true</c> [files only].</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">project</exception>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.V2.ProjectExtensions.GetAllProjectItems(EnvDTE.ProjectItem,System.Boolean)">
+            <summary>
+            Gets all project items.
+            </summary>
+            <param name="projectItem">The project item.</param>
+            <param name="filesOnly">if set to <c>true</c> [files only].</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">projectItem</exception>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.V2.ProjectExtensions.IsFolder(EnvDTE.ProjectItem)">
+            <summary>
+            Determines whether this instance is folder.
+            </summary>
+            <param name="projectItem">The project item.</param>
+            <returns>
+              <c>true</c> if the specified project item is folder; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">projectItem</exception>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.V2.ProjectExtensions.IsFile(EnvDTE.ProjectItem)">
+            <summary>
+            Determines whether this instance is file.
+            </summary>
+            <param name="projectItem">The project item.</param>
+            <returns>
+              <c>true</c> if the specified project item is file; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">projectItem</exception>
+        </member>
+        <member name="T:ApertureLabs.VisualStudio.SDK.Extensions.IVsHierarchyExtensions">
+            <summary>
+            Contains extension methods for working with <see href="IVsHierarchy" />.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.IVsHierarchyExtensions.GetProjectDirectory(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Retrieves the full path of the project.
+            </summary>
+            <param name="hierarchy">The hierarchy.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.IVsHierarchyExtensions.ToEnvProject(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Converts an <see href="IVsHierarchy" /> to an
+            <see href="EnvDTE.Project" />.
+            </summary>
+            <param name="hierarchy"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.IVsHierarchyExtensions.GetNodeFiles(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32)">
+            <summary>
+            Returns a list of files associated with the current node.
+            </summary>
+            <param name="hier"></param>
+            <param name="itemId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.IVsHierarchyExtensions.GetNodeFiles(Microsoft.VisualStudio.Shell.Interop.IVsSccProject2,System.UInt32)">
+            <summary>
+            Returns a list of files associated with the current node.
+            </summary>
+            <param name="pscp2"></param>
+            <param name="itemId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.VisualStudio.SDK.Extensions.IVsOutputWindowExtensions">
+            <summary>
+            Extensions for <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsOutputWindow"/>.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.IVsOutputWindowExtensions.CreatePaneHelper(Microsoft.VisualStudio.Shell.Interop.IVsOutputWindow,System.Guid,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Creates the pane.
+            </summary>
+            <param name="output">The output.</param>
+            <param name="paneGuid">The pane unique identifier.</param>
+            <param name="title">The title.</param>
+            <param name="visible">if set to <c>true</c> [visible].</param>
+            <param name="clearWithSolution">if set to <c>true</c> [clear with solution].</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.VisualStudio.SDK.Extensions.IVsSolutionExtensions">
+            <summary>
+            Contains extensions for working with <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsSolution"/>.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.IVsSolutionExtensions.GetProjects(Microsoft.VisualStudio.Shell.Interop.IVsSolution)">
+            <summary>
+            Gets the projects of the solution.
+            </summary>
+            <param name="solution">The solution.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.VisualStudio.SDK.Extensions.IVsSolutionExtensions.IsSolutionLoaded(Microsoft.VisualStudio.Shell.Interop.IVsSolution)">
+            <summary>
+            Determines whether the solution is loaded.
+            </summary>
+            <param name="solution">The solution.</param>
+            <returns>
+              <c>true</c> if the solution is loaded; otherwise, <c>false</c>.
+            </returns>
+        </member>
+    </members>
+</doc>

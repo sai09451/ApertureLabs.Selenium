@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company>Aperture Labs</Company>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/alexHayes08/ApertureLabs.Selenium/blob/master/ApertureLabs.Selenium/aperturelabslogoonly.png?raw=true</PackageIconUrl>
+    <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ApertureLabs Selenium CodeGeneration</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>ApertureLabs.Selenium.CodeGeneration.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EnvDTE" Version="8.0.2" />
+  </ItemGroup>
+
+</Project>

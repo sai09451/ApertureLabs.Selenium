@@ -126,10 +126,6 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
                 .GetServiceAsync(typeof(SVsShellMonitorSelection))
                 as IVsMonitorSelection;
 
-            var componentModel = await package
-                .GetServiceAsync(typeof(SVsComponentModelHost))
-                as IVsComponentModelHost;
-
             var generatePageObjectsService = await package
                 .GetServiceAsync(typeof(SGeneratePageObjectsService))
                 as IGeneratePageObjectsService;
@@ -181,6 +177,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Commands
             if (!(monitorSelectionService.GetSelectedItem() is Project project))
                 return;
 
+            // TODO: Retrieve these dynamically.
             var availableComponentTypeNames = new List<string>
             {
                 "PageObject",

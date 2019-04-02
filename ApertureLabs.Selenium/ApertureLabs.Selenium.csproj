@@ -8,7 +8,7 @@
     <Description>A utility library for working with Selenium. Contains definitions for PageObjects/PageComponents, wrappers classes for IWebElement, a WebDriverFactory which simplifies managing webdrivers (downloads the drivers if missing), and tons of other stuff. NOTE: Requires Java &gt;= 1.8 to be installed and available on the path.</Description>
     <RepositoryUrl>https://github.com/alexHayes08/ApertureLabs.Selenium</RepositoryUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
-    <PackageTags>ApertureLabs, Selenium</PackageTags>
+    <PackageTags>ApertureLabs Selenium</PackageTags>
     <Version>1.0.94</Version>
     <AssemblyVersion>1.0.94.0</AssemblyVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

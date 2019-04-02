@@ -16,7 +16,8 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 
         public MappedFileModel(Project project,
             ProjectItem projectItem,
-            string selectedProjectPath)
+            IReadOnlyList<string> availableComponentTypes,
+            string solutionDir)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -44,6 +45,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
                 0,
                 relativePath.IndexOf(seperator) + 1);
 
+            AvailableComponentTypeNames = availableComponentTypes;
             IsIgnored = false;
             IsNewFile = false;
             SelectedComponentTypeNameIndex = 0;
@@ -51,7 +53,7 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
             FileName = projectItem.Name;
             ProjectItemReference = projectItem;
 
-            UpdateProjectPath(relativePath);
+            UpdateProjectPath(solutionDir);
         }
 
         #endregion
@@ -65,6 +67,8 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
         public string NewPath { get; set; }
         public int SelectedComponentTypeNameIndex { get; set; }
         public ProjectItem ProjectItemReference { get; set; }
+        public IReadOnlyList<string> AvailableComponentTypeNames { get; set; }
+        public string SelectedComponentTypeName => AvailableComponentTypeNames[SelectedComponentTypeNameIndex];
 
         #endregion
 

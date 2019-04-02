@@ -12,7 +12,6 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <see cref="ParameterPageObject" /> class for page objects whose urls
     /// do have parameters.
     /// </summary>
-    [CodeGeneration]
     public abstract class StaticPageObject : PageObject, IStaticPageObject
     {
         #region Constructor

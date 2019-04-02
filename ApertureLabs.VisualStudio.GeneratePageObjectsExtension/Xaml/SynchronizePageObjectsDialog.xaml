@@ -6,12 +6,21 @@
                          xmlns:local="clr-namespace:ApertureLabs.VisualStudio.GeneratePageObjectsExtension"
                          xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
                          xmlns:model="clr-namespace:ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models"
+                         xmlns:markupExtensions="clr-namespace:ApertureLabs.VisualStudio.GeneratePageObjectsExtension.MarkupExtensions"
                          mc:Ignorable="d"
                          Width="500"
                          Height="500">
     <platformUi:DialogWindow.Resources>
         <!--<model:SynchronizePageObjectsModel x:Key="Model" />-->
         <BooleanToVisibilityConverter x:Key="boolToVis" />
+        <platformUi:NegateBooleanConverter x:Key="negateBoolConverter" />
+        <Color x:Key="trueColor" A="120" R="0" G="255" B="0" />
+        <Color x:Key="falseColor" A="120" R="255" G="0" B="0" />
+        <AlternationConverter x:Key="alternationConverter">
+            <SolidColorBrush>Blue</SolidColorBrush>
+            <SolidColorBrush>White</SolidColorBrush>
+        </AlternationConverter>
+        <ColorConverter x:Key="colorConverter" />
         <Style TargetType="ListViewItem">
             <Setter Property="Focusable" Value="false" />
             <Style.Triggers>
@@ -65,15 +74,6 @@
                         </Label.Content>
                     </Label>
                 </StackPanel>
-                <StackPanel>
-                    <Label Content="Use Areas">
-                        <Label.ToolTip>
-                            Whether to seperated the created page objects/components
-                            into folders that match the areas they're from.
-                        </Label.ToolTip>
-                    </Label>
-                    <CheckBox Name="UseAreas_Checkbox" IsChecked="{Binding Path=UseAreas}"/>
-                </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <Label Content="Project Destination">
                         <Label.ToolTip>
@@ -126,7 +126,9 @@
         <Border Grid.Row="1" Background="#FFE1E1E1" Padding="5">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <GroupBox Grid.Column="0" Header="File Map">
-                    <ListView Name="OriginalFiles_ListView" ItemsSource="{Binding Path=FileMap}">
+                    <ListView Name="OriginalFiles_ListView"
+                              ItemsSource="{Binding Path=FileMap}"
+                              AlternationCount="2">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="Auto">
@@ -141,11 +143,23 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="Auto">
                                     <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="IsNew">Is New</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=IsNewFile}"
+                                                      IsEnabled="False" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
+                                    <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="Original file path">Original file path</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Label Content="{Binding Path=RelativePathToFileFromProject}" />
+                                            <Label Content="{Binding Path=RelativePathToFileFromProject}"
+                                                   IsEnabled="{Binding Path=IsIgnored, Converter={StaticResource negateBoolConverter}}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -155,8 +169,9 @@
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type platformUi:DialogWindow}}, Path=DataContext.AvailableComponentTypeNames}"
-                                                      SelectedIndex="{Binding Path=SelectedComponentTypeNameIndex}" />
+                                            <ComboBox ItemsSource="{Binding Path=AvailableComponentTypeNames}"
+                                                      SelectedIndex="{Binding Path=SelectedComponentTypeNameIndex}"
+                                                      IsEnabled="{Binding Path=IsIgnored, Converter={StaticResource negateBoolConverter}}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -166,7 +181,9 @@
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding Path=NewPath}" Padding="5" />
+                                            <TextBox Text="{Binding Path=NewPath}"
+                                                     Padding="5"
+                                                     IsEnabled="{Binding Path=IsIgnored, Converter={StaticResource negateBoolConverter}}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

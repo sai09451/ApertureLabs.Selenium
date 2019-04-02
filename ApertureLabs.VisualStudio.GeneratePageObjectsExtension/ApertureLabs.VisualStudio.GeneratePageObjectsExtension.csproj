@@ -68,8 +68,10 @@
     <Compile Include="CodeGeneration\PartialPageObjectTemplate.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\GeneratePageObjectsCommand.cs" />
+    <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="GeneratePageObjectsPackage.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MarkupExtensions\BooleanToBrushConverterExtension.cs" />
     <Compile Include="Models\AvailableProjectModel.cs" />
     <Compile Include="Models\BaseTemplateModel.cs" />
     <Compile Include="Models\MappedFileModel.cs" />
@@ -148,6 +150,7 @@
     <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.ComponentModelHost, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.VisualStudio.CoreUtility.15.0.26228\lib\net45\Microsoft.VisualStudio.CoreUtility.dll</HintPath>
     </Reference>

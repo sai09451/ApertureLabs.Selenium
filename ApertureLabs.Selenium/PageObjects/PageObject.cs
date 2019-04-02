@@ -13,7 +13,6 @@ namespace ApertureLabs.Selenium.PageObjects
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.IPageObject" />
     /// <seealso cref="System.IDisposable" />
-    [CodeGeneration]
     public abstract class PageObject : IPageObject, IDisposable
     {
         #region Fields

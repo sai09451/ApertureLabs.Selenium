@@ -1,7 +1,6 @@
 ﻿using System;
-using OpenQA.Selenium.Support.UI;
 
-namespace ApertureLabs.Selenium.Attributes
+namespace ApertureLabs.Selenium.CodeGeneration
 {
     /// <summary>
     /// Used for in conjunction with the
@@ -13,12 +12,12 @@ namespace ApertureLabs.Selenium.Attributes
     /// <see cref="CodeGenerationAttribute"/> defined on it.
     /// </summary>
     /// <seealso cref="System.Attribute" />
-    [AttributeUsage(AttributeTargets.Class|AttributeTargets.Interface,
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface,
         AllowMultiple = false,
         Inherited = false)]
     public class CodeGenerationAttribute : Attribute
     {
-        private Action<object> codeGenerator;
+        private Action<CodeGenerationContext> codeGenerator;
 
         /// <summary>
         /// Gets or sets the HTML attribute value. Identifies all tag helpers
@@ -39,7 +38,7 @@ namespace ApertureLabs.Selenium.Attributes
         /// <value>
         /// The code generator.
         /// </value>
-        public Action<object> CodeGenerator
+        public Action<CodeGenerationContext> CodeGenerator
         {
             get => codeGenerator ?? DefaultCodeGenerator;
             set => codeGenerator = value;

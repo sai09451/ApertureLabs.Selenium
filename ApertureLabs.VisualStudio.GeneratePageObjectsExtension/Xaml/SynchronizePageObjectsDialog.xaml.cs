@@ -1,10 +1,10 @@
 ﻿using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models;
 using ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services;
 using Microsoft.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.Win32;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Xaml
 {
@@ -83,5 +83,14 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Xaml
             GeneratePageObjectsService.GeneratePageObjectsAsync(
                 DataContext as SynchronizePageObjectsModel);
         }
+
+        //private void ComboBox_OnLoaded(object sender, RoutedEventArgs e)
+        //{
+        //    if (!(sender is ComboBox comboBox))
+        //        return;
+
+        //    var dataSource = DataContext as SynchronizePageObjectsModel;
+        //    comboBox.ItemsSource = dataSource?.AvailableComponentTypeNames;
+        //}
     }
 }

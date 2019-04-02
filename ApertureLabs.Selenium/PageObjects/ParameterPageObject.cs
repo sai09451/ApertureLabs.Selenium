@@ -11,7 +11,6 @@ namespace ApertureLabs.Selenium.PageObjects
     /// </summary>
     /// <seealso cref="ApertureLabs.Selenium.PageObjects.IParameterPageObject" />
     /// <seealso cref="System.IDisposable" />
-    [CodeGeneration]
     public abstract class ParameterPageObject : PageObject, IParameterPageObject
     {
         #region Constructor

@@ -22,7 +22,6 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 
         private List<string> availableComponentTypeNames;
         private string pageObjectLibraryName;
-        private bool useAreas;
         private int selectedProjectIndex;
         private string originalProjectName;
         private string defaultNamespace;
@@ -49,18 +48,10 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
                 throw new ArgumentNullException(nameof(solutionService));
 
             fileMap = new List<MappedFileModel>();
-            UseAreas = true;
+            AvailableComponentTypeNames = availableComponentTypeNames;
             var defaultProjectName = $"{project.Name}.PageObjects";
             DefaultNamespace = defaultProjectName;
             OriginalProjectName = project.Name;
-
-            availableComponentTypeNames = new List<string>
-            {
-                "PageObject",
-                "IPageObject",
-                "PageComponent",
-                "IPageComponent"
-            };
 
             // Get the solution folder.
             var solutionDir = new FileInfo(dte.Solution.FullName)
@@ -86,8 +77,6 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
             };
 
             var newProject = AvailableProjects[0];
-            AvailableComponentTypeNames = availableComponentTypeNames;
-
             var projects = solutionService.GetProjects();
 
             foreach (var p in projects)
@@ -113,11 +102,10 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
                 ?.Index
                 ?? 0;
 
-            var selectedProjectPath = SelectedProject.PathToProjectFolder;
-
             // Now locate all razor files in the selected project.
             foreach (var item in project.GetAllProjectItems())
             {
+                // Ignore if not a razor file.
                 var extension = Path.GetExtension(item.Name);
                 var isRazorFile = extension.Equals(
                     ".cshtml",
@@ -128,7 +116,8 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
 
                 var mappedFile = new MappedFileModel(project,
                     item,
-                    selectedProjectPath);
+                    availableComponentTypeNames,
+                    SelectedProject.PathToProjectFolder);
 
                 AddMappedFile(mappedFile);
             }
@@ -159,19 +148,6 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Models
                     return;
 
                 pageObjectLibraryName = value;
-                RaisePropertyChange();
-            }
-        }
-
-        public bool UseAreas
-        {
-            get => useAreas;
-            set
-            {
-                if (useAreas == value)
-                    return;
-
-                useAreas = value;
                 RaisePropertyChange();
             }
         }

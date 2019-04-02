@@ -9,7 +9,6 @@ namespace ApertureLabs.Selenium.PageObjects
     /// <summary>
     /// Default implementation of IPageComponent.
     /// </summary>
-    [CodeGeneration]
     public abstract class PageComponent : IPageComponent
     {
         #region Constructor

@@ -10,9 +10,13 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Aperture Labs, Visual Studio SDK</PackageTags>
     <Version>2.0.6</Version>
-    <PackageReleaseNotes>Added the</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>SDKExtensionsKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>ApertureLabs.VisualStudio.SDK.Extensions.V2.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
