@@ -136,43 +136,10 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
             var cancellationToken = CancellationToken.None;
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+            // Generate project if new.
             if (model.SelectedProject.IsNew)
             {
-                //var projectType = new Guid("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
-                var projectType = new Guid("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
-                var idProject = Guid.NewGuid();
-                var projectTemplatePath = dte.Solution.ProjectItemsTemplatePath("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
-
-                solutionService.CanCreateNewProjectAtLocation(
-                    fCreateNewSolution: Convert.ToInt32(false),
-                    pszFullProjectFilePath: model.SelectedProject.FullPath,
-                    pfCanCreate: out int canCreate);
-
-                if (!Convert.ToBoolean(canCreate))
-                {
-                    // Cannot create the project.
-                    VsShellUtilities.ShowMessageBox(
-                        ServiceProvider.GlobalProvider,
-                        "Project already exists with that name.",
-                        "Failed to create the new project",
-                        OLEMSGICON.OLEMSGICON_CRITICAL,
-                        OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                        OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-
-                    return;
-                }
-
-                // Create project.
-                var projectCreateResult = solutionService.CreateProject(
-                    rguidProjectType: ref projectType,
-                    lpszMoniker: projectTemplatePath,
-                    lpszLocation: model.SelectedProject.PathToProjectFolder,
-                    lpszName: model.SelectedProject.Name,
-                    grfCreateFlags: (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE,
-                    iidProject: ref idProject,
-                    ppProject: out IntPtr projectPtr);
-
-                if (ErrorHandler.Failed(projectCreateResult))
+                if (ErrorHandler.Failed(GenerateOrLocateProject(model)))
                 {
                     if (ErrorHandler.Failed(shellService.GetErrorInfo(out var errorText)))
                         errorText = "Failed to create the new project.";
@@ -335,6 +302,45 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
             }
         }
 
+        private int GenerateOrLocateProject(SynchronizePageObjectsModel model)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            //var projectType = new Guid("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
+            var projectType = new Guid("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
+            var idProject = Guid.NewGuid();
+            var projectTemplatePath = dte.Solution.ProjectItemsTemplatePath("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
+
+            solutionService.CanCreateNewProjectAtLocation(
+                fCreateNewSolution: Convert.ToInt32(false),
+                pszFullProjectFilePath: model.SelectedProject.FullPath,
+                pfCanCreate: out int canCreate);
+
+            if (!Convert.ToBoolean(canCreate))
+            {
+                // Cannot create the project.
+                return VSConstants.E_FAIL;
+            }
+
+            // Create project.
+            var projectCreateResult = solutionService.CreateProject(
+                rguidProjectType: ref projectType,
+                lpszMoniker: projectTemplatePath,
+                lpszLocation: model.SelectedProject.PathToProjectFolder,
+                lpszName: model.SelectedProject.Name,
+                grfCreateFlags: (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE,
+                iidProject: ref idProject,
+                ppProject: out IntPtr projectPtr);
+
+            if (ErrorHandler.Failed(projectCreateResult))
+            {
+                // Failed to create the project.
+                return VSConstants.E_FAIL;
+            }
+
+            return VSConstants.S_OK;
+        }
+
         private bool AreCodeGenerationPackagesInstalled(Project project)
         {
             var isCodeGenPackageInstalled = packageInstallerService
@@ -363,14 +369,19 @@ namespace ApertureLabs.VisualStudio.GeneratePageObjectsExtension.Services
         private IEnumerable<object> GetAllCodeGenerators(Project project)
         {
             // TODO: Implemented method.
-            return Enumerable.Empty<object>();
-        }
+            var codeGenerators = Enumerable.Empty<object>();
 
-        private void ImplementedInterface(Type interfaceType,
-            ProjectItem razorProjectItem,
-            ProjectItem generatedItem)
-        {
+            var codeGenPackage = packageInstallerService
+                .GetInstalledPackages(project)
+                .FirstOrDefault(p => p.Title == PACKAGE_APT_SELENIUM_CODE_GENERATION);
 
+            if (codeGenPackage == null)
+            {
+                throw new Exception("Failed to find the code generation " +
+                    "library. This is an issue with the extension.");
+            }
+
+            return codeGenerators;
         }
 
         #endregion

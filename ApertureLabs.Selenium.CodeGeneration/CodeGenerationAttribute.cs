@@ -30,6 +30,9 @@ namespace ApertureLabs.Selenium.CodeGeneration
         /// </value>
         public string HTMLAttributeValue { get; set; }
 
+        /// <summary>
+        /// The type being generated.
+        /// </summary>
         public Type Implementation { get; set; }
 
         /// <summary>

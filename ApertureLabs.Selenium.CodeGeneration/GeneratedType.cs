@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// The type being generated.
-    /// <summary>
+    /// </summary>
     public enum GeneratedType
     {
         /// <summary>

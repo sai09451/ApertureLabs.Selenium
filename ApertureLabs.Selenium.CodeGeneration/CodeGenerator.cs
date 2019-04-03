@@ -5,23 +5,29 @@ using System.Linq;
 
 namespace ApertureLabs.Selenium.CodeGeneration
 {
-    public abstract class CodeGenerator
+    public interface ICodeGenerator
     {
-        public abstract void Generate(CodeGenerationContext codeGenerationContext);
+        void Generate(
+            CodeGenerationContext originalContext,
+            CodeGenerationContext newContext);
     }
 
-    internal class DemoCodeGenerator : CodeGenerator
+    internal class DemoCodeGenerator : ICodeGenerator
     {
-        public override void Generate(CodeGenerationContext codeGenerationContext)
+        public void Generate(
+            CodeGenerationContext originalContext,
+            CodeGenerationContext newContext)
         {
-            if (codeGenerationContext == null)
-                throw new NotImplementedException();
+            if (originalContext == null)
+                throw new ArgumentNullException(nameof(originalContext));
+            else if (newContext == null)
+                throw new ArgumentNullException(nameof(newContext));
 
-            if (codeGenerationContext.NewFileCodeModel.Language != CodeModelLanguageConstants.vsCMLanguageCSharp)
+            // Only handle C# for now.
+            if (newContext.FileCodeModel.Language != CodeModelLanguageConstants.vsCMLanguageCSharp)
                 return;
 
-            var newCodeModel = codeGenerationContext.NewFileCodeModel;
-            object startingCodeElement = -1;
+            var newCodeModel = originalContext.FileCodeModel;
 
             // Get all namespace elements.
             var namespaceEls = newCodeModel
@@ -45,8 +51,33 @@ namespace ApertureLabs.Selenium.CodeGeneration
 
                 namespaceStartPoint.LineDown();
                 newCodeModel.AddNamespace(
-                    codeGenerationContext.NewNamespace,
+                    originalContext.NewNamespace,
                     namespaceStartPoint);
+            }
+
+            var classes = newCodeModel.CodeElements
+                .SearchForAll(el => el.Kind == vsCMElement.vsCMElementClass)
+                .ToList();
+
+            if (!classes.Any())
+            {
+                // No classes already exist.
+            }
+            else
+            {
+                // Classes do exist.
+                var generatingType = classes.LastOrDefault(
+                    el => el.Name.Equals(
+                        originalContext.GeneratedTypeName));
+
+                if (generatingType != null)
+                {
+                    // Need to create class.
+                }
+                else
+                {
+                    // Need to update class.
+                }
             }
 
             if (newCodeModel.CodeElements.Count > 0)
@@ -56,19 +87,19 @@ namespace ApertureLabs.Selenium.CodeGeneration
                     if (codeElement.Kind == vsCMElement.vsCMElementNamespace)
                     {
                         // Set the starting point to the last point.
-                        startingCodeElement = codeElement
-                            .Children
-                            .Item(codeElement.Children.Count - 1);
+                        //startingCodeElement = codeElement
+                        //    .Children
+                        //    .Item(codeElement.Children.Count - 1);
                         break;
                     }
                 }
             }
 
-            switch (codeGenerationContext.GeneratedType)
+            switch (originalContext.GeneratedType)
             {
-                case GeneratedType.Class:
+                case vsCMElement.vsCMElementClass:
                     newCodeModel.AddClass(
-                        Name: codeGenerationContext.GeneratedTypeName,
+                        Name: originalContext.GeneratedTypeName,
                         Position: null,
                         Bases: null,
                         ImplementedInterfaces: null,

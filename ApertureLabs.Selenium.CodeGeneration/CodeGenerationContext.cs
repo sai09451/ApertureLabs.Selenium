@@ -13,20 +13,12 @@ namespace ApertureLabs.Selenium.CodeGeneration
     public class CodeGenerationContext
     {
         /// <summary>
-        /// Gets or sets the original file information.
+        /// Gets or sets the file information.
         /// </summary>
         /// <value>
-        /// The original file information.
+        /// The file information.
         /// </value>
-        public FileInfo OriginalFileInfo { get; set; }
-
-        /// <summary>
-        /// Creates new fileinfo.
-        /// </summary>
-        /// <value>
-        /// The new file information.
-        /// </value>
-        public FileInfo NewFileInfo { get; set; }
+        public FileInfo FileInfo { get; set; }
 
         /// <summary>
         /// Gets the new namespace.
@@ -37,20 +29,12 @@ namespace ApertureLabs.Selenium.CodeGeneration
         public string NewNamespace { get; set; }
 
         /// <summary>
-        /// Gets or sets the original file code model.
+        /// Gets or sets the file code model.
         /// </summary>
         /// <value>
-        /// The original file code model.
+        /// The file code model.
         /// </value>
-        public FileCodeModel OriginalFileCodeModel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the new file code model.
-        /// </summary>
-        /// <value>
-        /// The new file code model.
-        /// </value>
-        public FileCodeModel NewFileCodeModel { get; set; }
+        public FileCodeModel FileCodeModel { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the generated type.
@@ -66,7 +50,7 @@ namespace ApertureLabs.Selenium.CodeGeneration
         /// <value>
         /// The type of the generated.
         /// </value>
-        public GeneratedType GeneratedType { get; set; }
+        public vsCMElement GeneratedType { get; set; }
 
         /// <summary>
         /// Gets or sets the base class. Can be null.
