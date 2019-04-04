@@ -19,6 +19,14 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.0.0" />
+    <PackageReference Include="NuGet.Common" Version="4.9.4" />
+    <PackageReference Include="NuGet.Configuration" Version="4.9.4" />
+    <PackageReference Include="NuGet.Frameworks" Version="4.9.4" />
+    <PackageReference Include="NuGet.Packaging" Version="4.9.4" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="4.9.4" />
+    <PackageReference Include="NuGet.Protocol" Version="4.9.4" />
+    <PackageReference Include="NuGet.Resolver" Version="4.9.4" />
+    <PackageReference Include="NuGet.Versioning" Version="4.9.4" />
   </ItemGroup>
 
 </Project>
