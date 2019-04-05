@@ -1,4 +1,7 @@
-﻿using CommandLine;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using CommandLine;
 
 namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 {
@@ -6,7 +9,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
         name: "info",
         HelpText = "Displays info about the code generation process.",
         Hidden = false)]
-    public class InfoOptions : LogOptions
+    public class InfoOptions : LogOptions, ICommand
     {
         [Option(
             longName: "list-generators",
@@ -20,5 +23,12 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             HelpText = "The full or relative path to the solution file (*.sln).",
             Required = false)]
         public string PathToSolution { get; set; }
+
+        public Task ExecuteAsync(
+            IProgress<double> progress,
+            CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

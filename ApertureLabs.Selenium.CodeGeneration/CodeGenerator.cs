@@ -1,17 +1,11 @@
 ﻿using ApertureLabs.Selenium.CodeGeneration.Extensions;
 using EnvDTE;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ApertureLabs.Selenium.CodeGeneration
 {
-    public interface ICodeGenerator
-    {
-        void Generate(
-            CodeGenerationContext originalContext,
-            CodeGenerationContext newContext);
-    }
-
     internal class DemoCodeGenerator : ICodeGenerator
     {
         public void Generate(
@@ -108,6 +102,16 @@ namespace ApertureLabs.Selenium.CodeGeneration
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public IEnumerable<CodeChange> GetChanges(CodeGenerationContext originalContext, CodeGenerationContext newContext)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<CodeGenerationContext> GetContexts(Project project)
+        {
+            throw new NotImplementedException();
         }
 
         private CodeElement GetClass(FileCodeModel fileCodeModel, string className)

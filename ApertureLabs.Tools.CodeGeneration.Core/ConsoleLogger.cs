@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using Console = Colorful.Console;
 
@@ -16,6 +17,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
         private const string MESSAGE_FORMAT = "[{0}] - {1} : {2}";
         private readonly object lockContext = new object();
         private readonly LogOptions logOptions;
+        private readonly Color infoColor;
+        private readonly Color warningColor;
+        private readonly Color debugColor;
+        private readonly Color errorColor;
 
         #endregion
 
@@ -25,6 +30,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
         {
             this.logOptions = logOptions
                 ?? throw new ArgumentNullException(nameof(logOptions));
+
+            infoColor = GetConstrastColor(Color.White, Color.Black);
+            warningColor = GetConstrastColor(Color.Yellow, Color.DarkKhaki);
+            debugColor = GetConstrastColor(Color.Purple, Color.DarkMagenta);
+            errorColor = GetConstrastColor(Color.Red, Color.Pink);
         }
 
         #endregion
@@ -36,7 +46,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             Log(
                 message: message,
                 logLevel: "INFO",
-                fg: Color.White);
+                fg: infoColor);
         }
 
         public void Warning(object message)
@@ -44,7 +54,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             Log(
                 message: message,
                 logLevel: "WARNING",
-                fg: Color.Yellow);
+                fg: warningColor);
         }
 
         public void Debug(object message)
@@ -52,15 +62,15 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             Log(
                 message: message,
                 logLevel: "DEBUG",
-                fg: Color.Purple);
+                fg: debugColor);
         }
 
         public void Error(object message, bool @throw = false)
         {
             Log(
                 message: message,
-                logLevel: "DEBUG",
-                fg: Color.Red);
+                logLevel: "Error",
+                fg: errorColor);
 
             if (@throw)
             {
@@ -149,6 +159,45 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                 messageStr);
         }
 
+        private static Color GetConstrastColor(params Color[] desiredColors)
+        {
+            var maxL = desiredColors
+                .Select((color, index) => new { L = GetRelativeLuminance(color), Index = index })
+                .OrderBy(q => q.L)
+                .First();
+
+            return desiredColors[maxL.Index];
+        }
+
+        private static double GetRelativeLuminance(Color color)
+        {
+            Color lighterColor, darkerColor;
+
+            if (color.GetBrightness() > Console.BackgroundColor.GetBrightness())
+            {
+                lighterColor = color;
+                darkerColor = Console.BackgroundColor;
+            }
+            else
+            {
+                darkerColor = color;
+                lighterColor = Console.BackgroundColor;
+            }
+
+            double
+                s1 = lighterColor.GetSaturation(),
+                b1 = lighterColor.GetBrightness(),
+                s2 = darkerColor.GetSaturation(),
+                b2 = darkerColor.GetBrightness();
+
+            var l1 = (2 - s1) * b1 / 2;
+            var l2 = (2 - s2) * b2 / 2;
+
+            var contrastRatio = (l1 + .05) / (l2 + 0.05);
+
+            return contrastRatio;
+        }
+
         #endregion
 
         #region Nested Classes
@@ -206,8 +255,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                     prefix += $"{message}";
 
                     Console.Write(
-                        prefix.PadRight(Console.BufferWidth),
-                        Color.White);
+                        prefix.PadRight(Console.BufferWidth));
 
                     // Restore defaults.
                     restorePoint.Restore(true);
@@ -271,7 +319,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                     sb.Insert(0, "=", cells);
                     sb.Append(progressStr);
 
-                    Console.Write(sb.ToString(), Color.White);
+                    Console.Write(sb.ToString());
 
                     // Restore defaults.
                     restorePoint.Restore(true);

@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ApertureLabs.Selenium.CodeGeneration</name>
+    </assembly>
+    <members>
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.CodeGenerationAttribute">
+            <summary>
+            Used for in conjunction with the
+            ApertureLabs.VisualStudio.GeneratePageObjects extention. Allows for the
+            page object generation process to be customized. Should only be applied
+            to classes that derive from <see cref="!:ILoadableComponent"/>. If
+            defined on an interface then the <see cref="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationAttribute.Implementation"/> property
+            must be set to a class that has the
+            <see cref="T:ApertureLabs.Selenium.CodeGeneration.CodeGenerationAttribute"/> defined on it.
+            </summary>
+            <seealso cref="T:System.Attribute" />
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationAttribute.HTMLAttributeValue">
+            <summary>
+            Gets or sets the HTML attribute value. Identifies all tag helpers
+            that have the 'selenium-component-type' attribute helper and checks
+            if that value matches this. If not specified the name of the class
+            is used.
+            </summary>
+            <value>
+            The HTML attribute value.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationAttribute.Implementation">
+            <summary>
+            The type being generated.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationAttribute.CodeGenerator">
+            <summary>
+            Gets or sets the code generator.
+            </summary>
+            <value>
+            The code generator.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext">
+            <summary>
+            Contains information about the original file and what's being
+            generated.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.FileInfo">
+            <summary>
+            Gets or sets the file information.
+            </summary>
+            <value>
+            The file information.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.NewNamespace">
+            <summary>
+            Gets the new namespace.
+            </summary>
+            <value>
+            The new namespace.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.FileCodeModel">
+            <summary>
+            Gets or sets the file code model.
+            </summary>
+            <value>
+            The file code model.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.GeneratedTypeName">
+            <summary>
+            Gets or sets the name of the generated type.
+            </summary>
+            <value>
+            The name of the generated type.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.GeneratedType">
+            <summary>
+            Gets or sets the type being generated.
+            </summary>
+            <value>
+            The type of the generated.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.BaseClass">
+            <summary>
+            Gets or sets the base class. Can be null.
+            </summary>
+            <value>
+            The base class.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.ImplementedInterfaces">
+            <summary>
+            Gets or sets the interfaces to be implemented.
+            </summary>
+            <value>
+            The implemented interfaces.
+            </value>
+        </member>
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions">
+            <summary>
+            Extensions for <see cref="T:EnvDTE.CodeElements"/>.
+            </summary>
+        </member>
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions.Recurse(EnvDTE.CodeElements)">
+            <summary>
+            Recurses thru all code elements.
+            </summary>
+            <param name="codeElements">The code elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions.SearchFor(EnvDTE.CodeElements,System.Func{EnvDTE.CodeElement,System.Boolean})">
+            <summary>
+            Searches for all <see cref="T:EnvDTE.CodeElement"/>s that match the query.
+            </summary>
+            <param name="codeElements">The code elements.</param>
+            <param name="query">The query.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions.SearchForAll(EnvDTE.CodeElements,System.Func{EnvDTE.CodeElement,System.Boolean})">
+            <summary>
+            Searches for all <see cref="T:EnvDTE.CodeElement"/>s that match the query.
+            </summary>
+            <param name="codeElements">The code elements.</param>
+            <param name="query">The query.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.GeneratedType">
+            <summary>
+            The type being generated.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Class">
+            <summary>
+            The class.
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.AbstractClass">
+            <summary>
+            The abstract class
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Interface">
+            <summary>
+            The interface
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Struct">
+            <summary>
+            The structure
+            </summary>
+        </member>
+        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Delegate">
+            <summary>
+            The delegate
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.ImplementInterfaceContext">
+            <summary>
+            Defines how to implement the interface.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.ImplementInterfaceContext.InterfaceType">
+            <summary>
+            Gets or sets the type of the interface.
+            </summary>
+            <value>
+            The type of the interface.
+            </value>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.ImplementInterfaceContext.ImplementExplicitly">
+            <summary>
+            Gets or sets a value indicating whether [implement explicitly].
+            </summary>
+            <value>
+              <c>true</c> if [implement explicitly]; otherwise, <c>false</c>.
+            </value>
+        </member>
+    </members>
+</doc>

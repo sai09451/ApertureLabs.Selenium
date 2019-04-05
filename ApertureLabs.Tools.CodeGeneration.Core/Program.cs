@@ -14,105 +14,33 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
 {
     public static class Program
     {
-        private static ConsoleLogger Log;
+        public static ConsoleLogger Log { get; set; }
 
-        static int Main(string[] args)
+        [STAThread]
+        static void Main(string[] args)
         {
-            var result = Parser.Default.ParseArguments<InfoOptions, GenerateOptions>(args)
+            var progress = new Progress<double>();
+
+            var task = Parser.Default.ParseArguments<TestOptions, InfoOptions, GenerateOptions>(args)
                 .MapResult(
-                    (InfoOptions infoOpts) => InfoOptsWithExitCode(infoOpts),
-                    (GenerateOptions generateOpts) => GenerateOptsWithExitCode(generateOpts),
-                    errors => 1);
+                    (TestOptions testOpts) => testOpts.ExecuteAsync(progress, CancellationToken.None),
+                    (InfoOptions infoOpts) => infoOpts.ExecuteAsync(progress, CancellationToken.None),
+                    (GenerateOptions generateOpts) => generateOpts.ExecuteAsync(progress, CancellationToken.None),
+                    errors => HandleErrors(errors));
 
-            return result;
+            // Wait for task to complete.
+            task.Wait();
+
+            return;
         }
 
-        static int InfoOptsWithExitCode(InfoOptions infoOptions)
+        static Task HandleErrors(IEnumerable<Error> errors)
         {
-            InitLogger(infoOptions);
+            var errorStr = String.Join(
+                Environment.NewLine,
+                errors.Select(e => e.ToString()));
 
-            var solutionTask = GetWorkspaceAndSolution(infoOptions.PathToSolution);
-            solutionTask.Wait();
-            var workspace = solutionTask.Result.Item1;
-            var solution = solutionTask.Result.Item2;
-
-            foreach (var project in solution.Projects)
-                Log.Info($"Found project: {project.Name}");
-
-            workspace.Dispose();
-
-            return 0;
-        }
-
-        static int GenerateOptsWithExitCode(GenerateOptions generateOptions)
-        {
-            var changes = new List<string>();
-            InitLogger(generateOptions);
-
-            var (workspace, solution) = GetWorkspaceAndSolution(
-                    generateOptions.PathToSolution)
-                .Result;
-
-            var originalProject = solution.Projects.FirstOrDefault(
-                p => p.Name.Equals(
-                    generateOptions.OriginalProjectName,
-                    StringComparison.Ordinal));
-
-            if (originalProject == null)
-            {
-                Log.Error(
-                    new Exception($"No such project found with name '{generateOptions.OriginalProjectName}'."),
-                    true);
-            }
-
-            var destinationProject = solution.Projects.FirstOrDefault(
-                p => p.Name.Equals(
-                    generateOptions.DestinationProjectName,
-                    StringComparison.Ordinal));
-
-            if (generateOptions.OverwriteExistingFiles)
-            {
-                // Remove project.
-                if (destinationProject != null)
-                    solution = solution.RemoveProject(destinationProject.Id);
-
-                // Create new project.
-                destinationProject = CreateProject(
-                    solution,
-                    generateOptions.DestinationProjectName);
-            }
-            else
-            {
-                if (destinationProject == null)
-                {
-                    // Create new project if it doesn't exist.
-                    destinationProject = CreateProject(
-                        solution,
-                        generateOptions.DestinationProjectName);
-                }
-            }
-
-            Log.Info($"Original project: {originalProject.Name}");
-            Log.Info($"Destination project: {destinationProject.Name}");
-
-            if (!workspace.TryApplyChanges(solution))
-            {
-                Log.Error(
-                    new Exception("Failed to update the solution with the project."),
-                    true);
-            }
-
-            // Retrieve all code generators.
-            var codeGenerators = GetAllCodeGenerators(originalProject);
-
-            if (codeGenerators.Any())
-            {
-                // Create instance of the code generator.
-            }
-
-            workspace.Dispose();
-
-            return 0;
+            return Task.Run(() => Log.Error(new Exception(errorStr), true));
         }
 
         private static IEnumerable<Document> GetDocuments(Project project,
@@ -204,7 +132,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             //    excludeVersion: false);
         }
 
-        private static Task<(MSBuildWorkspace, Solution)> GetWorkspaceAndSolution(
+        public static Task<(MSBuildWorkspace, Solution)> GetWorkspaceAndSolution(
             string pathToSolution = null)
         {
             MSBuildLocator.RegisterDefaults();
@@ -246,9 +174,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             return codeGeneratorTypes;
         }
 
-        private static void InitLogger(LogOptions logOptions)
+        public static Task InitializeAsync(LogOptions logOptions)
         {
             Log = new ConsoleLogger(logOptions);
+
+            return Task.CompletedTask;
         }
 
         private static string GetSolutionFile(string pathToSolution = null)

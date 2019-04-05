@@ -1,0 +1,2 @@
+﻿generate --original-project-name="MockServer" --path-to-solution="C:/Users/Alexander/Documents/GitHub/ApertureLabs.Selenium/ApertureLabs.Selenium.sln" --destination-project-name="MockServer.PageObjects"
+test
