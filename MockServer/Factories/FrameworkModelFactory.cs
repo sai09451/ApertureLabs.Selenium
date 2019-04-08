@@ -14,13 +14,13 @@ namespace MockServer.Factories
     {
         #region Fields
 
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
         #endregion
 
         #region Constructor
 
-        public FrameworkModelFactory(IHostingEnvironment hostingEnvironment)
+        public FrameworkModelFactory(IWebHostEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }

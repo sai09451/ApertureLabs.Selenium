@@ -42,123 +42,169 @@
         </member>
         <member name="T:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext">
             <summary>
-            Contains information about the original file and what's being
+            Contains the file being used to generate the code and the file being
             generated.
             </summary>
         </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.FileInfo">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.#ctor">
             <summary>
-            Gets or sets the file information.
+            Initializes a new instance of the
+            <see cref="T:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext"/> class.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.OriginalDocumentId">
+            <summary>
+            The id of the original document that isn't being modified. Used to
+            generate the <see cref="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.DestinationDocumentId"/>.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.DestinationDocumentId">
+            <summary>
+            The id of the document being generated.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.Metadata">
+            <summary>
+            Gets or sets the metadata associated with this context.
             </summary>
             <value>
-            The file information.
+            The metadata.
             </value>
         </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.NewNamespace">
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress">
             <summary>
-            Gets the new namespace.
-            </summary>
-            <value>
-            The new namespace.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.FileCodeModel">
-            <summary>
-            Gets or sets the file code model.
-            </summary>
-            <value>
-            The file code model.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.GeneratedTypeName">
-            <summary>
-            Gets or sets the name of the generated type.
-            </summary>
-            <value>
-            The name of the generated type.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.GeneratedType">
-            <summary>
-            Gets or sets the type being generated.
-            </summary>
-            <value>
-            The type of the generated.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.BaseClass">
-            <summary>
-            Gets or sets the base class. Can be null.
-            </summary>
-            <value>
-            The base class.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationContext.ImplementedInterfaces">
-            <summary>
-            Gets or sets the interfaces to be implemented.
-            </summary>
-            <value>
-            The implemented interfaces.
-            </value>
-        </member>
-        <member name="T:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions">
-            <summary>
-            Extensions for <see cref="T:EnvDTE.CodeElements"/>.
+            Used to display information on how far along a code generation task is.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions.Recurse(EnvDTE.CodeElements)">
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress.TotalSteps">
             <summary>
-            Recurses thru all code elements.
+            The total number of steps.
             </summary>
-            <param name="codeElements">The code elements.</param>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress.CurrentStep">
+            <summary>
+            The current step. Must be greater than zero and less than or equal
+            to <see cref="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress.TotalSteps"/>.
+            </summary>
+        </member>
+        <member name="P:ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress.Message">
+            <summary>
+            An optional message to display.
+            </summary>
+        </member>
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.CodeGenerator">
+            <summary>
+            Base class for code generators. Provides methods for adding a file to
+            a project.
+            </summary>
+            <seealso cref="T:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator" />
+        </member>
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.Generate(Microsoft.CodeAnalysis.Document,Microsoft.CodeAnalysis.Document,System.Collections.Generic.IDictionary{System.String,System.Object},System.IProgress{ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress},System.Threading.CancellationToken)">
+            <summary>
+            Generates the specified original document.
+            </summary>
+            <param name="originalDocument">The original document.</param>
+            <param name="destinationDocument">The destination document.</param>
+            <param name="metadata">The metadata.</param>
+            <param name="progress">The progress.</param>
+            <param name="cancellationToken">The cancellation token.</param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions.SearchFor(EnvDTE.CodeElements,System.Func{EnvDTE.CodeElement,System.Boolean})">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetContexts(Microsoft.CodeAnalysis.Project,Microsoft.CodeAnalysis.Project,System.Threading.CancellationToken)">
             <summary>
-            Searches for all <see cref="T:EnvDTE.CodeElement"/>s that match the query.
+            Retrieves a list of all files that will be 'generated'. If needed
+            document generation is allowed here ONLY in the destination
+            project. Do NOT modify the orginal project!
             </summary>
-            <param name="codeElements">The code elements.</param>
-            <param name="query">The query.</param>
+            <param name="originalProject">The original project.</param>
+            <param name="destinationProject">The destination project.</param>
+            <param name="cancellationToken">The cancellation token.</param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.Extensions.CodeElementsExtensions.SearchForAll(EnvDTE.CodeElements,System.Func{EnvDTE.CodeElement,System.Boolean})">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetOrCreateDocumentWithSameRelativePath(Microsoft.CodeAnalysis.Document,Microsoft.CodeAnalysis.Project,System.String)">
             <summary>
-            Searches for all <see cref="T:EnvDTE.CodeElement"/>s that match the query.
+            Gets or creates the document with same relative path as the
+            template document.
             </summary>
-            <param name="codeElements">The code elements.</param>
-            <param name="query">The query.</param>
+            <param name="templateDocument">The template document.</param>
+            <param name="destinationProject">The destination project.</param>
+            <param name="newFileName">New name of the file.</param>
             <returns></returns>
         </member>
-        <member name="T:ApertureLabs.Selenium.CodeGeneration.GeneratedType">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.AddFileToProject(Microsoft.CodeAnalysis.Project,System.String,Microsoft.CodeAnalysis.Document)">
             <summary>
-            The type being generated.
+            Adds the file to project.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="newFileName">New name of the file.</param>
+            <param name="templateDocument">
+            The template document. Will place the new file in the same folders
+            as the templateDocument. Ex: template doc is ./a/b/c/template.cs
+            then the added file will be ./a/b/c/newFileName.cs.
+            </param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">
+            project
+            or
+            templateDocument
+            or
+            newFileName
+            </exception>
+            <exception cref="T:System.Exception">Failed to update the project.</exception>
+        </member>
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetDocumentsWithFileExtensions(Microsoft.CodeAnalysis.Project,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets the documents with file extensions. Uses
+            <see cref="M:System.IO.Path.GetExtension(System.String)"/> to get the extension from
+            the documents filepath.
+            </summary>
+            <param name="project">The project.</param>
+            <param name="fileExtensions">
+            The file extensions. Should be prefixed with '.'
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetFolders(System.String)">
+            <summary>
+            Gets the folders of the path except for the last entry.
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator">
+            <summary>
+            Used be the ApertureLabs.Tools.CodeGeneration.Core tool to generate
+            code files.
             </summary>
         </member>
-        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Class">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator.GetContexts(Microsoft.CodeAnalysis.Project,Microsoft.CodeAnalysis.Project,System.Threading.CancellationToken)">
             <summary>
-            The class.
+            Retrieves a list of all files that will be 'generated'. If needed
+            document generation is allowed here ONLY in the destination
+            project. Do NOT modify the orginal project!
             </summary>
+            <param name="originalProject">The original project.</param>
+            <param name="destinationProject">The destination project.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
         </member>
-        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.AbstractClass">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator.Generate(Microsoft.CodeAnalysis.Document,Microsoft.CodeAnalysis.Document,System.Collections.Generic.IDictionary{System.String,System.Object},System.IProgress{ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress},System.Threading.CancellationToken)">
             <summary>
-            The abstract class
+            Called to generate the document. Do NOT apply changes in this
+            function. Should return the modified document instead. Exceptions
+            can be thrown in this function however the changes will NOT be
+            applied.
             </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Interface">
-            <summary>
-            The interface
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Struct">
-            <summary>
-            The structure
-            </summary>
-        </member>
-        <member name="F:ApertureLabs.Selenium.CodeGeneration.GeneratedType.Delegate">
-            <summary>
-            The delegate
-            </summary>
+            <param name="originalDocument">The original document.</param>
+            <param name="destinationDocument">The destination document.</param>
+            <param name="metadata">
+            The metadata associated with the context.
+            </param>
+            <param name="progress">The progress handler.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>
+            A task whose result should be the modified/generated document.
+            </returns>
         </member>
         <member name="T:ApertureLabs.Selenium.CodeGeneration.ImplementInterfaceContext">
             <summary>

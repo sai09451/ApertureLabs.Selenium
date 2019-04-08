@@ -2,7 +2,7 @@
 
 namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 {
-    public abstract class LogOptions
+    public class LogOptions
     {
         [Option(
             longName: "no-color",

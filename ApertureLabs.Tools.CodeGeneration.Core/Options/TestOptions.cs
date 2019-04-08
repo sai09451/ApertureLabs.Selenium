@@ -1,15 +1,13 @@
-﻿using CommandLine;
+﻿using ApertureLabs.Selenium.CodeGeneration;
+using CommandLine;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
-using Microsoft.CodeAnalysis.Text;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -74,8 +72,9 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 
             #region Project info.
 
-            Program.Log.Info("Original project info:");
             originalProjectOutputPath = originalProject.OutputFilePath;
+
+            Program.Log.Info("Original project info:");
             LogInfoOf(() => originalProject.OutputFilePath);
             LogInfoOf(() => originalProject.SupportsCompilation);
 
@@ -188,28 +187,122 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 
             #region Loading the compiled assembly.
 
-            var assemblyName = AssemblyName.GetAssemblyName(originalProject.OutputFilePath);
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            var assembly = AppDomain.CurrentDomain.Load(assemblyName);
+            var cancellationTokenSource = new CancellationTokenSource();
+            var _progress = new Progress<CodeGenerationProgress>();
+            var loadContext = new PluginLoadContext(destinationProject.OutputFilePath);
+            var assembly = loadContext.LoadFromAssemblyPath(destinationProject.OutputFilePath);
 
-            var codeGenerators = assembly.GetTypes()
+            var codeGeneratorTypes = assembly.GetTypes()
                 .Where(t => t.GetInterfaces().Any(i => i.Name == "ICodeGenerator")
                     && !t.IsAbstract
                     && t.IsClass
-                    && t.GetConstructors().Any(c => c.IsPublic));
+                    && t.GetConstructors().Any( // Check for public default ctor.
+                        c => c.IsPublic
+                        && !c.GetParameters().Any()));
 
-            if (!codeGenerators.Any())
+            if (!codeGeneratorTypes.Any())
                 Program.Log.Error("Failed to locate any ICodeGenerators.", true);
 
-            // Cannot unload assembly, not supported in dotnet core 2.1, might
-            // be supported in 3.0.
+            var destProjRef = destinationProject;
+
+            foreach (var codeGeneratorType in codeGeneratorTypes)
+            {
+                var codeGenerator = Activator.CreateInstance(codeGeneratorType)
+                    as ICodeGenerator;
+
+                if (codeGenerator == null)
+                    continue;
+
+                var contexts = await codeGenerator.GetContexts(
+                        originalProject,
+                        destinationProject,
+                        cancellationTokenSource.Token)
+                    .ConfigureAwait(false);
+
+                // Generate the code.
+                foreach (var context in contexts)
+                {
+                    var originalDocument = originalProject.GetDocument(context.OriginalDocumentId);
+                    var destinationDocument = destProjRef.GetDocument(context.DestinationDocumentId);
+
+                    var modifiedDoc = await codeGenerator.Generate(
+                            originalDocument,
+                            destinationDocument,
+                            context.Metadata,
+                            _progress,
+                            cancellationTokenSource.Token)
+                        .ConfigureAwait(false);
+
+                    destProjRef = modifiedDoc.Project;
+                }
+
+                // Get list of changes.
+                var changes = destProjRef.Solution.GetChanges(destinationProject.Solution);
+                LogSolutionChanges(destProjRef.Solution, destinationProject.Solution);
+
+                // Prompt for accepting changes.
+                Console.Write("Accept changes y/n");
+                var response = Console.ReadLine();
+
+                var isPositiveResponse = response.Equals("y", StringComparison.OrdinalIgnoreCase)
+                    || response.Equals("yes", StringComparison.OrdinalIgnoreCase);
+
+                if (!isPositiveResponse)
+                {
+                    // Exit if not applying the changes.
+                    Program.Log.Error("Exiting program");
+                    return;
+                }
+
+                // Apply changes.
+                if (workspace.TryApplyChanges(destProjRef.Solution))
+                {
+                    // Success.
+                    Program.Log.Info("Applied changes successfully");
+                }
+                else
+                {
+                    // Error.
+                    Program.Log.Error("Failed to apply changes.");
+                }
+            }
+
+            // TODO: Unload assembly.
 
             #endregion
         }
 
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        private Assembly CurrentDomain_AssemblyResolve(
+            object sender,
+            ResolveEventArgs args)
         {
-            throw new NotImplementedException();
+            // Check the *.deps.json file for libraries matching that name.
+
+            // Check for assembly in built project location.
+            var files = new FileInfo(originalProjectOutputPath).Directory.GetFiles();
+
+            foreach (var file in files)
+            {
+                var name = default(string);
+
+                try
+                {
+                    name = AssemblyName
+                        .GetAssemblyName(file.FullName)
+                        .ToString();
+                }
+                catch (BadImageFormatException)
+                {
+                    continue;
+                }
+
+                if (args.Name.Equals(name, StringComparison.Ordinal))
+                {
+                    return Assembly.LoadFrom(file.FullName);
+                }
+            }
+
+            throw new FileNotFoundException(args.Name);
         }
 
         private static void LogInfoOf<T>(Expression<Func<T>> expression)

@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>code-generator</ToolCommandName>
-    <PackAsTool>true</PackAsTool>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <!--<PackAsTool>true</PackAsTool>
+    <ToolCommandName>code-generator</ToolCommandName>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\CsProjectUtilities\" />
+    <ProjectReference Include="..\ApertureLabs.Selenium.CodeGeneration\ApertureLabs.Selenium.CodeGeneration.csproj" />
   </ItemGroup>
 
 </Project>

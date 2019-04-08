@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using ApertureLabs.Tools.CodeGeneration.Core.Services.CsProjectUtilities;
+using Microsoft.CodeAnalysis;
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
@@ -22,7 +23,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
     /// <summary>
     /// Contains methods for installing/searching/uninstalling NuGet packages.
     /// </summary>
-    public class NuGetUtilities
+    public class NuGetService
     {
         #region Fields
 
@@ -30,7 +31,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
 
         #region Constructor
 
-        public NuGetUtilities()
+        public NuGetService()
         { }
 
         #endregion
@@ -142,15 +143,12 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
             }
 
             // Update csproj file to include the project reference.
-            var packageRef = MetadataReference.CreateFromFile(
-                path: String.Empty,
-                properties: MetadataReferenceProperties.Assembly);
-            var updatedProject = project.AddMetadataReference(packageRef);
+            var projectElement = new ProjectElement(project);
 
-            if (!project.Solution.Workspace.TryApplyChanges(updatedProject.Solution))
-            {
-                throw new Exception("Failed to apply changes.");
-            }
+            projectElement.AddPackageReference(
+                    packageId,
+                    version)
+                .Save();
         }
 
         private async Task GetPackageDependencies(PackageIdentity package,

@@ -254,7 +254,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
 
                     prefix += $"{message}";
 
-                    Console.Write(
+                    Console.WriteLine(
                         prefix.PadRight(Console.BufferWidth));
 
                     // Restore defaults.
@@ -319,7 +319,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                     sb.Insert(0, "=", cells);
                     sb.Append(progressStr);
 
-                    Console.Write(sb.ToString());
+                    Console.WriteLine(sb.ToString());
 
                     // Restore defaults.
                     restorePoint.Restore(true);

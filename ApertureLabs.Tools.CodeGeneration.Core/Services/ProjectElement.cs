@@ -1,5 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -29,7 +31,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services.CsProjectUtilities
 
         #region Methods
 
-        public void SetProperty(string propertyName, string propertyValue)
+        public ProjectElement SetProperty(string propertyName, string propertyValue)
         {
             var propertyGroupsEls = projectDocument.Elements("PropertyGroup");
 
@@ -44,9 +46,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services.CsProjectUtilities
 
                 break;
             }
+
+            return this;
         }
 
-        public void RemoveProperty(string propertyName)
+        public ProjectElement RemoveProperty(string propertyName)
         {
             var propertyGroupEls = projectDocument.Elements("PropertyGroup");
 
@@ -61,9 +65,28 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services.CsProjectUtilities
 
                 break;
             }
+
+            return this;
         }
 
-        public void AddPackageReference(string packageId, string version)
+        public string GetPropertyValue(string propertyName)
+        {
+            var propertyGroupsEls = projectDocument.Elements("PropertyGroup");
+
+            foreach (var propertyGroupEl in propertyGroupsEls)
+            {
+                var matchingEl = propertyGroupEl.Element(propertyName);
+
+                if (matchingEl == null)
+                    continue;
+
+                return matchingEl.Value;
+            }
+
+            return null;
+        }
+
+        public ProjectElement AddPackageReference(string packageId, string version)
         {
             var itemGroupEls = projectDocument.Elements("ItemGroup");
 
@@ -92,9 +115,9 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services.CsProjectUtilities
 
                 if (exists != null)
                 {
-                    // Set the version.
+                    // Set the version and return early.
                     exists.SetValue(version);
-                    return;
+                    return this;
                 }
             }
 
@@ -102,9 +125,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services.CsProjectUtilities
                 XName.Get("PackageReference"),
                 new XAttribute("Include", packageId),
                 new XAttribute("Version", version)));
+
+            return this;
         }
 
-        public void RemovePackageReference(string packageId)
+        public ProjectElement RemovePackageReference(string packageId)
         {
             var element = projectDocument.Elements("PackageReference")
                 .FirstOrDefault(
@@ -112,6 +137,21 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services.CsProjectUtilities
                         packageId, StringComparison.Ordinal) ?? false);
 
             element?.Remove();
+
+            return this;
+        }
+
+        public IEnumerable<(string, string)> GetPackageReferences()
+        {
+            var packageReferenceEls = projectDocument.Elements("PackageReference");
+
+            foreach (var packageRefEl in packageReferenceEls)
+            {
+                var packageId = packageRefEl.Attribute("Include").Value;
+                var version = packageRefEl.Attribute("Version").Value;
+
+                yield return (packageId, version);
+            }
         }
 
         public void Save()

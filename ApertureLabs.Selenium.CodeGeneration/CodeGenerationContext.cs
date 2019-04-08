@@ -1,71 +1,40 @@
-﻿using EnvDTE;
-using System;
+﻿using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace ApertureLabs.Selenium.CodeGeneration
 {
     /// <summary>
-    /// Contains information about the original file and what's being
+    /// Contains the file being used to generate the code and the file being
     /// generated.
     /// </summary>
     public class CodeGenerationContext
     {
         /// <summary>
-        /// Gets or sets the file information.
+        /// Initializes a new instance of the
+        /// <see cref="CodeGenerationContext"/> class.
         /// </summary>
-        /// <value>
-        /// The file information.
-        /// </value>
-        public FileInfo FileInfo { get; set; }
+        public CodeGenerationContext()
+        {
+            Metadata = new Dictionary<string, object>();
+        }
 
         /// <summary>
-        /// Gets the new namespace.
+        /// The id of the original document that isn't being modified. Used to
+        /// generate the <see cref="DestinationDocumentId"/>.
         /// </summary>
-        /// <value>
-        /// The new namespace.
-        /// </value>
-        public string NewNamespace { get; set; }
+        public DocumentId OriginalDocumentId { get; set; }
 
         /// <summary>
-        /// Gets or sets the file code model.
+        /// The id of the document being generated.
         /// </summary>
-        /// <value>
-        /// The file code model.
-        /// </value>
-        public FileCodeModel FileCodeModel { get; set; }
+        public DocumentId DestinationDocumentId { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the generated type.
+        /// Gets or sets the metadata associated with this context.
         /// </summary>
         /// <value>
-        /// The name of the generated type.
+        /// The metadata.
         /// </value>
-        public string GeneratedTypeName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type being generated.
-        /// </summary>
-        /// <value>
-        /// The type of the generated.
-        /// </value>
-        public vsCMElement GeneratedType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the base class. Can be null.
-        /// </summary>
-        /// <value>
-        /// The base class.
-        /// </value>
-        public Type BaseClass { get; set; }
-
-        /// <summary>
-        /// Gets or sets the interfaces to be implemented.
-        /// </summary>
-        /// <value>
-        /// The implemented interfaces.
-        /// </value>
-        public IReadOnlyList<ImplementInterfaceContext> ImplementedInterfaces { get; set; }
+        public IDictionary<string, object> Metadata { get; }
     }
 }

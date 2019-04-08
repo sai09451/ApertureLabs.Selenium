@@ -26,110 +26,12 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                     (TestOptions testOpts) => testOpts.ExecuteAsync(progress, CancellationToken.None),
                     (InfoOptions infoOpts) => infoOpts.ExecuteAsync(progress, CancellationToken.None),
                     (GenerateOptions generateOpts) => generateOpts.ExecuteAsync(progress, CancellationToken.None),
-                    errors => HandleErrors(errors));
+                    errors => Task.CompletedTask);
 
             // Wait for task to complete.
             task.Wait();
 
             return;
-        }
-
-        static Task HandleErrors(IEnumerable<Error> errors)
-        {
-            var errorStr = String.Join(
-                Environment.NewLine,
-                errors.Select(e => e.ToString()));
-
-            return Task.Run(() => Log.Error(new Exception(errorStr), true));
-        }
-
-        private static IEnumerable<Document> GetDocuments(Project project,
-            IEnumerable<string> extensions)
-        {
-            var results = new List<Document>();
-
-            foreach (var document in project.Documents)
-            {
-                var extension = Path.GetExtension(document.Name);
-
-                if (extensions.Contains(extension))
-                {
-                    results.Add(document);
-                }
-            }
-
-            return results;
-        }
-
-        private static Project CreateProject(Solution solution,
-            string projectName)
-        {
-            var projectInfo = ProjectInfo.Create(
-                ProjectId.CreateNewId(),
-                VersionStamp.Default,
-                projectName,
-                projectName,
-                "csharp");
-
-            solution = solution.AddProject(projectInfo);
-            var project = solution.GetProject(projectInfo.Id);
-            InstallNuGetPackages(project);
-
-            return project;
-        }
-
-        private static void InstallNuGetPackages(Project project)
-        {
-            // TODO
-            //IFrameworkNameProvider frameworkProvider = new FrameworkNameProvider(
-            //    mappings: Array.Empty<IFrameworkMappings>(),
-            //    portableMappings: Array.Empty<IPortableFrameworkMappings>());
-
-            //var packageReader = new PackageArchiveReader(filePath: project.FilePath);
-
-            //var installedPackages = PackageHelper.GetInstalledPackageFilesAsync(
-            //        packageReader: packageReader,
-            //        packageIdentity: null,
-            //        packagePathResolver: null,
-            //        packageSaveMode: PackageSaveMode.Defaultv2,
-            //        cancellationToken: CancellationToken.None)
-            //    .Result;
-
-            //var providers = new List<Lazy<INuGetResourceProvider>>();
-            //providers.AddRange(Repository.Provider.GetCoreV3());
-            ////providers.AddRange(Repository.Provider.GetCoreV2());
-            //var packageSource = new PackageSource("https://api.nuget.org/v3/index.json");
-            //var sourceRepo = new SourceRepository(packageSource, providers);
-            //var packageMetadataResource = sourceRepo.GetResource<PackageMetadataResource>();
-            //var searchMetadata = packageMetadataResource.GetMetadataAsync(
-            //        packageId: "ApertureLabs.Selenium",
-            //        includePrerelease: false,
-            //        includeUnlisted: false,
-            //        sourceCacheContext: new SourceCacheContext(),
-            //        log: null,
-            //        token: CancellationToken.None)
-            //    .Result;
-
-            //var settings = (ISettings)new Settings(
-            //    root: null,
-            //    fileName: null,
-            //    isMachineWide: false);
-
-            //var packageSourceProvider = new SourceRepositoryProvider(
-            //    packageSourceProvider: new PackageSourceProvider(
-            //        settings: settings,
-            //        configurationDefaultSources: new[]
-            //        {
-            //            packageSource
-            //        }),
-            //    resourceProviders: providers);
-
-            //var packageManager = new NuGetPackageManager(
-            //    sourceRepositoryProvider: packageSourceProvider,
-            //    settings: settings,
-            //    solutionManager: null,
-            //    deleteOnRestartManager: null,
-            //    excludeVersion: false);
         }
 
         public static Task<(MSBuildWorkspace, Solution)> GetWorkspaceAndSolution(

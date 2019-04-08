@@ -72,8 +72,8 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
                 .ConfigureAwait(false);
 
             // Retrieve original and destination projects.
-            var originalProject = RetrieveOriginalProject(solution);
-            var destinationProject = RetrieveOrCreateTargetProject(solution);
+            var originalProject = RetrieveProject(solution, OriginalProjectName);
+            var destinationProject = RetrieveProject(solution, DestinationProjectName);
 
             Program.Log.Info($"Original project: {originalProject.Name}");
             Program.Log.Info($"Destination project: {destinationProject.Name}");
@@ -88,49 +88,21 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             throw new NotImplementedException();
         }
 
-        private Project RetrieveOriginalProject(Solution solution)
+        private Project RetrieveProject(Solution solution, string projectName)
         {
             var project = solution.Projects.FirstOrDefault(
                 p => p.Name.Equals(
-                    OriginalProjectName,
+                    projectName,
                     StringComparison.Ordinal));
 
             if (project == null)
             {
                 Program.Log.Error(
-                    new Exception($"No such project found with name '{OriginalProjectName}'."),
+                    $"No such project found with name '{projectName}'.",
                     true);
             }
 
             return project;
-        }
-
-        private Project RetrieveOrCreateTargetProject(Solution solution)
-        {
-            var destinationProject = solution.Projects.FirstOrDefault(
-                p => p.Name.Equals(
-                    DestinationProjectName,
-                    StringComparison.Ordinal));
-
-            if (OverwriteExistingFiles)
-            {
-                // Remove project.
-                if (destinationProject != null)
-                    solution = solution.RemoveProject(destinationProject.Id);
-
-                // Create new project.
-                destinationProject = CreateProject(solution);
-            }
-            else
-            {
-                if (destinationProject == null)
-                {
-                    // Create new project if it doesn't exist.
-                    destinationProject = CreateProject(solution);
-                }
-            }
-
-            return destinationProject;
         }
 
         private Project CreateProject(Solution solution)
