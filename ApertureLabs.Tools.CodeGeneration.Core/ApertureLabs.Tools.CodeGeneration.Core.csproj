@@ -29,4 +29,8 @@
     <PackageReference Include="NuGet.Versioning" Version="4.9.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\CsProjectUtilities\" />
+  </ItemGroup>
+
 </Project>

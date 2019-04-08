@@ -1,4 +1,5 @@
-﻿using NuGet.Common;
+﻿using Microsoft.CodeAnalysis;
+using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
 using NuGet.Packaging;
@@ -16,14 +17,29 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApertureLabs.Tools.CodeGeneration.Core
+namespace ApertureLabs.Tools.CodeGeneration.Core.Services
 {
     /// <summary>
     /// Contains methods for installing/searching/uninstalling NuGet packages.
     /// </summary>
     public class NuGetUtilities
     {
-        public async Task InstallPackageAsync(string packageId,
+        #region Fields
+
+        #endregion
+
+        #region Constructor
+
+        public NuGetUtilities()
+        { }
+
+        #endregion
+
+        #region Methods
+
+        public async Task InstallPackageAsync(
+            Project project,
+            string packageId,
             string version,
             string framework)
         {
@@ -124,6 +140,17 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                         frameworkItems.Select(x => x.TargetFramework));
                 }
             }
+
+            // Update csproj file to include the project reference.
+            var packageRef = MetadataReference.CreateFromFile(
+                path: String.Empty,
+                properties: MetadataReferenceProperties.Assembly);
+            var updatedProject = project.AddMetadataReference(packageRef);
+
+            if (!project.Solution.Workspace.TryApplyChanges(updatedProject.Solution))
+            {
+                throw new Exception("Failed to apply changes.");
+            }
         }
 
         private async Task GetPackageDependencies(PackageIdentity package,
@@ -164,5 +191,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                 }
             }
         }
+
+        #endregion
     }
 }
