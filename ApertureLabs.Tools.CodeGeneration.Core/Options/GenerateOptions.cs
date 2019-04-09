@@ -11,14 +11,14 @@ using Microsoft.CodeAnalysis.MSBuild;
 
 namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 {
-    #region Properties
-
     [Verb(
         name: "generate",
         HelpText = "Generates code files.",
         Hidden = false)]
     public class GenerateOptions : LogOptions, ICommand
     {
+        #region Properties
+
         [Option(
             longName: "original-project-name",
             Required = true,

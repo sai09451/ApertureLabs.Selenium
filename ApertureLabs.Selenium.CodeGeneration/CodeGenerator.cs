@@ -16,57 +16,29 @@ namespace ApertureLabs.Selenium.CodeGeneration
     public abstract class CodeGenerator : ICodeGenerator
     {
         /// <summary>
-        /// Generates the specified original document.
+        /// Retrieves or creates the file from the destination project. If
+        /// creating then the file will be located in the same folder path
+        /// as the templateDocument of the destinationProject directory but
+        /// will use the new file name instead.
         /// </summary>
-        /// <param name="originalDocument">The original document.</param>
-        /// <param name="destinationDocument">The destination document.</param>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="progress">The progress.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        public abstract Task<Document> Generate(
-            Document originalDocument,
-            Document destinationDocument,
-            IDictionary<string, object> metadata,
-            IProgress<CodeGenerationProgress> progress,
-            CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Retrieves a list of all files that will be 'generated'. If needed
-        /// document generation is allowed here ONLY in the destination
-        /// project. Do NOT modify the orginal project!
-        /// </summary>
-        /// <param name="originalProject">The original project.</param>
-        /// <param name="destinationProject">The destination project.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        public abstract Task<IEnumerable<CodeGenerationContext>> GetContexts(
-            Project originalProject,
+        /// <param name="templateDocument"></param>
+        /// <param name="destinationProject"></param>
+        /// <param name="newFileName"></param>
+        /// <param name="destinationDocument"></param>
+        /// <returns>The modified destination project</returns>
+        protected Project GetOrCreateDocumentWithSameRelativePath(
+            TextDocument templateDocument,
             Project destinationProject,
-            CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Gets or creates the document with same relative path as the
-        /// template document.
-        /// </summary>
-        /// <param name="templateDocument">The template document.</param>
-        /// <param name="destinationProject">The destination project.</param>
-        /// <param name="newFileName">New name of the file.</param>
-        /// <returns></returns>
-        protected Document GetOrCreateDocumentWithSameRelativePath(
-            Document templateDocument,
-            Project destinationProject,
-            string newFileName)
+            string newFileName,
+            out Document destinationDocument)
         {
-            var folders = GetRelativeFolders(templateDocument);
-            var destinationDocument = default(Document);
+            destinationDocument = null;
+            var folders = templateDocument.Folders;
 
             // Try and retrieve any existing documents that match.
             foreach (var document in destinationProject.Documents)
             {
-                var docFolders = GetRelativeFolders(document);
-
-                if (Enumerable.SequenceEqual(folders, docFolders)
+                if (Enumerable.SequenceEqual(folders, document.Folders)
                     && document.Name.Equals(newFileName, StringComparison.Ordinal))
                 {
                     destinationDocument = document;
@@ -83,7 +55,7 @@ namespace ApertureLabs.Selenium.CodeGeneration
                     templateDocument);
             }
 
-            return destinationDocument;
+            return destinationDocument.Project;
         }
 
         /// <summary>
@@ -107,7 +79,7 @@ namespace ApertureLabs.Selenium.CodeGeneration
         /// <exception cref="Exception">Failed to update the project.</exception>
         protected Document AddFileToProject(Project project,
             string newFileName,
-            Document templateDocument)
+            TextDocument templateDocument)
         {
             if (project == null)
                 throw new ArgumentNullException(nameof(project));
@@ -116,98 +88,85 @@ namespace ApertureLabs.Selenium.CodeGeneration
             else if (String.IsNullOrEmpty(newFileName))
                 throw new ArgumentNullException(nameof(newFileName));
 
-            var relativePath = GetLocalPathToFile(
-                templateDocument.Project.FilePath,
-                templateDocument.FilePath);
+            var projectDir = new FileInfo(project.FilePath)
+                .Directory
+                .FullName;
 
-            var folders = GetFolders(relativePath);
+            var filePath = Path.Combine(
+                projectDir,
+                Path.Combine(templateDocument.Folders.ToArray()),
+                newFileName);
 
             var addedDocument = project.AddDocument(
                 name: newFileName,
                 text: String.Empty,
-                folders: folders);
-
-            // Apply changes.
-            var applyResult = addedDocument.Project.Solution.Workspace
-                .TryApplyChanges(project.Solution);
-
-            if (!applyResult)
-                throw new Exception("Failed to update the project.");
-
-            project = addedDocument.Project;
+                folders: templateDocument.Folders,
+                filePath: filePath);
 
             // Return the modified project.
             return addedDocument;
         }
 
         /// <summary>
-        /// Gets the documents with file extensions. Uses
-        /// <see cref="Path.GetExtension(String)"/> to get the extension from
-        /// the documents filepath.
+        /// Gets the documents with file extensions.
         /// </summary>
         /// <param name="project">The project.</param>
         /// <param name="fileExtensions">
         /// The file extensions. Should be prefixed with '.'
         /// </param>
         /// <returns></returns>
-        protected IEnumerable<Document> GetDocumentsWithFileExtensions(
+        protected IEnumerable<TextDocument> GetDocumentsWithFileExtensions(
             Project project,
             IEnumerable<string> fileExtensions)
         {
-            foreach (var document in project.Documents)
-            {
-                var extension = Path.GetExtension(document.FilePath);
+            var source = Enumerable.Concat(
+                project.Documents,
+                project.AdditionalDocuments);
 
-                if (fileExtensions.Contains(extension))
+            foreach (var document in source)
+            {
+                var hasExtension = fileExtensions.Any(
+                    ext => document.FilePath.EndsWith(
+                        ext,
+                        StringComparison.Ordinal));
+
+                if (hasExtension)
                     yield return document;
             }
         }
 
-        private string GetLocalPathToFile(
-            string projectPath,
-            string pathToFile)
+        protected string ConvertFoldersToNamesapce(IEnumerable<string> folders)
         {
-            var projectUri = new Uri(projectPath);
-            var fileUri = new Uri(pathToFile);
-            var relativeUri = fileUri.MakeRelativeUri(projectUri).ToString();
+            throw new NotImplementedException();
+        }
 
-            // Need to exclude the base folder.
-            var seperator = relativeUri.Contains(Path.DirectorySeparatorChar)
-                ? Path.DirectorySeparatorChar
-                : Path.AltDirectorySeparatorChar;
-
-            var cleanedRelativePath = relativeUri.Remove(
-                0,
-                relativeUri.IndexOf(seperator));
-
-            return cleanedRelativePath;
+        protected string ConvertNamespaceToFolders(string @namespace)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets the folders of the path except for the last entry.
+        /// Generates/updates the destination project with based on the
+        /// original project. Do NOT call MSBuildWorkSpace.TryApplyChanges on
+        /// either projects.
         /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns></returns>
-        private string[] GetFolders(string path)
-        {
-            var seperator = path.Contains(Path.DirectorySeparatorChar)
-                ? Path.DirectorySeparatorChar
-                : Path.AltDirectorySeparatorChar;
-
-            var folders = path.Split(seperator);
-
-            return folders
-                .Except(new[] { folders.LastOrDefault() })
-                .ToArray();
-        }
-
-        private string[] GetRelativeFolders(Document document)
-        {
-            var localPath = GetLocalPathToFile(
-                document.Name,
-                document.Project.FilePath);
-
-            return GetFolders(localPath);
-        }
+        /// <param name="originalProject">
+        /// The original project. Changes to this project will be ignored.
+        /// </param>
+        /// <param name="destinationProject">
+        /// The destination project.
+        /// </param>
+        /// <param name="progress">
+        /// The update callback for signalling progress.
+        /// </param>
+        /// <param name="token">
+        /// The cancellation token.
+        /// </param>
+        /// <returns>The modified destination project.</returns>
+        public abstract Task<Project> Generate(
+            Project originalProject,
+            Project destinationProject,
+            IProgress<CodeGenerationProgress> progress,
+            CancellationToken token);
     }
 }

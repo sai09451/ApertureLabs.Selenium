@@ -5,13 +5,22 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ApertureLabs.Tools.CodeGeneration.Core
 {
+    public enum FrameworkKind
+    {
+        Framework,
+        Standard,
+        Core
+    }
+
     public static class Program
     {
         public static ConsoleLogger Log { get; set; }
@@ -28,10 +37,85 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                     (GenerateOptions generateOpts) => generateOpts.ExecuteAsync(progress, CancellationToken.None),
                     errors => Task.CompletedTask);
 
-            // Wait for task to complete.
-            task.Wait();
+            try
+            {
+                // Wait for task to complete.
+                task.Wait();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
 
             return;
+        }
+
+        public static Project GetProject(Solution solution,
+            string assemblyName,
+            FrameworkKind frameworkKind)
+        {
+            if (solution == null)
+                throw new ArgumentNullException(nameof(solution));
+
+            var project = default(Project);
+            var projects = solution.Projects.Where(
+                    p => p.AssemblyName.Equals(
+                        assemblyName,
+                        StringComparison.Ordinal))
+                .ToList();
+
+            var filterFor = "net";
+
+            switch (frameworkKind)
+            {
+                case FrameworkKind.Core:
+                    filterFor = "netcoreapp";
+                    break;
+                case FrameworkKind.Standard:
+                    filterFor = "netstandard";
+                    break;
+            }
+
+            if (projects.Count >= 2)
+            {
+                var matchingKindsOfProjects = new Dictionary<double, Project>();
+
+                // Get all projects of the same kind.
+                foreach (var p in projects)
+                {
+                    var (framework, version) = GetFrameworkFromProjectName(p.Name);
+
+                    if (framework.Equals(filterFor, StringComparison.Ordinal))
+                        matchingKindsOfProjects.Add(version, p);
+                }
+
+                // Use the highest version.
+                var maxKey = matchingKindsOfProjects.Keys.Max();
+                project = matchingKindsOfProjects[maxKey];
+            }
+            else
+            {
+                project = projects.FirstOrDefault();
+            }
+
+            if (project == null)
+                throw new Exception("Failed to find the project.");
+
+            return project;
+        }
+
+        private static (string, double) GetFrameworkFromProjectName(string projectName)
+        {
+            var match = Regex.Match(
+                projectName,
+                @"^.*?\((\D+)(.*?)\)$");
+
+            var framework = match.Groups[1].Value;
+            var version = Double.Parse(
+                match.Groups[2].Value,
+                CultureInfo.CurrentCulture);
+
+            return (framework, version);
         }
 
         public static Task<(MSBuildWorkspace, Solution)> GetWorkspaceAndSolution(

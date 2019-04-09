@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Selenium.CodeG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Tools.CodeGeneration.Core", "ApertureLabs.Tools.CodeGeneration.Core\ApertureLabs.Tools.CodeGeneration.Core.csproj", "{8560FF57-A2C9-4138-A948-BF0C0F9689CD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoDotNetStandardLib", "DemoDotNetStandardLib\DemoDotNetStandardLib.csproj", "{58123FA5-70CC-406C-8023-B09D4EEF76D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{8560FF57-A2C9-4138-A948-BF0C0F9689CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8560FF57-A2C9-4138-A948-BF0C0F9689CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8560FF57-A2C9-4138-A948-BF0C0F9689CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58123FA5-70CC-406C-8023-B09D4EEF76D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58123FA5-70CC-406C-8023-B09D4EEF76D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58123FA5-70CC-406C-8023-B09D4EEF76D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58123FA5-70CC-406C-8023-B09D4EEF76D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

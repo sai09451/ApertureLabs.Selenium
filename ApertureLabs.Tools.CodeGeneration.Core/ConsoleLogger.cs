@@ -6,7 +6,8 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Console = Colorful.Console;
+using Console = System.Console;
+//using Console = Colorful.Console;
 
 namespace ApertureLabs.Tools.CodeGeneration.Core
 {
@@ -31,10 +32,14 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             this.logOptions = logOptions
                 ?? throw new ArgumentNullException(nameof(logOptions));
 
-            infoColor = GetConstrastColor(Color.White, Color.Black);
-            warningColor = GetConstrastColor(Color.Yellow, Color.DarkKhaki);
-            debugColor = GetConstrastColor(Color.Purple, Color.DarkMagenta);
-            errorColor = GetConstrastColor(Color.Red, Color.Pink);
+            //infoColor = GetConstrastColor(Color.White, Color.Black);
+            infoColor = Color.LightGray;
+            //warningColor = GetConstrastColor(Color.Yellow, Color.DarkKhaki);
+            warningColor = Color.Yellow;
+            //debugColor = GetConstrastColor(Color.Purple, Color.DarkMagenta);
+            debugColor = Color.Purple;
+            //errorColor = GetConstrastColor(Color.Red, Color.Pink);
+            errorColor = Color.Red;
         }
 
         #endregion
@@ -96,9 +101,16 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                 var msg = FormatMessage(logLevel, message);
 
                 if (logOptions.NoColor)
+                {
                     Console.WriteLine(msg);
+                }
                 else
-                    Console.WriteLine(msg, fg);
+                {
+                    var oldFg = Console.ForegroundColor;
+                    Console.ForegroundColor = (fg ?? infoColor).ToNearestConsoleColor();
+                    Console.WriteLine(msg);
+                    Console.ForegroundColor = oldFg;
+                }
             }
         }
 
@@ -144,12 +156,37 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             return progressBar.Progress;
         }
 
+        private static void RecurseThruExecptions(
+            Exception exception,
+            StringBuilder sb)
+        {
+            if (exception.InnerException != null)
+                RecurseThruExecptions(exception.InnerException, sb);
+
+            sb.AppendJoin(Environment.NewLine,
+                Environment.NewLine,
+                exception.Message,
+                exception.Source,
+                exception.StackTrace);
+        }
+
         private static string FormatMessage(string messageLevel, object message)
         {
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
 
-            var messageStr = message as string ?? message.ToString();
+            string messageStr;
+
+            if (message is Exception messageExc)
+            {
+                var sb = new StringBuilder();
+                RecurseThruExecptions(messageExc, sb);
+                messageStr = sb.ToString();
+            }
+            else
+            {
+                messageStr = message as string ?? message.ToString();
+            }
 
             return String.Format(
                 CultureInfo.CurrentCulture,
@@ -159,44 +196,44 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                 messageStr);
         }
 
-        private static Color GetConstrastColor(params Color[] desiredColors)
-        {
-            var maxL = desiredColors
-                .Select((color, index) => new { L = GetRelativeLuminance(color), Index = index })
-                .OrderBy(q => q.L)
-                .First();
+        //private static Color GetConstrastColor(params Color[] desiredColors)
+        //{
+        //    var maxL = desiredColors
+        //        .Select((color, index) => new { L = GetRelativeLuminance(color), Index = index })
+        //        .OrderBy(q => q.L)
+        //        .First();
 
-            return desiredColors[maxL.Index];
-        }
+        //    return desiredColors[maxL.Index];
+        //}
 
-        private static double GetRelativeLuminance(Color color)
-        {
-            Color lighterColor, darkerColor;
+        //private static double GetRelativeLuminance(Color color)
+        //{
+        //    Color lighterColor, darkerColor;
 
-            if (color.GetBrightness() > Console.BackgroundColor.GetBrightness())
-            {
-                lighterColor = color;
-                darkerColor = Console.BackgroundColor;
-            }
-            else
-            {
-                darkerColor = color;
-                lighterColor = Console.BackgroundColor;
-            }
+        //    if (color.GetBrightness() > Console.BackgroundColor.GetBrightness())
+        //    {
+        //        lighterColor = color;
+        //        darkerColor = Console.BackgroundColor;
+        //    }
+        //    else
+        //    {
+        //        darkerColor = color;
+        //        lighterColor = Console.BackgroundColor;
+        //    }
 
-            double
-                s1 = lighterColor.GetSaturation(),
-                b1 = lighterColor.GetBrightness(),
-                s2 = darkerColor.GetSaturation(),
-                b2 = darkerColor.GetBrightness();
+        //    double
+        //        s1 = lighterColor.GetSaturation(),
+        //        b1 = lighterColor.GetBrightness(),
+        //        s2 = darkerColor.GetSaturation(),
+        //        b2 = darkerColor.GetBrightness();
 
-            var l1 = (2 - s1) * b1 / 2;
-            var l2 = (2 - s2) * b2 / 2;
+        //    var l1 = (2 - s1) * b1 / 2;
+        //    var l2 = (2 - s2) * b2 / 2;
 
-            var contrastRatio = (l1 + .05) / (l2 + 0.05);
+        //    var contrastRatio = (l1 + .05) / (l2 + 0.05);
 
-            return contrastRatio;
-        }
+        //    return contrastRatio;
+        //}
 
         #endregion
 
@@ -332,8 +369,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             private readonly int cursorTop;
             private readonly int cursorLeft;
             private readonly bool cursorVisibility;
-            private readonly Color fg;
-            private readonly Color bg;
+            //private readonly Color fg;
+            //private readonly Color bg;
+            private readonly ConsoleColor fg;
+            private readonly ConsoleColor bg;
 
             public ConsoleSettings()
             {

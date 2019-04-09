@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0;net461</TargetFrameworks>
     <!--<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
   </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1"></PackageReference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApertureLabs.Selenium\ApertureLabs.Selenium.csproj" />
+    <PackageReference Include="ApertureLabs.Selenium" Version="1.0.94" />
   </ItemGroup>
 </Project>

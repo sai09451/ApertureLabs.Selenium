@@ -99,39 +99,20 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator" />
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.Generate(Microsoft.CodeAnalysis.Document,Microsoft.CodeAnalysis.Document,System.Collections.Generic.IDictionary{System.String,System.Object},System.IProgress{ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress},System.Threading.CancellationToken)">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetOrCreateDocumentWithSameRelativePath(Microsoft.CodeAnalysis.TextDocument,Microsoft.CodeAnalysis.Project,System.String,Microsoft.CodeAnalysis.Document@)">
             <summary>
-            Generates the specified original document.
+            Retrieves or creates the file from the destination project. If
+            creating then the file will be located in the same folder path
+            as the templateDocument of the destinationProject directory but
+            will use the new file name instead.
             </summary>
-            <param name="originalDocument">The original document.</param>
-            <param name="destinationDocument">The destination document.</param>
-            <param name="metadata">The metadata.</param>
-            <param name="progress">The progress.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns></returns>
+            <param name="templateDocument"></param>
+            <param name="destinationProject"></param>
+            <param name="newFileName"></param>
+            <param name="destinationDocument"></param>
+            <returns>The modified destination project</returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetContexts(Microsoft.CodeAnalysis.Project,Microsoft.CodeAnalysis.Project,System.Threading.CancellationToken)">
-            <summary>
-            Retrieves a list of all files that will be 'generated'. If needed
-            document generation is allowed here ONLY in the destination
-            project. Do NOT modify the orginal project!
-            </summary>
-            <param name="originalProject">The original project.</param>
-            <param name="destinationProject">The destination project.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetOrCreateDocumentWithSameRelativePath(Microsoft.CodeAnalysis.Document,Microsoft.CodeAnalysis.Project,System.String)">
-            <summary>
-            Gets or creates the document with same relative path as the
-            template document.
-            </summary>
-            <param name="templateDocument">The template document.</param>
-            <param name="destinationProject">The destination project.</param>
-            <param name="newFileName">New name of the file.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.AddFileToProject(Microsoft.CodeAnalysis.Project,System.String,Microsoft.CodeAnalysis.Document)">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.AddFileToProject(Microsoft.CodeAnalysis.Project,System.String,Microsoft.CodeAnalysis.TextDocument)">
             <summary>
             Adds the file to project.
             </summary>
@@ -154,9 +135,7 @@
         </member>
         <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetDocumentsWithFileExtensions(Microsoft.CodeAnalysis.Project,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            Gets the documents with file extensions. Uses
-            <see cref="M:System.IO.Path.GetExtension(System.String)"/> to get the extension from
-            the documents filepath.
+            Gets the documents with file extensions.
             </summary>
             <param name="project">The project.</param>
             <param name="fileExtensions">
@@ -164,12 +143,25 @@
             </param>
             <returns></returns>
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetFolders(System.String)">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.Generate(Microsoft.CodeAnalysis.Project,Microsoft.CodeAnalysis.Project,System.IProgress{ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress},System.Threading.CancellationToken)">
             <summary>
-            Gets the folders of the path except for the last entry.
+            Generates/updates the destination project with based on the
+            original project. Do NOT call MSBuildWorkSpace.TryApplyChanges on
+            either projects.
             </summary>
-            <param name="path">The path.</param>
-            <returns></returns>
+            <param name="originalProject">
+            The original project. Changes to this project will be ignored.
+            </param>
+            <param name="destinationProject">
+            The destination project.
+            </param>
+            <param name="progress">
+            The update callback for signalling progress.
+            </param>
+            <param name="token">
+            The cancellation token.
+            </param>
+            <returns>The modified destination project.</returns>
         </member>
         <member name="T:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator">
             <summary>
@@ -177,55 +169,25 @@
             code files.
             </summary>
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator.GetContexts(Microsoft.CodeAnalysis.Project,Microsoft.CodeAnalysis.Project,System.Threading.CancellationToken)">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator.Generate(Microsoft.CodeAnalysis.Project,Microsoft.CodeAnalysis.Project,System.IProgress{ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress},System.Threading.CancellationToken)">
             <summary>
-            Retrieves a list of all files that will be 'generated'. If needed
-            document generation is allowed here ONLY in the destination
-            project. Do NOT modify the orginal project!
+            Generates/updates the destination project with based on the
+            original project. Do NOT call MSBuildWorkSpace.TryApplyChanges on
+            either projects.
             </summary>
-            <param name="originalProject">The original project.</param>
-            <param name="destinationProject">The destination project.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator.Generate(Microsoft.CodeAnalysis.Document,Microsoft.CodeAnalysis.Document,System.Collections.Generic.IDictionary{System.String,System.Object},System.IProgress{ApertureLabs.Selenium.CodeGeneration.CodeGenerationProgress},System.Threading.CancellationToken)">
-            <summary>
-            Called to generate the document. Do NOT apply changes in this
-            function. Should return the modified document instead. Exceptions
-            can be thrown in this function however the changes will NOT be
-            applied.
-            </summary>
-            <param name="originalDocument">The original document.</param>
-            <param name="destinationDocument">The destination document.</param>
-            <param name="metadata">
-            The metadata associated with the context.
+            <param name="originalProject">
+            The original project. Changes to this project will be ignored.
             </param>
-            <param name="progress">The progress handler.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>
-            A task whose result should be the modified/generated document.
-            </returns>
-        </member>
-        <member name="T:ApertureLabs.Selenium.CodeGeneration.ImplementInterfaceContext">
-            <summary>
-            Defines how to implement the interface.
-            </summary>
-        </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.ImplementInterfaceContext.InterfaceType">
-            <summary>
-            Gets or sets the type of the interface.
-            </summary>
-            <value>
-            The type of the interface.
-            </value>
-        </member>
-        <member name="P:ApertureLabs.Selenium.CodeGeneration.ImplementInterfaceContext.ImplementExplicitly">
-            <summary>
-            Gets or sets a value indicating whether [implement explicitly].
-            </summary>
-            <value>
-              <c>true</c> if [implement explicitly]; otherwise, <c>false</c>.
-            </value>
+            <param name="destinationProject">
+            The destination project.
+            </param>
+            <param name="progress">
+            The update callback for signalling progress.
+            </param>
+            <param name="token">
+            The cancellation token.
+            </param>
+            <returns>The modified destination project.</returns>
         </member>
     </members>
 </doc>

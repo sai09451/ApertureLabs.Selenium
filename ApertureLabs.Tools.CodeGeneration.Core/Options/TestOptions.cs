@@ -1,4 +1,6 @@
 ﻿using ApertureLabs.Selenium.CodeGeneration;
+using ApertureLabs.Tools.CodeGeneration.Core.Services;
+using Autofac;
 using CommandLine;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
@@ -35,15 +37,14 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
                 .GetWorkspaceAndSolution("C:/Users/Alexander/Documents/GitHub/ApertureLabs.Selenium/ApertureLabs.Selenium.sln")
                 .ConfigureAwait(false);
 
-            var originalProject = solution.Projects.FirstOrDefault(
-                p => p.Name.Equals(
-                    "MockServer",
-                    StringComparison.OrdinalIgnoreCase));
+            var originalProject = Program.GetProject(solution,
+                "MockServer",
+                FrameworkKind.Core);
 
-            var destinationProject = solution.Projects.FirstOrDefault(
-                p => p.Name.Equals(
-                    "MockServer.PageObjects",
-                    StringComparison.OrdinalIgnoreCase));
+            var destinationProject = Program.GetProject(solution,
+                //"DemoDotNetStandardLib",
+                "MockServer.PageObjects",
+                FrameworkKind.Core);
 
             #region Compiling
 
@@ -73,6 +74,8 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             #region Project info.
 
             originalProjectOutputPath = originalProject.OutputFilePath;
+
+            LogSupportedChanges(workspace);
 
             Program.Log.Info("Original project info:");
             LogInfoOf(() => originalProject.OutputFilePath);
@@ -189,59 +192,45 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 
             var cancellationTokenSource = new CancellationTokenSource();
             var _progress = new Progress<CodeGenerationProgress>();
-            var loadContext = new PluginLoadContext(destinationProject.OutputFilePath);
-            var assembly = loadContext.LoadFromAssemblyPath(destinationProject.OutputFilePath);
+            //var loadContext = new PluginLoadContext(destinationProject.OutputFilePath);
+            //var assembly = loadContext.LoadFromAssemblyPath(destinationProject.OutputFilePath);
 
-            var codeGeneratorTypes = assembly.GetTypes()
-                .Where(t => t.GetInterfaces().Any(i => i.Name == "ICodeGenerator")
-                    && !t.IsAbstract
-                    && t.IsClass
-                    && t.GetConstructors().Any( // Check for public default ctor.
-                        c => c.IsPublic
-                        && !c.GetParameters().Any()));
+            //var builder = new ContainerBuilder();
+            //builder.RegisterAssemblyTypes(assembly);
 
-            if (!codeGeneratorTypes.Any())
-                Program.Log.Error("Failed to locate any ICodeGenerators.", true);
+            //var contianer = builder.Build();
+            //var codeGenerators = contianer.Resolve<IEnumerable<ICodeGenerator>>();
 
-            var destProjRef = destinationProject;
-
-            foreach (var codeGeneratorType in codeGeneratorTypes)
+            // Because reflection doesn't work that well as of 3/9/2019, need
+            // to hard code in the code generators.
+            var codeGenerators = new ICodeGenerator[]
             {
-                var codeGenerator = Activator.CreateInstance(codeGeneratorType)
-                    as ICodeGenerator;
+                new SeleniumCodeGenerator()
+            };
 
-                if (codeGenerator == null)
-                    continue;
+            if (!codeGenerators.Any())
+            {
+                throw new Exception("No code generators located in the " +
+                    "destination assembly.");
+            }
 
-                var contexts = await codeGenerator.GetContexts(
+            foreach (var codeGenerator in codeGenerators)
+            {
+                // Generate the code.
+                var modifiedDestProj = await codeGenerator.Generate(
                         originalProject,
                         destinationProject,
-                        cancellationTokenSource.Token)
+                        _progress,
+                        cancellationToken)
                     .ConfigureAwait(false);
 
-                // Generate the code.
-                foreach (var context in contexts)
-                {
-                    var originalDocument = originalProject.GetDocument(context.OriginalDocumentId);
-                    var destinationDocument = destProjRef.GetDocument(context.DestinationDocumentId);
-
-                    var modifiedDoc = await codeGenerator.Generate(
-                            originalDocument,
-                            destinationDocument,
-                            context.Metadata,
-                            _progress,
-                            cancellationTokenSource.Token)
-                        .ConfigureAwait(false);
-
-                    destProjRef = modifiedDoc.Project;
-                }
-
                 // Get list of changes.
-                var changes = destProjRef.Solution.GetChanges(destinationProject.Solution);
-                LogSolutionChanges(destProjRef.Solution, destinationProject.Solution);
+                LogSolutionChanges(
+                    modifiedDestProj.Solution,
+                    destinationProject.Solution);
 
                 // Prompt for accepting changes.
-                Console.Write("Accept changes y/n");
+                Console.Write("Accept changes (Y/N): ");
                 var response = Console.ReadLine();
 
                 var isPositiveResponse = response.Equals("y", StringComparison.OrdinalIgnoreCase)
@@ -250,12 +239,12 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
                 if (!isPositiveResponse)
                 {
                     // Exit if not applying the changes.
-                    Program.Log.Error("Exiting program");
+                    Program.Log.Info("Exiting program");
                     return;
                 }
 
                 // Apply changes.
-                if (workspace.TryApplyChanges(destProjRef.Solution))
+                if (workspace.TryApplyChanges(modifiedDestProj.Solution))
                 {
                     // Success.
                     Program.Log.Info("Applied changes successfully");
@@ -265,44 +254,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
                     // Error.
                     Program.Log.Error("Failed to apply changes.");
                 }
-            }
 
-            // TODO: Unload assembly.
+                progress.Report(100);
+            }
 
             #endregion
-        }
-
-        private Assembly CurrentDomain_AssemblyResolve(
-            object sender,
-            ResolveEventArgs args)
-        {
-            // Check the *.deps.json file for libraries matching that name.
-
-            // Check for assembly in built project location.
-            var files = new FileInfo(originalProjectOutputPath).Directory.GetFiles();
-
-            foreach (var file in files)
-            {
-                var name = default(string);
-
-                try
-                {
-                    name = AssemblyName
-                        .GetAssemblyName(file.FullName)
-                        .ToString();
-                }
-                catch (BadImageFormatException)
-                {
-                    continue;
-                }
-
-                if (args.Name.Equals(name, StringComparison.Ordinal))
-                {
-                    return Assembly.LoadFrom(file.FullName);
-                }
-            }
-
-            throw new FileNotFoundException(args.Name);
         }
 
         private static void LogInfoOf<T>(Expression<Func<T>> expression)
@@ -326,6 +282,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
         {
             var results = changes.Compile().Invoke();
 
+            // Return early if no results.
+            if (!results.Any())
+                return;
+
             string name;
             switch (changes.Body)
             {
@@ -340,9 +300,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             if (formatter == null)
                 formatter = (T t) => t.ToString();
 
+            Program.Log.Info($"\t* {name}");
+
             foreach (var change in results)
             {
-                Program.Log.Info($"\t* {name}: {formatter(change)}");
+                Program.Log.Info($"\t\t* {formatter(change)}");
             }
         }
 
@@ -369,10 +331,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
         {
             var changes = modifiedSolution.GetChanges(originalSolution);
 
+            Program.Log.Info("Listing changes:");
+
             foreach (var addedProject in changes.GetAddedProjects())
-            {
                 Program.Log.Info($"\tAdded project {addedProject.Name}");
-            }
 
             foreach (var changedProject in changes.GetProjectChanges())
             {
@@ -380,7 +342,16 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 
                 LogChanges(() => changedProject.GetAddedAdditionalDocuments());
                 LogChanges(() => changedProject.GetAddedAnalyzerReferences());
-                LogChanges(() => changedProject.GetAddedDocuments());
+                LogChanges(
+                    () => changedProject.GetAddedDocuments(),
+                    d =>
+                    {
+                        var doc = modifiedSolution.GetDocument(d);
+                        var pathSegments = doc.Folders.ToList();
+                        pathSegments.Add(doc.Name);
+
+                        return Path.Combine(pathSegments.ToArray());
+                    });
                 LogChanges(() => changedProject.GetAddedMetadataReferences());
                 LogChanges(() => changedProject.GetAddedProjectReferences());
                 LogChanges(() => changedProject.GetChangedAdditionalDocuments());
