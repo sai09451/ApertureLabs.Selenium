@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50C75E3C-E247-435D-90D5-928396B79F31}"
 	ProjectSection(SolutionItems) = preProject
@@ -33,6 +33,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApertureLabs.Tools.CodeGeneration.Core", "ApertureLabs.Tools.CodeGeneration.Core\ApertureLabs.Tools.CodeGeneration.Core.csproj", "{8560FF57-A2C9-4138-A948-BF0C0F9689CD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoDotNetStandardLib", "DemoDotNetStandardLib\DemoDotNetStandardLib.csproj", "{58123FA5-70CC-406C-8023-B09D4EEF76D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApertureLabs.Tools.CodeGeneration.Core.Tests", "ApertureLabs.Tools.CodeGeneration.Core.Tests\ApertureLabs.Tools.CodeGeneration.Core.Tests.csproj", "{97D9A839-CAD9-4A4A-B80A-4E5BF04A9AE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +94,10 @@ Global
 		{58123FA5-70CC-406C-8023-B09D4EEF76D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58123FA5-70CC-406C-8023-B09D4EEF76D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58123FA5-70CC-406C-8023-B09D4EEF76D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D9A839-CAD9-4A4A-B80A-4E5BF04A9AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D9A839-CAD9-4A4A-B80A-4E5BF04A9AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D9A839-CAD9-4A4A-B80A-4E5BF04A9AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D9A839-CAD9-4A4A-B80A-4E5BF04A9AE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

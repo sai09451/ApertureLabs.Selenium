@@ -20,12 +20,12 @@ namespace ApertureLabs.Selenium.UnitTests.Infrastructure
 
         #region Constructor
 
-        public MockWebDriver(string url = default,
-            string title = default,
-            string pageSource = default,
-            string currentWindowHandle = default,
-            ReadOnlyCollection<string> windowHandles = default,
-            IEnumerable<IWebElement> elements = default,
+        public MockWebDriver(string url = default(string),
+            string title = default(string),
+            string pageSource = default(string),
+            string currentWindowHandle = default(string),
+            ReadOnlyCollection<string> windowHandles = default(ReadOnlyCollection<string>),
+            IEnumerable<IWebElement> elements = default(IEnumerable<IWebElement>),
             object scriptResult = null)
         {
             Url = url;
