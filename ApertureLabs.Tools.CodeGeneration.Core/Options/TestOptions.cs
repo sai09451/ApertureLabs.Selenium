@@ -44,7 +44,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             var destinationProject = Program.GetProject(solution,
                 //"DemoDotNetStandardLib",
                 "MockServer.PageObjects",
-                FrameworkKind.Core);
+                FrameworkKind.Standard);
 
             #region Compiling
 
