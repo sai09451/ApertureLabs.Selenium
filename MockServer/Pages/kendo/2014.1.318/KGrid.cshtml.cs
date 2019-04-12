@@ -12,5 +12,9 @@ namespace MockServer.Pages.kendo._2014._1._318
         public void OnGet()
         {
         }
+
+        public bool ShowNames => true;
+
+        public IEnumerable<string> Names => new[] { "Bob", "Tim", "John" };
     }
 }

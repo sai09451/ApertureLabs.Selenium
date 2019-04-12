@@ -66,6 +66,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
                 Program.Log.Error(e, true);
             }
 
+            var controllers = originalCompiliation.Assembly.TypeNames.Where(
+                t => t.EndsWith(
+                    "Controller",
+                    StringComparison.Ordinal));
+
             Program.Log.Info($"Successfully compiled {originalProject.Name}");
             Program.Log.Info($"Successfully compiled {destinationProject.Name}");
 

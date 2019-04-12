@@ -1,5 +1,6 @@
 using ApertureLabs.Selenium.CodeGeneration;
 using ApertureLabs.Tools.CodeGeneration.Core.RazorParser;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.CodeAnalysis;
@@ -12,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +23,184 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
     {
         public SeleniumCodeGenerator()
         { }
+
+        public static string GetNestedPartialView(IntermediateNode node)
+        {
+            var content = GetContentOfNode(node);
+
+            // Check if async partial tag helper.
+            var match = Regex.Match(
+                content,
+                "^await Html\\.PartialAsync\\(\"(.*?)\"\\)$");
+
+            if (match.Success)
+                return match.Groups[1].Value;
+
+            // Check if sync partial tag helper.
+            match = Regex.Match(
+                content,
+                "^Html\\.Partial\\(\"(.*?)\"\\)$");
+
+            if (match.Success)
+                return match.Groups[1].Value;
+
+            // Check if html partial tag helper.
+            match = Regex.Match(
+                content,
+                "<partial[^>]*?name=[\"'](.+)[\"'].*?\\/>",
+                RegexOptions.Multiline);
+
+            if (match.Success)
+                return match.Groups[1].Value;
+
+            return null;
+        }
+
+        public static string GetLayoutOrDefault(IEnumerable<IntermediateNode> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                var layout = GetLayoutOrDefault(node);
+
+                if (String.IsNullOrEmpty(layout))
+                    continue;
+
+                return layout;
+            }
+
+            return null;
+        }
+
+        public static string GetLayoutOrDefault(IntermediateNode node)
+        {
+            IEnumerable<CSharpCodeIntermediateNode> allNodes;
+
+            switch (node)
+            {
+                case CSharpCodeIntermediateNode csharpNode:
+                    allNodes = new[] { csharpNode };
+                    break;
+                default:
+                    allNodes = node.FindDescendantNodes<CSharpCodeIntermediateNode>();
+                    break;
+            }
+
+            foreach (var n in allNodes)
+            {
+                var tokens = n.Children.OfType<IntermediateToken>();
+
+                foreach (var token in tokens)
+                {
+                    var trimmedContent = token.Content.Trim();
+                    var reader = new StringReader(trimmedContent);
+
+                    for (var line = reader.ReadLine(); line != null; /*Empty*/ )
+                    {
+                        var match = Regex.Match(line, @"^Layout\s*?=\s*?(.\S*);$");
+
+                        if (!match.Success)
+                            continue;
+
+                        var layout = match.Groups[1].Value;
+
+                        return layout;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static bool IgnoreWhiteSpace(IntermediateNode node)
+        {
+            string content = node is IntermediateToken token
+                ? token.Content
+                : GetContentOfNode(node);
+
+            // Try and find any non-whitespace characters.
+            return Regex.IsMatch(content, @"\S");
+        }
+
+        public static IEnumerable<IReadOnlyList<IntermediateNode>> GroupChildNodes(
+            IReadOnlyList<IntermediateNode> nodes)
+        {
+            var invalidNodes = new List<IntermediateNode>();
+
+            for (var i = 0; i < nodes.Count; i++)
+            {
+                var previousNodes = nodes.Take(i - 1);
+                var previousNode = previousNodes.FirstOrDefault();
+                var childNode = nodes[i];
+                var nextNodes = nodes.Skip(i).ToList();
+                var nextNode = nextNodes.FirstOrDefault();
+
+                if (childNode is CSharpCodeIntermediateNode csharpNode)
+                {
+                    // Check if directive or code block.
+                }
+                else if (childNode is HtmlContentIntermediateNode htmlNode)
+                {
+
+                }
+
+                // Check if the list of tokens is good to return.
+                if (true)
+                {
+
+                }
+
+                // Check for invalid nodes.
+
+                previousNode = childNode;
+            }
+
+            yield break;
+        }
+
+        public static string GetContentOfNodes(IEnumerable<IntermediateNode> nodes)
+        {
+            return String.Concat(nodes.Select(n => GetContentOfNode(n)));
+        }
+
+        public static string GetContentOfNode(IntermediateNode node)
+        {
+            var tokenNodes = node.FindDescendantNodes<IntermediateToken>();
+
+            return String.Concat(tokenNodes.Select(n => n.Content));
+        }
+
+        public static bool IsWellFormedHtml(HtmlContentIntermediateNode node)
+        {
+            var htmlDoc = new HtmlDocument();
+            var content = GetContentOfNode(node);
+            htmlDoc.LoadHtml(content);
+
+            return !htmlDoc.ParseErrors.Any();
+        }
+
+        public static bool IsNotableElement(HtmlContentIntermediateNode node)
+        {
+            // No child elements.
+            if (HasChildElements(node))
+                return false;
+
+            // Must have an id attribute.
+
+            return true;
+        }
+
+        public static bool HasChildElements(IntermediateNode node)
+        {
+            //var allChildNodes = node.FindDescendantNodes<IntermediateNode>();
+            //allChildNodes.Where(n => n.)
+
+            return true;
+        }
+
+        public static string GetIdOfElement(HtmlContentIntermediateNode node)
+        {
+            return String.Empty;
+        }
 
         public override async Task<Project> Generate(
             Project originalProject,
@@ -40,12 +220,15 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
                 fileSystem: fs);
 
             originalProject = originalProject.AddRazorFiles();
+            var modifiedDestProj = destinationProject;
 
             var razorFiles = GetDocumentsWithFileExtensions(
                 originalProject,
                 new[] { ".cshtml" });
 
-            var modifiedDestProj = destinationProject;
+            var originalCompilation = await originalProject
+                .GetCompilationAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             foreach (var razorFile in razorFiles)
             {
@@ -71,25 +254,30 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
                     .GetSemanticModelAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                var originalRootNode = originalSemanticModel.SyntaxTree.GetRoot(cancellationToken);
-                var destinationRootNode = destSemanticModel.SyntaxTree.GetRoot(cancellationToken);
+                var originalRootNode = originalSemanticModel.SyntaxTree
+                    .GetRoot(cancellationToken);
+                var destinationRootNode = destSemanticModel
+                    .SyntaxTree.GetRoot(cancellationToken);
+                var razorDocument = engine.FileSystem
+                    .GetItem(originalRootNode.SyntaxTree.FilePath);
+
+                var razorCodeDocument = engine.Process(razorDocument);
+
+                var rootIntermediateNode = razorCodeDocument.GetDocumentIntermediateNode();
+
+                var razorSyntaxTree = CreateSyntaxTreeNode(originalSemanticModel, engine);
 
                 // Log info.
-                LogInfo(razorFile.Name, originalSemanticModel, engine);
+                LogInfo(razorFile.Name, razorSyntaxTree);
             }
 
             return modifiedDestProj;
         }
 
-        private void LogInfo(string fileName,
+        private ProxySyntaxTreeNode CreateSyntaxTreeNode(
             SemanticModel semanticModel,
             RazorProjectEngine razorProjectEngine)
         {
-            Program.Log.Info("Info of " + fileName);
-
-            var rootNode = semanticModel.SyntaxTree.GetRoot();
-            var typeInfo = semanticModel.GetTypeInfo(rootNode);
-
             var projectItem = razorProjectEngine.FileSystem.GetItem(
                 semanticModel.SyntaxTree.FilePath);
 
@@ -98,7 +286,14 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
             var rootObj = tree.GetPropertyReflection<object>("Root");
             var proxyNode = new ProxySyntaxTreeNode(rootObj);
 
-            LogProxyNode(proxyNode);
+            return proxyNode;
+        }
+
+        private void LogInfo(string fileName,
+            ProxySyntaxTreeNode proxySyntaxTreeNode)
+        {
+            Program.Log.Info("Info of " + fileName);
+            LogProxyNode(proxySyntaxTreeNode);
         }
 
         private static void LogProxyNode(ProxySyntaxTreeNode proxyNode,

@@ -5,6 +5,62 @@
 }
 <div id="grid"></div>
 <div id="grid2"></div>
+
+<partial name="KDropDown" />
+@await Html.PartialAsync("KDropDown")
+@if (Model.ShowNames)
+{
+    <h3>Names:</h3>
+    <ul>
+        @foreach (var name in Model.Names)
+        {
+            <li class="name">
+                <div>@name</div>
+
+                @for (var i = 0; i < 4; i++)
+                {
+                    for (var ii = 0; ii < 2; ii++)
+                    {
+                        <div>Testing</div>
+                    }
+
+                    <text>
+                        <p>@(name)This is a paragraph. This is a paragraph. This is a paragraph.</p>
+                    </text>
+                }
+            </li>
+        }
+    </ul>
+    <div>
+        @(String.Join(',', Model.Names))
+    </div>
+}
+
+@functions {
+
+    public bool IsValid(object obj)
+    {
+        return false;
+    }
+
+}
+
+@section Demo {
+    @if (Model.ShowNames)
+    {
+        <h3>Names:</h3>
+        <ul>
+            @foreach (var name in Model.Names)
+            {
+                <li class="name">@name</li>
+            }
+        </ul>
+        <div>
+            @(String.Join(',', Model.Names))
+        </div>
+    }
+}
+
 <script>
     $(function () {
         var dataSource = new kendo.data.DataSource({
@@ -52,7 +108,7 @@
                 ],
                 refresh: true
             },
-            toolbar: ["create","save","cancel"],
+            toolbar: ["create", "save", "cancel"],
             columns: [
                 {
                     field: "name"
@@ -61,7 +117,7 @@
                     field: "age"
                 },
                 {
-                    command: ["edit","destroy"],
+                    command: ["edit", "destroy"],
                     title: "&nbsp;",
                     width: "250px"
                 }
