@@ -25,12 +25,14 @@ namespace ApertureLabs.Selenium.CodeGeneration
         /// <param name="destinationProject"></param>
         /// <param name="newFileName"></param>
         /// <param name="destinationDocument"></param>
+        /// <param name="relativePath"></param>
         /// <returns>The modified destination project</returns>
         protected Project GetOrCreateDocumentWithSameRelativePath(
             TextDocument templateDocument,
             Project destinationProject,
             string newFileName,
-            out Document destinationDocument)
+            out Document destinationDocument,
+            out string relativePath)
         {
             destinationDocument = null;
             var folders = templateDocument.Folders;
@@ -54,6 +56,10 @@ namespace ApertureLabs.Selenium.CodeGeneration
                     newFileName,
                     templateDocument);
             }
+
+            relativePath = Path.Combine(folders
+                .Concat(new[] { newFileName })
+                .ToArray());
 
             return destinationDocument.Project;
         }
