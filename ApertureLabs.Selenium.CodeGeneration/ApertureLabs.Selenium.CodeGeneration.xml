@@ -99,7 +99,7 @@
             </summary>
             <seealso cref="T:ApertureLabs.Selenium.CodeGeneration.ICodeGenerator" />
         </member>
-        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetOrCreateDocumentWithSameRelativePath(Microsoft.CodeAnalysis.TextDocument,Microsoft.CodeAnalysis.Project,System.String,Microsoft.CodeAnalysis.Document@)">
+        <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.GetOrCreateDocumentWithSameRelativePath(Microsoft.CodeAnalysis.TextDocument,Microsoft.CodeAnalysis.Project,System.String,Microsoft.CodeAnalysis.Document@,System.String@)">
             <summary>
             Retrieves or creates the file from the destination project. If
             creating then the file will be located in the same folder path
@@ -110,6 +110,7 @@
             <param name="destinationProject"></param>
             <param name="newFileName"></param>
             <param name="destinationDocument"></param>
+            <param name="relativePath"></param>
             <returns>The modified destination project</returns>
         </member>
         <member name="M:ApertureLabs.Selenium.CodeGeneration.CodeGenerator.AddFileToProject(Microsoft.CodeAnalysis.Project,System.String,Microsoft.CodeAnalysis.TextDocument)">

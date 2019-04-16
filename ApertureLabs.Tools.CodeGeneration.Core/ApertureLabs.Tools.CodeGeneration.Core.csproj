@@ -21,6 +21,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
     <PackageReference Include="NuGet.Common" Version="4.9.4" />
     <PackageReference Include="NuGet.Configuration" Version="4.9.4" />
     <PackageReference Include="NuGet.Frameworks" Version="4.9.4" />
@@ -29,7 +30,9 @@
     <PackageReference Include="NuGet.Protocol" Version="4.9.4" />
     <PackageReference Include="NuGet.Resolver" Version="4.9.4" />
     <PackageReference Include="NuGet.Versioning" Version="4.9.4" />
+    <PackageReference Include="System.CodeDom" Version="4.5.0" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,7 +74,7 @@
       <LastGenOutput>PageComponentTemplate.cs</LastGenOutput>
     </None>
     <None Update="CodeGeneration\PageObjectTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>PageObjectTemplate.cs</LastGenOutput>
     </None>
   </ItemGroup>

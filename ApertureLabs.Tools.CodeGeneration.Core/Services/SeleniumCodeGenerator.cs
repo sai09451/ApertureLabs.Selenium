@@ -212,6 +212,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
             originalProject = originalProject.AddRazorFiles();
             var modifiedDestProj = destinationProject;
 
+            var originalProjectDir = new FileInfo(destinationProject.FilePath)
+                .Directory
+                .FullName;
+
             var razorFiles = GetDocumentsWithFileExtensions(
                 originalProject,
                 new[] { ".cshtml" });
@@ -220,9 +224,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
 
             var razorEngine = RazorProjectEngine.Create(
                 RazorConfiguration.Default,
-                RazorProjectFileSystem.Create(""));
-
-            var projectItem = razorEngine.FileSystem.GetItem("");
+                RazorProjectFileSystem.Create(originalProjectDir));
 
             foreach (var razorFile in razorFiles)
             {
@@ -243,8 +245,8 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
 
                 var razorPageInfo = new RazorPageInfo
                 {
-                    FullPathOfRazorFile = razorFile.FilePath,
-                    GeneratedDocument = generatedDocument,
+                    PhysicalPath = razorFile.FilePath,
+                    //GeneratedDocument = generatedDocument,
                     RelativePath = relativePath
                 };
 
@@ -253,7 +255,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
 
             foreach (var razorFileInfo in razorFileInfoList)
             {
-                var originalFilesText = File.ReadAllText(razorFileInfo.FullPathOfRazorFile);
+                var originalFilesText = File.ReadAllText(razorFileInfo.PhysicalPath);
 
                 // Get the layout if any.
                 var layoutMatch = Regex.Match(
@@ -287,7 +289,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
                     @"(?<=Model\.)([^\(\)<>\s]+)");
 
                 // Determine if this is a viewcomponent.
-                var isViewComponent = IsViewComponent(razorFileInfo.FullPathOfRazorFile);
+                var isViewComponent = IsViewComponent(razorFileInfo.PhysicalPath);
 
                 // Retrieve all viewcomponents.
                 var viewCompInvokeAsyncMatches = Regex.Matches(
@@ -301,12 +303,12 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
                 var allViewComponentMatches = viewCompInvokeAsyncMatches
                     .Concat(viewCompTagHelperMatches);
 
-                var destSemanticModel = await razorFileInfo.GeneratedDocument
-                    .GetSemanticModelAsync(cancellationToken)
-                    .ConfigureAwait(false);
+                //var destSemanticModel = await razorFileInfo.GeneratedDocument
+                //    .GetSemanticModelAsync(cancellationToken)
+                //    .ConfigureAwait(false);
 
-                var destinationRootNode = destSemanticModel
-                    .SyntaxTree.GetRoot(cancellationToken);
+                //var destinationRootNode = destSemanticModel
+                //    .SyntaxTree.GetRoot(cancellationToken);
             }
 
             return modifiedDestProj;

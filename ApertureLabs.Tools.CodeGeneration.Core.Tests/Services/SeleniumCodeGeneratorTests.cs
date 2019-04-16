@@ -107,8 +107,6 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Tests.Services
         [TestMethod]
         public void RazorParseTest1()
         {
-            const string chsharpElementName = "csharp";
-
             var cleanedHtml = Regex.Replace(
                 RAZOR_DEMO_1,
                 @"(?<!\s)@(?!foreach)(?!model)(?!using)(?!page)(?!\()([^<\/\s]*)",

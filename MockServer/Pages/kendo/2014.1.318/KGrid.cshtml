@@ -7,8 +7,13 @@
 <div id="grid"></div>
 <div id="grid2"></div>
 
-<partial name="KDropDown" />
+<vc:priority-list max-priority="2" is-done="false"></vc:priority-list>
+@await Component.InvokeAsync("PriorityList", new { maxPriority = 4, isDone = true })
+<div>@ViewBag.Property - test</div>
+<div>@ViewData["testing"] - test ["123"]</div>
+<partial name="KDropDown" for="SomeProp" />
 @await Html.PartialAsync("KDropDown")
+@Html.Partial("KDropDown")
 @if (Model.ShowNames)
 {
     <h3>Names:</h3>

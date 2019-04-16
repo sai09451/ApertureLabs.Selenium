@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
@@ -12,58 +13,44 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
     {
         public RazorPageInfo()
         {
-            ImportantElementSelectors = new Dictionary<string, string>();
-            PartialViews = new Dictionary<RazorPageInfo, bool>();
+            IncludedPartialPages = new List<RazorPageInfo>();
+            IncludedViewComponents = new List<RazorPageInfo>();
+            IncludedProperties = new List<string>();
         }
 
-        public Document GeneratedDocument { get; set; }
+        public string Namespace { get; set; }
 
-        /// <summary>
-        /// The relative path to the file from the project root.
-        /// </summary>
+        public string Name => Path.GetFileNameWithoutExtension(RelativePath);
+
+        public string GeneratedClassName => IsViewComponent
+            ? $"{Name}PageComponent"
+            : $"{Name}PageObject";
+
+        public string GeneratedFullClassName => $"{Namespace}.{GeneratedClassName}";
+
+        public string GeneratedFullInterfaceName => $"{Namespace}.{GeneratedInterfaceName}";
+
+        public string GeneratedInterfaceName => $"I{GeneratedClassName}";
+
+        public string PhysicalPath { get; set; }
+
         public string RelativePath { get; set; }
 
-        /// <summary>
-        /// The page object name.
-        /// </summary>
-        public string PageObjectName { get; set; }
+        public RazorPageInfo Layout { get; set; }
 
-        /// <summary>
-        /// The full path of the razor file.
-        /// </summary>
-        public string FullPathOfRazorFile { get; set; }
+        public bool IsViewComponent { get; set; }
 
-        /// <summary>
-        /// The path to the layout page referenced by this page. Can be null.
-        /// </summary>
-        public string Layout { get; set; }
+        public IList<RazorPageInfo> IncludedPartialPages { get; }
 
-        /// <summary>
-        /// A list of important selectors and the element tag name they're
-        /// applied to.
-        /// </summary>
-        public IDictionary<string, string> ImportantElementSelectors { get; }
+        public IList<RazorPageInfo> IncludedViewComponents { get; }
 
-        /// <summary>
-        /// Partial views names and if they're in a for loop (IE: Should be
-        /// IEnumerable).
-        /// </summary>
-        public IDictionary<RazorPageInfo, bool> PartialViews { get; }
+        public IList<string> IncludedProperties { get; }
 
-        /// <summary>
-        /// Contains the css selector to the nested components on the page.
-        /// </summary>
-        public IDictionary<string, RazorComponent> Components { get; }
-
-        /// <summary>
-        /// Whether the razor page is a template page object, static page
-        /// object, parameter page object, or a page component.
-        /// </summary>
-        public string TypeOfRazorPage { get; set; }
-
-        public bool MatchesName(string name)
+        public static RazorPageInfo UnkownPageInfo()
         {
-            throw new NotImplementedException();
+            var pageInfo = new RazorPageInfo();
+
+            return pageInfo;
         }
     }
 

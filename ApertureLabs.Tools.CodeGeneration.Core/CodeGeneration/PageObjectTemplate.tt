@@ -3,3 +3,35 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+
+namespace <#= model.Namespace #>
+{
+	public class <#= model.Name #>
+	{
+		#region Fields
+
+		<# foreach (var fieldInfo in GetFields()) { #>
+		<#= fieldInfo #>
+		<# } #>
+
+		#endregion
+
+		<# var dependencyFields = GetDependencyFields(); #>
+		<# if (!dependencyFields.Any()) { #>
+		#region Constructor
+		
+		public <#= model.Name #>()
+		{ }
+
+		#endregion
+		<# } #>
+
+		#region	Properties
+
+		#endregion
+
+		#region Methods
+
+		#endregion
+	}
+}
