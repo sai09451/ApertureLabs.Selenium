@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.CodeDom;
@@ -9,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
 {
@@ -45,97 +48,87 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
 
         #region Methods
 
-        public CodeCompileUnit CreateCodeCompileUnit(
+        public async Task<Project> GenerateInterfaceDocumentAsync(
             IEnumerable<string> defaultImports,
-            IEnumerable<RazorPageInfo> razorInfoPages)
+            RazorPageInfo razorPageInfo,
+            Document interfaceDocument)
         {
-            var compileUnit = new CodeCompileUnit();
+            var semanticModel = await interfaceDocument.GetSemanticModelAsync()
+                .ConfigureAwait(false);
 
-            foreach (var razorInfoPage in razorInfoPages)
+            var syntaxRoot = await interfaceDocument.GetSemanticModelAsync()
+                .ConfigureAwait(false);
+
+            var root = semanticModel.SyntaxTree.GetCompilationUnitRoot();
+            var walker = new Walker();
+            walker.Visit(root);
+
+            return interfaceDocument.Project;
+        }
+
+        public async Task<Project> GeneratedClassDocumentAsync(
+            IEnumerable<string> defaultUsings,
+            RazorPageInfo razorPageInfo,
+            Document classDocument)
+        {
+            var semanticModel = await classDocument.GetSemanticModelAsync()
+                .ConfigureAwait(false);
+
+            var root = semanticModel.SyntaxTree.GetCompilationUnitRoot();
+            var walker = new Walker();
+            walker.Visit(root);
+
+            // Add the default imports.
+            var usingDirList = SyntaxFactory.List(
+                defaultUsings.Where(u => !walker.DoesUsingExist(u)).Select(
+                    u => SyntaxFactory.UsingDirective(
+                        SyntaxFactory.ParseName(u))));
+
+            root = root.WithUsings(usingDirList);
+
+            if (!walker.DoesNamespaceExist(razorPageInfo.Namespace))
             {
-                // Retrieve or create the namespace.
-                var nsUnit = compileUnit.Namespaces
-                    .OfType<CodeNamespace>()
-                    .FirstOrDefault(
-                        n => n.Name.Equals(
-                            razorInfoPage.Namespace,
-                            StringComparison.Ordinal));
+                // Need to create everything.
+                var ns = SyntaxFactory.NamespaceDeclaration(
+                    name: SyntaxFactory.IdentifierName(razorPageInfo.Namespace),
+                    externs: SyntaxFactory.List(
+                        Array.Empty<ExternAliasDirectiveSyntax>()),
+                    usings: SyntaxFactory.List(
+                        Array.Empty<UsingDirectiveSyntax>()),
+                    members: SyntaxFactory.List<MemberDeclarationSyntax>(
+                        new[]
+                        {
+                            CreateClassDeclaration(razorPageInfo)
+                        }));
 
-                if (nsUnit == null)
-                {
-                    nsUnit = new CodeNamespace(razorInfoPage.Namespace);
-                    compileUnit.Namespaces.Add(nsUnit);
-                }
+                var newProject = await GetNewProject(ns, classDocument)
+                    .ConfigureAwait(false);
 
-                // Add the imports.
-                foreach (var import in defaultImports)
-                    nsUnit.Imports.Add(new CodeNamespaceImport(import));
-
-                // Add interface.
-                var interfaceUnit = new CodeTypeDeclaration(razorInfoPage.GeneratedInterfaceName);
-                interfaceUnit.IsInterface = true;
-                interfaceUnit.TypeAttributes = TypeAttributes.Public;
-
-                if (razorInfoPage.Layout != null)
-                {
-                    interfaceUnit.BaseTypes.Add(
-                        new CodeTypeReference(
-                            razorInfoPage.Layout.GeneratedInterfaceName));
-                }
-                else if (razorInfoPage.IsViewComponent)
-                {
-                    interfaceUnit.BaseTypes.Add(new CodeTypeReference("IPageComponent"));
-                }
-                else
-                {
-                    interfaceUnit.BaseTypes.Add(new CodeTypeReference("IPageComponent"));
-                }
-
-                foreach (var viewComponent in razorInfoPage.IncludedViewComponents)
-                {
-                    var viewComponentMember = new CodeMemberProperty();
-                    viewComponentMember.Name = viewComponent.Name;
-                    viewComponentMember.Type = new CodeTypeReference(viewComponent.GeneratedFullInterfaceName);
-                    viewComponentMember.HasGet = true;
-                    interfaceUnit.Members.Add(viewComponentMember);
-                }
-
-                foreach (var partialPage in razorInfoPage.IncludedPartialPages)
-                {
-                    var partialViewProperty = new CodeMemberProperty();
-                    partialViewProperty.Name = partialPage.Name;
-                    partialViewProperty.Type = new CodeTypeReference(partialPage.GeneratedFullInterfaceName);
-                    partialViewProperty.HasGet = true;
-                    interfaceUnit.Members.Add(partialViewProperty);
-                }
-
-                nsUnit.Types.Add(interfaceUnit);
-
-                // Add class.
-                var classUnit = new CodeTypeDeclaration(razorInfoPage.GeneratedClassName);
-                classUnit.IsClass = true;
-                classUnit.TypeAttributes = TypeAttributes.Public;
-                classUnit.BaseTypes.Add(new CodeTypeReference(interfaceUnit.Name));
-
-                // Add constructor.
-                var classCtorUnit = new CodeConstructor();
-                classCtorUnit.Attributes = MemberAttributes.Public|MemberAttributes.Final;
-
-                foreach (var viewComponent in razorInfoPage.IncludedViewComponents)
-                {
-                    var viewComponentMember = new CodeMemberProperty();
-                    viewComponentMember.Name = viewComponent.Name;
-                    viewComponentMember.Type = new CodeTypeReference(viewComponent.GeneratedFullInterfaceName);
-                    viewComponentMember.HasGet = true;
-                    viewComponentMember.Attributes = MemberAttributes.Public|MemberAttributes.ScopeMask;
-                    interfaceUnit.Members.Add(viewComponentMember);
-                }
-
-                nsUnit.Types.Add(classUnit);
-                compileUnit.Namespaces.Add(nsUnit);
+                return newProject;
             }
 
-            return compileUnit;
+            if (!walker.DoesClassExist(razorPageInfo.GeneratedClassName, razorPageInfo.Namespace))
+            {
+                // Create the class.
+                var ns = GetNamespace(root, razorPageInfo.Namespace);
+                ns = ns.AddMembers(CreateClassDeclaration(razorPageInfo));
+
+                var newProject = await GetNewProject(ns, classDocument)
+                    .ConfigureAwait(false);
+
+                return newProject;
+            }
+
+            var viewComponentsAndPartialViews = Enumerable.Concat(
+                razorPageInfo.IncludedViewComponents,
+                razorPageInfo.IncludedPartialPages);
+
+            foreach (var properties in viewComponentsAndPartialViews)
+            {
+                
+            }
+
+            return classDocument.Project;
         }
 
         public IEnumerable<RazorPageInfo> GenerateRazorInfoPages()
@@ -218,6 +211,231 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
             }
 
             return fileInfoDictionary.Values;
+        }
+
+        private static async Task<Project> GetNewProject(
+            SyntaxNode node,
+            Document document)
+        {
+            var root = await node.SyntaxTree.GetRootAsync();
+
+            return document.WithSyntaxRoot(root).Project;
+        }
+
+        private static NamespaceDeclarationSyntax GetNamespace(SyntaxNode node,
+            string @namespace)
+        {
+            return node.DescendantNodes()
+                .OfType<NamespaceDeclarationSyntax>()
+                .FirstOrDefault(
+                    ns => ns.Name.ToString().Equals(
+                        @namespace,
+                        StringComparison.Ordinal));
+        }
+
+        private static ClassDeclarationSyntax GetClass(SyntaxNode node,
+            string className,
+            string @namespace)
+        {
+            var ns = GetNamespace(node, @namespace);
+
+            if (ns == null)
+                return null;
+
+            var classNode = ns.DescendantNodes()
+                .OfType<ClassDeclarationSyntax>()
+                .FirstOrDefault(
+                    c => c.Identifier.ToString().Equals(
+                        className,
+                        StringComparison.Ordinal));
+
+            return classNode;
+        }
+
+        private PropertyDeclarationSyntax GetProperty(SyntaxNode node,
+            string propertyName,
+            string className,
+            string @namespace)
+        {
+            var classNode = GetClass(node, className, @namespace);
+
+            if (classNode == null)
+                return null;
+
+            var propertyNode = classNode.DescendantNodes()
+                .OfType<PropertyDeclarationSyntax>()
+                .FirstOrDefault(
+                    c => c.Identifier.ToString().Equals(
+                        propertyName,
+                        StringComparison.Ordinal));
+
+            return propertyNode;
+        }
+
+        private static IEnumerable<string> GetDependencies(RazorPageInfo razorPageInfo)
+        {
+            var currentLayout = razorPageInfo.Layout;
+
+            while (currentLayout != null)
+            {
+                yield return currentLayout.GeneratedFullInterfaceName;
+                currentLayout = currentLayout.Layout;
+            }
+        }
+
+        private static string TypeNameToArgumentName(string typeName)
+        {
+            if (typeName[0].Equals('I'))
+                typeName = typeName.Substring(1);
+
+            typeName = Char.ToLowerInvariant(typeName[0]) + typeName.Substring(1);
+
+            return typeName;
+        }
+
+        private static BaseListSyntax GetClassBaseList(RazorPageInfo razorPageInfo)
+        {
+            var baseTypes = new List<BaseTypeSyntax>
+            {
+                SyntaxFactory.SimpleBaseType(
+                    SyntaxFactory.ParseTypeName(
+                        razorPageInfo.IsViewComponent ? "PageComponent" : "PageObject")),
+                SyntaxFactory.SimpleBaseType(
+                    SyntaxFactory.ParseTypeName(
+                        razorPageInfo.GeneratedInterfaceName))
+            };
+
+            if (razorPageInfo.Layout != null)
+            {
+                baseTypes.Add(SyntaxFactory.SimpleBaseType(
+                    SyntaxFactory.ParseTypeName(
+                        razorPageInfo.Layout.GeneratedInterfaceName)));
+            }
+
+            return SyntaxFactory.BaseList(SyntaxFactory.SeparatedList(baseTypes));
+        }
+
+        private static ClassDeclarationSyntax CreateClassDeclaration(RazorPageInfo razorPageInfo)
+        {
+            var dependencies = GetDependencies(razorPageInfo);
+            var fields = new List<MemberDeclarationSyntax>();
+            var ctors = new List<MemberDeclarationSyntax>();
+            var properties = new List<MemberDeclarationSyntax>();
+            var methods = new List<MemberDeclarationSyntax>();
+
+            // Fields.
+            foreach (var dependency in dependencies)
+            {
+                var modifiers = SyntaxFactory.TokenList(
+                    SyntaxFactory.Token(SyntaxKind.PrivateKeyword),
+                    SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword));
+
+                var fieldName = TypeNameToArgumentName(dependency);
+                var declaration = SyntaxFactory.VariableDeclaration(
+                    type: SyntaxFactory.ParseTypeName(dependency),
+                    variables: SyntaxFactory.SeparatedList(
+                        new VariableDeclaratorSyntax[]
+                        {
+                            SyntaxFactory.VariableDeclarator(fieldName)
+                        }));
+
+                fields.Add(
+                    SyntaxFactory.FieldDeclaration(
+                        SyntaxFactory.List<AttributeListSyntax>(),
+                        modifiers,
+                        declaration));
+            }
+
+            // Ctor.
+            var parameters = dependencies.Select(
+                d => SyntaxFactory.Parameter(
+                    attributeLists: SyntaxFactory.List<AttributeListSyntax>(),
+                    modifiers: SyntaxFactory.TokenList(),
+                    type: SyntaxFactory.ParseTypeName(d),
+                    identifier: SyntaxFactory.Identifier(
+                        TypeNameToArgumentName(d)),
+                    @default: null));
+
+            var body = SyntaxFactory.Block(SyntaxFactory.List<StatementSyntax>());
+
+            foreach (var dependency in dependencies)
+            {
+                var dependencyName = TypeNameToArgumentName(dependency);
+
+                var expression = SyntaxFactory.AssignmentExpression(
+                    kind: SyntaxKind.EqualsKeyword,
+                    left: SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.ThisExpression(),
+                        SyntaxFactory.IdentifierName(dependencyName)),
+                    right: SyntaxFactory.ParseExpression(dependencyName));
+
+                var statement = SyntaxFactory.ExpressionStatement(expression);
+                body = body.AddStatements(statement);
+            }
+
+            ctors.Add(
+                SyntaxFactory.ConstructorDeclaration(
+                    attributeLists: SyntaxFactory.List(Array.Empty<AttributeListSyntax>()),
+                    modifiers: SyntaxFactory.TokenList(
+                        SyntaxFactory.Token(
+                            SyntaxKind.PublicKeyword)),
+                    identifier: SyntaxFactory.ParseToken(
+                        razorPageInfo.GeneratedClassName),
+                    parameterList: SyntaxFactory.ParameterList(
+                        SyntaxFactory.SeparatedList(
+                            parameters)),
+                    initializer: null,
+                    body: body));
+
+            // Properties.
+            var props = Enumerable.Concat(
+                razorPageInfo.IncludedViewComponents,
+                razorPageInfo.IncludedPartialPages);
+
+            foreach (var prop in props)
+            {
+                var accessorList = SyntaxFactory.AccessorList(
+                    SyntaxFactory.List(
+                        new AccessorDeclarationSyntax[]
+                        {
+                            SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                        }));
+
+                var propName = prop.GeneratedClassName;
+
+                var modifiers = SyntaxFactory.TokenList(
+                    SyntaxFactory.Token(SyntaxKind.PrivateKeyword),
+                    SyntaxFactory.Token(SyntaxKind.VirtualKeyword));
+
+                var property = SyntaxFactory.PropertyDeclaration(
+                    attributeLists: SyntaxFactory.List<AttributeListSyntax>(),
+                    modifiers: modifiers,
+                    type: SyntaxFactory.ParseTypeName(prop.GeneratedFullInterfaceName),
+                    explicitInterfaceSpecifier: null,
+                    identifier: SyntaxFactory.Identifier(propName),
+                    accessorList: accessorList);
+
+                properties.Add(property);
+            }
+
+            // Methods.
+
+            // Concat all members.
+            var allMembers = fields.Concat(ctors)
+                .Concat(properties)
+                .Concat(methods);
+
+            return SyntaxFactory.ClassDeclaration(
+                attributeLists: SyntaxFactory.List<AttributeListSyntax>(),
+                modifiers: SyntaxFactory.TokenList(
+                    SyntaxFactory.Token(
+                        SyntaxKind.PublicKeyword)),
+                identifier: SyntaxFactory.Identifier(razorPageInfo.GeneratedClassName),
+                typeParameterList: null,
+                baseList: GetClassBaseList(razorPageInfo),
+                constraintClauses: SyntaxFactory.List<TypeParameterConstraintClauseSyntax>(),
+                members: SyntaxFactory.List(allMembers));
         }
 
         private RazorPageInfo LocateRazorPageInfo(string desiredName,
@@ -504,24 +722,125 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
         //    return tree;
         //}
 
-        private struct Range
+        #endregion
+
+        #region Nested Classes
+
+        private class Walker : CSharpSyntaxWalker
         {
-            public Range(SourceSpan sourceSpan)
+            public Walker()
             {
-                StartIndex = sourceSpan.AbsoluteIndex;
-                EndIndex = sourceSpan.AbsoluteIndex + sourceSpan.Length;
-                Length = sourceSpan.Length;
+                Usings = new List<UsingDirectiveSyntax>();
+                Namespaces = new List<NamespaceDeclarationSyntax>();
+                Classes = new List<ClassDeclarationSyntax>();
+                Methods = new List<MethodDeclarationSyntax>();
+                Properties = new List<PropertyDeclarationSyntax>();
+                Fields = new List<FieldDeclarationSyntax>();
             }
 
-            public int StartIndex { get; }
-            public int EndIndex { get; }
-            public int Length { get; }
+            private IList<UsingDirectiveSyntax> Usings { get; }
+            private IList<NamespaceDeclarationSyntax> Namespaces { get; }
+            private IList<ClassDeclarationSyntax> Classes { get; }
+            private IList<MethodDeclarationSyntax> Methods { get; }
+            private IList<PropertyDeclarationSyntax> Properties { get; }
+            private IList<FieldDeclarationSyntax> Fields { get; }
 
-            public bool IsInRange(Range range)
+            public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
             {
-                // Check if the range starts before and ends after this.
-                return range.StartIndex < StartIndex
-                    && range.EndIndex > EndIndex;
+                base.VisitNamespaceDeclaration(node);
+
+                Namespaces.Add(node);
+            }
+
+            public override void VisitUsingDirective(UsingDirectiveSyntax node)
+            {
+                base.VisitUsingDirective(node);
+
+                Usings.Add(node);
+            }
+
+            public override void VisitClassDeclaration(ClassDeclarationSyntax node)
+            {
+                base.VisitClassDeclaration(node);
+
+                Classes.Add(node);
+            }
+
+            public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
+            {
+                base.VisitMethodDeclaration(node);
+            }
+
+            public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+            {
+                base.VisitPropertyDeclaration(node);
+            }
+
+            public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
+            {
+                base.VisitFieldDeclaration(node);
+            }
+
+            public bool DoesUsingExist(string @using)
+            {
+                return Usings.Any(
+                    u => u.Name.ToString().Equals(
+                        @using,
+                        StringComparison.Ordinal));
+            }
+
+            public bool DoesNamespaceExist(string @namespace)
+            {
+                return null != GetNamespace(@namespace);
+            }
+
+            public NamespaceDeclarationSyntax GetNamespace(string @namespace)
+            {
+                return Namespaces.FirstOrDefault(
+                    ns => ns.Name.ToString().Equals(
+                        @namespace,
+                        StringComparison.Ordinal));
+            }
+
+            public bool DoesClassExist(string className, string @namespace)
+            {
+                return null != GetClass(className, @namespace);
+            }
+
+            public ClassDeclarationSyntax GetClass(string className, string @namespace)
+            {
+                var ns = GetNamespace(@namespace);
+
+                if (ns == null)
+                    return null;
+
+                var classNode = ns.DescendantNodes()
+                    .OfType<ClassDeclarationSyntax>()
+                    .FirstOrDefault(
+                        c => c.Identifier.ToString().Equals(
+                            className,
+                            StringComparison.Ordinal));
+
+                return classNode;
+            }
+
+            public PropertyDeclarationSyntax GetProperty(string propertyName,
+                string className,
+                string @namespace)
+            {
+                var classNode = GetClass(className, @namespace);
+
+                if (classNode == null)
+                    return null;
+
+                var propertyNode = classNode.DescendantNodes()
+                    .OfType<PropertyDeclarationSyntax>()
+                    .FirstOrDefault(
+                        c => c.Identifier.ToString().Equals(
+                            propertyName,
+                            StringComparison.Ordinal));
+
+                return propertyNode;
             }
         }
 
