@@ -1,22 +1,10 @@
 using ApertureLabs.Selenium.CodeGeneration;
 using ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration;
-using ApertureLabs.Tools.CodeGeneration.Core.RazorParser;
-using HtmlAgilityPack;
-using Microsoft.AspNetCore.Razor.Language;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using ApertureLabs.Tools.CodeGeneration.Core.Utilities;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Text;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,6 +18,8 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
             IProgress<CodeGenerationProgress> progress,
             CancellationToken cancellationToken)
         {
+            originalProject = originalProject.AddRazorFiles();
+
             var memOptions = Microsoft.Extensions
                 .Options
                 .Options
@@ -40,6 +30,18 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
                 new MemoryCache(memOptions));
 
             var razorPages = razorPageInfoFactory.GenerateRazorInfoPages();
+            var imports = new[]
+            {
+                "ApertureLabs.Selenium",
+                "ApertureLabs.Selenium.PageObjects",
+                "OpenQA.Selenium",
+                "OpenQA.Selenium.Support.Events",
+                "OpenQA.Selenium.Support.PageObjects",
+                "OpenQA.Selenium.Support.UI",
+                "System",
+                "System.Collections",
+                "System.Collections.Generic"
+            };
 
             foreach (var razorPage in razorPages)
             {
@@ -56,14 +58,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
                     out var interfaceRelativePath);
 
                 destinationProject = await razorPageInfoFactory.GenerateInterfaceDocumentAsync(
-                        new[]
-                        {
-                            "ApertureLabs.Selenium",
-                            "ApertureLabs.Selenium.PageObjects",
-                            "System",
-                            "System.Collections",
-                            "System.Collections.Generic"
-                        },
+                        imports,
                         razorPage,
                         generatedInterfaceDoc)
                     .ConfigureAwait(false);
@@ -76,7 +71,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Services
                     out var classRelativePath);
 
                 destinationProject = await razorPageInfoFactory.GeneratedClassDocumentAsync(
-                        new[] { "System" },
+                        imports,
                         razorPage,
                         generatedClassDoc)
                     .ConfigureAwait(false);

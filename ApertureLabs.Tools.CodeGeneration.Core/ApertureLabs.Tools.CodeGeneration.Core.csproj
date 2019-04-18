@@ -12,6 +12,7 @@
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
     <PackageReference Include="CommandLineParser" Version="2.4.3" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.2" />
+    <PackageReference Include="Humanizer.Core" Version="2.6.2" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
     <PackageReference Include="Microsoft.Build.Framework" Version="16.0.461">
       <ExcludeAssets>Runtime</ExcludeAssets>
@@ -53,30 +54,6 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="CodeGeneration\PageComponentTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PageComponentTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Update="CodeGeneration\PageObjectTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PageObjectTemplate.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="CodeGeneration\PageComponentTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PageComponentTemplate.cs</LastGenOutput>
-    </None>
-    <None Update="CodeGeneration\PageObjectTemplate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>PageObjectTemplate.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
 </Project>

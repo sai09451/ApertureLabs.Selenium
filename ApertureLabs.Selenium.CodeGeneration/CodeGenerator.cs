@@ -40,8 +40,12 @@ namespace ApertureLabs.Selenium.CodeGeneration
             // Try and retrieve any existing documents that match.
             foreach (var document in destinationProject.Documents)
             {
-                if (Enumerable.SequenceEqual(folders, document.Folders)
-                    && document.Name.Equals(newFileName, StringComparison.Ordinal))
+                var documentExists = Enumerable.SequenceEqual(folders, document.Folders)
+                    && document.Name.Equals(
+                        Path.ChangeExtension(newFileName, ".cs"),
+                        StringComparison.Ordinal);
+
+                if (documentExists)
                 {
                     destinationDocument = document;
                     break;
@@ -101,7 +105,7 @@ namespace ApertureLabs.Selenium.CodeGeneration
             var filePath = Path.Combine(
                 projectDir,
                 Path.Combine(templateDocument.Folders.ToArray()),
-                newFileName);
+                Path.ChangeExtension(newFileName, ".cs"));
 
             var addedDocument = project.AddDocument(
                 name: newFileName,

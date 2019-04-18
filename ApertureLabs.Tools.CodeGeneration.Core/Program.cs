@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -204,6 +206,113 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                 true);
 
             return String.Empty;
+        }
+
+        public static void LogInfoOf<T>(Expression<Func<T>> expression)
+        {
+            var result = expression.Compile().Invoke();
+
+            switch (expression.Body)
+            {
+                case MethodCallExpression methodCall:
+                    Log.Info($"{methodCall.Method.Name}: {result.ToString()}");
+                    break;
+                case MemberExpression member:
+                    Log.Info($"{member.Member.Name}: {result.ToString()}");
+                    break;
+            }
+        }
+
+        public static void LogChanges<T>(
+            Expression<Func<IEnumerable<T>>> changes,
+            Func<T, string> formatter = null)
+        {
+            var results = changes.Compile().Invoke();
+
+            // Return early if no results.
+            if (!results.Any())
+                return;
+
+            string name;
+            switch (changes.Body)
+            {
+                case MethodCallExpression methodCallExpression:
+                    name = methodCallExpression.Method.Name;
+                    break;
+                default:
+                    name = String.Empty;
+                    break;
+            }
+
+            if (formatter == null)
+                formatter = (T t) => t.ToString();
+
+            Log.Info($"\t* {name}");
+
+            foreach (var change in results)
+            {
+                Log.Info($"\t\t* {formatter(change)}");
+            }
+        }
+
+        public static void LogSupportedChanges(MSBuildWorkspace workspace)
+        {
+            Log.Info("Supported changes in the workspace:");
+
+            foreach (var changeKind in Enum.GetNames(typeof(ApplyChangesKind)))
+            {
+                var canChangeKind = workspace.CanApplyChange(
+                    (ApplyChangesKind)Enum.Parse(
+                        typeof(ApplyChangesKind),
+                        changeKind));
+
+                Log.Info($"\t{changeKind}: {canChangeKind}");
+            }
+
+            Log.Info($"\t{nameof(workspace.CanOpenDocuments)}: {workspace.CanOpenDocuments}");
+        }
+
+        public static void LogSolutionChanges(
+            Solution modifiedSolution,
+            Solution originalSolution)
+        {
+            var changes = modifiedSolution.GetChanges(originalSolution);
+
+            Log.Info("Listing changes:");
+
+            foreach (var addedProject in changes.GetAddedProjects())
+                Log.Info($"\tAdded project {addedProject.Name}");
+
+            foreach (var changedProject in changes.GetProjectChanges())
+            {
+                Log.Info($"\tChanged project {changedProject.OldProject.Name} -> {changedProject.NewProject.Name}");
+
+                LogChanges(() => changedProject.GetAddedAdditionalDocuments());
+                LogChanges(() => changedProject.GetAddedAnalyzerReferences());
+                LogChanges(
+                    () => changedProject.GetAddedDocuments(),
+                    d =>
+                    {
+                        var doc = modifiedSolution.GetDocument(d);
+                        var pathSegments = doc.Folders.ToList();
+                        pathSegments.Add(doc.Name);
+
+                        var sb = new StringBuilder();
+                        sb.Append(Path.Combine(pathSegments.ToArray()));
+                        sb.Append(Environment.NewLine + doc.GetTextAsync().Result);
+
+                        return sb.ToString();
+                    });
+                LogChanges(() => changedProject.GetAddedMetadataReferences());
+                LogChanges(() => changedProject.GetAddedProjectReferences());
+                LogChanges(() => changedProject.GetChangedAdditionalDocuments());
+                LogChanges(() => changedProject.GetChangedDocuments());
+                LogChanges(() => changedProject.GetRemovedAdditionalDocuments());
+                LogChanges(() => changedProject.GetRemovedAnalyzerReferences());
+                LogChanges(() => changedProject.GetRemovedDocuments());
+                LogChanges(() => changedProject.GetRemovedMetadataReferences());
+                LogChanges(() => changedProject.GetRemovedProjectReferences());
+            }
         }
     }
 }

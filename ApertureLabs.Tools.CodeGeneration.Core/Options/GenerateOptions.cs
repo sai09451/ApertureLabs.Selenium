@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ApertureLabs.Selenium.CodeGeneration;
+using ApertureLabs.Tools.CodeGeneration.Core.Services;
 using CommandLine;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
@@ -30,6 +32,22 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             Required = true,
             HelpText = "The name of the project to place the code in.")]
         public string DestinationProjectName { get; set; }
+
+        [Option(
+            longName: "original-project-kind",
+            Required = false,
+            Default = "Core",
+            HelpText = "The dotnet type of the original project. Can be " +
+                "Core, Standard, or Framework. Defaults to Core.")]
+        public string OriginalProjectKind { get; set; }
+
+        [Option(
+            longName: "destination-project-kind",
+            Required = false,
+            Default = "Standard",
+            HelpText = "The dotnet type of the destination project. Can be " +
+                "Core, Standard, or Framework. Defaults to Standard.")]
+        public string DestinationProjectKind { get; set; }
 
         [Option(
             longName: "assume-yes",
@@ -71,9 +89,32 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
                 .GetWorkspaceAndSolution(PathToSolution)
                 .ConfigureAwait(false);
 
+            Program.LogSupportedChanges(workspace);
+
+            if (!Enum.TryParse(typeof(FrameworkKind),
+                OriginalProjectKind,
+                out var originalFrameworkKind))
+            {
+                throw new InvalidCastException("The argument " +
+                    "original-framework-kind had an invalid value.");
+            }
+
+            if (!Enum.TryParse(typeof(FrameworkKind),
+                DestinationProjectKind,
+                out var destinationProjectKind))
+            {
+                throw new InvalidCastException("The argument " +
+                    "destination-framework-kind had an invalid value");
+            }
+
             // Retrieve original and destination projects.
-            var originalProject = RetrieveProject(solution, OriginalProjectName);
-            var destinationProject = RetrieveProject(solution, DestinationProjectName);
+            var originalProject = Program.GetProject(solution,
+                OriginalProjectName,
+                (FrameworkKind)originalFrameworkKind);
+            var destinationProject = Program.GetProject(
+                solution,
+                DestinationProjectName,
+                (FrameworkKind)destinationProjectKind);
 
             Program.Log.Info($"Original project: {originalProject.Name}");
             Program.Log.Info($"Destination project: {destinationProject.Name}");
@@ -82,27 +123,66 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             var compilation = await originalProject.GetCompilationAsync()
                 .ConfigureAwait(false);
 
-            // Get the location of the built assembly.
-            var diagnostics = compilation.GetDiagnostics();
-
-            throw new NotImplementedException();
-        }
-
-        private Project RetrieveProject(Solution solution, string projectName)
-        {
-            var project = solution.Projects.FirstOrDefault(
-                p => p.Name.Equals(
-                    projectName,
-                    StringComparison.Ordinal));
-
-            if (project == null)
+            var codeGenerators = new ICodeGenerator[]
             {
-                Program.Log.Error(
-                    $"No such project found with name '{projectName}'.",
-                    true);
+                new SeleniumCodeGenerator()
+            };
+
+            if (!codeGenerators.Any())
+            {
+                throw new Exception("No code generators located in the " +
+                    "destination assembly.");
             }
 
-            return project;
+            var _progress = new Progress<CodeGenerationProgress>();
+
+            foreach (var codeGenerator in codeGenerators)
+            {
+                // Generate the code.
+                var modifiedDestProj = await codeGenerator.Generate(
+                        originalProject,
+                        destinationProject,
+                        _progress,
+                        cancellationToken)
+                    .ConfigureAwait(false);
+
+                // Get list of changes.
+                Program.LogSolutionChanges(
+                    modifiedDestProj.Solution,
+                    destinationProject.Solution);
+
+                // Just print out changes if doing a dry run.
+                if (DryRun)
+                    continue;
+
+                // Prompt for accepting changes.
+                Console.Write("Accept changes (Y/N): ");
+                var response = Console.ReadLine();
+
+                var isPositiveResponse = response.Equals("y", StringComparison.OrdinalIgnoreCase)
+                    || response.Equals("yes", StringComparison.OrdinalIgnoreCase);
+
+                if (!isPositiveResponse)
+                {
+                    // Exit if not applying the changes.
+                    Program.Log.Info("Exiting program");
+                    return;
+                }
+
+                // Apply changes.
+                if (workspace.TryApplyChanges(modifiedDestProj.Solution))
+                {
+                    // Success.
+                    Program.Log.Info("Applied changes successfully");
+                }
+                else
+                {
+                    // Error.
+                    Program.Log.Error("Failed to apply changes.");
+                }
+
+                progress.Report(100);
+            }
         }
 
         private Project CreateProject(Solution solution)

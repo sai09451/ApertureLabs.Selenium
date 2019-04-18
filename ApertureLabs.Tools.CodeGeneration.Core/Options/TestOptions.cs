@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -355,7 +356,11 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
                         var pathSegments = doc.Folders.ToList();
                         pathSegments.Add(doc.Name);
 
-                        return Path.Combine(pathSegments.ToArray());
+                        var sb = new StringBuilder();
+                        sb.Append(Path.Combine(pathSegments.ToArray()));
+                        sb.Append(Environment.NewLine + doc.GetTextAsync().Result);
+
+                        return sb.ToString();
                     });
                 LogChanges(() => changedProject.GetAddedMetadataReferences());
                 LogChanges(() => changedProject.GetAddedProjectReferences());

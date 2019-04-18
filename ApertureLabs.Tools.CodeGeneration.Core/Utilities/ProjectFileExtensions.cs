@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.Text;
 using System;
 using System.IO;
 
-namespace ApertureLabs.Tools.CodeGeneration.Core.RazorParser
+namespace ApertureLabs.Tools.CodeGeneration.Core.Utilities
 {
     public static class ProjectFileExtensions
     {

@@ -12,8 +12,7 @@
 <div>@ViewBag.Property - test</div>
 <div>@ViewData["testing"] - test ["123"]</div>
 <partial name="KDropDown" for="SomeProp" />
-@await Html.PartialAsync("KDropDown")
-@Html.Partial("KDropDown")
+@await Html.PartialAsync("~/kendo/2014.1.318/KDropDown")
 @if (Model.ShowNames)
 {
     <h3>Names:</h3>
