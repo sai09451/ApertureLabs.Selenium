@@ -1,6 +1,5 @@
 ﻿using ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;

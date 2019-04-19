@@ -7,7 +7,7 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
 {
     [Verb(
         name: "info",
-        HelpText = "Displays info about the code generation process.",
+        HelpText = "TODO: Displays info about the code generation process.",
         Hidden = false)]
     public class InfoOptions : LogOptions, ICommand
     {

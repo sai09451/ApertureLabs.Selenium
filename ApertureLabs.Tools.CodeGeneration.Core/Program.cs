@@ -215,10 +215,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             switch (expression.Body)
             {
                 case MethodCallExpression methodCall:
-                    Log.Info($"{methodCall.Method.Name}: {result.ToString()}");
+                    Log.Debug($"{methodCall.Method.Name}: {result.ToString()}");
                     break;
                 case MemberExpression member:
-                    Log.Info($"{member.Member.Name}: {result.ToString()}");
+                    Log.Debug($"{member.Member.Name}: {result.ToString()}");
                     break;
             }
         }
@@ -247,17 +247,17 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
             if (formatter == null)
                 formatter = (T t) => t.ToString();
 
-            Log.Info($"\t* {name}");
+            Log.Debug($"\t* {name}");
 
             foreach (var change in results)
             {
-                Log.Info($"\t\t* {formatter(change)}");
+                Log.Debug($"\t\t* {formatter(change)}");
             }
         }
 
         public static void LogSupportedChanges(MSBuildWorkspace workspace)
         {
-            Log.Info("Supported changes in the workspace:");
+            Log.Debug("Supported changes in the workspace:");
 
             foreach (var changeKind in Enum.GetNames(typeof(ApplyChangesKind)))
             {
@@ -266,10 +266,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
                         typeof(ApplyChangesKind),
                         changeKind));
 
-                Log.Info($"\t{changeKind}: {canChangeKind}");
+                Log.Debug($"\t{changeKind}: {canChangeKind}");
             }
 
-            Log.Info($"\t{nameof(workspace.CanOpenDocuments)}: {workspace.CanOpenDocuments}");
+            Log.Debug($"\t{nameof(workspace.CanOpenDocuments)}: {workspace.CanOpenDocuments}");
         }
 
         public static void LogSolutionChanges(
@@ -278,14 +278,14 @@ namespace ApertureLabs.Tools.CodeGeneration.Core
         {
             var changes = modifiedSolution.GetChanges(originalSolution);
 
-            Log.Info("Listing changes:");
+            Log.Debug("Listing changes:");
 
             foreach (var addedProject in changes.GetAddedProjects())
-                Log.Info($"\tAdded project {addedProject.Name}");
+                Log.Debug($"\tAdded project {addedProject.Name}");
 
             foreach (var changedProject in changes.GetProjectChanges())
             {
-                Log.Info($"\tChanged project {changedProject.OldProject.Name} -> {changedProject.NewProject.Name}");
+                Log.Debug($"\tChanged project {changedProject.OldProject.Name} -> {changedProject.NewProject.Name}");
 
                 LogChanges(() => changedProject.GetAddedAdditionalDocuments());
                 LogChanges(() => changedProject.GetAddedAnalyzerReferences());

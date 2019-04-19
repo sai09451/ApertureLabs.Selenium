@@ -23,7 +23,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
 
         public string Name => IsUnknownPage
             ? null
-            : Path.GetFileNameWithoutExtension(RelativePath);
+            : Regex.Replace(
+                Path.GetFileNameWithoutExtension(RelativePath),
+                @"[^a-zA-Z0-9]",
+                "");
 
         public string GeneratedClassName => IsViewComponent
             ? $"{Name}PageComponent"

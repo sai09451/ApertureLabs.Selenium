@@ -62,12 +62,12 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             HelpText = "No changes will be saved to disk.")]
         public bool DryRun { get; set; }
 
-        [Option(
-            longName: "overwrite-existing",
-            Required = false,
-            Default = false,
-            HelpText = "Will completely regenerate the resulting projects and files.")]
-        public bool OverwriteExistingFiles { get; set; }
+        //[Option(
+        //    longName: "overwrite-existing",
+        //    Required = false,
+        //    Default = false,
+        //    HelpText = "Will completely regenerate the resulting projects and files.")]
+        //public bool OverwriteExistingFiles { get; set; }
 
         [Option(
             longName: "path-to-solution",
@@ -120,9 +120,10 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.Options
             Program.Log.Info($"Destination project: {destinationProject.Name}");
 
             // Compile original project.
-            var compilation = await originalProject.GetCompilationAsync()
-                .ConfigureAwait(false);
+            //var compilation = await originalProject.GetCompilationAsync()
+            //    .ConfigureAwait(false);
 
+            // TODO: Allow loading code generators via reflection.
             var codeGenerators = new ICodeGenerator[]
             {
                 new SeleniumCodeGenerator()

@@ -507,10 +507,6 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
             // Fields.
             foreach (var (depType, depName) in dependencies)
             {
-                var modifiers = TokenList(
-                    Token(SyntaxKind.PrivateKeyword),
-                    Token(SyntaxKind.ReadOnlyKeyword));
-
                 fields.Add(
                     FieldDeclaration(
                         List<AttributeListSyntax>(),
@@ -653,16 +649,13 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
                             AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
                         }));
 
-                var modifiers = TokenList(
-                    Token(SyntaxKind.PrivateKeyword),
-                    Token(SyntaxKind.VirtualKeyword));
-
                 var property = PropertyDeclaration(
                     ParseTypeName(propInt),
                     Identifier(propName))
                 .WithModifiers(
                     TokenList(
-                        Token(SyntaxKind.PublicKeyword)))
+                        Token(SyntaxKind.PublicKeyword),
+                        Token(SyntaxKind.VirtualKeyword)))
                 .WithAccessorList(
                     AccessorList(
                         SingletonList(
@@ -803,11 +796,78 @@ namespace ApertureLabs.Tools.CodeGeneration.Core.CodeGeneration
                 .Concat(properties)
                 .Concat(methods);
 
+            // Get the class modifiers.
+            var modifiers = TokenList(
+                Token(
+                    TriviaList(
+                        Trivia(
+                            DocumentationCommentTrivia(
+                                SyntaxKind.SingleLineDocumentationCommentTrivia,
+                                List<XmlNodeSyntax>(
+                                    new XmlNodeSyntax[]
+                                    {
+                                        XmlText()
+                                        .WithTextTokens(
+                                            TokenList(
+                                                XmlTextLiteral(
+                                                    TriviaList(
+                                                        DocumentationCommentExterior("///")),
+                                                    " ",
+                                                    " ",
+                                                    TriviaList()))),
+                                        XmlExampleElement(
+                                            SingletonList<XmlNodeSyntax>(
+                                                XmlText()
+                                                .WithTextTokens(
+                                                    TokenList(
+                                                        new[]
+                                                        {
+                                                            XmlTextNewLine(
+                                                                TriviaList(),
+                                                                "\n",
+                                                                "\n",
+                                                                TriviaList()),
+                                                            XmlTextLiteral(
+                                                                TriviaList(
+                                                                    DocumentationCommentExterior("///")),
+                                                                $" Corresponds the file file '{razorPageInfo.RelativePath}'.",
+                                                                $" Corresponds the file file '{razorPageInfo.RelativePath}'.",
+                                                                TriviaList()),
+                                                            XmlTextNewLine(
+                                                                TriviaList(),
+                                                                "\n",
+                                                                "\n",
+                                                                TriviaList()),
+                                                            XmlTextLiteral(
+                                                                TriviaList(
+                                                                    DocumentationCommentExterior("///")),
+                                                                " ",
+                                                                " ",
+                                                                TriviaList())
+                                                        }))))
+                                        .WithStartTag(
+                                            XmlElementStartTag(
+                                                XmlName(
+                                                    Identifier("summary"))))
+                                        .WithEndTag(
+                                            XmlElementEndTag(
+                                                XmlName(
+                                                    Identifier("summary")))),
+                                        XmlText()
+                                        .WithTextTokens(
+                                            TokenList(
+                                                XmlTextNewLine(
+                                                    TriviaList(),
+                                                    "\n",
+                                                    "\n",
+                                                    TriviaList())))
+                                    })))),
+                    SyntaxKind.PublicKeyword,
+                    TriviaList()));
+
             return ClassDeclaration(
                 attributeLists: List<AttributeListSyntax>(),
-                modifiers: TokenList(
-                    Token(
-                        SyntaxKind.PublicKeyword)),
+                modifiers: modifiers,
                 identifier: Identifier(razorPageInfo.GeneratedClassName),
                 typeParameterList: null,
                 baseList: GetClassBaseList(razorPageInfo),
