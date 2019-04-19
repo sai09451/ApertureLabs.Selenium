@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApertureLabs.Selenium\ApertureLabs.Selenium.csproj" />
     <ProjectReference Include="..\MockServer.PageObjects\MockServer.PageObjects.csproj" />
   </ItemGroup>
 

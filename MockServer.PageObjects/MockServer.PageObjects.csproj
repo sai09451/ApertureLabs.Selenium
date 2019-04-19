@@ -10,6 +10,6 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ApertureLabs.Selenium" Version="1.0.94" />
+    <ProjectReference Include="..\ApertureLabs.Selenium\ApertureLabs.Selenium.csproj" />
   </ItemGroup>
 </Project>
